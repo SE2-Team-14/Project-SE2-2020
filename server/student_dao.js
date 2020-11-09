@@ -4,7 +4,7 @@ const db = require('./db');
 const student = require('./student');
 
 function createStudent(row){
-    return new Student(row.id, row.name, row.surname, row.email, row.password);
+    return new Student(row.studentId, row.name, row.surname, row.email, row.password);
 }
 
 exports.createStudent = function(student) {

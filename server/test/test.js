@@ -13,7 +13,9 @@ Execute
 
 const assert = require('assert');
 const Student = require('../student');
+const Teacher = require('../teacher');
 const StudentDao = require('../student_dao');
+const TeacherDao = require('../teacher_dao');
 
 /*
 //---------------------------------EXAMPLES TO USE MOCHA---------------------------------
@@ -177,6 +179,24 @@ describe('Test student', function () {
   describe('#Delete a student', function () {
     it('Deletes a student', function () {
       return StudentDao.deleteStudentById('s1234');
+    });
+  });
+
+});
+
+
+describe('Test teacher', function () {
+
+  describe('#Create a teacher', function () {
+    it('Creates a new teacher', function () {
+      let testTeacher = new Teacher('d1234', 'Basile', 'Cataldo', 'basile@cataldo', '1234');
+      return TeacherDao.createTeacher(testTeacher);
+    });
+  });
+
+  describe('#Delete a teacher', function () {
+    it('Deletes a teacher', function () {
+      return TeacherDao.deleteTeacherById('d1234');
     });
   });
 

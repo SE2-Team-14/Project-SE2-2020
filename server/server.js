@@ -10,7 +10,7 @@ const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYx
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
-const OfficerDao = require("./officer_dao");
+//const OfficerDao = require("./officer_dao");
 
 const PORT = 3001;
 
