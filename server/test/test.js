@@ -12,8 +12,8 @@ Execute
 'use strict';
 
 const assert = require('assert');
-const Officer = require('../officer');
-const OfficerDao = require('../officer_dao');
+const Student = require('../student');
+const StudentDao = require('../student_dao');
 
 /*
 //---------------------------------EXAMPLES TO USE MOCHA---------------------------------
@@ -95,14 +95,14 @@ describe('Test Async Test', function() {
 */
 //---------------------------OUR TEST------------------------------
 
-/*
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const Server = require('../server');
 
 chai.should();
 chai.use(chaiHttp);
-
+/*
 describe('API tests', function() {
 
   //Test the GET
@@ -164,3 +164,20 @@ describe('Test officer', function () {
 
 });
 */
+
+describe('Test student', function () {
+
+  describe('#Create a student', function () {
+    it('Creates a new student', function () {
+      let testStudent = new Student('s1234', 'Andrea', 'Rossi', 'andrea@rossi', '1234');
+      return StudentDao.createStudent(testStudent);
+    });
+  });
+
+  describe('#Delete a student', function () {
+    it('Deletes a student', function () {
+      return StudentDao.deleteStudentById('s1234');
+    });
+  });
+
+});
