@@ -13,8 +13,8 @@ const Header = (props) => {
 
         <Navbar bg="info" variant="dark" expand="sm" fixed="top">
 
-          <Navbar.Brand>
-            Project Name
+        <Navbar.Brand>
+          PULSeBS
         </Navbar.Brand>
 
           <Nav className="mr-auto">
