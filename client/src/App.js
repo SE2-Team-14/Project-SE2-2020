@@ -13,6 +13,9 @@ import API from './api/API';
 
 import Header from './Components/Header';
 import Login from './Components/Login';
+import StudentHomePage from './Components/StundentHomePage'
+import TeacherHomePage from './Components/TeacherHomePage'
+
 
 
 import { AuthContext } from './auth/AuthContext'
@@ -33,7 +36,7 @@ class App extends React.Component {
     //}
     //).catch((err) => {
     //this.setState({ authErr: err.errorObj });
-    this.props.history.push("/login"); // TODO: for debug only, to be changed with the login page
+    this.props.history.push("/student-home"); // TODO: for debug only, to be changed with the login page
     //});
   }
 
@@ -78,11 +81,17 @@ class App extends React.Component {
         <Container fluid>
           <Switch>
 
-            <Route path="/home">
-              <Alert variant="success"> Starting Page </Alert>
+            <Route path="/student-home">
+              <Alert variant="success">Student Starting Page </Alert>
+              <StudentHomePage></StudentHomePage>
               <Link to="/login">Login</Link>
             </Route>
 
+            <Route path="/teacher-home">
+              <Alert variant="success">Student Starting Page </Alert>
+              <TeacherHomePage></TeacherHomePage>
+              <Link to="/login">Login</Link>
+            </Route>
             
             <Route path="/login">
               <Row className="vheight-100">
@@ -96,7 +105,7 @@ class App extends React.Component {
 
       
             <Route>
-              <Redirect to='/home' />
+              <Redirect to='/student-home' />
             </Route>
 
           </Switch>
