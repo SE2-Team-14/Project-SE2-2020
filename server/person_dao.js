@@ -1,7 +1,7 @@
 'use strict';
 
 const db = require('./db');
-const Person = require('./person_dao');
+const Person = require('./person');
 
 function createPerson(row){
     return new Person(row.id, row.name, row.surname, row.role, row.email, row.password);
