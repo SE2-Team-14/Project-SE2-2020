@@ -14,8 +14,10 @@ Execute
 const assert = require('assert');
 const Student = require('../student');
 const Teacher = require('../teacher');
+const Course = require('../course')
 const StudentDao = require('../student_dao');
 const TeacherDao = require('../teacher_dao');
+const CourseDao = require('../course_dao');
 
 /*
 //---------------------------------EXAMPLES TO USE MOCHA---------------------------------
@@ -167,7 +169,7 @@ describe('Test officer', function () {
 });
 */
 
-describe('Test student', function () {
+describe('Test students', function () {
 
   describe('#Create a student', function () {
     it('Creates a new student', function () {
@@ -184,8 +186,7 @@ describe('Test student', function () {
 
 });
 
-
-describe('Test teacher', function () {
+describe('Test teachers', function () {
 
   describe('#Create a teacher', function () {
     it('Creates a new teacher', function () {
@@ -197,6 +198,23 @@ describe('Test teacher', function () {
   describe('#Delete a teacher', function () {
     it('Deletes a teacher', function () {
       return TeacherDao.deleteTeacherById('d1234');
+    });
+  });
+
+});
+
+describe('Test courses', function () {
+
+  describe('#Create a course', function () {
+    it('Creates a new course', function () {
+      let testCourse = new Course('01ABC', 'Softeng II');
+      return CourseDao.createCourse(testCourse);
+    });
+  });
+
+  describe('#Delete a course', function () {
+    it('Deletes a course', function () {
+      return CourseDao.deleteCourseById('01ABC');
     });
   });
 
