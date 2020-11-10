@@ -12,12 +12,17 @@ Execute
 'use strict';
 
 const assert = require('assert');
-const Student = require('../student');
-const Teacher = require('../teacher');
+const Person = require('../person');
 const Course = require('../course')
-const StudentDao = require('../student_dao');
-const TeacherDao = require('../teacher_dao');
+const PersonDao = require('../person_dao');
 const CourseDao = require('../course_dao');
+
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const Server = require('../server');
+
+chai.should();
+chai.use(chaiHttp);
 
 /*
 //---------------------------------EXAMPLES TO USE MOCHA---------------------------------
@@ -99,13 +104,6 @@ describe('Test Async Test', function() {
 */
 //---------------------------OUR TEST------------------------------
 
-
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const Server = require('../server');
-
-chai.should();
-chai.use(chaiHttp);
 /*
 describe('API tests', function() {
 
@@ -169,35 +167,31 @@ describe('Test officer', function () {
 });
 */
 
-describe('Test students', function () {
+describe('Test university members', function () {
 
   describe('#Create a student', function () {
     it('Creates a new student', function () {
-      let testStudent = new Student('s1234', 'Andrea', 'Rossi', 'andrea@rossi', '1234');
-      return StudentDao.createStudent(testStudent);
+      let testStudent = new Person('s1234', 'Andrea', 'Rossi', 'student', 'andrea@rossi', '1234');
+      return PersonDao.createPerson(testStudent);
+    });
+  });
+
+  describe('#Create a teacher', function () {
+    it('Creates a new teacher', function () {
+      let testTeacher = new Person('d1234', 'Cataldo', 'Basile', 'teacher', 'cataldo@basile', '1234');
+      return PersonDao.createPerson(testTeacher);
     });
   });
 
   describe('#Delete a student', function () {
     it('Deletes a student', function () {
-      return StudentDao.deleteStudentById('s1234');
-    });
-  });
-
-});
-
-describe('Test teachers', function () {
-
-  describe('#Create a teacher', function () {
-    it('Creates a new teacher', function () {
-      let testTeacher = new Teacher('d1234', 'Basile', 'Cataldo', 'basile@cataldo', '1234');
-      return TeacherDao.createTeacher(testTeacher);
+      return PersonDao.deletePersonById('s1234');
     });
   });
 
   describe('#Delete a teacher', function () {
     it('Deletes a teacher', function () {
-      return TeacherDao.deleteTeacherById('d1234');
+      return PersonDao.deletePersonById('d1234');
     });
   });
 
@@ -207,7 +201,7 @@ describe('Test courses', function () {
 
   describe('#Create a course', function () {
     it('Creates a new course', function () {
-      let testCourse = new Course('01ABC', 'Softeng II');
+      let testCourse = new Course('01ABC', 'd1234', 'Softeng II');
       return CourseDao.createCourse(testCourse);
     });
   });

@@ -1,18 +1,18 @@
 'use strict';
 
 const db = require('./db');
-const course = require('./course');
+const Course = require('./course');
 
 function createCourse(row){
-    return new Course(row.courseId, row.name);
+    return new Course(row.courseId, row.teacherId, row.name);
 }
 
 exports.createCourse = function(course) {
 	return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO COURSE(courseId, name) VALUES(?, ?)';
+        const sql = 'INSERT INTO COURSE(courseId, teacherId, name) VALUES(?, ?, ?)';
         let params = [];
-        console.log("new Course: ", course);
-        params.push(course.courseId, course.name);
+        console.log("New course: ", course);
+        params.push(course.courseId, course.teacherId, course.name);
 
         if (course) 
             db.run(sql, params, function(err) {
@@ -32,8 +32,8 @@ exports.deleteCourseById = function(courseId){
         db.all(sql, [courseId], (err, row) => {
             if(err)
                 reject(err);
-            else(row)
-               resolve();
+            else
+               resolve(row);
         });
     });
 }
@@ -41,7 +41,7 @@ exports.deleteCourseById = function(courseId){
 exports.getCourseByID = function(courseId){
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM COURSE WHERE courseId = ?";
-        db.all(sql, [studentId], (err, row) => {
+        db.all(sql, [courseId], (err, row) => {
             if(err)
                 reject(err);
             else{
