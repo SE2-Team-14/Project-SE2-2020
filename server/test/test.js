@@ -15,9 +15,11 @@ const assert = require('assert');
 const Person = require('../person');
 const Course = require('../course');
 const Lecture = require('../lecture');
+const Enrollment = require('../enrollment');
 const PersonDao = require('../person_dao');
 const CourseDao = require('../course_dao');
 const LectureDao = require('../lecture_dao');
+const EnrollmentDao = require('../enrollment_dao');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -216,7 +218,6 @@ describe('Test courses', function () {
 
 });
 
-
 describe('Test lecture', function () {
 
   describe('#Create a lecture', function () {
@@ -227,10 +228,16 @@ describe('Test lecture', function () {
     });
   });
 
-  /*describe('#Delete a course', function () {
-    it('Deletes a course', function () {
-      return CourseDao.deleteCourseById('01ABC');
+});
+
+describe('Test enrollments', function () {
+
+  describe('#Create an enrollment', function () {
+    it('Creates a new enrollment', function () {
+      //For now i assume that we consider things that are not in the db
+      let testEnrollment = new Enrollment('C123', 's123');
+      return EnrollmentDao.addEnrollment(testEnrollment);
     });
-  });*/
+  });
 
 });
