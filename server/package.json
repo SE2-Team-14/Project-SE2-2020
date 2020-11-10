@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Office queue web server",
+  "description": "PULSeBS web server",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
