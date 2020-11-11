@@ -1,4 +1,6 @@
+import Lecture from './lecture';
 const baseURL = "http://localhost:3001/api";
+
 
 //-----------------------AUTHENTICATION---------------------------
 
@@ -38,8 +40,19 @@ async function login(user) {
     });
 }
 
+//API for book a seat
+async function getLecturesList(studentId) {
+    const url = base + '/home-student';
+    const response = await fetch(`${url}/${studentId}/bookable-lectures`);
+    const lecturesJson = await response.json();
 
+    if(response.ok) {
+        return lecturesJson.map((l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
+    }
+    const err = { status: response.status, errors: lecturesJson.errors};
+    throw err;
+}
 
-const API = { isAuthenticated, login};
+const API = { isAuthenticated, login, getLecturesList};
 
 export default API;

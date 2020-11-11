@@ -6,7 +6,7 @@ const jsonwebtoken = require("jsonwebtoken");
 const morgan = require('morgan'); // logging middleware
 const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
-
+const lectureDao = require('./lecture_dao');
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
@@ -54,6 +54,15 @@ app.post('/api/login', (req, res) => {
       );
   }
 })
+
+//Network part for book a seat
+app.get('/api/home-student/:studentId/bookable-lectures', (req, res) => {
+  lectureDao.getLecturesList(req.params.studentId)
+  .then((lectures) => {
+    res.json(lectures);
+  })
+  .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+});
 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
