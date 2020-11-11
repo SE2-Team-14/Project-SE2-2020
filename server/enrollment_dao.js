@@ -53,7 +53,6 @@ exports.getEnrolledStudents = function(courseId){
     });
 }
 
-
 exports.getCourses = function(studentId){
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM ENROLLMENT WHERE studentId = ?";
