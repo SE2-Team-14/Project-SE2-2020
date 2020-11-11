@@ -7,7 +7,7 @@ const Person = require('./person_dao');
 
 exports.addEnrollment = function(enrollment) {
 	return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO ENROLLMENT(studentId, courseId) VALUES(?, ?)';
+        const sql = 'INSERT INTO ENROLLMENT(courseId, studentId) VALUES(?, ?)';
         let params = [];
         console.log("New enrollment: ", enrollment);
         params.push(enrollment.courseId, enrollment.studentId);
@@ -52,7 +52,6 @@ exports.getEnrolledStudents = function(courseId){
         });
     });
 }
-
 
 exports.getCourses = function(studentId){
     return new Promise((resolve, reject) => {

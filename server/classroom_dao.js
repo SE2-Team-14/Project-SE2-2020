@@ -52,3 +52,19 @@ exports.getClassroomByName = function(name){
         });
     });
 }
+
+exports.getMaxNumberOfSeats = function(classromId){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT maxNumberOfSeats FROM CLASSROOM WHERE classroomId = ?";
+        db.all(sql, [classromId], (err, row) => {
+            if(err)
+                reject(err);
+            else{
+                if(row)
+                    resolve(createClassroom(row));
+                else 
+                    resolve(undefined);
+            }
+        });
+    });
+}

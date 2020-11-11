@@ -1,5 +1,6 @@
 class Lecture {
-    constructor (courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) {
+    constructor (lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) {
+        this.lectureId = lectureId;
         this.courseId = courseId;
         this.teacherId = teacherId;
         this.date = date;

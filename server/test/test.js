@@ -225,7 +225,7 @@ describe('Test lecture', function () {
   describe('#Create a lecture', function () {
     it('Creates a new lecture', function () {
       //For now i assume that we consider things that are not in the db
-      let testLecture = new Lecture('C123', 'd123', 'today', '1.00', '2.30', 'true', 1, 25);
+      let testLecture = new Lecture('', 'C123', 'd123', 'today', '1.00', '2.30', 'true', 1, 25);
       return LectureDao.addLecture(testLecture);
     });
   });
@@ -239,6 +239,13 @@ describe('Test enrollments', function () {
       //For now i assume that we consider things that are not in the db
       let testEnrollment = new Enrollment('C123', 's123');
       return EnrollmentDao.addEnrollment(testEnrollment);
+    });
+  });
+
+
+  describe('#Deletes an enrollment', function () {
+    it('Deletes an enrollment', function () {
+      return EnrollmentDao.deleteEnrollment('C123', 's123');
     });
   });
 
@@ -256,7 +263,8 @@ describe('Test classroom', function () {
   describe('#Delete a classroom', function () {
     it('Deletes a classroom', function () {
       let classroomId = ClassroomDao.getClassroomByName('7i');
-      return ClassroomDao.deleteClassroom(classroomId);
+      //return ClassroomDao.deleteClassroom(classroomId);
+      console.log(classroomId);
     });
   });
 
