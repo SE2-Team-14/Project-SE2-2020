@@ -1,12 +1,9 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../auth/AuthContext'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-import API from '../api/API';
+
 
 
 
