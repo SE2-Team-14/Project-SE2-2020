@@ -16,10 +16,12 @@ const Person = require('../person');
 const Course = require('../course');
 const Lecture = require('../lecture');
 const Enrollment = require('../enrollment');
+const Classroom = require('../classroom');
 const PersonDao = require('../person_dao');
 const CourseDao = require('../course_dao');
 const LectureDao = require('../lecture_dao');
 const EnrollmentDao = require('../enrollment_dao');
+const ClassroomDao = require('../classroom_dao');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -223,7 +225,7 @@ describe('Test lecture', function () {
   describe('#Create a lecture', function () {
     it('Creates a new lecture', function () {
       //For now i assume that we consider things that are not in the db
-      let testLecture = new Lecture('C123', 'd123', 'today', '1.00', '2.30', 'true', '7i');
+      let testLecture = new Lecture('C123', 'd123', 'today', '1.00', '2.30', 'true', 1, 25);
       return LectureDao.addLecture(testLecture);
     });
   });
@@ -237,6 +239,24 @@ describe('Test enrollments', function () {
       //For now i assume that we consider things that are not in the db
       let testEnrollment = new Enrollment('C123', 's123');
       return EnrollmentDao.addEnrollment(testEnrollment);
+    });
+  });
+
+});
+
+describe('Test classroom', function () {
+
+  describe('#Create a classroom', function () {
+    it('Creates a new classroom', function () {
+      let testClassroom = new Classroom('7i', 30);
+      return ClassroomDao.addClassroom(testClassroom);
+    });
+  });
+
+  describe('#Delete a classroom', function () {
+    it('Deletes a classroom', function () {
+      let classroomId = ClassroomDao.getClassroomByName('7i');
+      return ClassroomDao.deleteClassroom(classroomId);
     });
   });
 
