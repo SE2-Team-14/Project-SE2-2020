@@ -12,7 +12,7 @@ import Alert from "react-bootstrap/Alert";
 
 import Header from './Components/Header';
 import Login from './Components/Login';
-import StudentHomePage from './Components/StundentHomePage';
+import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
 import LectureList from './Components/LectureListView';
 
