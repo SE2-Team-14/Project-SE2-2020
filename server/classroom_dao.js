@@ -3,16 +3,12 @@
 const db = require('./db');
 const Classroom = require('./classroom');
 
-function createClassroom(row){
-    return new Classroom(row.classroomId, row.name, row.maxNumberOfSeats);
-}
-
 exports.addClassroom = function(classroom) {
 	return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO CLASSROOM(name, maxNumberOfSeats) VALUES(?, ?)';
+        const sql = 'INSERT INTO CLASSROOM(classroom, maxNumberOfSeats) VALUES(?, ?)';
         let params = [];
         console.log("New classroom: ", classroom);
-        params.push(classroom.name, classroom.maxNumberOfSeats);
+        params.push(classroom.classroom, classroom.maxNumberOfSeats);
 
         if (classroom) 
             db.run(sql, params, function(err) {
@@ -25,10 +21,10 @@ exports.addClassroom = function(classroom) {
     });
 }
 
-exports.deleteClassroom = function(classroomId){
+exports.deleteClassroom = function(classroom){
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM CLASSROOM WHERE classroomId = ?";
-        db.all(sql, [classroomId], (err, row) => {
+        const sql = "DELETE FROM CLASSROOM WHERE classroom = ?";
+        db.all(sql, [classroom], (err, row) => {
             if(err)
                 reject(err);
             else
@@ -37,31 +33,15 @@ exports.deleteClassroom = function(classroomId){
     });
 }
 
-exports.getClassroomByName = function(name){
+exports.getMaxNumberOfSeats = function(classroom){
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM CLASSROOM WHERE name = ?";
-        db.all(sql, [name], (err, row) => {
+        const sql = "SELECT maxNumberOfSeats FROM CLASSROOM WHERE classroom = ?";
+        db.get(sql, [classroom], (err, row) => {
             if(err)
                 reject(err);
             else{
                 if(row)
-                    resolve(createClassroom(row));
-                else 
-                    resolve(undefined);
-            }
-        });
-    });
-}
-
-exports.getMaxNumberOfSeats = function(classromId){
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT maxNumberOfSeats FROM CLASSROOM WHERE classroomId = ?";
-        db.all(sql, [classromId], (err, row) => {
-            if(err)
-                reject(err);
-            else{
-                if(row)
-                    resolve(createClassroom(row));
+                    resolve(row);
                 else 
                     resolve(undefined);
             }

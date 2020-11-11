@@ -40,14 +40,16 @@ exports.deletePersonById = function(id){
 exports.getPersonByID = function(id){
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM PERSON WHERE id = ?";
-        db.all(sql, [id], (err, row) => {
-            if(err)
+        db.get(sql, [id], (err, row) => {
+            if(err){
                 reject(err);
-            else{
-                if(row)
+            } else {
+                if(row){
                     resolve(createPerson(row));
-                else 
+                
+                } else { 
                     resolve(undefined);
+                }
             }
         });
     });

@@ -175,7 +175,7 @@ describe('Test officer', function () {
 
 describe('Test university members', function () {
 
-  describe('#Create a student', function () {
+  /*describe('#Create a student', function () {
     it('Creates a new student', function () {
       let testStudent = new Person('s1234', 'Andrea', 'Rossi', 'student', 'andrea@rossi', '1234');
       return PersonDao.createPerson(testStudent);
@@ -187,9 +187,16 @@ describe('Test university members', function () {
       let testTeacher = new Person('d1234', 'Cataldo', 'Basile', 'teacher', 'cataldo@basile', '1234');
       return PersonDao.createPerson(testTeacher);
     });
+  });*/
+
+  describe('dsbf', function () {
+    it('sdfdxnd', function () {
+      let people = PersonDao.getPersonByID('d1234');
+      console.log(people);
+    });
   });
 
-  describe('#Delete a student', function () {
+  /*describe('#Delete a student', function () {
     it('Deletes a student', function () {
       return PersonDao.deletePersonById('s1234');
     });
@@ -199,27 +206,35 @@ describe('Test university members', function () {
     it('Deletes a teacher', function () {
       return PersonDao.deletePersonById('d1234');
     });
-  });
+  });*/
 
 });
 
 describe('Test courses', function () {
 
-  describe('#Create a course', function () {
+  /*describe('#Create a course', function () {
     it('Creates a new course', function () {
       let testCourse = new Course('01ABC', 'd1234', 'Softeng II');
       return CourseDao.createCourse(testCourse);
     });
+  });*/
+
+  describe('#Gets a course name', function () {
+    it('Test course name', function () {
+      let courseName = CourseDao.getCourseName('01ABC');
+      console.log(courseName);
+      //assert.strictEqual(courseName, 'Softeng II');
+    });
   });
 
-  describe('#Delete a course', function () {
+ /* describe('#Delete a course', function () {
     it('Deletes a course', function () {
       return CourseDao.deleteCourseById('01ABC');
     });
   });
-
+*/
 });
-
+/*
 describe('Test lecture', function () {
 
   describe('#Create a lecture', function () {
@@ -262,10 +277,8 @@ describe('Test classroom', function () {
 
   describe('#Delete a classroom', function () {
     it('Deletes a classroom', function () {
-      let classroomId = ClassroomDao.getClassroomByName('7i');
-      //return ClassroomDao.deleteClassroom(classroomId);
-      console.log(classroomId);
+     return ClassroomDao.deleteClassroom('7i');
     });
   });
 
-});
+});*/

@@ -53,3 +53,21 @@ exports.getCourseByID = function(courseId){
         });
     });
 }
+
+exports.getCourseName = function(courseId){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM COURSE WHERE courseId = ?";
+        db.all(sql, [courseId], (err, rows) => {
+            if(err)
+                reject(err);
+            else{
+                if(rows.length>0){
+                    let _course = rows.map((row => createCourse(row)))[0];
+                    resolve(_course);
+                }
+                else 
+                    resolve(undefined);
+            }
+        });
+    });
+}
