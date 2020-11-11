@@ -46,13 +46,37 @@ async function getLecturesList(studentId) {
     const response = await fetch(`${url}/${studentId}/bookable-lectures`);
     const lecturesJson = await response.json();
 
-    if(response.ok) {
+    if (response.ok) {
         return lecturesJson.map((l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
     }
-    const err = { status: response.status, errors: lecturesJson.errors};
+    const err = { status: response.status, errors: lecturesJson.errors };
     throw err;
 }
 
-const API = { isAuthenticated, login, getLecturesList};
+async function getCourses(teacher) {
+    let url = "/courses?teacher=" + teacher;
+    const response = await fetch(baseURL + url);
+    const coursesJson = await response.json();
+    if (response.ok) {
+        return coursesJson;
+    } else {
+        let err = { status: response.status, errObj: coursesJson };
+        throw err;
+    }
+}
+
+async function getEnrollments(course) {
+    let url = "/enrollment?course=" + course;
+    const response = await fetch(baseURL + url);
+    const enrollJson = await response.json();
+    if (response.ok) {
+        return enrollJson;
+    } else {
+        let err = { status: response.status, errObj: enrollJson };
+        throw err;
+    }
+}
+
+const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, };
 
 export default API;
