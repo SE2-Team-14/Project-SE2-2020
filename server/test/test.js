@@ -242,6 +242,13 @@ describe('Test enrollments', function () {
     });
   });
 
+
+  describe('#Deletes an enrollment', function () {
+    it('Deletes an enrollment', function () {
+      return EnrollmentDao.deleteEnrollment('C123', 's123');
+    });
+  });
+
 });
 
 describe('Test classroom', function () {
