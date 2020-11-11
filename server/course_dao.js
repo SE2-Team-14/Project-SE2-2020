@@ -3,51 +3,51 @@
 const db = require('./db');
 const Course = require('./course');
 
-function createCourse(row){
+function createCourse(row) {
     return new Course(row.courseId, row.teacherId, row.name);
 }
 
-exports.createCourse = function(course) {
-	return new Promise((resolve, reject) => {
+exports.createCourse = function (course) {
+    return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO COURSE(courseId, teacherId, name) VALUES(?, ?, ?)';
         let params = [];
         console.log("New course: ", course);
         params.push(course.courseId, course.teacherId, course.name);
 
-        if (course) 
-            db.run(sql, params, function(err) {
+        if (course)
+            db.run(sql, params, function (err) {
                 if (err) {
                     reject(err);
                 }
                 else {
                     resolve(this.lastID);
                 }
-        });
+            });
     });
 }
 
-exports.deleteCourseById = function(courseId){
+exports.deleteCourseById = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM COURSE WHERE courseId = ?";
         db.all(sql, [courseId], (err, row) => {
-            if(err)
+            if (err)
                 reject(err);
             else
-               resolve(row);
+                resolve(row);
         });
     });
 }
 
-exports.getCourseByID = function(courseId){
+exports.getCourseByID = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM COURSE WHERE courseId = ?";
         db.all(sql, [courseId], (err, row) => {
-            if(err)
+            if (err)
                 reject(err);
-            else{
-                if(row)
+            else {
+                if (row)
                     resolve(createCourse(row));
-                else 
+                else
                     resolve(undefined);
             }
         });
@@ -71,3 +71,21 @@ exports.getCourseName = function(courseId){
         });
     });
 }
+
+exports.getCoursesOfTeacher = function (teacherName) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COURSE.name FROM COURSE, PERSON WHERE COURSE.teacherId = PERSON.id AND PERSON.email = ?";
+        db.all(sql, [teacherName], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(row);
+                } else {
+                    resolve(undefined);
+                }
+            }
+        })
+    })
+}
+

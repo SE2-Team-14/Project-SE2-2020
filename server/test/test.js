@@ -26,6 +26,7 @@ const ClassroomDao = require('../classroom_dao');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const Server = require('../server');
+const { resolve } = require('path');
 
 chai.should();
 chai.use(chaiHttp);
@@ -175,7 +176,7 @@ describe('Test officer', function () {
 
 describe('Test university members', function () {
 
-  /*describe('#Create a student', function () {
+  describe('#Create a student', function () {
     it('Creates a new student', function () {
       let testStudent = new Person('s1234', 'Andrea', 'Rossi', 'student', 'andrea@rossi', '1234');
       return PersonDao.createPerson(testStudent);
@@ -187,16 +188,15 @@ describe('Test university members', function () {
       let testTeacher = new Person('d1234', 'Cataldo', 'Basile', 'teacher', 'cataldo@basile', '1234');
       return PersonDao.createPerson(testTeacher);
     });
-  });*/
+  });
 
-  describe('dsbf', function () {
-    it('sdfdxnd', function () {
-      let people = PersonDao.getPersonByID('d1234');
-      console.log(people);
+  describe('Get person name', function () {
+    it('Get name', function () {
+      PersonDao.getPersonByID('d1234').then(person => assert.strictEqual('Cataldo', person.name));
     });
   });
 
-  /*describe('#Delete a student', function () {
+  describe('#Delete a student', function () {
     it('Deletes a student', function () {
       return PersonDao.deletePersonById('s1234');
     });
@@ -206,41 +206,39 @@ describe('Test university members', function () {
     it('Deletes a teacher', function () {
       return PersonDao.deletePersonById('d1234');
     });
-  });*/
+  });
 
 });
 
 describe('Test courses', function () {
 
-  /*describe('#Create a course', function () {
+  describe('#Create a course', function () {
     it('Creates a new course', function () {
       let testCourse = new Course('01ABC', 'd1234', 'Softeng II');
       return CourseDao.createCourse(testCourse);
     });
-  });*/
+  });
 
   describe('#Gets a course name', function () {
     it('Test course name', function () {
-      let courseName = CourseDao.getCourseName('01ABC');
-      console.log(courseName);
-      //assert.strictEqual(courseName, 'Softeng II');
+      CourseDao.getCourseName('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
     });
   });
 
- /* describe('#Delete a course', function () {
+  describe('#Delete a course', function () {
     it('Deletes a course', function () {
       return CourseDao.deleteCourseById('01ABC');
     });
   });
-*/
+
 });
-/*
+
 describe('Test lecture', function () {
 
   describe('#Create a lecture', function () {
     it('Creates a new lecture', function () {
       //For now i assume that we consider things that are not in the db
-      let testLecture = new Lecture('', 'C123', 'd123', 'today', '1.00', '2.30', 'true', 1, 25);
+      let testLecture = new Lecture(null, 'C123', 'd123', 'today', '1.00', '2.30', 'true', 1, 25);
       return LectureDao.addLecture(testLecture);
     });
   });
@@ -281,4 +279,4 @@ describe('Test classroom', function () {
     });
   });
 
-});*/
+});

@@ -36,7 +36,7 @@ exports.deleteClassroom = function(classroom){
 exports.getMaxNumberOfSeats = function(classroom){
     return new Promise((resolve, reject) => {
         const sql = "SELECT maxNumberOfSeats FROM CLASSROOM WHERE classroom = ?";
-        db.get(sql, [classroom], (err, row) => {
+        db.all(sql, [classroom], (err, row) => {
             if(err)
                 reject(err);
             else{

@@ -15,6 +15,7 @@ import Login from './Components/Login';
 import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
 import LectureList from './Components/LectureListView';
+import BookedStudentsList from "./Components/BookedStudentsList";
 
 
 import { AuthContext } from './auth/AuthContext'
@@ -60,7 +61,7 @@ class App extends React.Component {
 
   loginCallback = (user) => {
     console.log("Logged User : ", user);
-    this.setState({authUser:user})
+    this.setState({ authUser: user })
   }
 
   //------------------------RENDERING----------------------------
@@ -91,20 +92,20 @@ class App extends React.Component {
               <TeacherHomePage></TeacherHomePage>
               <Link to="/login">Login</Link>
             </Route>
-            
+
             <Route exact path="/login">
               <Row className="vheight-100">
                 <Col sm={4}></Col>
                 <Col sm={4} className="below-nav">
                   <Alert variant="success"> Login Page </Alert>
-                  <Login loginCallback={this.loginCallback}/>
+                  <Login loginCallback={this.loginCallback} />
                 </Col>
               </Row>
             </Route>
-
-            <Route exact path="/student-home/bookable-lectures">
-              <LectureList></LectureList>
-            </Route>
+            <Route exact path='/student-home/:studentId/bookable-lectures' render={(props) => {
+              let studentId = props.match.params.studentId;
+              return (<LectureList studentId={studentId} />);
+            }} />
             <Route>
               <Redirect to='/student-home' />
             </Route>

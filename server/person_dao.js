@@ -46,7 +46,6 @@ exports.getPersonByID = function(id){
             } else {
                 if(row){
                     resolve(createPerson(row));
-                
                 } else { 
                     resolve(undefined);
                 }

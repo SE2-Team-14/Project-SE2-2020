@@ -6,7 +6,7 @@ const jsonwebtoken = require("jsonwebtoken");
 const morgan = require('morgan'); // logging middleware
 const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
-
+const lectureDao = require('./lecture_dao');
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
@@ -28,7 +28,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-module.exports =  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
+module.exports = app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
 
 
 app.post('/api/login', (req, res) => {
@@ -53,6 +53,39 @@ app.post('/api/login', (req, res) => {
         }
       );
   }
+})
+
+//Network part for book a seat
+app.get('/api/home-student/:studentId/bookable-lectures', (req, res) => {
+  lectureDao.getLecturesList(req.params.studentId)
+    .then((lectures) => {
+      res.json(lectures);
+    })
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
+//returns all courses taught by a teacher
+app.get("/api/courses", (req, res) => {
+  courseDao.getCoursesOfTeacher(req.query.teacher).then((courses) => {
+    res.json(courses);
+  })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ msg: "Error while getting courses of a teacher" }],
+      });
+    });
+})
+
+//returns all students booked for a specific course
+app.get("/api/enrollment", (req, res) => {
+  enrollmentDao.getEnrolledStudentsByCourseName(req.query.course).then((students) => {
+    res.json(students);
+  })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ msg: "Error while getting enrolled students" }],
+      });
+    });
 })
 
 //----------------------COOKIE--------------------------
