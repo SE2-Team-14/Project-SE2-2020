@@ -13,9 +13,9 @@ import API from './api/API';
 
 import Header from './Components/Header';
 import Login from './Components/Login';
-import StudentHomePage from './Components/StundentHomePage'
-import TeacherHomePage from './Components/TeacherHomePage'
-
+import StudentHomePage from './Components/StundentHomePage';
+import TeacherHomePage from './Components/TeacherHomePage';
+import LectureList from './Components/LectursListView';
 
 
 import { AuthContext } from './auth/AuthContext'
@@ -81,19 +81,19 @@ class App extends React.Component {
         <Container fluid>
           <Switch>
 
-            <Route path="/student-home">
+            <Route exact path="/student-home">
               <Alert variant="success">Student Starting Page </Alert>
               <StudentHomePage></StudentHomePage>
               <Link to="/login">Login</Link>
             </Route>
 
-            <Route path="/teacher-home">
+            <Route exact path="/teacher-home">
               <Alert variant="success">Student Starting Page </Alert>
               <TeacherHomePage></TeacherHomePage>
               <Link to="/login">Login</Link>
             </Route>
             
-            <Route path="/login">
+            <Route exact path="/login">
               <Row className="vheight-100">
                 <Col sm={4}></Col>
                 <Col sm={4} className="below-nav">
@@ -103,7 +103,9 @@ class App extends React.Component {
               </Row>
             </Route>
 
-      
+            <Route exact path="/student-home/bookable-lectures">
+              <LectureList></LectureList>
+            </Route>
             <Route>
               <Redirect to='/student-home' />
             </Route>

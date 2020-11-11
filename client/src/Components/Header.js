@@ -11,7 +11,7 @@ const Header = (props) => {
     <AuthContext.Consumer>
       {(context) => (
 
-        <Navbar bg="info" variant="dark" expand="sm" fixed="top">
+        <Navbar bg="info" variant="dark" expand="md" className='col-12'>
 
         <Navbar.Brand>
           PULSeBS
@@ -19,9 +19,8 @@ const Header = (props) => {
 
           <Nav className="mr-auto">
             <Nav.Link as={NavLink} to="/example">Example Link</Nav.Link>
-            
+            <Nav.Link as={NavLink} to="/student-home/bookable-lectures">Bookable Lectures</Nav.Link>
           </Nav>
-
           <Nav className="ml-md-auto">
             {context.authUser &&
               <>
