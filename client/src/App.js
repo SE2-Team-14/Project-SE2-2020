@@ -9,13 +9,12 @@ import { withRouter } from 'react-router-dom';
 
 import Alert from "react-bootstrap/Alert";
 
-import API from './api/API';
 
 import Header from './Components/Header';
 import Login from './Components/Login';
 import StudentHomePage from './Components/StundentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
-import LectureList from './Components/LectursListView';
+import LectureList from './Components/LectureListView';
 
 
 import { AuthContext } from './auth/AuthContext'
