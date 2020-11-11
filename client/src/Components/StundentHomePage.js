@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../auth/AuthContext'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 import API from '../api/API';
 
 
@@ -34,7 +34,7 @@ class StudentHomePage extends React.Component {
         {(context) => (
           <>
             {/*(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>  TODO: quando funzionera il login*/}
-            <Container fluid>
+            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
             <h1> Student Home Page: (insert here Student id)</h1>
             <Row>
                 <Col>
@@ -43,7 +43,7 @@ class StudentHomePage extends React.Component {
                 }
                 </Col>
             </Row>
-            </Container>
+            </Jumbotron>
           </>
         )}
       </AuthContext.Consumer>
