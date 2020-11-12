@@ -17,11 +17,13 @@ const Course = require('../course');
 const Lecture = require('../lecture');
 const Enrollment = require('../enrollment');
 const Classroom = require('../classroom');
+const Booking = require('../booking');
 const PersonDao = require('../person_dao');
 const CourseDao = require('../course_dao');
 const LectureDao = require('../lecture_dao');
 const EnrollmentDao = require('../enrollment_dao');
 const ClassroomDao = require('../classroom_dao');
+const BookingDao = require('../booking_dao');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -276,6 +278,23 @@ describe('Test classroom', function () {
   describe('#Delete a classroom', function () {
     it('Deletes a classroom', function () {
      return ClassroomDao.deleteClassroom('7i');
+    });
+  });
+
+});
+
+describe('Test bookings', function () {
+
+  describe('#Add a booking', function () {
+    it('Creates a new booking', function () {
+      let testBooking = new Booking('S1223', 1, 'today', '12.00');
+      return BookingDao.addBoocking(testBooking);
+    });
+  });
+
+  describe('#Delete booking', function () {
+    it('Deletes a booking', function () {
+     return BookingDao.deleteBooking('S1223', 1);
     });
   });
 
