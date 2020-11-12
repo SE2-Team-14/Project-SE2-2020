@@ -62,12 +62,13 @@ exports.getPersonByEmail = function(email) {
 					reject(err);
 				else{
 					if(rows.length>0){
-                        let _person = rows.map((row => createPerson(row)))[0];
+                        let _person = rows.map((person => createPerson(person)))[0];
                         console.log(_person);
 						resolve(_person);
-					} else
+					} else{
 						resolve(undefined);
-				}
+                    }
+                }
 		});
 	});
 }

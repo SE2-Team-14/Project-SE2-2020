@@ -62,7 +62,7 @@ exports.getCourseName = function(courseId){
                 reject(err);
             else{
                 if(rows.length>0){
-                    let _course = rows.map((row => createCourse(row)))[0];
+                    let _course = rows.map((course => createCourse(course)))[0];
                     resolve(_course);
                 }
                 else 
