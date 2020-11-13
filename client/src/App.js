@@ -102,7 +102,7 @@ class App extends React.Component {
                 </Col>
               </Row>
             </Route>
-            <Route exact path='/student-home/:studentId/bookable-lectures' render={(props) => {
+            <Route exact path='/student-home/bookable-lectures' render={(props) => {
               let studentId = props.match.params.studentId;
               return (<LectureList studentId={studentId} />);
             }} />
