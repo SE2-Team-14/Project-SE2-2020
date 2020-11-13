@@ -7,6 +7,7 @@ const morgan = require('morgan'); // logging middleware
 const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
 const lectureDao = require('./lecture_dao');
+const personDao = require('./person_dao')
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
@@ -36,7 +37,7 @@ app.post('/api/login', (req, res) => {
   if (!officerAccount) {
     res.status(400).end();
   } else {
-    OfficerDao.getOfficerByEmail(officerAccount.email)
+    personDao.getPersonByEmail(officerAccount.email)
       .then((user) => {
         if (user === undefined || user.password != officerAccount.password) {
           res.status(200).json({ error_no: -1, error_info: "Email or password is wrong." })

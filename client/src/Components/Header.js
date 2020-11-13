@@ -24,7 +24,7 @@ const Header = (props) => {
           <Nav className="ml-md-auto">
             {context.authUser &&
               <>
-                <Navbar.Brand>Possible Username</Navbar.Brand>
+                <Navbar.Brand>{context.authUser.email}</Navbar.Brand>
                 <Nav.Link onClick={() => { props.logout() }}>Logout</Nav.Link>
               </>}
             {!context.authUser && <Nav.Link as={NavLink} to="/login">Login</Nav.Link>}
