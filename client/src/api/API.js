@@ -42,7 +42,7 @@ async function login(user) {
 
 //API for book a seat
 async function getLecturesList(studentId) {
-    const url = base + '/home-student';
+    const url = baseURL + '/home-student';
     const response = await fetch(`${url}/${studentId}/bookable-lectures`);
     const lecturesJson = await response.json();
 
