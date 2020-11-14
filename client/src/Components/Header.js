@@ -21,10 +21,8 @@ const Header = (props) => {
 
           <Nav className="mr-auto">
             <Nav.Link as={NavLink} to="/example">Example Link</Nav.Link>
-            <Nav.Link as={NavLink} to="/student-home/bookable-lectures">Bookable Lectures</Nav.Link>
-          </Nav>
-          <Nav className="mr-auto">
-            <Button onClick={() => console.log(context)}>Ex</Button>
+            {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to="/student-home/bookable-lectures">Bookable Lectures</Nav.Link>}
+            {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/booked-lectures`} >Booked Lectures</Nav.Link>}
           </Nav>
           <Nav className="ml-md-auto">
             {context.authUser &&
@@ -42,8 +40,9 @@ const Header = (props) => {
 
         </Navbar>
 
-      )}
-    </AuthContext.Consumer>
+      )
+      }
+    </AuthContext.Consumer >
   );
 }
 

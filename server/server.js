@@ -47,7 +47,7 @@ app.post('/api/login', (req, res) => {
           //AUTHENTICATION SUCCESS
           //const token = jsonwebtoken.sign({ user: user.officerID }, jwtSecret, {expiresIn: expireTime});
           //res.cookie('token', token, { httpOnly: true, sameSite: true, maxAge: 1000 * expireTime });
-          res.status(200).json({ user: { name: user.name, email: user.email, isManager: user.isManager }, error_no: 0, error_info: "Login successfully." });
+          res.status(200).json({ user: { name: user.name, email: user.email, role: user.role }, error_no: 0, error_info: "Login successfully." });
         }
       }).catch(
         // Delay response when wrong user/pass is sent to avoid fast guessing attempts

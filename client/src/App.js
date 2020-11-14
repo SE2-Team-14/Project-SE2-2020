@@ -106,6 +106,12 @@ class App extends React.Component {
               let studentId = props.match.params.studentId;
               return (<LectureList studentId={studentId} />);
             }} />
+            <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
+              let email = props.match.params.email;
+              return (<BookedStudentsList email={email}></BookedStudentsList>)
+            }}>
+
+            </Route>
             <Route>
               <Redirect to='/student-home' />
             </Route>

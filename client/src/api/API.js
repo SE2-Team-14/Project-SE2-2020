@@ -69,7 +69,6 @@ async function getEnrollments(course) {
     let url = "/enrollment?course=" + course;
     const response = await fetch(baseURL + url);
     const enrollJson = await response.json();
-    console.log(enrollJson);
     if (response.ok) {
         return enrollJson;
     } else {

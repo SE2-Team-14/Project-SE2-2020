@@ -26,7 +26,7 @@ class BookingTable extends React.Component {
                 <td> {enroll.date}</td>
                 <td> {enroll.startingTime}</td>
                 <td> {enroll.endingTime}</td>
-                <td> {enroll.classroom}</td>
+                <td> {enroll.classroomId}</td>
 
             </tr>
         )
