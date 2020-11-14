@@ -43,7 +43,7 @@ exports.getEnrolledStudents = function (courseId) {
                 reject(err);
             else {
                 if (row > 0) {
-                    let _students = rows.map((row => Person.createPerson(row)))[0];
+                    let _students = rows.map((stud => Person.createPerson(stud)))[0];
                     resolve(_students);
                 }
                 else
@@ -61,7 +61,7 @@ exports.getCourses = function (studentId) {
                 reject(err);
             else {
                 if (row > 0) {
-                    let _courses = rows.map((row => Course.createCourse(row)))[0];
+                    let _courses = rows.map((course => Course.createCourse(course)))[0];
                     resolve(_courses);
                 }
                 else

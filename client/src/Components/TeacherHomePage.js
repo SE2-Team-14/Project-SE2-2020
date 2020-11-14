@@ -3,9 +3,7 @@ import { AuthContext } from '../auth/AuthContext'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import Button from "react-bootstrap/Button";
 
-import BookedStudentsList from "./BookedStudentsList.js";
 
 
 class TeacherHomePage extends React.Component {
