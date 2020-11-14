@@ -2,6 +2,7 @@ import React from 'react';
 
 import API from '../api/API';
 
+
 import BookingTable from "./BookingTable"
 
 class BookedStudentsList extends React.Component {
@@ -15,9 +16,8 @@ class BookedStudentsList extends React.Component {
     }
 
     componentDidMount() {
-        let students = [];
         let tables = [];
-        API.getCourses("d123@polito.it").then((c) => {
+        API.getCourses(this.props.email).then((c) => {
             let courses = [];
             c.map((course) => courses.push(course.name));
             this.setState({ courses: courses });

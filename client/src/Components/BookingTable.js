@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from "react-bootstrap/Table";
+import Jumbotron from "react-bootstrap/Jumbotron";
 
 import API from '../api/API';
 
@@ -34,21 +35,23 @@ class BookingTable extends React.Component {
     render() {
         return (
             <>
-                {this.state.enrolls.length === 0 && <h4> There are no bookings yet for the course {this.props.course}</h4>}
-                {this.state.enrolls.length > 0 && <h4> Bookings for the course {this.props.course}</h4>}
-                {this.state.enrolls.length > 0 && <Table bordered striped={true} size="sm">
-                    <thead>
-                        <tr>
-                            <th> Student ID </th>
-                            <th> Lesson Date </th>
-                            <th> Starting Time </th>
-                            <th> Ending Time </th>
-                            <th> Classroom </th>
-                        </tr>
-                    </thead>
-                    <tbody>{this.state.enrolls.map((e) => this.createRow(e))}</tbody>
+                <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+                    {this.state.enrolls.length === 0 && <h4> There are no bookings yet for the course {this.props.course}</h4>}
+                    {this.state.enrolls.length > 0 && <h4> Bookings for the course {this.props.course}</h4>}
+                    {this.state.enrolls.length > 0 && <Table bordered striped={true} size="sm">
+                        <thead>
+                            <tr>
+                                <th> Student ID </th>
+                                <th> Lesson Date </th>
+                                <th> Starting Time </th>
+                                <th> Ending Time </th>
+                                <th> Classroom </th>
+                            </tr>
+                        </thead>
+                        <tbody>{this.state.enrolls.map((e) => this.createRow(e))}</tbody>
 
-                </Table>}
+                    </Table>}
+                </Jumbotron>
             </>
         )
     }

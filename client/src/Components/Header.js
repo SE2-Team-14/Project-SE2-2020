@@ -3,8 +3,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { AuthContext } from '../auth/AuthContext'
 import { NavLink } from 'react-router-dom';
+import Button from "react-bootstrap/Button";
 
 const Header = (props) => {
+
 
   return (
 
@@ -13,13 +15,16 @@ const Header = (props) => {
 
         <Navbar bg="info" variant="dark" expand="md" className='col-12'>
 
-        <Navbar.Brand>
-          PULSeBS
+          <Navbar.Brand>
+            PULSeBS
         </Navbar.Brand>
 
           <Nav className="mr-auto">
             <Nav.Link as={NavLink} to="/example">Example Link</Nav.Link>
             <Nav.Link as={NavLink} to="/student-home/bookable-lectures">Bookable Lectures</Nav.Link>
+          </Nav>
+          <Nav className="mr-auto">
+            <Button onClick={() => console.log(context)}>Ex</Button>
           </Nav>
           <Nav className="ml-md-auto">
             {context.authUser &&

@@ -58,7 +58,7 @@ class Login extends React.Component {
 
   render() {
     if (this.state.submitted)
-      return <Redirect to='/home' />; // TODO: funzionera quando sarà attivo il login
+      return <Redirect to='/teacher-home' />; // TODO: funzionera quando sarà attivo il login
     return (
       <AuthContext.Consumer>
         {(context) => (

@@ -8,6 +8,8 @@ const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
 const lectureDao = require('./lecture_dao');
 const personDao = require('./person_dao')
+const courseDao = require("./course_dao");
+const enrollmentDao = require("./enrollment_dao");
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
@@ -80,6 +82,10 @@ app.get("/api/courses", (req, res) => {
 //returns all students booked for a specific course
 app.get("/api/enrollment", (req, res) => {
   enrollmentDao.getEnrolledStudentsByCourseName(req.query.course).then((students) => {
+    let empty = [];
+    if (students === undefined) {
+      res.json(empty)
+    }
     res.json(students);
   })
     .catch((err) => {
