@@ -252,7 +252,7 @@ describe('Test enrollments', function () {
   describe('#Create an enrollment', function () {
     it('Creates a new enrollment', function () {
       //For now i assume that we consider things that are not in the db
-      let testEnrollment = new Enrollment('C123', 's123');
+      let testEnrollment = new Enrollment('C123', 's123@email.it');
       return EnrollmentDao.addEnrollment(testEnrollment);
     });
   });
@@ -260,7 +260,7 @@ describe('Test enrollments', function () {
 
   describe('#Deletes an enrollment', function () {
     it('Deletes an enrollment', function () {
-      return EnrollmentDao.deleteEnrollment('C123', 's123');
+      return EnrollmentDao.deleteEnrollment('C123', 's123@email.it');
     });
   });
 

@@ -7,10 +7,10 @@ const Person = require('./person_dao');
 
 exports.addEnrollment = function (enrollment) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO ENROLLMENT(courseId, studentId) VALUES(?, ?)';
+        const sql = 'INSERT INTO ENROLLMENT(courseId, email) VALUES(?, ?)';
         let params = [];
         console.log("New enrollment: ", enrollment);
-        params.push(enrollment.courseId, enrollment.studentId);
+        params.push(enrollment.courseId, enrollment.email);
 
         if (enrollment)
             db.run(sql, params, function (err) {
@@ -23,10 +23,10 @@ exports.addEnrollment = function (enrollment) {
     });
 }
 
-exports.deleteEnrollment = function (courseId, studentId) {
+exports.deleteEnrollment = function (courseId, email) {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM ENROLLMENT WHERE courseId = ? AND studentId = ?";
-        db.all(sql, [courseId, studentId], (err, row) => {
+        const sql = "DELETE FROM ENROLLMENT WHERE courseId = ? AND email = ?";
+        db.all(sql, [courseId, email], (err, row) => {
             if (err)
                 reject(err);
             else
@@ -55,8 +55,8 @@ exports.getEnrolledStudents = function (courseId) {
 
 exports.getCourses = function (studentId) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM ENROLLMENT WHERE studentId = ?";
-        db.all(sql, [studentId], (err, row) => {
+        const sql = "SELECT * FROM ENROLLMENT WHERE email = ?";
+        db.all(sql, [email], (err, row) => {
             if (err)
                 reject(err);
             else {

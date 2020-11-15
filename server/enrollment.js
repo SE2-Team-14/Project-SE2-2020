@@ -1,7 +1,7 @@
 class Enrollment {
-    constructor (courseId, studentId) {
+    constructor (courseId, email) {
         this.courseId = courseId;
-        this.studentId = studentId;
+        this.email = email;
     }
 }
 
