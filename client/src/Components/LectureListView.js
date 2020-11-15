@@ -13,7 +13,7 @@ class LectureListView extends React.Component {
         API.getLecturesList(this.props.email)
         .then((lectures) => this.setState({lectures : lectures}));
     }
-
+/*
     getCourseName = (courseId) => {
         API.getCourseName(courseId).then((name)=> this.setState({courseName: name}));
     }
@@ -24,7 +24,7 @@ class LectureListView extends React.Component {
 
     getMaxSeats = (classroom) => {
         API.getMaxSeats(classroom).then((maxSeats) => this.setState({maxSeats: maxSeats}));
-    }
+    }*/
     //handleBookClick = (lecture, lectureId) => {
     //    this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
     //}
@@ -109,20 +109,20 @@ function LectureList(props) {
 }
 
 function LectureItem(props) {
-    let courseName = props.getCourseName(props.courseId);
+    /*let courseName = props.getCourseName(props.courseId);
     let teacherName = props.getTeacherName(props.courseId);
-    let maxSeats = props.getMaxSeats(props.classroom);
+    let maxSeats = props.getMaxSeats(props.classroom);*/
     return (
         <ListGroup.Item className='border mt-1'>
             <Row className='justify-content-around'>
                 <Col xs={1} className='text-center'>
-                    {courseName}
+                    {}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {teacherName}
+                    {}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.data}
+                    {props.lecture.date}
                 </Col>
                 <Col xs={1} className='text-center'>
                     {props.lecture.startingTime}
@@ -131,12 +131,10 @@ function LectureItem(props) {
                     {props.lecture.endingTime}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.classroom}
+                    {props.lecture.classroomId}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <>
-                    {props.lecture.numberOfSeats} / {maxSeats}
-                    </>
+                    {}
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button>Book</Button>
