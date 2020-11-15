@@ -175,7 +175,7 @@ describe('Test officer', function () {
 
 });
 */
-
+/*
 describe('Test university members', function () {
 
   describe('#Create a student', function () {
@@ -297,5 +297,24 @@ describe('Test bookings', function () {
      return BookingDao.deleteBooking('S1223', 1);
     });
   });
+
+});*/
+
+describe('Various tests', function () {
+
+
+  describe('#Get teacher surname', function () {
+    it('Test teacher surname', function () {
+      CourseDao.getTeacherSurname('c1').then(surname => assert.strictEqual('Greggio', surname));
+    });
+  });
+
+  describe('#Get maximum number of seats', function () {
+    it('Test maximum number of seats', function () {
+      LectureDao.getMaxSeats('7i').then(maxSeats => assert.strictEqual(50, maxSeats));
+    });
+  });
+
+
 
 });

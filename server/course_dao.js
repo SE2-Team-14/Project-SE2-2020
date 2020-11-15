@@ -72,7 +72,7 @@ exports.getCourseName = function(courseId){
     });
 }
 
-exports.getCoursesOfTeacher = function (teacherName) {
+exports.getCoursesOfTeacher = function(teacherName) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT COURSE.name FROM COURSE, PERSON WHERE COURSE.teacherId = PERSON.id AND PERSON.email = ?";
         db.all(sql, [teacherName], (err, row) => {
@@ -85,7 +85,23 @@ exports.getCoursesOfTeacher = function (teacherName) {
                     resolve(undefined);
                 }
             }
+        });
+    });
+}
+
+exports.getTeacherSurname = function(courseId){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT PERSON.surname FROM PERSON P, COURSE C WHERE P.id = C.teacherId AND P.id IN (SELECT teacherId FROM COURSE WHERE courseId = ?)";
+        db.all(sql, [courseId], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(row);
+                } else {
+                    resolve(undefined);
+                }
+            }
         })
     })
 }
-
