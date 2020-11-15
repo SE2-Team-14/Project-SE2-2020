@@ -14,7 +14,7 @@ import Header from './Components/Header';
 import Login from './Components/Login';
 import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
-import LectureList from './Components/LectureListView';
+import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
 
 
@@ -102,9 +102,9 @@ class App extends React.Component {
                 </Col>
               </Row>
             </Route>
-            <Route exact path='/student-home/bookable-lectures' render={(props) => {
-              let studentId = props.match.params.studentId;
-              return (<LectureList studentId={studentId} />);
+            <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
+              let email = props.match.params.email;
+              return (<LectureListView email={email} />);
             }} />
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;

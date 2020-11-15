@@ -7,16 +7,27 @@ class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {lectures: [], showBookSuccess: false};
+        this.state = {lectures: [], showBookSuccess: false, maxSeats: '', courseName: '', teacherName: ''};
     }
     componentDidMount(){
-        API.getLecturesList(this.props.studentId)
+        API.getLecturesList(this.props.email)
         .then((lectures) => this.setState({lectures : lectures}));
     }
 
-    handleBookClick = (lecture, lectureId) => {
-        this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
+    getCourseName = (courseId) => {
+        API.getCourseName(courseId).then((name)=> this.setState({courseName: name}));
     }
+
+    getTeacherName = (courseId) => {
+        API.getTeacherName(courseId).then((name)=> this.setState({teacherName: name}));
+    }
+
+    getMaxSeats = (classroom) => {
+        API.getMaxSeats(classroom).then((maxSeats) => this.setState({maxSeats: maxSeats}));
+    }
+    //handleBookClick = (lecture, lectureId) => {
+    //    this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
+    //}
 
    // handleBook = (event, lecture, lectureId) => {
    //     event.preventDefault();
