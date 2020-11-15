@@ -95,6 +95,11 @@ app.get("/api/enrollment", (req, res) => {
     });
 })
 
+app.get("/api/getCourseName/:courseId", (req, res) => {
+  courseDao.getCourseName(req.params.courseId).then((name) => res.json(name))
+  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*

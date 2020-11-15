@@ -53,6 +53,18 @@ async function getLecturesList(email) {
     throw err;
 }
 
+async function getCourseName(courseId) {
+    const url = baseURL + '/getCourseName';
+    const response = await fetch(`${url}/${courseId}`);
+    const nameJson = await response.json();
+
+    if (response.ok) {
+        return nameJson;
+    }
+    const err = { status: response.status, errors: nameJson.errors };
+    throw err;
+}
+
 async function getCourses(teacher) {
     let url = "/courses?teacher=" + teacher;
     const response = await fetch(baseURL + url);
@@ -77,6 +89,6 @@ async function getEnrollments(course) {
     }
 }
 
-const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, };
+const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCourseName };
 
 export default API;

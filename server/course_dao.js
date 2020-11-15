@@ -56,14 +56,14 @@ exports.getCourseByID = function (courseId) {
 
 exports.getCourseName = function(courseId){
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM COURSE WHERE courseId = ?";
-        db.all(sql, [courseId], (err, rows) => {
+        const sql = "SELECT name FROM COURSE WHERE courseId = ?";
+        db.get(sql, [courseId], (err, row) => {
             if(err)
                 reject(err);
             else{
-                if(rows.length>0){
-                    let _course = rows.map((course => createCourse(course)))[0];
-                    resolve(_course);
+                if(row){
+                    
+                    resolve(row);
                 }
                 else 
                     resolve(undefined);
