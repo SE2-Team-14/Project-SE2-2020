@@ -61,7 +61,7 @@ exports.getLecturesList = function(email){
                 reject(err);
             else{
                 if(rows.length>0){
-                    let _lectures = rows.map((row => createLecture(row)))[0];
+                    let _lectures = rows.map((row => createLecture(row)));
                     resolve(_lectures);
                 }
                 else 

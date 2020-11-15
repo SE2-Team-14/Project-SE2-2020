@@ -59,8 +59,8 @@ app.post('/api/login', (req, res) => {
 })
 
 //Network part for book a seat
-app.get('/api/home-student/:studentId/bookable-lectures', (req, res) => {
-  lectureDao.getLecturesList(req.params.studentId)
+app.get('/api/home-student/:email/bookable-lectures', (req, res) => {
+  lectureDao.getLecturesList(req.params.email)
     .then((lectures) => {
       res.json(lectures);
     })

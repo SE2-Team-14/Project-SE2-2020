@@ -41,9 +41,9 @@ async function login(user) {
 }
 
 //API for book a seat
-async function getLecturesList(studentId) {
+async function getLecturesList(email) {
     const url = baseURL + '/home-student';
-    const response = await fetch(`${url}/${studentId}/bookable-lectures`);
+    const response = await fetch(`${url}/${email}/bookable-lectures`);
     const lecturesJson = await response.json();
 
     if (response.ok) {

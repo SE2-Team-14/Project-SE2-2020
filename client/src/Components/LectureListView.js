@@ -46,7 +46,7 @@ class LectureListView extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList lecture={this.state.lectures}/>
+                        <LectureList lecture={this.state.lectures} getCourseName={this.getCourseName} getTeacherName={this.getTeacherName} getMaxSeats={this.getMaxSeats}/>
                     </Col>
                 </Row>
                 <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
@@ -99,7 +99,7 @@ function LectureList(props) {
 
             </ListGroup.Item>
             {
-               props.lecture.map((l) => <LectureItem key={l.lectureId} lecture = {l} />)
+               props.lecture.map((l) => <LectureItem key={l.lectureId} lecture = {l} courseId = {l.courseId} classroom={l.classroom} getCourseName={props.getCourseName} getTeacherName={props.getTeacherName} getMaxSeats={props.getMaxSeats}/>)
 
             }
         </ListGroup>
@@ -109,15 +109,17 @@ function LectureList(props) {
 }
 
 function LectureItem(props) {
-
+    let courseName = props.getCourseName(props.courseId);
+    let teacherName = props.getTeacherName(props.courseId);
+    let maxSeats = props.getMaxSeats(props.classroom);
     return (
         <ListGroup.Item className='border mt-1'>
             <Row className='justify-content-around'>
                 <Col xs={1} className='text-center'>
-                    {}
+                    {courseName}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {}
+                    {teacherName}
                 </Col>
                 <Col xs={1} className='text-center'>
                     {props.lecture.data}
@@ -132,7 +134,9 @@ function LectureItem(props) {
                     {props.lecture.classroom}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.numberOfSeats}
+                    <>
+                    {props.lecture.numberOfSeats} / {maxSeats}
+                    </>
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button>Book</Button>
