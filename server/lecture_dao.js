@@ -55,7 +55,7 @@ exports.getLectureById = function(lectureId){
 
 exports.getLecturesList = function(email){
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM LECTURE WHERE courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?";
+        const sql = "SELECT * FROM LECTURE WHERE courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?)";
         db.all(sql, [email], (err, rows) => {
             if(err)
                 reject(err);
