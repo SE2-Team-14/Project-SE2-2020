@@ -19,7 +19,11 @@ class LectureListView extends React.Component {
         return course.name;
     }
 
-    
+    findTeacherName = (teacherId) => {
+        let teacher = this.props.teachers.find((t) => t.id == teacherId);
+        return teacher;
+        
+    }
     //handleBookClick = (lecture, lectureId) => {
     //    this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
     //}
@@ -42,7 +46,7 @@ class LectureListView extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList lecture={this.state.lectures} findCourseName={this.findCourseName}/>
+                        <LectureList lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName}/>
                     </Col>
                 </Row>
                 <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
@@ -97,7 +101,7 @@ function LectureList(props) {
             {
                 props.lecture.map((l) =>
 
-                    <LectureItem key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} />
+                    <LectureItem key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} />
                 )
 
 
@@ -109,15 +113,16 @@ function LectureList(props) {
 }
 
 function LectureItem(props) {
-    let name = props.findCourseName(props.lecture.courseId);
+    let courseName = props.findCourseName(props.lecture.courseId);
+    let teacher = props.findTeacherName(props.lecture.teacherId);
     return (
         <ListGroup.Item className='border mt-1'>
             <Row className='justify-content-around'>
                 <Col xs={1} className='text-center'>
-                    {name}
+                    {courseName}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {}
+                    {teacher.surname}-{teacher.name}
                 </Col>
                 <Col xs={1} className='text-center'>
                     {props.lecture.date}

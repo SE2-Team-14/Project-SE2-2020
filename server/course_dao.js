@@ -88,7 +88,7 @@ exports.getCoursesOfTeacher = function(teacherName) {
         });
     });
 }
-
+/*
 exports.getTeacherSurname = function(courseId){
     return new Promise((resolve, reject) => {
         const sql = "SELECT PERSON.surname FROM PERSON P, COURSE C WHERE P.id = C.teacherId AND P.id IN (SELECT teacherId FROM COURSE WHERE courseId = ?)";
@@ -104,4 +104,4 @@ exports.getTeacherSurname = function(courseId){
             }
         })
     })
-}
+}*/

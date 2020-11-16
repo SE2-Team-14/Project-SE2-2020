@@ -25,6 +25,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       courses: [],
+      teachers: [],
       authUser: null
     }
   }
@@ -32,6 +33,7 @@ class App extends React.Component {
   /**Called during component construction*/
   componentDidMount() {
     API.getCoursesNames().then((courses) => this.setState({courses: courses}));
+    API.getTeachers().then((teachers) => this.setState({teachers: teachers}));
     //API.isAuthenticated().then(
     //(user) => {
     //this.setState({ authUser: user });
@@ -106,7 +108,7 @@ class App extends React.Component {
             </Route>
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
-              return (<LectureListView email={email} courses={this.state.courses}/>);
+              return (<LectureListView email={email} courses={this.state.courses} teachers = {this.state.teachers}/>);
             }} />
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;

@@ -95,11 +95,15 @@ app.get("/api/enrollment", (req, res) => {
     });
 })
 
-app.get("/api/getcourses", (req, res) => {
+app.get("/api/getCourses", (req, res) => {
   courseDao.getCourses().then((courses) => res.json(courses))
   .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+app.get("/api/getTeachers", (req, res) => {
+  personDao.getTeachers().then((teachers) => res.json(teachers))
+  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*
