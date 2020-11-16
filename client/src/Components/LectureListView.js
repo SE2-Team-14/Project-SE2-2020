@@ -7,7 +7,7 @@ class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showBookSuccess: false, id: '', lecture: ''};
+        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: ''};
     }
     componentDidMount() {
         API.getLecturesList(this.props.email)
@@ -35,7 +35,7 @@ class LectureListView extends React.Component {
     }
 
     handleClose = () => {
-        this.setState({ showDeleteSuccess: false });
+        this.setState({ showBookSuccess: false, showDeleteSuccess: false });
     }
     
     addBooking = (booking) => {
@@ -54,11 +54,11 @@ class LectureListView extends React.Component {
         b.startingTime = lecture.startingTime;
         this.addBooking(b);
         this.handleIncreaseSeats(lecture);
-        this.setState({showBookSuccess: false}, () => API.getLecturesList(this.props.email).then((lectures) => this.setState({lectures: lectures}) ));
+        this.setState({showBook: false}, () => API.getLecturesList(this.props.email).then((lectures) => this.setState({lectures: lectures, showBookSuccess: true}) ));
     }
 
     handleClickBook = (id, lecture) => {
-        this.setState({showBookSuccess: true, lecture: lecture, id: id});
+        this.setState({showBook: true, lecture: lecture, id: id});
     }
 
     // handleBook = (event, lecture, lectureId) => {
@@ -70,7 +70,7 @@ class LectureListView extends React.Component {
     //    API.bookLecture
     //}
     handleClose = () => {
-        this.setState({ showBookSuccess: false });
+        this.setState({ showBook: false, showBookSuccess: false });
     }
 
     render() {
@@ -82,11 +82,11 @@ class LectureListView extends React.Component {
                         <LectureList handleClickBook={this.handleClickBook} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
                     </Col>
                 </Row>
-                <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
+                <Modal controlid='Book' show={this.state.showBook} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
                        <Modal.Title>Confirm booking</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Do you want to confirm you book?</Modal.Body>
+                    <Modal.Body>Do you want to confirm your book?</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleBook(this.state.id, this.state.lecture)}>Yes</Button>
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
@@ -100,6 +100,15 @@ class LectureListView extends React.Component {
                     <Modal.Footer>
                         <Button variant='primary' onClick={this.handleClose}>No</Button>
                         <Button variant='secondary' onClick={this.handleClose}>Yes</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                       <Modal.Title>Confirm booking</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Congrats, your booking is saved! Enjoy the lesson!</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </Jumbotron>
