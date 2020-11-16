@@ -161,7 +161,18 @@ function LectureItem(props) {
                     {props.lecture.classroomId}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.numberOfSeats}/{maxSeats}
+                    {props.lecture.numberOfSeats &&
+                        <>
+                        {props.lecture.numberOfSeats}/{maxSeats}
+                        </>
+                    } 
+                    {!props.lecture.numberOfSeats &&
+                        <>
+                        {0}/{maxSeats}
+                        </>
+                    } 
+                    
+                    
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button>Book</Button>
