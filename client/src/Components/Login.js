@@ -55,13 +55,15 @@ class Login extends React.Component {
   }
 
   render() {
-    if (this.state.submitted)
-      return <Redirect to='/teacher-home' />; // TODO: funzionera quando sarà attivo il login
     return (
       <AuthContext.Consumer>
         {(context) => (
           <>
-            {/*(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>  TODO: quando funzionera il login*/}
+            {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect> }
+            {this.state.submitted && (context.authUser != null && context.authUser.role === "Teacher")
+               && <Redirect to='/teacher-home' />}
+            {this.state.submitted && (context.authUser != null && context.authUser.role === "Student")
+               && <Redirect to='/student-home' />}
             <Container fluid>
               <Row>
                 <Col>
