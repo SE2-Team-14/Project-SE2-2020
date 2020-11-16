@@ -72,3 +72,21 @@ exports.getPersonByEmail = function(email) {
 		});
 	});
 }
+
+exports.getTeachers = function() {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM PERSON WHERE role = 'Teacher'";
+        db.all(sql, [], (err, rows) => {
+            if(err)
+                reject(err);
+            else {
+                if(rows){
+                    let teacher = rows.map((row => createPerson(row)));
+                    resolve(teacher);
+                } else {
+                    resolve(undefined);
+                }
+            }
+        })
+    })
+}
