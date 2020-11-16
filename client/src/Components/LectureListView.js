@@ -28,6 +28,15 @@ class LectureListView extends React.Component {
         let classroom = this.props.classrooms.find((c) => c.classroom == classroomId);
         return classroom.maxNumberOfSeats;
     }
+
+    handleDeleteClick = (lecture, lectureId) => {
+        this.setState({showDeleteSuccess: true, booklecture: lecture, booklectureId: lectureId});
+    }
+
+    handleClose = () => {
+        this.setState({ showDeleteSuccess: false });
+    }
+
     //handleBookClick = (lecture, lectureId) => {
     //    this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
     //}
@@ -59,6 +68,16 @@ class LectureListView extends React.Component {
                     </Modal.Header>
                     <Modal.Footer>
                         <Button variant='primary' onClick={this.handleClose}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal controlid='DeleteSuccess' show={this.state.showDeleteSuccess} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Delete Book</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Do you want to delete your lesson prenotation?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={this.handleClose}>No</Button>
+                        <Button variant='secondary' onClick={this.handleClose}>Yes</Button>
                     </Modal.Footer>
                 </Modal>
             </Jumbotron>
@@ -148,7 +167,7 @@ function LectureItem(props) {
                     <Button>Book</Button>
                 </Col>
                 <Col xs={1} className='text-center'>
-
+                    <Button>Delete</Button>
                 </Col>
             </Row>
         </ListGroup.Item>
