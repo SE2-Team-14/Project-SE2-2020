@@ -31,9 +31,9 @@ class App extends React.Component {
 
   /**Called during component construction*/
   componentDidMount() {
-    API.getCoursesNames().then((courses) => this.setState({courses: courses}));
-    API.getTeachers().then((teachers) => this.setState({teachers: teachers}));
-    API.getClassrooms().then((classrooms) => this.setState({classrooms : classrooms}));
+    API.getCoursesNames().then((courses) => this.setState({ courses: courses }));
+    API.getTeachers().then((teachers) => this.setState({ teachers: teachers }));
+    API.getClassrooms().then((classrooms) => this.setState({ classrooms: classrooms }));
     //API.isAuthenticated().then(
     //(user) => {
     //this.setState({ authUser: user });
@@ -83,16 +83,20 @@ class App extends React.Component {
         <Container fluid>
           <Switch>
 
-            <Route exact path="/student-home">
-              <Alert variant="success">Student Starting Page </Alert>
-              <StudentHomePage></StudentHomePage>
-              <Link to="/login">Login</Link>
+            <Route exact path="/student-home/:email" render={(props) => {
+              let email = props.match.params.email;
+              return (<StudentHomePage email={email}></StudentHomePage>)
+            }}>
+
+
             </Route>
 
-            <Route exact path="/teacher-home">
-              <Alert variant="success">Student Starting Page </Alert>
-              <TeacherHomePage></TeacherHomePage>
-              <Link to="/login">Login</Link>
+            <Route exact path="/teacher-home/:email" render={(props) => {
+              let email = props.match.params.email;
+              return (<TeacherHomePage email={email}></TeacherHomePage>)
+            }}>
+
+
             </Route>
 
             <Route exact path="/login">
@@ -106,7 +110,7 @@ class App extends React.Component {
             </Route>
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
-              return (<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers = {this.state.teachers} classrooms={this.state.classrooms} />);
+              return (<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />);
             }} />
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;

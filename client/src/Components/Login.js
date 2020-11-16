@@ -59,11 +59,11 @@ class Login extends React.Component {
       <AuthContext.Consumer>
         {(context) => (
           <>
-            {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect> }
+            {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
             {this.state.submitted && (context.authUser != null && context.authUser.role === "Teacher")
-               && <Redirect to='/teacher-home' />}
+              && <Redirect to={`/teacher-home/${context.authUser.email}`} />}
             {this.state.submitted && (context.authUser != null && context.authUser.role === "Student")
-               && <Redirect to='/student-home' />}
+              && <Redirect to={`/student-home/${context.authUser.email}`} />}
             <Container fluid>
               <Row>
                 <Col>

@@ -55,47 +55,47 @@ async function getLecturesList(email) {
     throw err;
 }
 
-async function bookSeat(booking){
+async function bookSeat(booking) {
     const url = baseURL + '/student-home';
 
     return new Promise((resolve, reject) => {
         fetch(`${url}/book`, {
             method: 'POST',
             headers: {
-                'content-type' : 'application/json'
+                'content-type': 'application/json'
             },
             body: JSON.stringify(booking),
         }).then((response) => {
-            if(response.ok){
+            if (response.ok) {
                 resolve(null);
             } else {
                 response.json()
-                .then((obj) => {reject(obj);})
-                .catch((err) => reject({errors: [{param: 'Application', msg: 'Cannot parse server response'}]}));
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
             }
-        }).catch((err) => {reject({errors: [{param: 'Server', msg: 'Cannot communicate'}]})});
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
     });
 }
 
-async function increaseSeats(lecture){
+async function increaseSeats(lecture) {
     const url = baseURL + '/student-home';
 
     return new Promise((resolve, reject) => {
         fetch(`${url}/increase-seats`, {
             method: 'PUT',
             headers: {
-                'content-type' : 'application/json'
+                'content-type': 'application/json'
             },
             body: JSON.stringify(lecture),
         }).then((response) => {
-            if(response.ok){
+            if (response.ok) {
                 resolve(null);
             } else {
                 response.json()
-                .then((obj) => {reject(obj);})
-                .catch((err) => reject({errors: [{param: 'Application', msg: 'Cannot parse server response'}]}));
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
             }
-        }).catch((err) => {reject({errors: [{param: 'Server', msg: 'Cannot communicate'}]})});
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
     });
 }
 
@@ -160,6 +160,30 @@ async function getEnrollments(course) {
     }
 }
 
-const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers, getClassrooms, bookSeat, increaseSeats };
+async function getPersonName(email) {
+    let url = "/name?email=" + email;
+    const response = await fetch(baseURL + url);
+    const nameJson = await response.json();
+    if (response.ok) {
+        return nameJson;
+    } else {
+        let err = { status: response.status, errObj: nameJson };
+        throw err;
+    }
+}
+
+const API = {
+    isAuthenticated,
+    login,
+    getLecturesList,
+    getCourses,
+    getEnrollments,
+    getCoursesNames,
+    getTeachers,
+    getClassrooms,
+    bookSeat,
+    increaseSeats,
+    getPersonName,
+};
 
 export default API;

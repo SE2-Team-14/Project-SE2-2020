@@ -13,7 +13,7 @@ const enrollmentDao = require("./enrollment_dao");
 const classroomDao = require('./classroom_dao');
 const bookingDao = require('./booking_dao');
 const Booking = require('./booking');
-const EmailSender =  require('./sendemail/EmailSender');
+const EmailSender = require('./sendemail/EmailSender');
 
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
@@ -31,12 +31,12 @@ app.use(express.json());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "*"); 
+  res.header("Access-Control-Allow-Methods", "*");
   next();
 });
 
-run = (callback) => {return app.listen(PORT, callback);}; // needed in order to make unit testing
-module.exports = run; 
+run = (callback) => { return app.listen(PORT, callback); }; // needed in order to make unit testing
+module.exports = run;
 if (require.main === module) { // start the server only if it is not imported by other modules (i.e. test module)
   run(() => console.log(`Server running on http://localhost:${PORT}/`));
 }
@@ -106,43 +106,54 @@ app.get("/api/enrollment", (req, res) => {
 
 app.get("/api/getCourses", (req, res) => {
   courseDao.getCourses().then((courses) => res.json(courses))
-  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
 app.get("/api/getTeachers", (req, res) => {
   personDao.getTeachers().then((teachers) => res.json(teachers))
-  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
 app.get("/api/getClassrooms", (req, res) => {
   classroomDao.getClassrooms().then((classrooms) => res.json(classrooms))
-  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
 //POST api/student-home/book
 app.post('/api/student-home/book', (req, res) => {
   const booking = req.body;
-  if(!booking){
-      res.status(400).end();
+  if (!booking) {
+    res.status(400).end();
   } else {
-      bookingDao.addBoocking(booking)
+    bookingDao.addBoocking(booking)
       .then(() => res.status(200).end())
-      .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
 
 //PUT api/student-home/increase-seats
 app.put('/api/student-home/increase-seats', (req, res) => {
   const lecture = req.body;
-  
-  if(!lecture){
-      res.status(400).end();
+
+  if (!lecture) {
+    res.status(400).end();
   } else {
-      lectureDao.increaseBookedSeats(lecture.lectureId)
+    lectureDao.increaseBookedSeats(lecture.lectureId)
       .then(() => res.status(200).end())
-      .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
+
+app.get("/api/name", (req, res) => {
+  personDao.getPersonByEmail(req.query.email).then((person) => {
+    console.log("server", person)
+    res.json(person)
+  }).catch((err) => {
+    res.status(500).json({
+      errors: [{ msg: "Error while getting enrolled students" }],
+    });
+  });
+})
 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
@@ -158,4 +169,3 @@ app.use(
   })
 );
 */
-
