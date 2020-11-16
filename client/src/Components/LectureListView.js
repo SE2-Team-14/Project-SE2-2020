@@ -42,6 +42,10 @@ class LectureListView extends React.Component {
         API.bookSeat(booking);
     }
 
+    handleIncreaseSeats = (lecture) => {
+        API.increaseSeats(lecture);
+    }
+
     handleBook = (studentId, lecture) => {
         let b = Object.assign({}, Booking);
         b.studentId = studentId;
@@ -49,12 +53,8 @@ class LectureListView extends React.Component {
         b.date = lecture.date;
         b.startingTime = lecture.startingTime;
         this.addBooking(b);
-        this.increaseSeats(lecture);
-        this.handleClose();
-    }
-
-    increaseSeats = (lecture) => {
-        API.increaseSeats(lecture);
+        this.handleIncreaseSeats(lecture);
+        this.setState({showBookSuccess: false}, () => API.getLecturesList(this.props.email).then((lectures) => this.setState({lectures: lectures}) ));
     }
 
     handleClickBook = (id, lecture) => {
