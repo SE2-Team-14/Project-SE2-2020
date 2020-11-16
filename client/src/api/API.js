@@ -19,7 +19,6 @@ async function isAuthenticated() {
 
 //---------------------OFFICER ACCOUNT CREATION---------------------
 
-
 async function login(user) {
     return new Promise((resolve, reject) => {
         fetch(baseURL + "/login", {

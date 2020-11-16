@@ -13,8 +13,6 @@ const enrollmentDao = require("./enrollment_dao");
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
-//const OfficerDao = require("./officer_dao");
-
 const PORT = 3001;
 
 app = new express();
@@ -35,19 +33,19 @@ module.exports = app.listen(PORT, () => console.log(`Server running on http://lo
 
 
 app.post('/api/login', (req, res) => {
-  const officerAccount = req.body;
-  if (!officerAccount) {
+  const person = req.body;
+  if (!person) {
     res.status(400).end();
   } else {
-    personDao.getPersonByEmail(officerAccount.email)
+    personDao.getPersonByEmail(person.email)
       .then((user) => {
-        if (user === undefined || user.password != officerAccount.password) {
+        if (user === undefined || user.password != person.password) {
           res.status(200).json({ error_no: -1, error_info: "Email or password is wrong." })
         } else {
           //AUTHENTICATION SUCCESS
           //const token = jsonwebtoken.sign({ user: user.officerID }, jwtSecret, {expiresIn: expireTime});
           //res.cookie('token', token, { httpOnly: true, sameSite: true, maxAge: 1000 * expireTime });
-          res.status(200).json({ user: { name: user.name, email: user.email, role: user.role }, error_no: 0, error_info: "Login successfully." });
+          res.status(200).json({ user: { id: user.id, name: user.name, email: user.email, role: user.role }, error_no: 0, error_info: "Login successful." });
         }
       }).catch(
         // Delay response when wrong user/pass is sent to avoid fast guessing attempts

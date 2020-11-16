@@ -111,71 +111,9 @@ describe('Test Async Test', function() {
     // test cases
   });
 */
+
 //---------------------------OUR TEST------------------------------
 
-/*
-describe('API tests', function() {
-
-  //Test the GET
-  describe('#GET /officers', function() {
-    it('Should get all the officers', function(done) {
-      chai.request(Server)
-          .get('/api/services')
-          .end((err, res)  => {
-            console.log(res.body);
-            res.should.have.status(200);
-            done();
-          })
-    })
-  })
-});
-
-describe('Test counter', function () {
-
-  describe('#Create counter', function () {
-    it('Creates a new counter', function () {
-      let testCounter = new Counter(null, '8', '13');
-      return CounterDao.createCounter(testCounter);
-    });
-  });
-
-  describe('#Get all counters', function () {
-    it('Should get all counter', function () {
-      CounterDao.getCounters().then(counters => console.log(counters));
-
-    });
-  });
-
-});
-
-describe('Test officer', function () {
-
-  describe('#Create officer', function () {
-    it('Creates a new officer', function () {
-      let testOfficer = new Officer(null, 'Bruno', 'Barbieri', 'false', 'bruno@barbieri', '1234');
-      return OfficerDao.createOfficerAccount(testOfficer);
-    });
-  });
-
-  describe('#Create manager', function () {
-    it('Creates a new manager', function () {
-      let testManager = new Officer(null, 'Joe', 'Bastianich', 'true', 'joe@bastianich', '4321');
-      return OfficerDao.createOfficerAccount(testManager);
-    });
-  });
-
-  describe('#Get an officer by email', function () {
-    it('Get by email', function () {
-      let email = 'bruno@barbieri';
-      
-      OfficerDao.getOfficerByEmail(email).then(officer => console.log(officer));
-
-    });
-  });
-
-});
-*/
-/*
 describe('Test university members', function () {
 
   describe('#Create a student', function () {
@@ -235,18 +173,6 @@ describe('Test courses', function () {
 
 });
 
-describe('Test lecture', function () {
-
-  describe('#Create a lecture', function () {
-    it('Creates a new lecture', function () {
-      //For now i assume that we consider things that are not in the db
-      let testLecture = new Lecture(null, 'C123', 'd123', 'today', '1.00', '2.30', 'true', 1, 25);
-      return LectureDao.addLecture(testLecture);
-    });
-  });
-
-});
-
 describe('Test enrollments', function () {
 
   describe('#Create an enrollment', function () {
@@ -298,23 +224,26 @@ describe('Test bookings', function () {
     });
   });
 
-});*/
+});
 
 describe('Various tests', function () {
 
-
-  describe('#Get teacher surname', function () {
+  /*describe('#Get teacher surname', function () {
     it('Test teacher surname', function () {
-      CourseDao.getTeacherSurname('c1').then(surname => assert.strictEqual('Greggio', surname));
+      CourseDao.getTeacherSurname('c1').then(surname => console.log('Greggio', surname));
     });
   });
 
   describe('#Get maximum number of seats', function () {
     it('Test maximum number of seats', function () {
-      LectureDao.getMaxSeats('7i').then(maxSeats => assert.strictEqual(50, maxSeats));
+      LectureDao.getMaxSeats('7i').then(maxSeats => console.log(maxSeats));
     });
   });
 
-
+  describe('#Get maximum number of seats', function () {
+    it('Test maximum number of seats', function () {
+      LectureDao.getMaxSeats('1').then(maxSeats => console.log(maxSeats));
+    });
+  });*/
 
 });

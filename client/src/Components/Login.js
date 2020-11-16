@@ -8,8 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import API from '../api/API';
 
-import OfficerAccount from '../api/OfficerAccount'
-
+import Person from '../api/Person'
 
 
 class Login extends React.Component {
@@ -33,14 +32,13 @@ class Login extends React.Component {
     this.updateField(event.target.name, event.target.value);
   }
 
-
   handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.checkValidity()) {
       form.reportValidity();
     } else {
-      this.login(new OfficerAccount("", "", "", this.state.email, this.state.password));
+      this.login(new Person("", "", "", "", this.state.email, this.state.password));
     }
   }
 

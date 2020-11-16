@@ -7,6 +7,12 @@ class Person {
         this.email = email;
         this.password = password;
     }
+
+    static from(json) {
+        const e = Object.assign(new Person(), json);
+        return e;
+    }
+
 }
 
-module.exports = Person;
+export default Person;
