@@ -4,7 +4,7 @@
   "description": "PULSeBS web server",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha"
+    "test": "nyc --reporter=lcov --reporter=text-lcov mocha"
   },
   "author": "SE2_Team_14",
   "license": "ISC",
