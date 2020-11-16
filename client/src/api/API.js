@@ -1,3 +1,4 @@
+import Course from './course';
 import Lecture from './lecture';
 const baseURL = "http://localhost:3001/api";
 
@@ -53,15 +54,15 @@ async function getLecturesList(email) {
     throw err;
 }
 
-async function getCourseName(courseId) {
-    const url = baseURL + '/getCourseName';
-    const response = await fetch(`${url}/${courseId}`);
-    const nameJson = await response.json();
+async function getCoursesNames() {
+    const url = baseURL + '/getCourses';
+    const response = await fetch(`${url}`);
+    const coursesJson = await response.json();
 
     if (response.ok) {
-        return nameJson;
+        return coursesJson.map((c) => new Course(c.courseId, c.teacherId, c.name));
     }
-    const err = { status: response.status, errors: nameJson.errors };
+    const err = { status: response.status, errors: coursesJson.errors };
     throw err;
 }
 
@@ -89,6 +90,6 @@ async function getEnrollments(course) {
     }
 }
 
-const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCourseName };
+const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames };
 
 export default API;

@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import { Redirect, Route, Link } from 'react-router-dom';
 import { Switch } from 'react-router';
 import { withRouter } from 'react-router-dom';
-
+import API from './api/API';
 import Alert from "react-bootstrap/Alert";
 
 
@@ -24,12 +24,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      courses: [],
       authUser: null
     }
   }
 
   /**Called during component construction*/
   componentDidMount() {
+    API.getCoursesNames().then((courses) => this.setState({courses: courses}));
     //API.isAuthenticated().then(
     //(user) => {
     //this.setState({ authUser: user });
@@ -104,7 +106,7 @@ class App extends React.Component {
             </Route>
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
-              return (<LectureListView email={email} />);
+              return (<LectureListView email={email} courses={this.state.courses}/>);
             }} />
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;
