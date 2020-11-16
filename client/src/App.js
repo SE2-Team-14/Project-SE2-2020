@@ -9,14 +9,12 @@ import { withRouter } from 'react-router-dom';
 import API from './api/API';
 import Alert from "react-bootstrap/Alert";
 
-
 import Header from './Components/Header';
 import Login from './Components/Login';
 import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
-
 
 import { AuthContext } from './auth/AuthContext'
 
@@ -55,8 +53,6 @@ class App extends React.Component {
       }
     }
   }
-
-
 
   //------------------------LOGIN LOGOUT-------------------------
 
@@ -110,7 +106,7 @@ class App extends React.Component {
             </Route>
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
-              return (<LectureListView email={email} courses={this.state.courses} teachers = {this.state.teachers} classrooms={this.state.classrooms} />);
+              return (<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers = {this.state.teachers} classrooms={this.state.classrooms} />);
             }} />
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;

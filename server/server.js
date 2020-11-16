@@ -11,6 +11,9 @@ const personDao = require('./person_dao')
 const courseDao = require("./course_dao");
 const enrollmentDao = require("./enrollment_dao");
 const classroomDao = require('./classroom_dao');
+const bookingDao = require('./booking_dao');
+const Booking = require('./booking');
+
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
 
@@ -108,6 +111,19 @@ app.get("/api/getClassrooms", (req, res) => {
   classroomDao.getClassrooms().then((classrooms) => res.json(classrooms))
   .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
+
+//POST api/student-home/book
+app.post('/api/student-home/book', (req, res) => {
+  const booking = req.body;
+  if(!booking){
+      res.status(400).end();
+  } else {
+      bookingDao.addBoocking(booking)
+      .then(() => res.status(200).end())
+      .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+  }
+});
+
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*

@@ -42,7 +42,7 @@ async function login(user) {
     });
 }
 
-//API for book a seat
+//API to book a seat
 async function getLecturesList(email) {
     const url = baseURL + '/student-home';
     const response = await fetch(`${url}/${email}/bookable-lectures`);
@@ -53,6 +53,28 @@ async function getLecturesList(email) {
     }
     const err = { status: response.status, errors: lecturesJson.errors };
     throw err;
+}
+
+async function bookSeat(booking){
+    const url = baseURL + '/student-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/book`, {
+            method: 'POST',
+            headers: {
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify(booking),
+        }).then((response) => {
+            if(response.ok){
+                resolve(null);
+            } else {
+                response.json()
+                .then((obj) => {reject(obj);})
+                .catch((err) => reject({errors: [{param: 'Application', msg: 'Cannot parse server response'}]}));
+            }
+        }).catch((err) => {reject({errors: [{param: 'Server', msg: 'Cannot communicate'}]})});
+    });
 }
 
 async function getCoursesNames() {
@@ -115,6 +137,6 @@ async function getEnrollments(course) {
     }
 }
 
-const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers, getClassrooms };
+const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers, getClassrooms, bookSeat };
 
 export default API;

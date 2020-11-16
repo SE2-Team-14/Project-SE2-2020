@@ -113,6 +113,18 @@ describe('Test Async Test', function() {
 */
 
 //---------------------------OUR TEST------------------------------
+describe('Various tests', function () {
+
+  describe('#Test a test that should fail', function () {
+    it('this should fail', function () {
+      let classroom = new Classroom('12', 50);
+      ClassroomDao.addClassroom(classroom);
+      let lecture = new Lecture(null, 'C12', 'D12', '12/12/12', '12.00', '12.12', 'true', '12', 100);
+      assert.throws(LectureDao.addLecture(lecture), 'Cannot register a lecture with more seats than max seats for the classroom');
+    });
+  });
+  
+});
 
 describe('Test university members', function () {
 
@@ -161,7 +173,7 @@ describe('Test courses', function () {
 
   describe('#Gets a course name', function () {
     it('Test course name', function () {
-      CourseDao.getCourseName('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
+      CourseDao.getCourseByID('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
     });
   });
 
@@ -196,14 +208,14 @@ describe('Test classroom', function () {
 
   describe('#Create a classroom', function () {
     it('Creates a new classroom', function () {
-      let testClassroom = new Classroom('7i', 30);
+      let testClassroom = new Classroom('7test', 30);
       return ClassroomDao.addClassroom(testClassroom);
     });
   });
 
   describe('#Delete a classroom', function () {
     it('Deletes a classroom', function () {
-     return ClassroomDao.deleteClassroom('7i');
+     return ClassroomDao.deleteClassroom('7test');
     });
   });
 
@@ -223,27 +235,5 @@ describe('Test bookings', function () {
      return BookingDao.deleteBooking('S1223', 1);
     });
   });
-
-});
-
-describe('Various tests', function () {
-
-  /*describe('#Get teacher surname', function () {
-    it('Test teacher surname', function () {
-      CourseDao.getTeacherSurname('c1').then(surname => console.log('Greggio', surname));
-    });
-  });
-
-  describe('#Get maximum number of seats', function () {
-    it('Test maximum number of seats', function () {
-      LectureDao.getMaxSeats('7i').then(maxSeats => console.log(maxSeats));
-    });
-  });
-
-  describe('#Get maximum number of seats', function () {
-    it('Test maximum number of seats', function () {
-      LectureDao.getMaxSeats('1').then(maxSeats => console.log(maxSeats));
-    });
-  });*/
 
 });

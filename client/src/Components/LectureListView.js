@@ -1,17 +1,18 @@
 import React from 'react';
-import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
+import { ListGroup, Col, Row, Jumbotron, Button, Modal, Form } from 'react-bootstrap';
 import API from '../api/API';
-
+import Booking from '../api/booking'
 
 class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showBookSuccess: false};
+        this.state = { lectures: [], showBookSuccess: false, id: '', lecture: ''};
     }
     componentDidMount() {
         API.getLecturesList(this.props.email)
             .then((lectures) => this.setState({ lectures: lectures }));
+        this.setState({id: this.props.id});
     }
 
     findCourseName = (courseId) => {
@@ -36,10 +37,29 @@ class LectureListView extends React.Component {
     handleClose = () => {
         this.setState({ showDeleteSuccess: false });
     }
+    
+    addBooking = (booking) => {
+        API.bookSeat(booking);
+    }
 
-    //handleBookClick = (lecture, lectureId) => {
-    //    this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
-    //}
+    handleBook = (studentId, lecture) => {
+        let b = Object.assign({}, Booking);
+        b.studentId = studentId;
+        b.lectureId = lecture.lectureId;
+        b.date = lecture.date;
+        b.startingTime = lecture.startingTime;
+        this.addBooking(b);
+        this.increaseSeats(lecture);
+        this.handleClose();
+    }
+
+    increaseSeats = (lecture) => {
+        API.increaseSeats(lecture);
+    }
+
+    handleClickBook = (id, lecture) => {
+        this.setState({showBookSuccess: true, lecture: lecture, id: id});
+    }
 
     // handleBook = (event, lecture, lectureId) => {
     //     event.preventDefault();
@@ -59,15 +79,17 @@ class LectureListView extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
+                        <LectureList handleClickBook={this.handleClickBook} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
                     </Col>
                 </Row>
                 <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                        <Modal.Title>Your book is saved! Good Lesson!</Modal.Title>
+                       <Modal.Title>Confirm booking</Modal.Title>
                     </Modal.Header>
+                    <Modal.Body>Do you want to confirm you book?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={this.handleClose}>Close</Button>
+                        <Button variant='primary' onClick={()=>this.handleBook(this.state.id, this.state.lecture)}>Yes</Button>
+                        <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
                 <Modal controlid='DeleteSuccess' show={this.state.showDeleteSuccess} onHide={this.handleClose} animation={false} >
@@ -124,7 +146,7 @@ function LectureList(props) {
             {
                 props.lecture.map((l) =>
 
-                    <LectureItem key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} />
+                    <LectureItem handleClickBook={props.handleClickBook} id={props.id} key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} />
                 )
 
 
@@ -175,7 +197,7 @@ function LectureItem(props) {
                     
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <Button>Book</Button>
+                    <Button onClick={(event) => props.handleClickBook(props.id, props.lecture)} >Book</Button>
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button>Delete</Button>

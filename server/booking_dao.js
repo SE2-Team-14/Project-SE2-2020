@@ -20,7 +20,7 @@ exports.addBoocking = function(booking) {
                     reject(err);
                 }
                 else 
-                    resolve(this.lastID);
+                    resolve(null);
         });
     });
 }
