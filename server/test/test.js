@@ -26,13 +26,15 @@ const ClassroomDao = require('../classroom_dao');
 const BookingDao = require('../booking_dao');
 
 const chai = require('chai');
+const expect = chai.expect;
+var chaiAsPromised = require("chai-as-promised");
 const chaiHttp = require('chai-http');
-const Server = require('../server');
+const runServer = require('../server');
 const { resolve } = require('path');
 
 chai.should();
 chai.use(chaiHttp);
-
+chai.use(chaiAsPromised);
 /*
 //---------------------------------EXAMPLES TO USE MOCHA---------------------------------
 
@@ -84,7 +86,7 @@ async function promiseFunc(message){
 describe('Test Async Test', function() {
     describe('#promiseFunc()', function() {
         it('should print \'Hello promise!\' on the console', function() {
-        return promiseFunc("Hello promise!"); // Fail if the promise fail to
+        return promiseFunc("Hello promise!"); // Fail if the promise fail too
         });
     });
 });
@@ -113,127 +115,237 @@ describe('Test Async Test', function() {
 */
 
 //---------------------------OUR TEST------------------------------
-describe('Various tests', function () {
 
-  describe('#Test a test that should fail', function () {
-    it('this should fail', function () {
-      let classroom = new Classroom('12', 50);
-      ClassroomDao.addClassroom(classroom);
-      let lecture = new Lecture(null, 'C12', 'D12', '12/12/12', '12.00', '12.12', 'true', '12', 100);
-      assert.throws(LectureDao.addLecture(lecture), 'Cannot register a lecture with more seats than max seats for the classroom');
-    });
-  });
-  
-});
+describe('Server side unit test', function () {
 
-describe('Test university members', function () {
 
-  describe('#Create a student', function () {
-    it('Creates a new student', function () {
-      let testStudent = new Person('s1234', 'Andrea', 'Rossi', 'student', 'andrea@rossi', '1234');
-      return PersonDao.createPerson(testStudent);
-    });
-  });
+  let server;
 
-  describe('#Create a teacher', function () {
-    it('Creates a new teacher', function () {
-      let testTeacher = new Person('d1234', 'Cataldo', 'Basile', 'teacher', 'cataldo@basile', '1234');
-      return PersonDao.createPerson(testTeacher);
-    });
-  });
-
-  describe('Get person name', function () {
-    it('Get name', function () {
-      PersonDao.getPersonByID('d1234').then(person => assert.strictEqual('Cataldo', person.name));
-    });
-  });
-
-  describe('#Delete a student', function () {
-    it('Deletes a student', function () {
-      return PersonDao.deletePersonById('s1234');
-    });
-  });
-
-  describe('#Delete a teacher', function () {
-    it('Deletes a teacher', function () {
-      return PersonDao.deletePersonById('d1234');
-    });
-  });
-
-});
-
-describe('Test courses', function () {
-
-  describe('#Create a course', function () {
-    it('Creates a new course', function () {
-      let testCourse = new Course('01ABC', 'd1234', 'Softeng II');
-      return CourseDao.createCourse(testCourse);
-    });
-  });
-
-  describe('#Gets a course name', function () {
-    it('Test course name', function () {
-      CourseDao.getCourseByID('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
-    });
-  });
-
-  describe('#Delete a course', function () {
-    it('Deletes a course', function () {
-      return CourseDao.deleteCourseById('01ABC');
-    });
-  });
-
-});
-
-describe('Test enrollments', function () {
-
-  describe('#Create an enrollment', function () {
-    it('Creates a new enrollment', function () {
-      //For now i assume that we consider things that are not in the db
-      let testEnrollment = new Enrollment('C123', 's123@email.it');
-      return EnrollmentDao.addEnrollment(testEnrollment);
-    });
+  /**start the server before test */
+  before(done => {
+    server = runServer(done);
   });
 
 
-  describe('#Deletes an enrollment', function () {
-    it('Deletes an enrollment', function () {
-      return EnrollmentDao.deleteEnrollment('C123', 's123@email.it');
+  describe('Various tests', function () {
+
+
+    describe('#Test a test that should fail', function () {
+      it('this should fail', function () {
+        let classroom = new Classroom('12', 50);
+        ClassroomDao.addClassroom(classroom);
+        let lecture = new Lecture(null, 'C12', 'D12', '12/12/12', '12.00', '12.12', 'true', '12', 100);
+        expect(LectureDao.addLecture(lecture), 'Cannot register a lecture with more seats than max seats for the classroom').to.be.rejected;
+      });
     });
+
   });
 
-});
+  describe('Test university members', function () {
 
-describe('Test classroom', function () {
-
-  describe('#Create a classroom', function () {
-    it('Creates a new classroom', function () {
-      let testClassroom = new Classroom('7test', 30);
-      return ClassroomDao.addClassroom(testClassroom);
+    describe('#Create a student', function () {
+      it('Creates a new student', function () {
+        let testStudent = new Person('s1234', 'Andrea', 'Rossi', 'student', 'andrea@rossi', '1234');
+        return PersonDao.createPerson(testStudent);
+      });
     });
+
+    describe('#Create a teacher', function () {
+      it('Creates a new teacher', function () {
+        let testTeacher = new Person('d1234', 'Cataldo', 'Basile', 'teacher', 'cataldo@basile', '1234');
+        return PersonDao.createPerson(testTeacher);
+      });
+    });
+
+    describe('Get person name', function () {
+      it('Get name', function () {
+        PersonDao.getPersonByID('d1234').then(person => assert.strictEqual('Cataldo', person.name));
+      });
+    });
+
+    describe('#Delete a student', function () {
+      it('Deletes a student', function () {
+        return PersonDao.deletePersonById('s1234');
+      });
+    });
+
+    describe('#Delete a teacher', function () {
+      it('Deletes a teacher', function () {
+        return PersonDao.deletePersonById('d1234');
+      });
+    });
+
   });
 
-  describe('#Delete a classroom', function () {
-    it('Deletes a classroom', function () {
-     return ClassroomDao.deleteClassroom('7test');
+  describe('Test courses', function () {
+
+    describe('#Create a course', function () {
+      it('Creates a new course', function () {
+        let testCourse = new Course('01ABC', 'd1234', 'Softeng II');
+        return CourseDao.createCourse(testCourse);
+      });
     });
+
+    describe('#Gets a course name', function () {
+      it('Test course name', function () {
+        CourseDao.getCourseByID('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
+      });
+    });
+
+    describe('#Delete a course', function () {
+      it('Deletes a course', function () {
+        return CourseDao.deleteCourseById('01ABC');
+      });
+    });
+
   });
 
-});
+  describe('Test enrollments', function () {
 
-describe('Test bookings', function () {
-
-  describe('#Add a booking', function () {
-    it('Creates a new booking', function () {
-      let testBooking = new Booking('S1223', 1, 'today', '12.00');
-      return BookingDao.addBoocking(testBooking);
+    describe('#Create an enrollment', function () {
+      it('Creates a new enrollment', function () {
+        //For now i assume that we consider things that are not in the db
+        let testEnrollment = new Enrollment('C123', 's123@email.it');
+        return EnrollmentDao.addEnrollment(testEnrollment);
+      });
     });
+
+
+    describe('#Deletes an enrollment', function () {
+      it('Deletes an enrollment', function () {
+        return EnrollmentDao.deleteEnrollment('C123', 's123@email.it');
+      });
+    });
+
   });
 
-  describe('#Delete booking', function () {
-    it('Deletes a booking', function () {
-     return BookingDao.deleteBooking('S1223', 1);
+  describe('Test classroom', function () {
+
+    describe('#Create a classroom', function () {
+      it('Creates a new classroom', function () {
+        let testClassroom = new Classroom('7test', 30);
+        return ClassroomDao.addClassroom(testClassroom);
+      });
     });
+
+    describe('#Delete a classroom', function () {
+      it('Deletes a classroom', function () {
+        return ClassroomDao.deleteClassroom('7test');
+      });
+    });
+
+  });
+
+  describe('Test bookings', function () {
+
+    describe('#Add a booking', function () {
+      it('Creates a new booking', function () {
+        let testBooking = new Booking('S1223', 1, 'today', '12.00');
+        return BookingDao.addBoocking(testBooking);
+      });
+    });
+
+    describe('#Delete booking', function () {
+      it('Deletes a booking', function () {
+        return BookingDao.deleteBooking('S1223', 1);
+      });
+    });
+
+  });
+
+
+
+
+  describe('Send email, test', function () {
+
+    const EmailSender = require('../sendemail/EmailSender');
+    const correctEmail = "pulsebs14.notification@gmail.com";
+    const correctFakeUserEmail = "pulsebs.fakeuser@gmail.com"
+    const correctPassword = "team142020";
+    const correctService = "gmail";
+
+    let emailSender;
+
+    describe('#EmailSender creation', function () {
+      describe('#Error in sender account setup (wrong service)', function () {
+        it('this should fail', function () {
+          this.timeout(4000); // needed beacuse it takes few seconds to verify that the connection is not valid
+          emailSender = new EmailSender("wrongservice", correctEmail, correctPassword)
+          return expect(emailSender.verifyConnection()).to.be.rejected;
+        });
+      });
+
+      describe('#Error in sender account setup (wrong email)', function () {
+        it('this should fail', function () {
+          emailSender = new EmailSender(correctService, "wrong@email.err", correctPassword);
+          return expect(emailSender.verifyConnection()).to.be.rejected;
+        });
+      });
+
+      describe('#Error in sender account setup (wrong password)', function () {
+        it('this should fail', function () {
+          emailSender = new EmailSender(correctService, correctEmail, "wrongpassword");
+          return expect(emailSender.verifyConnection()).to.be.rejected;
+        });
+      });
+
+      describe('#Success in sender account setup', function () {
+        it('this should work', function () {
+          emailSender = new EmailSender(correctService, correctEmail, correctPassword);
+          return emailSender.verifyConnection();
+        });
+      });
+
+    });
+
+
+
+    describe('#EmailSender sendEmail method', function () {
+
+      describe('#Error in sendEmail (missing recipient)', function () {
+        it('this should fail', function () {
+          return expect(emailSender.sendEmail([], "Error in sendEmail (missing recipient)", "Example email body")).to.be.rejected;
+        });
+      });
+
+      describe('#Error in sendEmail (wrong recipient)', function () {
+        it('this should fail', function () {
+          return expect(emailSender.sendEmail("wrong", "Error in sendEmail (wrong recipient)", "Example email body")).to.be.rejected;
+        });
+      });
+
+      describe('#Error in sendEmail (wrong recipients)', function () {
+        it('this should fail', function () {
+          return expect(emailSender.sendEmail(["wrong", "wrong2"], "Error in sendEmail (wrong recipients", "You shold not be able to read this")).to.be.rejected;
+        });
+      });
+
+
+      describe('#Success in sendEmail to one person', function () {
+        it('this should work', function () {
+          return emailSender.sendEmail(correctFakeUserEmail, "Success in sendEmail to one person", "Example email body");
+        });
+      });
+
+      describe('#Success in sendEmail to mutilple person', function () {
+        it('this should work', function () {
+          return emailSender.sendEmail([correctFakeUserEmail, correctEmail], "Success in sendEmail to mutilple person", "Example email body");
+        });
+      });
+
+      describe('#Success in sendEmail to some person', function () {
+        it('this should work', function () {
+          return emailSender.sendEmail([correctFakeUserEmail, "wrong"], "Success in sendEmail to some person", "Example email body");
+        });
+      });
+
+    });
+
+  });
+
+  /**close the server after the test **/
+  after(done => {
+    server.close(done);
   });
 
 });

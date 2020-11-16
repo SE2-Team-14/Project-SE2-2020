@@ -13,6 +13,7 @@ const enrollmentDao = require("./enrollment_dao");
 const classroomDao = require('./classroom_dao');
 const bookingDao = require('./booking_dao');
 const Booking = require('./booking');
+const EmailSender =  require('./sendemail/EmailSender');
 
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
@@ -33,8 +34,13 @@ app.use(function (req, res, next) {
   next();
 });
 
-module.exports = app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
+run = (callback) => {return app.listen(PORT, callback);}; // needed in order to make unit testing
+module.exports = run; 
+if (require.main === module) { // start the server only if it is not imported by other modules (i.e. test module)
+  run(() => console.log(`Server running on http://localhost:${PORT}/`));
+}
 
+const emailSender = new EmailSender('gmail', "pulsebs14.notification@gmail.com", "team142020");
 
 app.post('/api/login', (req, res) => {
   const person = req.body;
