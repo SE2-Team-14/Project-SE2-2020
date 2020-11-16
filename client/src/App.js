@@ -3,7 +3,7 @@ import './App.css';
 import Container from "react-bootstrap/Container";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Redirect, Route, Link } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import { Switch } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import API from './api/API';
