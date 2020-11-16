@@ -1,6 +1,6 @@
 import Course from './course';
 import Lecture from './lecture';
-import Person from './person';
+import Person from './Person';
 const baseURL = "http://localhost:3001/api";
 
 
