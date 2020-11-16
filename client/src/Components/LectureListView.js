@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, Col, Row, Jumbotron, Button, Modal, Form } from 'react-bootstrap';
+import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
 import Booking from '../api/booking'
 
