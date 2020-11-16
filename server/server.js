@@ -20,7 +20,7 @@ const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error
 
 const PORT = 3001;
 
-app = new express();
+let app = new express();
 
 // Set-up logging
 app.use(morgan('tiny'));
