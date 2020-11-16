@@ -1,6 +1,7 @@
 import React from 'react';
-import Table from "react-bootstrap/Table";
-import Jumbotron from "react-bootstrap/Jumbotron";
+import ListGroup from "react-bootstrap/ListGroup";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import API from '../api/API';
 
@@ -18,11 +19,14 @@ class BookingTable extends React.Component {
         })
     }
 
-    createRow = (enroll) => {
+
+
+    /*createRow = (enroll) => {
+        console.log(enroll)
         return (
 
             <tr>
-                <td> {enroll.studentId}</td>
+                <td> {enroll.id}</td>
                 <td> {enroll.date}</td>
                 <td> {enroll.startingTime}</td>
                 <td> {enroll.endingTime}</td>
@@ -31,11 +35,7 @@ class BookingTable extends React.Component {
             </tr>
         )
     }
-
-    render() {
-        return (
-            <>
-                <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+    <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                     {this.state.enrolls.length === 0 && <h4> There are no bookings yet for the course {this.props.course}</h4>}
                     {this.state.enrolls.length > 0 && <h4> Bookings for the course {this.props.course}</h4>}
                     {this.state.enrolls.length > 0 && <Table bordered striped={true} size="sm">
@@ -51,7 +51,74 @@ class BookingTable extends React.Component {
                         <tbody>{this.state.enrolls.map((e) => this.createRow(e))}</tbody>
 
                     </Table>}
-                </Jumbotron>
+                </Jumbotron>*/
+
+
+    TableItem = (enroll) => {
+
+        return (
+            <ListGroup.Item className='border mt-1'>
+                <Row className='justify-content-around'>
+                    <Col xs={1} className='text-center'>
+                        {enroll.date}
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        {enroll.startingTime}
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        {enroll.endingTime}
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        {enroll.classroomId}
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        {enroll.id}
+                    </Col>
+                </Row>
+            </ListGroup.Item>
+        );
+    }
+
+    render() {
+        return (
+            <>{this.state.enrolls.length === 0 && <ListGroup>
+                <Row className='justify-content-around'>
+                    <h1>There are no bookings yet for the course {this.props.course}</h1>
+                </Row>
+            </ListGroup>}
+                {this.state.enrolls.length > 0 && <ListGroup>
+                    <Row className='justify-content-around'>
+                        <h1>Booked Students for the course {this.props.course}</h1>
+                    </Row>
+                    <ListGroup.Item className='border'>
+                        <Row className='justify-content-around'>
+                            <Col xs={1} className='text-center'>
+                                <strong>Date</strong>
+                            </Col>
+                            <Col xs={1} className='text-center'>
+                                <strong>Starting Time</strong>
+                            </Col>
+                            <Col xs={1} className='text-center'>
+                                <strong>Ending Time</strong>
+                            </Col>
+                            <Col xs={1} className='text-center'>
+                                <strong>Classroom</strong>
+                            </Col>
+                            <Col xs={1} className='text-center'>
+                                <strong>Student ID</strong>
+                            </Col>
+                        </Row>
+
+                    </ListGroup.Item>
+                    {
+                        this.state.enrolls.map((e) =>
+
+                            this.TableItem(e)
+                        )
+
+
+                    }
+                </ListGroup>}
             </>
         )
     }

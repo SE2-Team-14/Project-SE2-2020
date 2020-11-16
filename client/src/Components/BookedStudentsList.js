@@ -10,7 +10,6 @@ class BookedStudentsList extends React.Component {
         super(props)
         this.state = {
             courses: [],
-            students: [[{ id: "s111", name: "Giova", surname: "CB", date: "13/11/2020", time: "13:00" }, { id: "s222", name: "Tommy", surname: "Guaste", date: "13/11/2020", time: "13:00" }], []],
             tables: [],
         }
     }

@@ -73,7 +73,7 @@ exports.getCourses = function (studentId) {
 
 exports.getEnrolledStudentsByCourseName = function (courseName) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM ENROLLMENT, COURSE, LECTURE WHERE ENROLLMENT.courseId = COURSE.courseId AND LECTURE.courseId = COURSE.courseId AND COURSE.name = ?";
+        const sql = "SELECT * FROM ENROLLMENT, COURSE, LECTURE, PERSON WHERE ENROLLMENT.courseId = COURSE.courseId AND LECTURE.courseId = COURSE.courseId AND ENROLLMENT.email = PERSON.email AND COURSE.name = ?";
         db.all(sql, [courseName], (err, row) => {
             if (err)
                 reject(err);
