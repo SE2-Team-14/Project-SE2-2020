@@ -77,6 +77,29 @@ async function bookSeat(booking){
     });
 }
 
+async function increaseSeats(lecture){
+    const url = baseURL + '/student-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/increase-seats`, {
+            method: 'PUT',
+            headers: {
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify(lecture),
+        }).then((response) => {
+            if(response.ok){
+                resolve(null);
+            } else {
+                response.json()
+                .then((obj) => {reject(obj);})
+                .catch((err) => reject({errors: [{param: 'Application', msg: 'Cannot parse server response'}]}));
+            }
+        }).catch((err) => {reject({errors: [{param: 'Server', msg: 'Cannot communicate'}]})});
+    });
+}
+
+
 async function getCoursesNames() {
     const url = baseURL + '/getCourses';
     const response = await fetch(`${url}`);
@@ -137,6 +160,6 @@ async function getEnrollments(course) {
     }
 }
 
-const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers, getClassrooms, bookSeat };
+const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers, getClassrooms, bookSeat, increaseSeats };
 
 export default API;

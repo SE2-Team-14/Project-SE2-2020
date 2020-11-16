@@ -30,6 +30,7 @@ app.use(express.json());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "*"); 
   next();
 });
 
@@ -119,6 +120,19 @@ app.post('/api/student-home/book', (req, res) => {
       res.status(400).end();
   } else {
       bookingDao.addBoocking(booking)
+      .then(() => res.status(200).end())
+      .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+  }
+});
+
+//PUT api/student-home/increase-seats
+app.put('/api/student-home/increase-seats', (req, res) => {
+  const lecture = req.body;
+  
+  if(!lecture){
+      res.status(400).end();
+  } else {
+      lectureDao.increaseBookedSeats(lecture.lectureId)
       .then(() => res.status(200).end())
       .catch((err) => res.status(500).json({errors: [{msg: err}]}));
   }
