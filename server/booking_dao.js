@@ -37,6 +37,21 @@ exports.deleteBooking = function(studentId, lectureId){
     });
 }
 
+exports.getAllBookings = function() {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM BOOKING";
+        db.all(sql, [], (err, rows) => {
+            if(err)
+                reject(err);
+            else{
+                if(rows)
+                    resolve(rows.map((row)=> createBooking(row)));
+                else
+                    resolve(undefined);
+            }
+        })
+    })
+}
 exports.getBookings = function(studentId){
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM BOOKING WHERE studentId = ?";

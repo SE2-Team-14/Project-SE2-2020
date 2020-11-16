@@ -136,6 +136,18 @@ async function getClassrooms() {
     throw err;
 }
 
+async function getAllBookings() {
+    const url = baseURL +'/getAllBookings';
+    const response = await fetch(`${url}`);
+    const bookingsJson = await response.json();
+
+    if (response.ok) {
+        return bookingsJson.map((b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime));
+    }
+    const err = { status: response.status, errors: bookingsJson.errors };
+    throw err;
+}
+
 async function getCourses(teacher) {
     let url = "/courses?teacher=" + teacher;
     const response = await fetch(baseURL + url);
@@ -184,6 +196,7 @@ const API = {
     bookSeat,
     increaseSeats,
     getPersonName,
+    getAllBookings,
 };
 
 export default API;

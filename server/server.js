@@ -119,6 +119,11 @@ app.get("/api/getClassrooms", (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+app.get('/api/getAllBookings', (req, res) => {
+  bookingDao.getAllBookings().then((bookings) => res.json(bookings))
+  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
 //POST api/student-home/book
 app.post('/api/student-home/book', (req, res) => {
   const booking = req.body;

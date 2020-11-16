@@ -7,12 +7,13 @@ class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: ''};
+        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: '', bookings: [], showDoubleBookError: false};
     }
     componentDidMount() {
         API.getLecturesList(this.props.email)
             .then((lectures) => this.setState({ lectures: lectures }));
         this.setState({id: this.props.id});
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
     }
 
     findCourseName = (courseId) => {
@@ -33,10 +34,6 @@ class LectureListView extends React.Component {
     handleDeleteClick = (lecture, lectureId) => {
         this.setState({showDeleteSuccess: true, booklecture: lecture, booklectureId: lectureId});
     }
-
-    handleClose = () => {
-        this.setState({ showBookSuccess: false, showDeleteSuccess: false });
-    }
     
     addBooking = (booking) => {
         API.bookSeat(booking);
@@ -47,30 +44,32 @@ class LectureListView extends React.Component {
     }
 
     handleBook = (studentId, lecture) => {
-        let b = Object.assign({}, Booking);
-        b.studentId = studentId;
-        b.lectureId = lecture.lectureId;
-        b.date = lecture.date;
-        b.startingTime = lecture.startingTime;
-        this.addBooking(b);
-        this.handleIncreaseSeats(lecture);
-        this.setState({showBook: false}, () => API.getLecturesList(this.props.email).then((lectures) => this.setState({lectures: lectures, showBookSuccess: true}) ));
-    }
+        let find=false;
+        for(let b of this.state.bookings){
+            if(b.studentId == studentId && b.lectureId == lecture.lectureId )
+                find = true;
+        }
 
+        if(find)
+            this.setState({showDoubleBookError: true});
+        else {
+            let b = Object.assign({}, Booking);
+            b.studentId = studentId;
+            b.lectureId = lecture.lectureId;
+            b.date = lecture.date;
+            b.startingTime = lecture.startingTime;
+            this.addBooking(b);
+            this.handleIncreaseSeats(lecture);
+            this.setState({showBook: false}, () => API.getLecturesList(this.props.email).then((lectures) => this.setState({lectures: lectures, showBookSuccess: true}) ));
+   
+            }
+        }
     handleClickBook = (id, lecture) => {
         this.setState({showBook: true, lecture: lecture, id: id});
     }
 
-    // handleBook = (event, lecture, lectureId) => {
-    //     event.preventDefault();
-
-    // }
-
-    //Book = (lectureId) =>{
-    //    API.bookLecture
-    //}
     handleClose = () => {
-        this.setState({ showBook: false, showBookSuccess: false });
+        this.setState({ showBook: false, showBookSuccess: false, showDoubleBookError: false });
     }
 
     render() {
@@ -107,6 +106,15 @@ class LectureListView extends React.Component {
                        <Modal.Title>Confirm booking</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Congrats, your booking is saved! Enjoy the lesson!</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal controlid='BookError' show={this.state.showDoubleBookError} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                       <Modal.Title>ERROR!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>You have already book this lesson!</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
@@ -206,7 +214,17 @@ function LectureItem(props) {
                     
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <Button onClick={(event) => props.handleClickBook(props.id, props.lecture)} >Book</Button>
+                    {(props.lecture.numberOfSeats >= maxSeats) &&
+                    <>
+                        <Button disabled >Book</Button>
+                    </>
+                    }
+                    {(props.lecture.numberOfSeats < maxSeats) &&
+                    <>
+                         <Button onClick={(event) => props.handleClickBook(props.id, props.lecture)} >Book</Button>
+                    </>
+
+                    }
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button>Delete</Button>
