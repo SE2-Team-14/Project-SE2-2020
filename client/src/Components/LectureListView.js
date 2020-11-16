@@ -21,8 +21,12 @@ class LectureListView extends React.Component {
 
     findTeacherName = (teacherId) => {
         let teacher = this.props.teachers.find((t) => t.id == teacherId);
-        return teacher;
-        
+        return teacher; 
+    }
+
+    findMaxSeats = (classroomId) => {
+        let classroom = this.props.classrooms.find((c) => c.classroom == classroomId);
+        return classroom.maxNumberOfSeats;
     }
     //handleBookClick = (lecture, lectureId) => {
     //    this.setState({showBookSuccess: true, booklecture: lecture, booklectureId: lectureId});
@@ -46,7 +50,7 @@ class LectureListView extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName}/>
+                        <LectureList lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
                     </Col>
                 </Row>
                 <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
@@ -79,7 +83,7 @@ function LectureList(props) {
                         <strong>Teacher Name</strong>
                     </Col>
                     <Col xs={1} className='text-center'>
-                        <strong>Data</strong>
+                        <strong>Date</strong>
                     </Col>
                     <Col xs={1} className='text-center'>
                         <strong>Starting Time</strong>
@@ -101,7 +105,7 @@ function LectureList(props) {
             {
                 props.lecture.map((l) =>
 
-                    <LectureItem key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} />
+                    <LectureItem key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} />
                 )
 
 
@@ -115,6 +119,7 @@ function LectureList(props) {
 function LectureItem(props) {
     let courseName = props.findCourseName(props.lecture.courseId);
     let teacher = props.findTeacherName(props.lecture.teacherId);
+    let maxSeats = props.findMaxSeats(props.lecture.classroomId);
     return (
         <ListGroup.Item className='border mt-1'>
             <Row className='justify-content-around'>
@@ -137,7 +142,7 @@ function LectureItem(props) {
                     {props.lecture.classroomId}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {}
+                    {props.lecture.numberOfSeats}/{maxSeats}
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button>Book</Button>
@@ -148,7 +153,7 @@ function LectureItem(props) {
             </Row>
         </ListGroup.Item>
     );
-    //i++;
+    
 }
 
 

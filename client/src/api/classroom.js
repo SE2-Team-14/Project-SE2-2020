@@ -1,8 +1,8 @@
 const { max } = require("moment");
 
 class Classroom {
-    constructor (name, maxNumberOfSeats) {
-        this.name = name;
+    constructor (classroom, maxNumberOfSeats) {
+        this.classroom = classroom;
         this.maxNumberOfSeats = maxNumberOfSeats;
     }
 }

@@ -3,6 +3,9 @@
 const db = require('./db');
 const Classroom = require('./classroom');
 
+function createClassroom(row){
+    return new Classroom(row.classroom, row.maxNumberOfSeats);
+}
 exports.addClassroom = function(classroom) {
 	return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO CLASSROOM(classroom, maxNumberOfSeats) VALUES(?, ?)';
@@ -33,6 +36,18 @@ exports.deleteClassroom = function(classroom){
     });
 }
 
+exports.getClassrooms = function(){
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM CLASSROOM";
+        db.all(sql, [], (err, rows) => {
+            if(err)
+                reject(err);
+            else
+                resolve(rows.map((row => createClassroom(row))))
+        })
+    })
+}
+/*
 exports.getMaxNumberOfSeats = function(classroom){
     return new Promise((resolve, reject) => {
         const sql = "SELECT maxNumberOfSeats FROM CLASSROOM WHERE classroom = ?";
@@ -47,4 +62,4 @@ exports.getMaxNumberOfSeats = function(classroom){
             }
         });
     });
-}
+}*/

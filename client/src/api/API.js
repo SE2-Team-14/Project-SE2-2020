@@ -1,6 +1,7 @@
 import Course from './course';
 import Lecture from './lecture';
 import Person from './Person';
+import Classroom from './classroom';
 const baseURL = "http://localhost:3001/api";
 
 
@@ -78,6 +79,18 @@ async function getTeachers() {
     throw err;
 }
 
+async function getClassrooms() {
+    const url = baseURL + '/getClassrooms';
+    const response = await fetch(`${url}`);
+    const classroomsJson = await response.json();
+
+    if (response.ok) {
+        return classroomsJson.map((c) => new Classroom(c.classroom, c.maxNumberOfSeats));
+    }
+    const err = { status: response.status, errors: classroomsJson.errors };
+    throw err;
+}
+
 async function getCourses(teacher) {
     let url = "/courses?teacher=" + teacher;
     const response = await fetch(baseURL + url);
@@ -102,6 +115,6 @@ async function getEnrollments(course) {
     }
 }
 
-const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers };
+const API = { isAuthenticated, login, getLecturesList, getCourses, getEnrollments, getCoursesNames, getTeachers, getClassrooms };
 
 export default API;
