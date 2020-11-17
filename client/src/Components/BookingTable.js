@@ -72,7 +72,7 @@ class BookingTable extends React.Component {
                         {enroll.classroomId}
                     </Col>
                     <Col xs={1} className='text-center'>
-                        {enroll.id}
+                        {enroll.studentId}
                     </Col>
                 </Row>
             </ListGroup.Item>
