@@ -14,6 +14,7 @@ const classroomDao = require('./classroom_dao');
 const bookingDao = require('./booking_dao');
 const Booking = require('./booking');
 const EmailSender = require('./sendemail/EmailSender');
+const setMidnightTimer = require("./midnightTimer");
 
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
@@ -41,7 +42,10 @@ if (require.main === module) { // start the server only if it is not imported by
   run(() => console.log(`Server running on http://localhost:${PORT}/`));
 }
 
+
 const emailSender = new EmailSender('gmail', "pulsebs14.notification@gmail.com", "team142020");
+setMidnightTimer(()=> console.log("Inserire invio email"), 5000/**Debug only, delete this on release*/);
+
 
 app.post('/api/login', (req, res) => {
   const person = req.body;
