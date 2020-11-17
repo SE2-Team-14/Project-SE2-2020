@@ -134,7 +134,7 @@ async function getClassrooms() {
 }
 
 async function getAllBookings() {
-    const url = baseURL +'/getAllBookings';
+    const url = baseURL + '/getAllBookings';
     const response = await fetch(`${url}`);
     const bookingsJson = await response.json();
 
@@ -145,6 +145,7 @@ async function getAllBookings() {
     throw err;
 }
 
+//returns all courses taught by a teacher
 async function getCourses(teacher) {
     let url = "/courses?teacher=" + teacher;
     const response = await fetch(baseURL + url);
@@ -157,6 +158,7 @@ async function getCourses(teacher) {
     }
 }
 
+//gets all students enrolled for lessons in a course
 async function getEnrollments(course) {
     let url = "/enrollment?course=" + course;
     const response = await fetch(baseURL + url);
@@ -169,6 +171,7 @@ async function getEnrollments(course) {
     }
 }
 
+//gets name and surname of a registered user
 async function getPersonName(email) {
     let url = "/name?email=" + email;
     const response = await fetch(baseURL + url);

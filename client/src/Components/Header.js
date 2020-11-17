@@ -15,12 +15,16 @@ const Header = (props) => {
 
         <Navbar bg="info" variant="dark" expand="md" className='col-12'>
 
-          <Navbar.Brand>
+          {context.authUser == null && <Navbar.Brand as={NavLink} to="/login">
             PULSeBS
-        </Navbar.Brand>
-
+          </Navbar.Brand>}
+          {(context.authUser != null && context.authUser.role === "Student") && <Navbar.Brand as={NavLink} to={`/student-home/${context.authUser.email}`}>
+            PULSeBS
+          </Navbar.Brand>}
+          {(context.authUser != null && context.authUser.role === "Teacher") && <Navbar.Brand as={NavLink} to={`/teacher-home/${context.authUser.email}`}>
+            PULSeBS
+          </Navbar.Brand>}
           <Nav className="mr-auto">
-            <Nav.Link as={NavLink} to="/example">Example Link</Nav.Link>
             {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to={`/student-home/${context.authUser.email}/bookable-lectures`}>Bookable Lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/booked-lectures`} >Booked Lectures</Nav.Link>}
           </Nav>
