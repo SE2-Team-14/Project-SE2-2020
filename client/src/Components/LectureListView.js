@@ -63,8 +63,8 @@ class LectureListView extends React.Component {
             b.lectureId = lecture.lectureId;
             b.date = lecture.date;
             b.startingTime = lecture.startingTime;
-            //this.addBooking(b);
-            //this.handleIncreaseSeats(lecture);
+            this.addBooking(b);
+            this.handleIncreaseSeats(lecture);
 
             this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
                 .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));
