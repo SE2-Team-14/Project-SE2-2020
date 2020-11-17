@@ -160,6 +160,19 @@ app.get("/api/name", (req, res) => {
   });
 })
 
+app.post('/api/send-email', (req, res) => {
+  const message = req.body.message;
+  const subject = req.body.subject;
+  const recipient = req.body.recipient;
+
+  emailSender.sendEmail(recipient, subject, message)
+    .then(() => res.status(200).end)
+    .catch((err) => {
+    res.status(500).json({
+      errors: [{ msg: "Error while sending email" }],
+    })
+  });
+}); 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*
