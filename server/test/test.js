@@ -130,7 +130,7 @@ describe('Server side unit test', function () {
     describe('#Test /api/student-home/:email/bookable-lectures', function () {
       var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
       it("returns status 200", function (done) {
-          request(url, function (error, response, body) {
+        request(url, function (error, response, body) {
           expect(response.statusCode).to.equal(200);
           done();
         });
@@ -139,7 +139,7 @@ describe('Server side unit test', function () {
     describe('#Test /api/courses', function () {
       var url = "http://localhost:3001/api/courses";
       it("returns status 200", function (done) {
-          request(url, function (error, response, body) {
+        request(url, function (error, response, body) {
           expect(response.statusCode).to.equal(200);
           done();
         });
@@ -200,49 +200,79 @@ describe('Server side unit test', function () {
       });
     });
 
+    describe("#Test /api/getCourses", function () {
+      var url = "http://localhost:3001/api/courses";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        })
+      })
+    })
+
+    describe("#Test /api/getEnrollments", function () {
+      var url = "http://localhost:3001/api/enrollment";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        })
+      })
+    })
+
+    describe("#Test /api/getPersonName", function () {
+      var url = "http://localhost:3001/api/name";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        })
+      })
+    })
+
   });
 
-  describe('Test #POST book', function() {
+  describe('Test #POST book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
 
-    it('should send parameters to : /api/student-home/book POST', function(done) {
-        chai
-            .request(host)
-            .post(path)
-            //.field({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
-            .set('content-type', 'application/json')
-            .send({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
-            .end(function(error, response, body) {
-                if (error) {
-                    done(error);
-                } else {
-                    expect(response.statusCode).to.equal(200);
-                    done();
-                }
-            });
-    });   
-});
-describe('Test #PUT increase-seats', function() {
-  var host = "http://localhost:3001";
-  var path = "/api/student-home/increase-seats";
-
-  it('should send parameters to : /api/student-home/increase-seats PUT', function(done) {
+    it('should send parameters to : /api/student-home/book POST', function (done) {
       chai
-          .request(host)
-          .put(path)
-          .set('content-type', 'application/json')
-          .send({lectureId: '1'})
-          .end(function(error, response, body) {
-              if (error) {
-                  done(error);
-              } else {
-                  expect(response.statusCode).to.equal(200);
-                  done();
-              }
-          });
-  });   
-});
+        .request(host)
+        .post(path)
+        //.field({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
+        .set('content-type', 'application/json')
+        .send({ studentId: 's1234', lectureId: '1', date: 'd', startingTime: 'd' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+  describe('Test #PUT increase-seats', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/student-home/increase-seats";
+
+    it('should send parameters to : /api/student-home/increase-seats PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .set('content-type', 'application/json')
+        .send({ lectureId: '1' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
 
   describe('Various tests', function () {
 
