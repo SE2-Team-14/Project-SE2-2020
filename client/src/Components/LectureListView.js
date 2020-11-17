@@ -1,19 +1,20 @@
 import React from 'react';
 import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
-import Booking from '../api/booking'
+import Booking from '../api/booking';
 
 class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: '', bookings: [], showDoubleBookError: false};
+        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: '', bookings: [], student: '', showDoubleBookError: false};
     }
     componentDidMount() {
         API.getLecturesList(this.props.email)
             .then((lectures) => this.setState({ lectures: lectures }));
         this.setState({id: this.props.id});
         API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
+        API.getPersonName(this.props.email).then((student) => this.setState({student: student}));
     }
 
     findCourseName = (courseId) => {
@@ -43,6 +44,10 @@ class LectureListView extends React.Component {
         API.increaseSeats(lecture);
     }
 
+    handleEmail = (recipient, subject, message) => {
+        API.sendEmail(recipient, subject, message);
+    }
+
     handleBook = (studentId, lecture) => {
         let find=false;
         for(let b of this.state.bookings){
@@ -58,12 +63,24 @@ class LectureListView extends React.Component {
             b.lectureId = lecture.lectureId;
             b.date = lecture.date;
             b.startingTime = lecture.startingTime;
-            this.addBooking(b);
-            this.handleIncreaseSeats(lecture);
-            this.setState({showBook: false}, () => API.getLecturesList(this.props.email).then((lectures) => this.setState({lectures: lectures, showBookSuccess: true}) ));
-   
-            }
+            //this.addBooking(b);
+            //this.handleIncreaseSeats(lecture);
+
+            this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
+                .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));
+
+            const subject = "Booking confirmed";
+            const message = `Dear ${this.state.student.name},\n` +  
+                            `your booking for the course ${this.findCourseName(lecture.courseId)} ` +   
+                            `of ${lecture.date} at ${lecture.startingTime} has been confirmed.\n` + 
+                            `Please if you cannot be present for the lecture remeber to cancel your booking.\n` + 
+                            `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
+            
+            this.handleEmail(this.props.email, subject, message);
+            
         }
+    }
+
     handleClickBook = (id, lecture) => {
         this.setState({showBook: true, lecture: lecture, id: id});
     }
@@ -221,7 +238,7 @@ function LectureItem(props) {
                     }
                     {(props.lecture.numberOfSeats < maxSeats) &&
                     <>
-                         <Button onClick={(event) => props.handleClickBook(props.id, props.lecture)} >Book</Button>
+                         <Button onClick={() => props.handleClickBook(props.id, props.lecture)} >Book</Button>
                     </>
 
                     }
