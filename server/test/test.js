@@ -31,7 +31,7 @@ var chaiAsPromised = require("chai-as-promised");
 const chaiHttp = require('chai-http');
 const runServer = require('../server');
 const { resolve } = require('path');
-
+var request = require("request");
 chai.should();
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
@@ -126,6 +126,123 @@ describe('Server side unit test', function () {
     server = runServer(done);
   });
 
+  describe('Server #GET methods tests', function () {
+    describe('#Test /api/student-home/:email/bookable-lectures', function () {
+      var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
+      it("returns status 200", function (done) {
+          request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/courses', function () {
+      var url = "http://localhost:3001/api/courses";
+      it("returns status 200", function (done) {
+          request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/enrollment', function () {
+      var url = "http://localhost:3001/api/enrollment";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/getCourses', function () {
+      var url = "http://localhost:3001/api/getCourses";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/getTeachers', function () {
+      var url = "http://localhost:3001/api/getTeachers";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/getClassrooms', function () {
+      var url = "http://localhost:3001/api/getClassrooms";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/name', function () {
+      var url = "http://localhost:3001/api/name";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('#Test /api/getAllBookings', function () {
+      var url = "http://localhost:3001/api/getAllBookings";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+  });
+
+  describe('Test #POST book', function() {
+    var host = "http://localhost:3001";
+    var path = "/api/student-home/book";
+
+    it('should send parameters to : /api/student-home/book POST', function(done) {
+        chai
+            .request(host)
+            .post(path)
+            //.field({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
+            .set('content-type', 'application/json')
+            .send({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
+            .end(function(error, response, body) {
+                if (error) {
+                    done(error);
+                } else {
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                }
+            });
+    });   
+});
+describe('Test #PUT increase-seats', function() {
+  var host = "http://localhost:3001";
+  var path = "/api/student-home/increase-seats";
+
+  it('should send parameters to : /api/student-home/increase-seats PUT', function(done) {
+      chai
+          .request(host)
+          .put(path)
+          .set('content-type', 'application/json')
+          .send({lectureId: '1'})
+          .end(function(error, response, body) {
+              if (error) {
+                  done(error);
+              } else {
+                  expect(response.statusCode).to.equal(200);
+                  done();
+              }
+          });
+  });   
+});
 
   describe('Various tests', function () {
 
