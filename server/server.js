@@ -127,14 +127,13 @@ app.get('/api/getAllBookings', (req, res) => {
 //POST api/student-home/book
 app.post('/api/student-home/book', (req, res) => {
   const booking = req.body.booking;
-  const email = req.body.recipient;
+  const recipient = req.body.recipient;
   const subject = "Booking confirmed";
   const message = `Dear ${req.body.studentName},\n` +  
                   `your booking for the course ${req.body.courseName} ` +   
                   `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` + 
                   `Please if you cannot be present for the lecture remeber to cancel your booking.\n` + 
                   `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
-  const recipient = 'gaetano.gt@live.it';
   if (!booking) {
     res.status(400).end();
   } else {
