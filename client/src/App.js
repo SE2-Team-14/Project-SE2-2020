@@ -103,7 +103,6 @@ class App extends React.Component {
               <Row className="vheight-100">
                 <Col sm={4}></Col>
                 <Col sm={4} className="below-nav">
-                  <Alert variant="success"> Login Page </Alert>
                   <Login loginCallback={this.loginCallback} />
                 </Col>
               </Row>
