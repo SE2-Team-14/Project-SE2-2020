@@ -126,14 +126,22 @@ app.get('/api/getAllBookings', (req, res) => {
 
 //POST api/student-home/book
 app.post('/api/student-home/book', (req, res) => {
-  const booking = req.body;
+  const booking = req.body.booking;
+  const email = req.body.recipient;
+  const subject = "Booking confirmed";
+  const message = `Dear ${req.body.studentName},\n` +  
+                  `your booking for the course ${req.body.courseName} ` +   
+                  `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` + 
+                  `Please if you cannot be present for the lecture remeber to cancel your booking.\n` + 
+                  `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
+  const recipient = 'gaetano.gt@live.it';
   if (!booking) {
     res.status(400).end();
   } else {
     bookingDao.addBoocking(booking)
-      .then(() => res.status(200).end())
+      .then(() => res.status(200).then(emailSender.sendEmail(recipient, subject, message)).end())
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-  }
+  } 
 });
 
 //PUT api/student-home/increase-seats
@@ -160,19 +168,6 @@ app.get("/api/name", (req, res) => {
   });
 })
 
-app.post('/api/send-email', (req, res) => {
-  const message = req.body.message;
-  const subject = req.body.subject;
-  const recipient = req.body.recipient;
-
-  emailSender.sendEmail(recipient, subject, message)
-    .then(() => res.status(200).end)
-    .catch((err) => {
-    res.status(500).json({
-      errors: [{ msg: "Error while sending email" }],
-    })
-  });
-}); 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*

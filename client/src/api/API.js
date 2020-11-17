@@ -52,7 +52,7 @@ async function getLecturesList(email) {
     throw err;
 }
 
-async function bookSeat(booking) {
+async function bookSeat(booking, studentName, courseName, date, startingTime, recipient) {
     const url = baseURL + '/student-home';
 
     return new Promise((resolve, reject) => {
@@ -61,7 +61,14 @@ async function bookSeat(booking) {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(booking),
+            body: JSON.stringify({
+                booking: booking, 
+                studentName: studentName,
+                courseName: courseName,
+                date: date,
+                startingTime: startingTime,
+                recipient: recipient,
+            }),
         }).then((response) => {
             if (response.ok) {
                 resolve(null);
@@ -184,30 +191,6 @@ async function getPersonName(email) {
     }
 }
 
-async function sendEmail(recipient, subject, message) {
-    return new Promise((resolve, reject) => {
-        fetch(baseURL + "/send-email", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                recipient: recipient,
-                subject: subject,
-                message: message,
-            }),
-        }).then((response) => {
-            if (response.ok) {
-                resolve(response.json());
-            } else {
-                response.json()
-                    .then((obj) => { reject(obj); })
-                    .catch((err) => { reject({ errors: [{ param: "Application", msg: "Cannot parse server response" }] }) });
-            }
-        }).catch((err) => { reject({ errors: [{ param: "Server", msg: "Cannot communicate" }] }) });
-    });
-}
-
 const API = {
     isAuthenticated,
     login,
@@ -221,7 +204,6 @@ const API = {
     increaseSeats,
     getPersonName,
     getAllBookings,
-    sendEmail
 };
 
 export default API;
