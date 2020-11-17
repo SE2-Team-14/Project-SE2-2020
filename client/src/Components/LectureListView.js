@@ -36,8 +36,8 @@ class LectureListView extends React.Component {
         this.setState({showDeleteSuccess: true, booklecture: lecture, booklectureId: lectureId});
     }
     
-    addBooking = (booking) => {
-        API.bookSeat(booking);
+    addBooking = (booking, studentName, courseName, date, startingTime, recipient) => {
+        API.bookSeat(booking, studentName, courseName, date, startingTime, recipient);
     }
 
     handleIncreaseSeats = (lecture) => {
@@ -63,21 +63,12 @@ class LectureListView extends React.Component {
             b.lectureId = lecture.lectureId;
             b.date = lecture.date;
             b.startingTime = lecture.startingTime;
-            this.addBooking(b);
+
+            this.addBooking(b, this.state.student.name, this.findCourseName(lecture.courseId), lecture.date, lecture.startingTime, this.props.email);
             this.handleIncreaseSeats(lecture);
 
             this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
-                .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));
-
-            const subject = "Booking confirmed";
-            const message = `Dear ${this.state.student.name},\n` +  
-                            `your booking for the course ${this.findCourseName(lecture.courseId)} ` +   
-                            `of ${lecture.date} at ${lecture.startingTime} has been confirmed.\n` + 
-                            `Please if you cannot be present for the lecture remeber to cancel your booking.\n` + 
-                            `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
-            
-            this.handleEmail(this.props.email, subject, message);
-            
+                .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));          
         }
     }
 
