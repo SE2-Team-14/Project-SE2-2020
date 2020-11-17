@@ -68,7 +68,8 @@ class LectureListView extends React.Component {
             this.handleIncreaseSeats(lecture);
 
             this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
-                .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));          
+                .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));      
+            API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         }
     }
 
