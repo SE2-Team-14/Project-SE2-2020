@@ -136,7 +136,7 @@ describe('Server side unit test', function () {
         });
       });
     });
-    
+
     describe('#Test /api/student-home/student@test.it/bookable-lectures', function () {
       let student = new Person("s12345", "testName", "testSurname", "Student", "student@test.it", "Password");
       PersonDao.createPerson(student);
@@ -153,23 +153,35 @@ describe('Server side unit test', function () {
     });
   });
 
-    describe('#Test /api/getCourses', function () {
+    /*describe('#Test /api/getCourses', function () {
       var url = "http://localhost:3001/api/getCourses";
       it("returns status 200", function (done) {
         request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
+          
+          done();
+        });
+      });
+    });*/
+
+    describe('#Test /api/getCourses', function () {
+      var url = "http://localhost:3002/api/getCourses";
+      it("returns status 500", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(500);
           done();
         });
       });
     });
 
+
     describe('#Test /api/getCourses/body', function () {
       let course = new Course("courseTestId", "teacherTestId", "nameTestCourse");
       CourseDao.createCourse(course);
       var url = "http://localhost:3001/api/getCourses";
-      it("returns status 200", function (done) {
+      it("returns courseTestId", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(course));
+          expect(response.statusCode).to.equal(200);
           done();
         });
       });
