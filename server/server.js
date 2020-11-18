@@ -44,7 +44,7 @@ if (require.main === module) { // start the server only if it is not imported by
 
 
 const emailSender = new EmailSender('gmail', "pulsebs14.notification@gmail.com", "team142020");
-setMidnightTimer(()=> console.log("Inserire invio email"), 5000/**Debug only, delete this on release*/);
+setMidnightTimer(() => console.log("Inserire invio email"), 5000/**Debug only, delete this on release*/);
 
 
 app.post('/api/login', (req, res) => {
@@ -93,6 +93,7 @@ app.get("/api/courses", (req, res) => {
 })
 
 //returns all students booked for a specific course
+//called enrollment as a mistake
 app.get("/api/enrollment", (req, res) => {
   enrollmentDao.getEnrolledStudentsByCourseName(req.query.course).then((students) => {
     let empty = [];
@@ -103,7 +104,7 @@ app.get("/api/enrollment", (req, res) => {
   })
     .catch((err) => {
       res.status(500).json({
-        errors: [{ msg: "Error while getting enrolled students" }],
+        errors: [{ msg: "Error while getting booked students" }],
       });
     });
 })
@@ -125,7 +126,7 @@ app.get("/api/getClassrooms", (req, res) => {
 
 app.get('/api/getAllBookings', (req, res) => {
   bookingDao.getAllBookings().then((bookings) => res.json(bookings))
-  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
 //POST api/student-home/book
@@ -133,18 +134,18 @@ app.post('/api/student-home/book', (req, res) => {
   const booking = req.body.booking;
   const recipient = req.body.recipient;
   const subject = "Booking confirmed";
-  const message = `Dear ${req.body.studentName},\n` +  
-                  `your booking for the course ${req.body.courseName} ` +   
-                  `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` + 
-                  `Please if you cannot be present for the lecture remeber to cancel your booking.\n` + 
-                  `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
+  const message = `Dear ${req.body.studentName},\n` +
+    `your booking for the course ${req.body.courseName} ` +
+    `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` +
+    `Please if you cannot be present for the lecture remeber to cancel your booking.\n` +
+    `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
   if (!booking) {
     res.status(400).end();
   } else {
     bookingDao.addBoocking(booking)
       .then(() => res.status(200).then(emailSender.sendEmail(recipient, subject, message)).end())
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-  } 
+  }
 });
 
 //PUT api/student-home/increase-seats
@@ -162,7 +163,6 @@ app.put('/api/student-home/increase-seats', (req, res) => {
 
 app.get("/api/name", (req, res) => {
   personDao.getPersonByEmail(req.query.email).then((person) => {
-    console.log("server", person)
     res.json(person)
   }).catch((err) => {
     res.status(500).json({
