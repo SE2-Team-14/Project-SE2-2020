@@ -164,9 +164,10 @@ describe('Server side unit test', function () {
     });*/
 
     describe('#Test /api/getCourses', function () {
-      var url = "http://localhost:3002/api/getCourses";
+      var url = "http://localhost:3001/api/getCourses";
       it("returns status 500", function (done) {
         request(url, function (error, response, body) {
+          
           expect(response.statusCode).to.equal(500);
           done();
         });
