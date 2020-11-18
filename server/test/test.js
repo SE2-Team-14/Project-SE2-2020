@@ -136,24 +136,23 @@ describe('Server side unit test', function () {
         });
       });
     });
-    describe('#Test /api/courses', function () {
-      var url = "http://localhost:3001/api/courses";
-      it("returns status 200", function (done) {
+    
+    describe('#Test /api/student-home/student@test.it/bookable-lectures', function () {
+      let student = new Person("s12345", "testName", "testSurname", "Student", "student@test.it", "Password");
+      PersonDao.createPerson(student);
+      let lecture = new Lecture(12345, "testCourseId", "testTeacherId", "testDate", "testStartingTime", "testEndingTime", "1", 12, 0 );
+      LectureDao.addLecture(lecture);
+      let enrollment = new Enrollment("testCourseId", "student@test.it");
+      EnrollmentDao.addEnrollment(enrollment);
+      var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
+      it("returns lecture 12345", function (done) {
         request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
+          expect(response.body).to.deep.include(Array.from(lecture));
           done();
         });
-      });
     });
-    describe('#Test /api/enrollment', function () {
-      var url = "http://localhost:3001/api/enrollment";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
+  });
+
     describe('#Test /api/getCourses', function () {
       var url = "http://localhost:3001/api/getCourses";
       it("returns status 200", function (done) {
@@ -163,6 +162,20 @@ describe('Server side unit test', function () {
         });
       });
     });
+
+    describe('#Test /api/getCourses/body', function () {
+      let course = new Course("courseTestId", "teacherTestId", "nameTestCourse");
+      CourseDao.createCourse(course);
+      var url = "http://localhost:3001/api/getCourses";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.body).to.deep.include(Array.from(course));
+          done();
+        });
+      });
+      
+    });
+
     describe('#Test /api/getTeachers', function () {
       var url = "http://localhost:3001/api/getTeachers";
       it("returns status 200", function (done) {
@@ -172,6 +185,19 @@ describe('Server side unit test', function () {
         });
       });
     });
+
+    describe('#Test /api/getTeachers/body', function () {
+      let teacher = new Person(1, "testName", "testSurname", "Teacher", "teacher@test.it", "password");
+      PersonDao.createPerson(teacher);
+      var url = "http://localhost:3001/api/getTeachers";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.body).to.deep.include(Array.from(teacher));
+          done();
+        });
+      });
+    });
+
     describe('#Test /api/getClassrooms', function () {
       var url = "http://localhost:3001/api/getClassrooms";
       it("returns status 200", function (done) {
@@ -181,6 +207,21 @@ describe('Server side unit test', function () {
         });
       });
     });
+
+    describe('#Test /api/getClassrooms/body', function () {
+      let classroom = new Classroom("10A", 50);
+      ClassroomDao.addClassroom(classroom);
+      var url = "http://localhost:3001/api/getClassrooms";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.body).to.deep.include(Array.from(classroom));
+          done();
+          
+        });
+      });
+      
+    });
+
     describe('#Test /api/name', function () {
       var url = "http://localhost:3001/api/name";
       it("returns status 200", function (done) {
@@ -190,6 +231,7 @@ describe('Server side unit test', function () {
         });
       });
     });
+
     describe('#Test /api/getAllBookings', function () {
       var url = "http://localhost:3001/api/getAllBookings";
       it("returns status 200", function (done) {
@@ -198,6 +240,19 @@ describe('Server side unit test', function () {
           done();
         });
       });
+    });
+
+    describe('#Test /api/getAllBookings/body', function () {
+      let booking = new Booking(1, 154, "date", "startingTime");
+      BookingDao.addBoocking(booking);
+      var url = "http://localhost:3001/api/getAllBookings";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.body).to.deep.include(Array.from(booking));
+          done();
+        });
+      });
+      BookingDao.deleteBooking(booking);
     });
 
     describe("#Test /api/getCourses", function () {
@@ -232,7 +287,7 @@ describe('Server side unit test', function () {
 
   });
 
-  describe('Test #POST book', function () {
+/*  describe('Test #POST book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
 
@@ -252,7 +307,7 @@ describe('Server side unit test', function () {
           }
         });
     });
-  });
+  });*/
   describe('Test #PUT increase-seats', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/increase-seats";
