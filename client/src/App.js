@@ -7,7 +7,6 @@ import { Redirect, Route } from 'react-router-dom';
 import { Switch } from 'react-router';
 import { withRouter } from 'react-router-dom';
 import API from './api/API';
-import Alert from "react-bootstrap/Alert";
 
 import Header from './Components/Header';
 import Login from './Components/Login';
