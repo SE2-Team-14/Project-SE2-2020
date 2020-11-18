@@ -165,7 +165,7 @@ describe('Server side unit test', function () {
       });
     });*/
 
-
+    /*
     describe('#Test /api/getCourses', function () {
       var url = "http://localhost:3001/api/getCourses";
       it("returns status 500", function (done) {
@@ -176,7 +176,7 @@ describe('Server side unit test', function () {
         });
       });
     });
-
+    */
 
     describe('#Test /api/getCourses/body', function () {
       let course = new Course("courseTestId", "teacherTestId", "nameTestCourse");
@@ -351,7 +351,7 @@ describe('Server side unit test', function () {
     })
 
   });
-
+  /*
   describe('Test #POST book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
@@ -372,7 +372,7 @@ describe('Server side unit test', function () {
           }
         });
     });
-  });
+  });*/
   describe('Test #PUT increase-seats', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/increase-seats";
