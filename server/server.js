@@ -15,6 +15,9 @@ const bookingDao = require('./booking_dao');
 const Booking = require('./booking');
 const EmailSender = require('./sendemail/EmailSender');
 const setMidnightTimer = require("./midnightTimer");
+const midnightTimer = require('./midnightTimer');
+const moment = require('moment');
+
 
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
@@ -44,7 +47,32 @@ if (require.main === module) { // start the server only if it is not imported by
 
 
 const emailSender = new EmailSender('gmail', "pulsebs14.notification@gmail.com", "team142020");
-setMidnightTimer(() => console.log("Inserire invio email"), 5000/**Debug only, delete this on release*/);
+setMidnightTimer(() => sendEmailsAtMidnight());
+
+function sendEmailsAtMidnight() {
+
+  personDao.getTeachers().then((teachers) => {
+    for(let teacher of teachers){
+        lectureDao.getTomorrowsLecturesList(teacher.id).then((lectures) => {    
+            for(let lecture of lectures){
+              courseDao.getCourseByID(lecture.courseId).then((courses) => {
+                  for(let course of courses){
+
+                    const recipient = 'gaetano.gt@live.it';
+                    const subject = "Bookings ended";
+                    const message = `Dear ${teacher.name},\n` +
+                                    `bookings for the course ${course.name} ended. ` +
+                                    `${lecture.numberOfSeats} students have booked their seats.\n` + 
+                                    `You can get the complete list of the students on your personal page.\n`; 
+                    
+                    emailSender.sendEmail(recipient, subject, message);
+                  }
+              })
+            }
+        }
+      )}
+  })
+}
 
 
 app.post('/api/login', (req, res) => {

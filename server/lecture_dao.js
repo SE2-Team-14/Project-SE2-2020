@@ -2,6 +2,7 @@
 
 const db = require('./db');
 const Lecture = require('./lecture');
+const moment = require('moment');
 
 function createLecture(row){
     return new Lecture(row.lectureId, row.courseId, row.teacherId, row.date, row.startingTime, row.endingTime, row.inPresence, row.classroomId, row.numberOfSeats);
@@ -112,4 +113,23 @@ exports.getMaxSeats = function(classroomId){
             }
         })
     })
+}
+
+exports.getTomorrowsLecturesList = function(teacherId){
+    let tomorrow = moment().format('DD/MM/YYYY');
+
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM LECTURE WHERE date = ? AND teacherId = ?";
+        db.all(sql, [tomorrow, teacherId], (err, rows) => {
+            if(err)
+                reject(err);
+            else{
+                if(rows){
+                    resolve(rows);
+                }
+                else 
+                    resolve(undefined);
+            }
+        });
+    });
 }

@@ -41,13 +41,14 @@ exports.deleteCourseById = function (courseId) {
 exports.getCourseByID = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM COURSE WHERE courseId = ?";
-        db.all(sql, [courseId], (err, row) => {
+        db.all(sql, [courseId], (err, rows) => {
             if (err)
                 reject(err);
             else {
-                if (row)
-                    resolve(createCourse(row));
-                else
+                if (rows){
+                    let course = rows.map((row => createCourse(row)));
+                    resolve(course);
+                } else
                     resolve(undefined);
             }
         });
