@@ -41,7 +41,7 @@ exports.deleteLecture = function(lectureId){
 exports.getLectureById = function(lectureId){
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM LECTURE WHERE lectureId = ?";
-        db.all(sql, [lectureId], (err, row) => {
+        db.get(sql, [lectureId], (err, row) => {
             if(err)
                 reject(err);
             else{

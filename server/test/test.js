@@ -396,21 +396,6 @@ describe('Server side unit test', function () {
     });
   });
 
-
-  describe('Various tests', function () {
-
-
-    describe('#Test a test that should fail', function () {
-      it('this should fail', function () {
-        let classroom = new Classroom('12', 50);
-        ClassroomDao.addClassroom(classroom);
-        let lecture = new Lecture(null, 'C12', 'D12', '12/12/12', '12.00', '12.12', 'true', '12', 100);
-        expect(LectureDao.addLecture(lecture), 'Cannot register a lecture with more seats than max seats for the classroom').to.be.rejected;
-      });
-    });
-
-  });
-
   describe('Test university members', function () {
 
     describe('#Create a student', function () {
@@ -429,7 +414,7 @@ describe('Server side unit test', function () {
 
     describe('Get person name', function () {
       it('Get name', function () {
-        PersonDao.getPersonByID('d1234').then(person => assert.strictEqual('Cataldo', person.name));
+        return PersonDao.getPersonByID('d1234').then(person => assert.strictEqual('Cataldo', person.name));
       });
     });
 
@@ -462,9 +447,9 @@ describe('Server side unit test', function () {
       });
     });
 
-    describe('#Gets a course name', function () {
+    describe('#Gets a course by its id', function () {
       it('Test course name', function () {
-        CourseDao.getCourseByID('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
+        return CourseDao.getCourseByID('01ABC').then(course => assert.strictEqual('Softeng II', course.name));
       });
     });
 
@@ -490,6 +475,36 @@ describe('Server side unit test', function () {
     describe('#Deletes an enrollment', function () {
       it('Deletes an enrollment', function () {
         return EnrollmentDao.deleteEnrollment('C123', 's123@email.it');
+      });
+    });
+
+  });
+
+  describe('Test lectures', function () {
+
+    describe('#Gets a list of lectures', function () {
+      it("Gets a lecture by teacher's id", function () {
+          let enrollment = new Enrollment("testCourse", "test@testone");
+          EnrollmentDao.addEnrollment(enrollment);
+          return LectureDao.getLecturesList("test@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"));
+      });
+    });
+
+    describe('#Gets a lecture', function () {
+      it('Gets a lecture by its id', function () {
+          return LectureDao.getLecturesList("test@testone").then(lectures => LectureDao.getLectureById(lectures[0].lectureId).then((lecture => assert.strictEqual(lecture.courseId, "testCourse"))));
+      });
+    });
+
+    describe('#Deletes a lecture', function () {
+      it('Deletes a lecture', function () {
+        return LectureDao.getLecturesList("test@testone").then(lectures => LectureDao.getLectureById(lectures[0].lectureId).then((lecture => LectureDao.deleteLecture(lecture.lectureId))));
+      });
+    });
+
+    describe('#Deletes the enrollment', function () {
+      it("Deletes the previous enrollment", function () {
+        return EnrollmentDao.deleteEnrollment("testCourse", "test@testone");
       });
     });
 
