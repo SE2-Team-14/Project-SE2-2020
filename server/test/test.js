@@ -485,7 +485,11 @@ describe('Server side unit test', function () {
     describe('#Gets a list of lectures', function () {
       it("Gets a lecture by teacher's id", function () {
           let enrollment = new Enrollment("testCourse", "test@testone");
+          let student = new Person("s444", "testname", "testsurname", "student", "test@testone", "1233");
+          let lecture = new Lecture(null, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "true", "71", 10000);
+          PersonDao.createPerson(student);
           EnrollmentDao.addEnrollment(enrollment);
+          LectureDao.addLecture(lecture);
           return LectureDao.getLecturesList("test@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"));
       });
     });
@@ -505,6 +509,12 @@ describe('Server side unit test', function () {
     describe('#Deletes the enrollment', function () {
       it("Deletes the previous enrollment", function () {
         return EnrollmentDao.deleteEnrollment("testCourse", "test@testone");
+      });
+    });
+
+    describe('#Deletes the student', function () {
+      it("Deletes the previous student", function () {
+        return PersonDao.deletePersonById("s444");
       });
     });
 
