@@ -81,6 +81,30 @@ async function bookSeat(booking, studentName, courseName, date, startingTime, re
     });
 }
 
+async function deleteBooking(studentId, lectureId){
+    const url = baseURL + '/student-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/delete-book`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentId : studentId,
+                lectureId : lectureId
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
 async function increaseSeats(lecture) {
     const url = baseURL + '/student-home';
 
@@ -103,6 +127,27 @@ async function increaseSeats(lecture) {
     });
 }
 
+async function decreaseSeats(lecture) {
+    const url = baseURL + '/student-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/decrease-seats`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(lecture),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
 
 async function getCoursesNames() {
     const url = baseURL + '/getCourses';
@@ -202,8 +247,10 @@ const API = {
     getClassrooms,
     bookSeat,
     increaseSeats,
+    decreaseSeats,
     getPersonName,
     getAllBookings,
+    deleteBooking,
 };
 
 export default API;
