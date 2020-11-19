@@ -39,11 +39,19 @@ class LectureListView extends React.Component {
     addBooking = (booking, studentName, courseName, date, startingTime, recipient) => {
         API.bookSeat(booking, studentName, courseName, date, startingTime, recipient);
     }
+    
+    deleteBooking = (studentId, lectureId) => {
+        API.deleteBooking(studentId, lectureId);
+    }
 
     handleIncreaseSeats = (lecture) => {
         API.increaseSeats(lecture);
     }
 
+    handleDecreaseSeats = (lecture) => {
+        API.decreaseSeats(lecture);
+    }
+    
     handleEmail = (recipient, subject, message) => {
         API.sendEmail(recipient, subject, message);
     }
@@ -66,28 +74,51 @@ class LectureListView extends React.Component {
 
             this.addBooking(b, this.state.student.name, this.findCourseName(lecture.courseId), lecture.date, lecture.startingTime, this.props.email);
             this.handleIncreaseSeats(lecture);
-
+            API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
             this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
                 .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));      
+        }
+    }
+
+    handleDelete = (studentId, lecture) => {
+        let find=false;
+        for(let b of this.state.bookings){
+            if(b.studentId == studentId && b.lectureId == lecture.lectureId )
+                find = true;
+        }
+        if(!find)
+        {
+            this.setState({showDeleteFail: true});
+        }
+        else
+        {
+            this.deleteBooking(studentId, lecture.lectureId)
+            this.handleDecreaseSeats(lecture)
             API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
+             this.setState({showDelete: false}, () => API.getLecturesList(this.props.email)
+                .then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true})));      
         }
     }
 
     handleClickBook = (id, lecture) => {
         this.setState({showBook: true, lecture: lecture, id: id});
     }
-
-    handleClose = () => {
-        this.setState({ showBook: false, showBookSuccess: false, showDoubleBookError: false });
+    
+    handleClickDelete = (id, lecture) => {
+        this.setState({showDelete: true, lecture: lecture, id: id});
     }
 
+   handleClose = () => {
+        this.setState({ showBook: false, showBookSuccess: false, showDoubleBookError: false, showDelete: false, showDeleteSuccess : false, showDeleteFail : false });
+    }
+   
     render() {
 
         return (
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList handleClickBook={this.handleClickBook} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
+                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
                     </Col>
                 </Row>
                 <Modal controlid='Book' show={this.state.showBook} onHide={this.handleClose} animation={false} >
@@ -100,14 +131,14 @@ class LectureListView extends React.Component {
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
-                <Modal controlid='DeleteSuccess' show={this.state.showDeleteSuccess} onHide={this.handleClose} animation={false} >
+                <Modal controlid='Delete' show={this.state.showDelete} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete Book</Modal.Title>
+                        <Modal.Title>Confirm deleting</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Do you want to delete your lesson prenotation?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={this.handleClose}>No</Button>
-                        <Button variant='secondary' onClick={this.handleClose}>Yes</Button>
+                        <Button variant='primary' onClick={()=>this.handleDelete(this.state.id, this.state.lecture)}>Yes</Button>
+                        <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
                 <Modal controlid='BookSuccess' show={this.state.showBookSuccess} onHide={this.handleClose} animation={false} >
@@ -124,6 +155,24 @@ class LectureListView extends React.Component {
                        <Modal.Title>ERROR!</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>You have already book this lesson!</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal controlid='DeleteSuccess' show={this.state.showDeleteSuccess} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                       <Modal.Title>Confirm deleting</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Your prenotation has been deleted</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal controlid='DeleteFail' show={this.state.showDeleteFail} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                       <Modal.Title>ERROR!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>You are not booked for this lesson!</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
@@ -170,9 +219,9 @@ function LectureList(props) {
 
             </ListGroup.Item>
             {
-                props.lecture.map((l) =>
+                 props.lecture.map((l) =>
 
-                    <LectureItem handleClickBook={props.handleClickBook} id={props.id} key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} />
+                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} id={props.id} key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} />
                 )
 
 
@@ -236,7 +285,18 @@ function LectureItem(props) {
                     }
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <Button>Delete</Button>
+                {(props.lecture.numberOfSeats == 0 ||  !props.lecture.numberOfSeats) &&
+                    <>
+                        <Button disabled >Delete</Button>
+                    </>
+                    }
+                    {(props.lecture.numberOfSeats > 0) &&
+                    <>
+                        <Button onClick={() => props.handleClickDelete(props.id, props.lecture)}>Delete</Button>
+                    </>
+
+                    }
+                    
                 </Col>
             </Row>
         </ListGroup.Item>
