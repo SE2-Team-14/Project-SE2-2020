@@ -57,7 +57,7 @@ function sendEmailsAtMidnight() {
             for(let lecture of lectures){
               courseDao.getCourseByID(lecture.courseId).then((courses) => {
                   for(let course of courses){
-                    console.log("Send to: " + teacher.email);
+                    console.log("Sending an email to: " + teacher.email);
                     const recipient = teacher.email;
                     const subject = "Bookings ended";
                     const message = `Dear ${teacher.name},\n` +
@@ -167,12 +167,13 @@ app.post('/api/student-home/book', (req, res) => {
     `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` +
     `Please if you cannot be present for the lecture remeber to cancel your booking.\n` +
     `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
-  if (!booking) {
+    if (!booking) {
     res.status(400).end();
   } else {
     bookingDao.addBoocking(booking)
-      .then(() => res.status(200).then(emailSender.sendEmail(recipient, subject, message)).end())
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      .then(() => res.status(200).end())
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }))
+      .then(emailSender.sendEmail(recipient, subject, message));
   }
 });
 

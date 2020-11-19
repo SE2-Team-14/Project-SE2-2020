@@ -351,18 +351,18 @@ describe('Server side unit test', function () {
     })
 
   });
-  /*
+
   describe('Test #POST book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
-
+    let b = new Booking("s123", 1, "18/11/2020", "8.30");
     it('should send parameters to : /api/student-home/book POST', function (done) {
       chai
         .request(host)
         .post(path)
         //.field({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
         .set('content-type', 'application/json')
-        .send({ studentId: 's1234', lectureId: '1', date: 'd', startingTime: 'd' })
+        .send({ booking: b, studentName: "testName", courseName: "testCourse", date: "18/11/2020", startingTime: "8.30", recipient: "test@email.com" })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -372,7 +372,9 @@ describe('Server side unit test', function () {
           }
         });
     });
-  });*/
+    BookingDao.deleteBooking("s123", 1);
+  });
+
   describe('Test #PUT increase-seats', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/increase-seats";
@@ -440,6 +442,12 @@ describe('Server side unit test', function () {
     describe('#Delete a teacher', function () {
       it('Deletes a teacher', function () {
         return PersonDao.deletePersonById('d1234');
+      });
+    });
+
+    describe("#Delete someone doesn't exist", function () {
+      it('Deletes nobody', function () {
+        return PersonDao.deletePersonById("-1");
       });
     });
 
