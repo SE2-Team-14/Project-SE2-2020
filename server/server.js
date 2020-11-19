@@ -57,8 +57,8 @@ function sendEmailsAtMidnight() {
             for(let lecture of lectures){
               courseDao.getCourseByID(lecture.courseId).then((courses) => {
                   for(let course of courses){
-
-                    const recipient = 'gaetano.gt@live.it';
+                    console.log("Send to: " + teacher.email);
+                    const recipient = teacher.email;
                     const subject = "Bookings ended";
                     const message = `Dear ${teacher.name},\n` +
                                     `bookings for the course ${course.name} ended. ` +
