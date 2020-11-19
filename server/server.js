@@ -177,6 +177,14 @@ app.post('/api/student-home/book', (req, res) => {
   }
 });
 
+app.delete('/api/student-home/delete-book', (req, res) => {
+  const lectureId = req.body.lectureId;
+  const studentId = req.body.studentId;
+  bookingDao.deleteBooking(studentId,lectureId)
+  .then(() => res.status(200).end())
+  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
 //PUT api/student-home/increase-seats
 app.put('/api/student-home/increase-seats', (req, res) => {
   const lecture = req.body;
@@ -185,6 +193,19 @@ app.put('/api/student-home/increase-seats', (req, res) => {
     res.status(400).end();
   } else {
     lectureDao.increaseBookedSeats(lecture.lectureId)
+      .then(() => res.status(200).end())
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  }
+});
+
+//PUT api/student-home/decrease-seats
+app.put('/api/student-home/decrease-seats', (req, res) => {
+  const lecture = req.body;
+
+  if (!lecture) {
+    res.status(400).end();
+  } else {
+    lectureDao.decreaseBookedSeats(lecture.lectureId)
       .then(() => res.status(200).end())
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
