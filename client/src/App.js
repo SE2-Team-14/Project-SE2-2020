@@ -15,7 +15,7 @@ import TeacherHomePage from './Components/TeacherHomePage';
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
 import ManageLectureList from './Components/ManageLectureList';
-import BookedLessonsCalendar from './Components/BookedLessonsCalendar';
+import BookedLessonsCalendar from './Components/LessonsCalendar';
 
 import { AuthContext } from './auth/AuthContext'
 
