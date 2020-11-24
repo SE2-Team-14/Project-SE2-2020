@@ -62,7 +62,7 @@ async function bookSeat(booking, studentName, courseName, date, startingTime, re
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                booking: booking, 
+                booking: booking,
                 studentName: studentName,
                 courseName: courseName,
                 date: date,
@@ -81,7 +81,7 @@ async function bookSeat(booking, studentName, courseName, date, startingTime, re
     });
 }
 
-async function deleteBooking(studentId, lectureId){
+async function deleteBooking(studentId, lectureId) {
     const url = baseURL + '/student-home';
 
     return new Promise((resolve, reject) => {
@@ -91,8 +91,8 @@ async function deleteBooking(studentId, lectureId){
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                studentId : studentId,
-                lectureId : lectureId
+                studentId: studentId,
+                lectureId: lectureId
             }),
         }).then((response) => {
             if (response.ok) {
@@ -236,6 +236,30 @@ async function getPersonName(email) {
     }
 }
 
+async function getPastLectures(course) {
+    let url = "/pastLectures?course=" + course;
+    const response = await fetch(baseURL + url);
+    const lectureJson = await response.json();
+    if (response.ok) {
+        return lectureJson;
+    } else {
+        let err = { status: response.status, errObj: lectureJson };
+        throw err;
+    }
+}
+
+async function getStatistics(date, mode, course) {
+    let url = "/statistics?date=" + date + "&mode=" + mode + "&course=" + course;
+    const response = await fetch(baseURL + url);
+    const statsJson = await response.json();
+    if (response.ok) {
+        return statsJson;
+    } else {
+        let err = { status: response.status, errObj: statsJson };
+        throw err;
+    }
+}
+
 const API = {
     isAuthenticated,
     login,
@@ -251,6 +275,8 @@ const API = {
     getPersonName,
     getAllBookings,
     deleteBooking,
+    getPastLectures,
+    getStatistics,
 };
 
 export default API;

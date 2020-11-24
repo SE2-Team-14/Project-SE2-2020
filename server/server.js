@@ -52,25 +52,26 @@ setMidnightTimer(() => sendEmailsAtMidnight());
 function sendEmailsAtMidnight() {
 
   personDao.getTeachers().then((teachers) => {
-    for(let teacher of teachers){
-        lectureDao.getTomorrowsLecturesList(teacher.id).then((lectures) => {    
-            for(let lecture of lectures){
-              courseDao.getCourseByID(lecture.courseId).then((courses) => {
-                  for(let course of courses){
-                    console.log("Sending an email to: " + teacher.email);
-                    const recipient = teacher.email;
-                    const subject = "Bookings ended";
-                    const message = `Dear ${teacher.name},\n` +
-                                    `bookings for the course ${course.name} ended. ` +
-                                    `${lecture.numberOfSeats} students have booked their seats.\n` + 
-                                    `You can get the complete list of the students on your personal page.\n`; 
-                    
-                    emailSender.sendEmail(recipient, subject, message);
-                  }
-              })
+    for (let teacher of teachers) {
+      lectureDao.getTomorrowsLecturesList(teacher.id).then((lectures) => {
+        for (let lecture of lectures) {
+          courseDao.getCourseByID(lecture.courseId).then((courses) => {
+            for (let course of courses) {
+              console.log("Sending an email to: " + teacher.email);
+              const recipient = teacher.email;
+              const subject = "Bookings ended";
+              const message = `Dear ${teacher.name},\n` +
+                `bookings for the course ${course.name} ended. ` +
+                `${lecture.numberOfSeats} students have booked their seats.\n` +
+                `You can get the complete list of the students on your personal page.\n`;
+
+              emailSender.sendEmail(recipient, subject, message);
             }
+          })
         }
-      )}
+      }
+      )
+    }
   })
 }
 
@@ -167,7 +168,7 @@ app.post('/api/student-home/book', (req, res) => {
     `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` +
     `Please if you cannot be present for the lecture remeber to cancel your booking.\n` +
     `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
-    if (!booking) {
+  if (!booking) {
     res.status(400).end();
   } else {
     bookingDao.addBoocking(booking)
@@ -180,9 +181,9 @@ app.post('/api/student-home/book', (req, res) => {
 app.delete('/api/student-home/delete-book', (req, res) => {
   const lectureId = req.body.lectureId;
   const studentId = req.body.studentId;
-  bookingDao.deleteBooking(studentId,lectureId)
-  .then(() => res.status(200).end())
-  .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  bookingDao.deleteBooking(studentId, lectureId)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 
 //PUT api/student-home/increase-seats
@@ -216,7 +217,27 @@ app.get("/api/name", (req, res) => {
     res.json(person)
   }).catch((err) => {
     res.status(500).json({
-      errors: [{ msg: "Error while getting enrolled students" }],
+      errors: [{ msg: "Error while getting person" }],
+    });
+  });
+})
+
+app.get("/api/pastLectures", (req, res) => {
+  lectureDao.getPastLectures(req.query.course).then((lectures) => {
+    res.json(lectures)
+  }).catch((err) => {
+    res.status(500).json({
+      errors: [{ msg: "Error while getting past lectures" }],
+    });
+  });
+})
+
+app.get("/api/statistics", (req, res) => {
+  bookingDao.getStatistics(req.query.date, req.query.mode, req.query.course).then((stats) => {
+    res.json(stats)
+  }).catch((err) => {
+    res.status(500).json({
+      errors: [{ msg: "Error while getting statistics" }],
     });
   });
 })
