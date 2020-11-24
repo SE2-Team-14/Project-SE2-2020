@@ -2,7 +2,7 @@ version: "3"
 services:
 
   pulsebs-server:
-    image: "jackgorga/pulsebs:server"
+    image: "team14/pulsebs:server"
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -11,7 +11,7 @@ services:
       - "3001:3001"
 
   pulsebs-client:
-    image: "jackgorga/pulsebs:client"
+    image: "team14/pulsebs:client"
     build:
       context: ./client
       dockerfile: Dockerfile
