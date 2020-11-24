@@ -2,21 +2,21 @@
 FROM node:latest
 
 # set working directory
-RUN mkdir ./
-WORKDIR ./
+RUN mkdir /src
+WORKDIR /src
 
 # add src
-COPY . .
+COPY . /src
 
 # add `/node_modules/.bin` to $PATH
-ENV PATH /node_modules/.bin:$PATH
+ENV PATH /src/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json package.json
+COPY package.json src/package.json
 
 RUN npm install 
 
-EXPOSE 3000
+EXPOSE 3001
 
 # start app
-CMD node server.js
+CMD npm start
