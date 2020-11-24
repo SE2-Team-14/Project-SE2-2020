@@ -16,7 +16,7 @@ COPY package.json src/package.json
 
 RUN npm install 
 
-EXPOSE 3001
+EXPOSE 3000
 
 # start app
-CMD npm start
+CMD npm start --host 0.0.0.0
