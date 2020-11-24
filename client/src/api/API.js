@@ -161,6 +161,17 @@ async function getCoursesNames() {
     throw err;
 }
 
+async function getTeacherLecturesList(id) {
+    const url = baseURL + '/getTeacherLectures';
+    const response = await fetch(`${url}/${id}`);
+    const lecturesJson = await response.json();
+
+    if (response.ok) {
+        return lecturesJson.map((l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
+    }
+    const err = { status: response.status, errors: lecturesJson.errors };
+    throw err;
+}
 async function getTeachers() {
     const url = baseURL + '/getTeachers';
     const response = await fetch(`${url}`);
@@ -251,6 +262,7 @@ const API = {
     getPersonName,
     getAllBookings,
     deleteBooking,
+    getTeacherLecturesList,
 };
 
 export default API;

@@ -157,6 +157,12 @@ app.get('/api/getAllBookings', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+app.get('/api/getTeacherLectures/:id', (req, res) => {
+  let id = req.params.id;
+  lectureDao.getTeacherLectureList(id).then((lectures) => res.json(lectures))
+   .catch((err) => res.status(500).json({ errors: [{ msg: err}]}));
+})
+
 //POST api/student-home/book
 app.post('/api/student-home/book', (req, res) => {
   const booking = req.body.booking;

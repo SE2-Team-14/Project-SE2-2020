@@ -72,6 +72,25 @@ exports.getLecturesList = function(email){
     });
 }
 
+exports.getTeacherLectureList = function(id){
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? and date >= DATE("now")';
+        db.all(sql, [id], (err, rows) => {
+            if(err)
+                reject(err);
+            else {
+                if(rows){
+                    let lectures = rows.map((row => createLecture(row)));
+                    resolve(lectures);
+                }
+                else{
+                    resolve(undefined);
+                }
+            }
+        });
+    });
+}
+
 exports.increaseBookedSeats = function(lectureId){
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET numberOfSeats = numberOfSeats + 1 WHERE lectureId = ?';

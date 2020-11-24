@@ -14,6 +14,7 @@ import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
+import ManageLectureList from './Components/ManageLectureList';
 
 import { AuthContext } from './auth/AuthContext'
 
@@ -114,8 +115,11 @@ class App extends React.Component {
               let email = props.match.params.email;
               return (<BookedStudentsList email={email}></BookedStudentsList>)
             }}>
-
             </Route>
+            <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
+              let email = props.match.params.email;
+              return (<ManageLectureList email={email} id ={this.state.authUser.id} courses={this.state.courses} classrooms = {this.state.classrooms}></ManageLectureList>)
+            }}></Route>
             <Route>
               <Redirect to='/student-home' />
             </Route>
