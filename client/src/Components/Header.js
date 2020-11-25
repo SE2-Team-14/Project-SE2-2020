@@ -27,8 +27,6 @@ const Header = (props) => {
           <Nav className="mr-auto">
             {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to={`/student-home/${context.authUser.email}/bookable-lectures`}>Bookable Lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/booked-lectures`} >Booked Lectures</Nav.Link>}
-          </Nav>
-          <Nav className="mr-auto">
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/statistics`} >Statistics</Nav.Link>}
           </Nav>
           <Nav className="ml-md-auto">

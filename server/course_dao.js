@@ -3,6 +3,7 @@
 const db = require('./db');
 const Course = require('./course');
 
+
 function createCourse(row) {
     return new Course(row.courseId, row.teacherId, row.name);
 }
@@ -45,7 +46,7 @@ exports.getCourseByID = function (courseId) {
             if (err)
                 reject(err);
             else {
-                if (row){
+                if (row) {
                     resolve(createCourse(row));
                 } else
                     resolve(undefined);
@@ -54,26 +55,27 @@ exports.getCourseByID = function (courseId) {
     });
 }
 
-exports.getCourses = function(){
+exports.getCourses = function () {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM COURSE";
         db.all(sql, [], (err, rows) => {
-            if(err)
+            if (err)
                 reject(err);
-            else{
-                if(rows){
-                    
+            else {
+                if (rows) {
+
                     resolve(rows.map(row => createCourse(row)));
                 }
-                else 
+                else
                     resolve(undefined);
             }
         });
     });
 }
 
-exports.getCoursesOfTeacher = function(teacherName) {
+exports.getCoursesOfTeacher = function (teacherName) {
     return new Promise((resolve, reject) => {
+
         const sql = "SELECT COURSE.name FROM COURSE, PERSON WHERE COURSE.teacherId = PERSON.id AND PERSON.email = ?";
         db.all(sql, [teacherName], (err, row) => {
             if (err) {

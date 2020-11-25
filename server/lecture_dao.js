@@ -136,7 +136,7 @@ exports.getTomorrowsLecturesList = function (teacherId) {
 
 exports.getPastLectures = function (course) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT LECTURE.date FROM LECTURE, COURSE WHERE LECTURE.courseId = COURSE.courseId AND COURSE.name = ?";
+        const sql = "SELECT LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM LECTURE, COURSE WHERE LECTURE.courseId = COURSE.courseId AND COURSE.name = ?";
         db.all(sql, [course], (err, rows) => {
             if (err)
                 reject(err);

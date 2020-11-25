@@ -13,7 +13,7 @@ exports.addBoocking = function (booking) {
         const sql = 'INSERT INTO BOOKING(studentId, lectureId, date, startingTime, month, week) VALUES(?, ?, ?, ?, ?, ?)';
         let date = moment(new Date()).format("DD/MM/YYYY")
         let month = moment(new Date()).format("MMMM")
-        let week = moment(new Date()).week();
+        let week = moment().startOf("isoWeek").format("DD/MM/YYYY") + "-" + moment().endOf("isoWeek").format("DD/MM/YYYY");
         let params = [];
         console.log("New booking: ", booking);
         params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week);
@@ -104,6 +104,19 @@ exports.getStatistics = function (date, mode, course) {
             })
         } else if (mode === "week") {
             const sql = "SELECT COUNT(*) AS bookings, BOOKING.week FROM BOOKING, LECTURE, COURSE WHERE BOOKING.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY BOOKING.week";
+            db.all(sql, [course], (err, rows) => {
+                if (err)
+                    reject(err);
+                else {
+                    if (rows) {
+                        resolve(rows);
+                    }
+                    else
+                        resolve(undefined);
+                }
+            })
+        } else if (mode === "total") {
+            const sql = "SELECT COUNT(*) as bookings, LECTURE.date FROM BOOKING, LECTURE, COURSE WHERE BOOKING.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY LECTURE.date";
             db.all(sql, [course], (err, rows) => {
                 if (err)
                     reject(err);
