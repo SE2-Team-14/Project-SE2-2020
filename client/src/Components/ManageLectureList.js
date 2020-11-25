@@ -70,7 +70,7 @@ class ManageLectureList extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm change</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Do you want to change your type of lesson?</Modal.Body>
+                    <Modal.Body>Do you want to change your type of lecture (from in presence to virtual)?</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleChange(this.state.lecture)}>Yes</Button>
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
@@ -80,7 +80,7 @@ class ManageLectureList extends React.Component {
                     <Modal.Header closeButton>
                        <Modal.Title>Confirm deleting</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Congrats, your booking is delete! A mail is sent</Modal.Body>
+                    <Modal.Body>Congrats, your lecture is delete! A mail to the students is sent!</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
@@ -89,7 +89,7 @@ class ManageLectureList extends React.Component {
                     <Modal.Header closeButton>
                        <Modal.Title>ERROR!</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>You can't delete this lesson! Time is expire!</Modal.Body>
+                    <Modal.Body>You can't delete this lesson now! Time is expire!</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
@@ -98,7 +98,7 @@ class ManageLectureList extends React.Component {
                     <Modal.Header closeButton>
                        <Modal.Title>Confirm changing</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Your lesson has been change</Modal.Body>
+                    <Modal.Body>Your lesson has been changed. Now is a virtual lecture!</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
@@ -107,7 +107,7 @@ class ManageLectureList extends React.Component {
                     <Modal.Header closeButton>
                        <Modal.Title>ERROR!</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>You can't change this lesson! Time is expire</Modal.Body>
+                    <Modal.Body>You can't change this lesson now! Time is expire</Modal.Body>
                     <Modal.Footer>
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
@@ -146,7 +146,7 @@ function LectureListManage(props) {
                         <strong>Seats</strong>
                     </Col>
                     <Col xs={1}></Col>
-                    <Col xs={1}></Col>
+                    <Col xs={2}></Col>
                 </Row>
 
             </ListGroup.Item>
@@ -206,7 +206,7 @@ function LectureItemManage(props) {
                     }
                     {(props.lecture.inPresence == false || props.lecture.inPresence == 0 ) &&
                     <>
-                         No maxSeats, free to entry
+                         Free to entry
                     </>}
                         
                     
@@ -214,8 +214,18 @@ function LectureItemManage(props) {
                 <Col xs={1} className='text-center'>
                     <Button>Delete</Button>
                 </Col>
-                <Col xs={1} className='text-center'>
-                    <Button onClick={() => props.handleClickChange(props.lecture)}>Change type</Button>
+                <Col xs={2} className='text-center'>
+                    {props.lecture.inPresence == 0 &&
+                    <>
+                        <Button disabled>Change Type</Button>
+                    </>
+                    }
+                    {props.lecture.inPresence == 1 &&
+                    <>
+                        <Button onClick={() => props.handleClickChange(props.lecture)}>Change type</Button>
+                    </>
+                    }
+                    
                 </Col>
             </Row>
         </ListGroup.Item>
