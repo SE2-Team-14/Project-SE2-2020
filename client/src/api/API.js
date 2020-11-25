@@ -247,6 +247,28 @@ async function getPersonName(email) {
     }
 }
 
+async function changeLectureType(lecture) {
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/change-type`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(lecture),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
 const API = {
     isAuthenticated,
     login,
@@ -263,6 +285,7 @@ const API = {
     getAllBookings,
     deleteBooking,
     getTeacherLecturesList,
+    changeLectureType,
 };
 
 export default API;

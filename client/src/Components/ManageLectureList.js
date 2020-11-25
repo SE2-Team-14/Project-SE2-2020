@@ -7,7 +7,7 @@ class ManageLectureList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false};
+        this.state = { lectures: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false, lecture: ''};
     }
     componentDidMount() {
         API.getTeacherLecturesList(this.props.id)
@@ -25,13 +25,23 @@ class ManageLectureList extends React.Component {
         return classroom.maxNumberOfSeats;
     }
 
-    handleDelete = () => {
+    handleDelete = (lecture) => {
 
     }
 
-    handleChange = () => {
-
+    handleChange = (lecture) => {
+        this.changeType(lecture);
+        API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
     }
+
+    changeType = (lecture) => {
+        API.changeLectureType(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showChangeSuccess: true, showChange: false})));
+    }
+
+    handleClickChange = (lecture) => {
+        this.setState({showChange: true, lecture: lecture});
+    }
+
     handleClose = () => {
         this.setState({showChange: false, showChangeSuccess: false, showChangeError: false, showDelete: false, showDeleteError: false, showDeleteSuccess: false});
     }
@@ -43,7 +53,7 @@ class ManageLectureList extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureListManage lecture={this.state.lectures} findCourseName={this.findCourseName}  findMaxSeats={this.findMaxSeats}/>
+                        <LectureListManage lecture={this.state.lectures} findCourseName={this.findCourseName}  findMaxSeats={this.findMaxSeats} handleClickChange={this.handleClickChange}/>
                     </Col>
                 </Row>
                 <Modal controlid='Delete' show={this.state.showDelete} onHide={this.handleClose} animation={false} >
@@ -52,7 +62,7 @@ class ManageLectureList extends React.Component {
                     </Modal.Header>
                     <Modal.Body>Do you want to confirm your deleting?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleDelete(this.state.id, this.state.lecture)}>Yes</Button>
+                        <Button variant='primary' onClick={()=>this.handleDelete(this.state.lecture)}>Yes</Button>
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
@@ -62,7 +72,7 @@ class ManageLectureList extends React.Component {
                     </Modal.Header>
                     <Modal.Body>Do you want to change your type of lesson?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleChange(this.state.id, this.state.lecture)}>Yes</Button>
+                        <Button variant='primary' onClick={()=>this.handleChange(this.state.lecture)}>Yes</Button>
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
@@ -143,7 +153,7 @@ function LectureListManage(props) {
             {
                  props.lecture.map((l) =>
 
-                    <LectureItemManage key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findMaxSeats={props.findMaxSeats}/>
+                    <LectureItemManage key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findMaxSeats={props.findMaxSeats} handleClickChange={props.handleClickChange}/>
                 )
 
 
@@ -174,29 +184,29 @@ function LectureItemManage(props) {
                     {props.lecture.endingTime}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.inPresence || props.lecture.inPresence ==1) &&
+                    {(props.lecture.inPresence == true || props.lecture.inPresence ==1) &&
                     <>
                          {props.lecture.classroomId}
                     </>}
-                    {(!props.lecture.inPresence || props.lecture.inPresence == 0) &&
+                    {(props.lecture.inPresence == false || props.lecture.inPresence == 0) &&
                     <>
                          Virtual Classroom
                     </>}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.numberOfSeats && (props.lecture.inPresence || props.lecture.inPresence ==1)) &&
+                    {(props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence ==1)) &&
                         <>
                         {props.lecture.numberOfSeats}/{maxSeats}
                         </>
                     } 
-                    {(!props.lecture.numberOfSeats && (props.lecture.inPresence || props.lecture.inPresence ==1)) &&
+                    {(!props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence ==1)) &&
                         <>
                         {0}/{maxSeats}
                         </>
                     }
-                    {(!props.lecture.inPresence || props.lecture.inPresence == 0 ) &&
+                    {(props.lecture.inPresence == false || props.lecture.inPresence == 0 ) &&
                     <>
-                         No place
+                         No maxSeats, free to entry
                     </>}
                         
                     
@@ -205,7 +215,7 @@ function LectureItemManage(props) {
                     <Button>Delete</Button>
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <Button>Change type</Button>
+                    <Button onClick={() => props.handleClickChange(props.lecture)}>Change type</Button>
                 </Col>
             </Row>
         </ListGroup.Item>

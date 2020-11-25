@@ -227,6 +227,18 @@ app.get("/api/name", (req, res) => {
   });
 })
 
+app.put('/api/teacher-home/change-type', (req, res) => {
+  const lecture = req.body;
+  console.log(lecture);
+  if(!lecture){
+    res.status(400).end();
+  } else {
+    lectureDao.changeLectureType(lecture.lectureId)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{msg: err}]}));
+  }
+});
+
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*

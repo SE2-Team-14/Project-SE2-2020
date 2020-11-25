@@ -56,7 +56,7 @@ exports.getLectureById = function(lectureId){
 
 exports.getLecturesList = function(email){
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM LECTURE WHERE courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?)";
+        const sql = "SELECT * FROM LECTURE WHERE inPresence = 1 AND courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?)";
         db.all(sql, [email], (err, rows) => {
             if(err)
                 reject(err);
@@ -148,6 +148,20 @@ exports.getTomorrowsLecturesList = function(teacherId){
                 }
                 else 
                     resolve(undefined);
+            }
+        });
+    });
+}
+
+exports.changeLectureType = function(lectureId){
+    console.log(lectureId);
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE LECTURE SET inPresence = "0" WHERE lectureId = ?';
+        db.run(sql, [lectureId], function(err) {
+            if(err){
+                reject(err);
+            } else {
+                resolve(null);
             }
         });
     });
