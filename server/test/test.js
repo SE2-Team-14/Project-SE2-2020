@@ -1,14 +1,3 @@
-/* Template for Unit test;
-Install:
-    $ npm install --global mocha
-Execute
-    $ cd server
-    $ npm test
-*/
-
-// DON'T USE ARROW FUNCTION HERE, OTHERWISE TESTS WILL FAIL BECAUSE OF BINDING ISSUES
-// MAYBE IT'S BETTER TO NOT TOUCH THE FIRST TEST IN ORDER TO USE THEM AS DOCUMENTATION
-
 'use strict';
 
 const assert = require('assert');
@@ -18,12 +7,16 @@ const Lecture = require('../lecture');
 const Enrollment = require('../enrollment');
 const Classroom = require('../classroom');
 const Booking = require('../booking');
+const CancelledBooking = require('../cancelled_bookings');
+const CancelledLecture = require('../cancelled_lectures');
 const PersonDao = require('../person_dao');
 const CourseDao = require('../course_dao');
 const LectureDao = require('../lecture_dao');
 const EnrollmentDao = require('../enrollment_dao');
 const ClassroomDao = require('../classroom_dao');
 const BookingDao = require('../booking_dao');
+const CancelledBookingsDao = require('../cancelled_bookings_dao');
+const CancelledLecturesDao = require('../cancelled_lectures_dao');
 
 const chai = require('chai');
 const expect = chai.expect;
@@ -35,89 +28,8 @@ var request = require("request");
 chai.should();
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
-/*
-//---------------------------------EXAMPLES TO USE MOCHA---------------------------------
-
-//----------------BASIC SYNCH ASSERTION---------------
-
-describe('Test sync Assetion', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.strictEqual([1, 2, 3].indexOf(4), -1);
-    });
-  });
-});
-
-
-//--------------BASIC ASYNCH ASSERTION---------------------
-
-//this is only a sample async function;
-async function asynFunc(callback){
-    console.log("Hello!");
-    callback(/*-1/); // if you pass an error here, the test will fail!
-}
-
-describe('Test Async Assertion', function() {
-    describe('#asynFunc()', function() {
-      it('Sould print \'Hello!\' on the console', function(done) {
-      asynFunc(function(err) {
-          if (err) done(err); // calling done inform that the test is finished
-          else done();
-        });
-      });
-    });
-  });
-
-
-  //------------------BASIC PROMISE ASSERTION---------------
-  // DO NOT USE done() WHEN WORKING WITH PROMISES!
-
-async function promiseFunc(message){
-    return new Promise((resolve, reject) => {
-        if (isNaN(message)){
-            console.log(message);
-            resolve(null);
-        }else{
-            reject(-1);
-        }
-    });
-  }
-  
-describe('Test Async Test', function() {
-    describe('#promiseFunc()', function() {
-        it('should print \'Hello promise!\' on the console', function() {
-        return promiseFunc("Hello promise!"); // Fail if the promise fail too
-        });
-    });
-});
-
-  //-------------------BASIC HOOK MANAGEMENT---------------
-
-  describe('hooks templates', function() {
-    before(function() {
-      // runs once before the first test in this block
-    });
-  
-    after(function() {
-      // runs once after the last test in this block
-    });
-  
-    beforeEach(function() {
-      // runs before each test in this block
-    });
-  
-    afterEach(function() {
-      // runs after each test in this block
-    });
-  
-    // test cases
-  });
-*/
-
-//---------------------------OUR TEST------------------------------
 
 describe('Server side unit test', function () {
-
 
   let server;
 
@@ -126,8 +38,8 @@ describe('Server side unit test', function () {
     server = runServer(done);
   });
 
+  //----------------------------------------- API tests -----------------------------------------//
   describe('Server #GET methods tests', function () {
-
 
     describe('#Test /api/student-home/:email/bookable-lectures', function () {
       var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
@@ -396,6 +308,7 @@ describe('Server side unit test', function () {
     });
   });
 
+  //----------------------------------------- DAO tests -----------------------------------------//
   describe('Test university members', function () {
 
     describe('#Create a student', function () {
@@ -486,7 +399,7 @@ describe('Server side unit test', function () {
       it("Gets a lecture by teacher's id", function () {
           let enrollment = new Enrollment("testCourse", "test@testone");
           let student = new Person("s444", "testname", "testsurname", "student", "test@testone", "1233");
-          let lecture = new Lecture(null, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "true", "71", 10000);
+          let lecture = new Lecture(null, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "1", "71", 10000);
           PersonDao.createPerson(student);
           EnrollmentDao.addEnrollment(enrollment);
           LectureDao.addLecture(lecture);
@@ -537,7 +450,7 @@ describe('Server side unit test', function () {
 
   });
 
-  describe('Test bookings', function () {
+  describe('Test booking_dao', function () {
 
     describe('#Add a booking', function () {
       it('Creates a new booking', function () {
@@ -554,9 +467,41 @@ describe('Server side unit test', function () {
 
   });
 
+  describe('Test cancelled_bookings_dao', function () {
 
+    describe('#Adds a deleted booking', function () {
+      it('Creates and adds a new deleted booking', function () {
+        let cancelledBooking = new CancelledBooking(null, "s123", 1, "12/12/12");
+        return CancelledBookingsDao.addCancelledBooking(cancelledBooking);
+      });
+    });
 
+    describe('#Delete a cancelled booking', function () {
+      it('Deletes the cancelled booking added before', function () {
+        return CancelledBookingsDao.getCancelledBookings().then(cb => CancelledBookingsDao.deleteCancelledBooking(cb[0].cancelledBookingId));
+      });
+    });
 
+  });
+
+  describe('Test cancelled_lectures_dao', function () {
+
+    describe('#Adds a deleted lecture', function () {
+      it('Creates and adds a new deleted lecture', function () {
+        let cancelledLecture = new CancelledLecture(null, "testCourse", "testTeacher", "12/12/12", "1");
+        return CancelledLecturesDao.addCancelledLecture(cancelledLecture);
+      });
+    });
+
+    describe('#Delete a cancelled lecture', function () {
+      it('Deletes the cancelled lecture added before', function () {
+        return CancelledLecturesDao.getCancelledLectures().then(cl => CancelledLecturesDao.deleteCancelledLecture(cl[0].cancelledLectureId));
+      });
+    });
+
+  });
+
+  //----------------------------------------- Email sender tests -----------------------------------------//
   describe('Send email, test', function () {
 
     const EmailSender = require('../sendemail/EmailSender');
@@ -598,8 +543,6 @@ describe('Server side unit test', function () {
       });
 
     });
-
-
 
     describe('#EmailSender sendEmail method', function () {
 

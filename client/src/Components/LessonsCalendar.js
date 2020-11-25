@@ -91,22 +91,22 @@ class LessonsCalendar extends React.Component {
 
         return (
             <Paper>
-                <Scheduler height={660}>
-                    <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange}/>
-                    <WeekView
-                        startDayHour={"8:00"}
-                        endDayHour={"19:30"}
-                        excludedDays={[0, 6]}
-                        timeTableCellComponent={TimeTableCell}
-                        dayScaleCellComponent={DayScaleCell}
-                    />
-                    <MonthView />
-                    <DayView />
-                    <Toolbar />
-                    <ViewSwitcher />
-                    <DateNavigator />
-                    <TodayButton />
-                    </Scheduler>
+              <Scheduler height={660}>
+               <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange}/>
+                <WeekView
+                  startDayHour={"8:00"}
+                  endDayHour={"19:30"}
+                  excludedDays={[0, 6]}
+                  timeTableCellComponent={TimeTableCell}
+                  dayScaleCellComponent={DayScaleCell}
+                />
+                <MonthView />
+                <DayView />
+                <Toolbar />
+                <ViewSwitcher />
+                <DateNavigator />
+                <TodayButton />
+              </Scheduler>
             </Paper>
         );
     }
