@@ -8,6 +8,9 @@ import {Scheduler,
         DateNavigator,
         Appointments,
         TodayButton, 
+        ViewSwitcher, 
+        MonthView, 
+        DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -89,7 +92,7 @@ class LessonsCalendar extends React.Component {
         return (
             <Paper>
                 <Scheduler height={660}>
-                    <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange}/>
+                    <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange}/>
                     <WeekView
                         startDayHour={"8:00"}
                         endDayHour={"19:30"}
@@ -97,8 +100,10 @@ class LessonsCalendar extends React.Component {
                         timeTableCellComponent={TimeTableCell}
                         dayScaleCellComponent={DayScaleCell}
                     />
-                    <Appointments />
+                    <MonthView />
+                    <DayView />
                     <Toolbar />
+                    <ViewSwitcher />
                     <DateNavigator />
                     <TodayButton />
                     </Scheduler>
