@@ -374,20 +374,36 @@ describe('Server side unit test', function () {
 
   });
 
-  describe('Test enrollments', function () {
+  describe('Test enrollment_dao', function () {
 
     describe('#Create an enrollment', function () {
       it('Creates a new enrollment', function () {
-        //For now i assume that we consider things that are not in the db
-        let testEnrollment = new Enrollment('C123', 's123@email.it');
-        return EnrollmentDao.addEnrollment(testEnrollment);
+        let testEnrollment = new Enrollment('C123', 'basile@cataldo');
+        let student = new Person("s12", "Basile", "Cataldo", "student", "basile@cataldo", "1234");
+        let lecture = new Lecture(100000, "C123", "D1234", "12/12/12", "8:00", "8:10", 1, "77", null);
+        let course = new Course("C123", "D1234", "Test course");
+        let booking = new Booking("s12", 100000, "12/12/12", "8:00");
+        return PersonDao.createPerson(student)
+                .then(LectureDao.addLecture(lecture))
+                .then(CourseDao.createCourse(course))
+                .then(BookingDao.addBoocking(booking))
+                .then(EnrollmentDao.addEnrollment(testEnrollment));
       });
     });
 
+    describe('#Gets enrolled students', function () {
+      it('Gets the list of the students enrolled to the course', function () {
+        return EnrollmentDao.getEnrolledStudentsByCourseName("Test course").then(students => assert.strictEqual(students[0].studentId, "s12"));
+      });
+    });
 
     describe('#Deletes an enrollment', function () {
       it('Deletes an enrollment', function () {
-        return EnrollmentDao.deleteEnrollment('C123', 's123@email.it');
+        return EnrollmentDao.deleteEnrollment('C123', 'basile@cataldo')
+                .then(PersonDao.deletePersonById("s12"))
+                .then(CourseDao.deleteCourseById("C123"))
+                .then(BookingDao.deleteBooking("s12", 100000))
+                .then(LectureDao.deleteLecture(100000));
       });
     });
 
