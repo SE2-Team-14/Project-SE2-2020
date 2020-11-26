@@ -247,6 +247,7 @@ async function getPersonName(email) {
     }
 }
 
+//change type of lecture from presence to virtual
 async function changeLectureType(lecture) {
     const url = baseURL + '/teacher-home';
 
@@ -257,6 +258,55 @@ async function changeLectureType(lecture) {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(lecture),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
+//delete lecture 
+async function deleteLecture(lecture){
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/delete-lecture`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                lecture : lecture
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
+async function addCancelledLecture(lecture) {
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/add-cancelled-lecture`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                lecture: lecture
+            }),
         }).then((response) => {
             if (response.ok) {
                 resolve(null);
@@ -286,6 +336,8 @@ const API = {
     deleteBooking,
     getTeacherLecturesList,
     changeLectureType,
+    deleteLecture,
+    addCancelledLecture,
 };
 
 export default API;

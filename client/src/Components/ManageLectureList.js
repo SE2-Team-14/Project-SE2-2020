@@ -27,20 +27,46 @@ class ManageLectureList extends React.Component {
     }
 
     handleDelete = (lecture) => {
-
+        let deadline = moment().format("HH:mm");
+        let startingTime = moment(lecture.startingTime, "HH:mm").subtract(1, "hour").format("HH:mm");
+        let today = moment().format("DD/MM/YYYY");
+        if(lecture.date > today){
+            this.deleteLecture(lecture);
+            API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+        }else{
+            if(startingTime < deadline){
+                this.setState({showDelete: false, showDeleteError: true});
+            }
+            else{
+                this.deleteLecture(lecture);
+                API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+            }
+        }
+        
     }
 
     handleChange = (lecture) => {
         let deadline = moment().format("HH:mm");
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(30, "minutes").format("HH:mm");
-        if(startingTime < deadline){
-            this.setState({showChange: false, showChangeError: true});
-        }
-        else{
+        let today = moment().format("DD/MM/YYYY");
+        if(lecture.date > today){
             this.changeType(lecture);
             API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
-        }
-        
+        }else {
+            if(startingTime < deadline){
+                this.setState({showChange: false, showChangeError: true});
+            }
+            else{
+                this.changeType(lecture);
+                API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+            }
+        }  
+    }
+
+    deleteLecture = (lecture) => {
+        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true, showDelete: false})));;
+        API.addCancelledLecture(lecture);
+        API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
     }
 
     changeType = (lecture) => {
@@ -49,6 +75,10 @@ class ManageLectureList extends React.Component {
 
     handleClickChange = (lecture) => {
         this.setState({showChange: true, lecture: lecture});
+    }
+
+    handleClickDelete = (lecture) => {
+        this.setState({showDelete: true, lecture: lecture});
     }
 
     handleClose = () => {
@@ -62,7 +92,7 @@ class ManageLectureList extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureListManage lecture={this.state.lectures} findCourseName={this.findCourseName}  findMaxSeats={this.findMaxSeats} handleClickChange={this.handleClickChange}/>
+                        <LectureListManage lecture={this.state.lectures} findCourseName={this.findCourseName}  findMaxSeats={this.findMaxSeats} handleClickChange={this.handleClickChange} handleClickDelete={this.handleClickDelete}/>
                     </Col>
                 </Row>
                 <Modal controlid='Delete' show={this.state.showDelete} onHide={this.handleClose} animation={false} >
@@ -162,7 +192,7 @@ function LectureListManage(props) {
             {
                  props.lecture.map((l) =>
 
-                    <LectureItemManage key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findMaxSeats={props.findMaxSeats} handleClickChange={props.handleClickChange}/>
+                    <LectureItemManage key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findMaxSeats={props.findMaxSeats} handleClickChange={props.handleClickChange} handleClickDelete={props.handleClickDelete}/>
                 )
 
 
@@ -221,7 +251,7 @@ function LectureItemManage(props) {
                     
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <Button>Delete</Button>
+                    <Button onClick={() => props.handleClickDelete(props.lecture)}>Delete</Button>
                 </Col>
                 <Col xs={2} className='text-center'>
                     {props.lecture.inPresence == 0 &&

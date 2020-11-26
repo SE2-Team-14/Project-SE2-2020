@@ -12,11 +12,13 @@ const courseDao = require("./course_dao");
 const enrollmentDao = require("./enrollment_dao");
 const classroomDao = require('./classroom_dao');
 const bookingDao = require('./booking_dao');
+const cancelledLectureDao = require('./cancelled_lectures_dao');
 const Booking = require('./booking');
 const EmailSender = require('./sendemail/EmailSender');
 const setMidnightTimer = require("./midnightTimer");
 const midnightTimer = require('./midnightTimer');
 const moment = require('moment');
+const CancelledLectures = require('./cancelled_lectures');
 
 
 // Authorization error
@@ -236,6 +238,33 @@ app.put('/api/teacher-home/change-type', (req, res) => {
     lectureDao.changeLectureType(lecture.lectureId)
     .then(() => res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{msg: err}]}));
+  }
+});
+
+app.delete('/api/teacher-home/delete-lecture', (req, res) => {
+  const lecture = req.body.lecture;
+  if(!lecture){
+    res.status(400).end();
+  } else {
+    lectureDao.deleteLecture(lecture.lectureId)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+  }
+});
+
+app.post('/api/teacher-home/add-cancelled-lecture', (req, res) => {
+  const lecture = req.body.lecture;
+  const cancelledLecture = new CancelledLectures();
+  cancelledLecture.courseId = lecture.courseId;
+  cancelledLecture.teacherId = lecture.teacherId;
+  cancelledLecture.date = lecture.date;
+  cancelledLecture.inPresence = lecture.inPresence;
+  if(!lecture){
+    res.status(400).end();
+  } else {
+    cancelledLectureDao.addCancelledLecture(cancelledLecture)
+    .then((id)=>(res.status(201).json({"id": id})))
+    .catch((err) => res.status(500).json({errors: [{msg: err}]}));
   }
 });
 

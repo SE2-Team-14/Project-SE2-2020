@@ -29,11 +29,11 @@ exports.addLecture = function(lecture) {
 exports.deleteLecture = function(lectureId){
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM LECTURE WHERE lectureId = ?";
-        db.all(sql, [lectureId], (err, row) => {
+        db.run(sql, [lectureId], (err, row) => {
             if(err)
                 reject(err);
             else
-               resolve(row);
+               resolve(undefined);
         });
     });
 }
