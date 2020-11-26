@@ -29,19 +29,11 @@ exports.addLecture = function (lecture) {
 exports.deleteLecture = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM LECTURE WHERE lectureId = ?";
-<<<<<<< HEAD
-        db.all(sql, [lectureId], (err, row) => {
+        db.run(sql, [lectureId], (err, row) => {
             if (err)
                 reject(err);
             else
-                resolve(row);
-=======
-        db.run(sql, [lectureId], (err, row) => {
-            if(err)
-                reject(err);
-            else
-               resolve(undefined);
->>>>>>> 99d2b8938220d5fe4049dfa1be10a03bd6cac0b1
+                resolve(undefined);
         });
     });
 }
@@ -80,21 +72,18 @@ exports.getLecturesList = function (email) {
     });
 }
 
-<<<<<<< HEAD
-exports.increaseBookedSeats = function (lectureId) {
-=======
-exports.getTeacherLectureList = function(id){
+exports.getTeacherLectureList = function (id) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? and date >= DATE("now")';
         db.all(sql, [id], (err, rows) => {
-            if(err)
+            if (err)
                 reject(err);
             else {
-                if(rows){
+                if (rows) {
                     let lectures = rows.map((row => createLecture(row)));
                     resolve(lectures);
                 }
-                else{
+                else {
                     resolve(undefined);
                 }
             }
@@ -102,8 +91,7 @@ exports.getTeacherLectureList = function(id){
     });
 }
 
-exports.increaseBookedSeats = function(lectureId){
->>>>>>> 99d2b8938220d5fe4049dfa1be10a03bd6cac0b1
+exports.increaseBookedSeats = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET numberOfSeats = numberOfSeats + 1 WHERE lectureId = ?';
         db.run(sql, [lectureId], function (err) {
@@ -165,7 +153,6 @@ exports.getTomorrowsLecturesList = function (teacherId) {
     });
 }
 
-<<<<<<< HEAD
 exports.getPastLectures = function (course) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM LECTURE, COURSE WHERE LECTURE.courseId = COURSE.courseId AND COURSE.name = ?";
@@ -182,18 +169,17 @@ exports.getPastLectures = function (course) {
         })
 
     })
-=======
-exports.changeLectureType = function(lectureId){
+}
+exports.changeLectureType = function (lectureId) {
     console.log(lectureId);
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET inPresence = "0" WHERE lectureId = ?';
-        db.run(sql, [lectureId], function(err) {
-            if(err){
+        db.run(sql, [lectureId], function (err) {
+            if (err) {
                 reject(err);
             } else {
                 resolve(null);
             }
         });
     });
->>>>>>> 99d2b8938220d5fe4049dfa1be10a03bd6cac0b1
 }
