@@ -7,7 +7,7 @@ class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: '', bookings: [], student: '', showDoubleBookError: false};
+        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: '', bookings: [], student: '', showDoubleBookError: false, showDelete: false, showDeleteSuccess : false, showDeleteFail : false};
     }
     componentDidMount() {
         API.getLecturesList(this.props.email)
@@ -15,6 +15,15 @@ class LectureListView extends React.Component {
         this.setState({id: this.props.id});
         API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         API.getPersonName(this.props.email).then((student) => this.setState({student: student}));
+    }
+
+    findBooking = (studentId, lectureId) => {
+        let find=false;
+        for(let b of this.state.bookings){
+            if((b.studentId == studentId) && (b.lectureId == lectureId))
+                find = true;
+        }
+        return find;
     }
 
     findCourseName = (courseId) => {
@@ -39,7 +48,7 @@ class LectureListView extends React.Component {
     addBooking = (booking, studentName, courseName, date, startingTime, recipient) => {
         API.bookSeat(booking, studentName, courseName, date, startingTime, recipient);
     }
-    
+
     deleteBooking = (studentId, lectureId) => {
         API.deleteBooking(studentId, lectureId);
     }
@@ -51,18 +60,19 @@ class LectureListView extends React.Component {
     handleDecreaseSeats = (lecture) => {
         API.decreaseSeats(lecture);
     }
-    
+
     handleEmail = (recipient, subject, message) => {
         API.sendEmail(recipient, subject, message);
     }
 
     handleBook = (studentId, lecture) => {
         let find=false;
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
         }
-
+        
         if(find)
             this.setState({showDoubleBookError: true});
         else {
@@ -82,6 +92,7 @@ class LectureListView extends React.Component {
 
     handleDelete = (studentId, lecture) => {
         let find=false;
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
@@ -99,26 +110,25 @@ class LectureListView extends React.Component {
                 .then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true})));      
         }
     }
-
     handleClickBook = (id, lecture) => {
         this.setState({showBook: true, lecture: lecture, id: id});
     }
-    
+
     handleClickDelete = (id, lecture) => {
         this.setState({showDelete: true, lecture: lecture, id: id});
     }
 
-   handleClose = () => {
+    handleClose = () => {
         this.setState({ showBook: false, showBookSuccess: false, showDoubleBookError: false, showDelete: false, showDeleteSuccess : false, showDeleteFail : false });
     }
-   
+
     render() {
 
         return (
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} />
+                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName = {this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} />
                     </Col>
                 </Row>
                 <Modal controlid='Book' show={this.state.showBook} onHide={this.handleClose} animation={false} >
@@ -214,14 +224,13 @@ function LectureList(props) {
                         <strong>Seats</strong>
                     </Col>
                     <Col xs={1}></Col>
-                    <Col xs={1}></Col>
                 </Row>
 
             </ListGroup.Item>
             {
-                 props.lecture.map((l) =>
+                props.lecture.map((l) =>
 
-                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} id={props.id} key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} />
+                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} id={props.id} key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findTeacherName = {props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} />
                 )
 
 
@@ -233,6 +242,7 @@ function LectureList(props) {
 }
 
 function LectureItem(props) {
+    let find = props.findBooking(props.id, props.lecture.lectureId);
     let courseName = props.findCourseName(props.lecture.courseId);
     let teacher = props.findTeacherName(props.lecture.teacherId);
     let maxSeats = props.findMaxSeats(props.lecture.classroomId);
@@ -258,52 +268,33 @@ function LectureItem(props) {
                     {props.lecture.classroomId}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.numberOfSeats &&
+                    {props.lecture.numberOfSeats != null &&
                         <>
                         {props.lecture.numberOfSeats}/{maxSeats}
                         </>
                     } 
-                    {!props.lecture.numberOfSeats &&
+                    {props.lecture.numberOfSeats==null &&
                         <>
                         {0}/{maxSeats}
                         </>
-                    } 
-                    
-                    
+                    }     
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.numberOfSeats >= maxSeats) &&
-                    <>
-                        <Button disabled >Book</Button>
-                    </>
-                    }
-                    {(props.lecture.numberOfSeats < maxSeats) &&
-                    <>
-                         <Button onClick={() => props.handleClickBook(props.id, props.lecture)} >Book</Button>
-                    </>
-
-                    }
-                </Col>
-                <Col xs={1} className='text-center'>
-                {(props.lecture.numberOfSeats == 0 ||  !props.lecture.numberOfSeats) &&
-                    <>
-                        <Button disabled >Delete</Button>
-                    </>
-                    }
-                    {(props.lecture.numberOfSeats > 0) &&
+                    {(find == true) &&
                     <>
                         <Button onClick={() => props.handleClickDelete(props.id, props.lecture)}>Delete</Button>
                     </>
+                    }
+                    {(find == false) &&
+                    <>
+                         <Button onClick={() => props.handleClickBook(props.id, props.lecture)}>Book</Button>
+                    </>
 
                     }
-                    
                 </Col>
             </Row>
         </ListGroup.Item>
     );
     
 }
-
-
-
 export default LectureListView;

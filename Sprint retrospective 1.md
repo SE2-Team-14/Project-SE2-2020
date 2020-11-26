@@ -1,9 +1,6 @@
 RETROSPECTIVE SPRINT 1 (Team 14)
 =====================================
 
-The retrospective should include _at least_ the following
-sections:
-
 - [process measures](#process-measures)
 - [quality measures](#quality-measures)
 - [general assessment](#assessment)
@@ -21,15 +18,12 @@ sections:
 - Nr of hours planned vs spent (as a team)
     - Total hours planned: 72h
     - Total hours spent: 72h 18m 
-
-**Remember**  a story is done ONLY if it fits the Definition of Done:
  
 - Unit Tests passing: 48
 - Code review completed
 - Code present on VCS
 - End-to-End tests performed
 
-> Please refine your DoD 
 
 ### Detailed statistics
 
@@ -42,46 +36,56 @@ sections:
 | 4      |    1    |   3    |   1h 30m   |    1h        |
 | 5      |    2    |   2    |   1h 45m   |    2h 30m    |
 
-- Hours per task (average, standard deviation)
+- Hours per task (average, standard deviation): 
+  - Average: 72.30/18 = 4.017h
+  - Standard Deviation: 5.15h
 
-- Total task estimation error ratio: sum of total hours estimation / sum of total hours spent from previous table
-
+- Total task estimation error ratio: 
+    - Total hours estimated: 72h
+    - Total hours spent: 72h 18m
+        - Total task estimation error ratio: 72/72.30 = 0.9958
   
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated: 
-  - Total hours spent
-  - Nr of automated unit test cases 
+  - Total hours estimated: 15h
+  - Total hours spent: 9h
+  - Nr of automated unit test cases: 48
   - Coverage: 69.4%
 - E2E testing:
-  - Total hours estimated
-  - Total hours spent
+  - Total hours estimated: 6h
+  - Total hours spent: 1.5h
 - Code review 
-  - Total hours estimated 
-  - Total hours spent
+  - Total hours estimated: 9h
+  - Total hours spent: 4.16h
 - Technical Debt management:
-  - Total hours estimated 
-  - Total hours spent
-  - Hours estimated for remediation by SonarQube
-  - Hours spent on remediation 
-  - debt ratio (as reported by SonarQube under "Measures-Maintainability")
-  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability )
+  - Total hours estimated: 6h 
+  - Total hours spent: 20m
+  - Hours estimated for remediation by SonarQube: 32m
+  - Hours spent on remediation: 20m
+  - Debt ratio: 0.0%
+  - Rating for each quality characteristic reported in SonarQube under "Measures":
+    - Reliability: A
+    - Security: A
+    - Maintainability: A
   
 
 
 ## ASSESSMENT
 
-- What caused your errors in estimation (if any)?
+- What caused your errors in estimation? Having estimated long times for activities that actually took little time (technical debt, which we expected to be a long effort and was actually something that we could fix in a few minutes of work; another thing was the creation of the email sending routine, which also didn't take as much time as expected).
 
 - What lessons did you learn (both positive and negative) in this sprint?
+  - To not trust too much SonarCloud estimation
+  - To better manage time during the sprint, especially before the deadline
 
-- Which improvement goals set in the previous retrospective were you able to achieve? 
+- Which improvement goals set in the previous retrospective were you able to achieve?
   
 - Which ones you were not able to achieve? Why?
 
-- Improvement goals for the next sprint and how to achieve them (technical tasks, team coordination, etc.)
+- Improvement goals for the next sprint and how to achieve them: (technical tasks, team coordination, etc.)
+  - Perform a better estimation of stories and tasks
+  - Perform more general checks on how the system works during the entire sprint
 
-> Propose one or two
-
-- One thing you are proud of as a Team!!: WE ARE VERY BEAUTIFUL
+- One thing you are proud of as a Team:
+  - The fact that our work introduced very little technical debt, requiring less work to fix it and allowing us to focus on other important tasks

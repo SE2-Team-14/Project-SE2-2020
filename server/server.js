@@ -12,11 +12,13 @@ const courseDao = require("./course_dao");
 const enrollmentDao = require("./enrollment_dao");
 const classroomDao = require('./classroom_dao');
 const bookingDao = require('./booking_dao');
+const cancelledLectureDao = require('./cancelled_lectures_dao');
 const Booking = require('./booking');
 const EmailSender = require('./sendemail/EmailSender');
 const setMidnightTimer = require("./midnightTimer");
 const midnightTimer = require('./midnightTimer');
 const moment = require('moment');
+const CancelledLectures = require('./cancelled_lectures');
 
 
 // Authorization error
@@ -158,6 +160,12 @@ app.get('/api/getAllBookings', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+app.get('/api/getTeacherLectures/:id', (req, res) => {
+  let id = req.params.id;
+  lectureDao.getTeacherLectureList(id).then((lectures) => res.json(lectures))
+   .catch((err) => res.status(500).json({ errors: [{ msg: err}]}));
+})
+
 //POST api/student-home/book
 app.post('/api/student-home/book', (req, res) => {
   const booking = req.body.booking;
@@ -189,7 +197,8 @@ app.delete('/api/student-home/delete-book', (req, res) => {
 //PUT api/student-home/increase-seats
 app.put('/api/student-home/increase-seats', (req, res) => {
   const lecture = req.body;
-
+  if(lecture.numberOfSeats==null)
+    lecture.numberOfSeats=0;
   if (!lecture) {
     res.status(400).end();
   } else {
@@ -241,6 +250,45 @@ app.get("/api/statistics", (req, res) => {
     });
   });
 })
+
+app.put('/api/teacher-home/change-type', (req, res) => {
+  const lecture = req.body;
+  console.log(lecture);
+  if(!lecture){
+    res.status(400).end();
+  } else {
+    lectureDao.changeLectureType(lecture.lectureId)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{msg: err}]}));
+  }
+});
+
+app.delete('/api/teacher-home/delete-lecture', (req, res) => {
+  const lecture = req.body.lecture;
+  if(!lecture){
+    res.status(400).end();
+  } else {
+    lectureDao.deleteLecture(lecture.lectureId)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+  }
+});
+
+app.post('/api/teacher-home/add-cancelled-lecture', (req, res) => {
+  const lecture = req.body.lecture;
+  const cancelledLecture = new CancelledLectures();
+  cancelledLecture.courseId = lecture.courseId;
+  cancelledLecture.teacherId = lecture.teacherId;
+  cancelledLecture.date = lecture.date;
+  cancelledLecture.inPresence = lecture.inPresence;
+  if(!lecture){
+    res.status(400).end();
+  } else {
+    cancelledLectureDao.addCancelledLecture(cancelledLecture)
+    .then((id)=>(res.status(201).json({"id": id})))
+    .catch((err) => res.status(500).json({errors: [{msg: err}]}));
+  }
+});
 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)

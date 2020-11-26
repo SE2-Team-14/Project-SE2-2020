@@ -14,7 +14,12 @@ import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
+<<<<<<< HEAD
 import TeacherStatsViewer from "./Components/TeacherStatsViewer";
+=======
+import ManageLectureList from './Components/ManageLectureList';
+import BookedLessonsCalendar from './Components/LessonsCalendar';
+>>>>>>> 99d2b8938220d5fe4049dfa1be10a03bd6cac0b1
 
 import { AuthContext } from './auth/AuthContext'
 
@@ -87,16 +92,18 @@ class App extends React.Component {
               let email = props.match.params.email;
               return (<StudentHomePage email={email}></StudentHomePage>)
             }}>
-
-
             </Route>
 
             <Route exact path="/teacher-home/:email" render={(props) => {
               let email = props.match.params.email;
               return (<TeacherHomePage email={email}></TeacherHomePage>)
             }}>
+            </Route>
 
-
+            <Route exact path="/student-home/:email/booked-calendar" render={(props) => {
+              let email = props.match.params.email;
+              return (<BookedLessonsCalendar email={email}></BookedLessonsCalendar>)
+            }}>
             </Route>
 
             <Route exact path="/login">
@@ -119,6 +126,10 @@ class App extends React.Component {
             <Route exact path="/teacher-home/:email/statistics" render={(props) => {
               let email = props.match.params.email;
               return (<TeacherStatsViewer email={email}></TeacherStatsViewer>)
+            }}></Route>
+            <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
+              let email = props.match.params.email;
+              return (<ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>)
             }}></Route>
             <Route>
               <Redirect to='/student-home' />

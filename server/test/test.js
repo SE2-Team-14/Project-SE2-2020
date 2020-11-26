@@ -1,14 +1,3 @@
-/* Template for Unit test;
-Install:
-    $ npm install --global mocha
-Execute
-    $ cd server
-    $ npm test
-*/
-
-// DON'T USE ARROW FUNCTION HERE, OTHERWISE TESTS WILL FAIL BECAUSE OF BINDING ISSUES
-// MAYBE IT'S BETTER TO NOT TOUCH THE FIRST TEST IN ORDER TO USE THEM AS DOCUMENTATION
-
 'use strict';
 
 const assert = require('assert');
@@ -18,12 +7,16 @@ const Lecture = require('../lecture');
 const Enrollment = require('../enrollment');
 const Classroom = require('../classroom');
 const Booking = require('../booking');
+const CancelledBooking = require('../cancelled_bookings');
+const CancelledLecture = require('../cancelled_lectures');
 const PersonDao = require('../person_dao');
 const CourseDao = require('../course_dao');
 const LectureDao = require('../lecture_dao');
 const EnrollmentDao = require('../enrollment_dao');
 const ClassroomDao = require('../classroom_dao');
 const BookingDao = require('../booking_dao');
+const CancelledBookingsDao = require('../cancelled_bookings_dao');
+const CancelledLecturesDao = require('../cancelled_lectures_dao');
 
 const chai = require('chai');
 const expect = chai.expect;
@@ -35,89 +28,8 @@ var request = require("request");
 chai.should();
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
-/*
-//---------------------------------EXAMPLES TO USE MOCHA---------------------------------
-
-//----------------BASIC SYNCH ASSERTION---------------
-
-describe('Test sync Assetion', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.strictEqual([1, 2, 3].indexOf(4), -1);
-    });
-  });
-});
-
-
-//--------------BASIC ASYNCH ASSERTION---------------------
-
-//this is only a sample async function;
-async function asynFunc(callback){
-    console.log("Hello!");
-    callback(/*-1/); // if you pass an error here, the test will fail!
-}
-
-describe('Test Async Assertion', function() {
-    describe('#asynFunc()', function() {
-      it('Sould print \'Hello!\' on the console', function(done) {
-      asynFunc(function(err) {
-          if (err) done(err); // calling done inform that the test is finished
-          else done();
-        });
-      });
-    });
-  });
-
-
-  //------------------BASIC PROMISE ASSERTION---------------
-  // DO NOT USE done() WHEN WORKING WITH PROMISES!
-
-async function promiseFunc(message){
-    return new Promise((resolve, reject) => {
-        if (isNaN(message)){
-            console.log(message);
-            resolve(null);
-        }else{
-            reject(-1);
-        }
-    });
-  }
-  
-describe('Test Async Test', function() {
-    describe('#promiseFunc()', function() {
-        it('should print \'Hello promise!\' on the console', function() {
-        return promiseFunc("Hello promise!"); // Fail if the promise fail too
-        });
-    });
-});
-
-  //-------------------BASIC HOOK MANAGEMENT---------------
-
-  describe('hooks templates', function() {
-    before(function() {
-      // runs once before the first test in this block
-    });
-  
-    after(function() {
-      // runs once after the last test in this block
-    });
-  
-    beforeEach(function() {
-      // runs before each test in this block
-    });
-  
-    afterEach(function() {
-      // runs after each test in this block
-    });
-  
-    // test cases
-  });
-*/
-
-//---------------------------OUR TEST------------------------------
 
 describe('Server side unit test', function () {
-
 
   let server;
 
@@ -126,8 +38,8 @@ describe('Server side unit test', function () {
     server = runServer(done);
   });
 
+  //----------------------------------------- API tests -----------------------------------------//
   describe('Server #GET methods tests', function () {
-
 
     describe('#Test /api/student-home/:email/bookable-lectures', function () {
       var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
@@ -154,29 +66,6 @@ describe('Server side unit test', function () {
         });
       });
     });
-
-    /*describe('#Test /api/getCourses', function () {
-      var url = "http://localhost:3001/api/getCourses";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          
-          done();
-        });
-      });
-    });*/
-
-    /*
-    describe('#Test /api/getCourses', function () {
-      var url = "http://localhost:3001/api/getCourses";
-      it("returns status 500", function (done) {
-        request(url, function (error, response, body) {
-
-          expect(response.statusCode).to.equal(500);
-          done();
-        });
-      });
-    });
-    */
 
     describe('#Test /api/getCourses/body', function () {
       let course = new Course("courseTestId", "teacherTestId", "nameTestCourse");
@@ -271,6 +160,18 @@ describe('Server side unit test', function () {
       BookingDao.deleteBooking(booking);
     });
 
+    describe('#Test /api/getTeacherLectures/body', function () {
+      let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
+      LectureDao.addLecture(lecture);
+      var url = "http://localhost:3001/api/getTeacherLectures";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.body).to.deep.include(Array.from(lecture));
+          done();
+        });
+      });
+      LectureDao.deleteLecture(lecture);
+    });
 
     describe("#Test /api/getCourses", function () {
       var url = "http://localhost:3001/api/courses";
@@ -280,7 +181,7 @@ describe('Server side unit test', function () {
           done();
         })
       })
-    })
+    });
 
     describe("#Test /api/getCourses/body", function () {
       let course = new Course(1, "d123", "TestCourse");
@@ -356,11 +257,11 @@ describe('Server side unit test', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
     let b = new Booking("s123", 1, "18/11/2020", "8.30");
+    
     it('should send parameters to : /api/student-home/book POST', function (done) {
       chai
         .request(host)
         .post(path)
-        //.field({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
         .set('content-type', 'application/json')
         .send({ booking: b, studentName: "testName", courseName: "testCourse", date: "18/11/2020", startingTime: "8.30", recipient: "test@email.com" })
         .end(function (error, response, body) {
@@ -372,19 +273,19 @@ describe('Server side unit test', function () {
           }
         });
     });
-    BookingDao.deleteBooking("s123", 1);
+
   });
 
-  describe('Test #PUT increase-seats', function () {
+  describe('Test #POST book', function () {
     var host = "http://localhost:3001";
-    var path = "/api/student-home/increase-seats";
+    var path = "/api/student-home/delete-book";
 
-    it('should send parameters to : /api/student-home/increase-seats PUT', function (done) {
+    it('should send a request to delete a booking: /api/student-home/delete-book DELETE', function (done) {
       chai
         .request(host)
-        .put(path)
+        .del(path)
         .set('content-type', 'application/json')
-        .send({ lectureId: '1' })
+        .send({ studentId: "s123", lectureId: 1 })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -394,8 +295,80 @@ describe('Server side unit test', function () {
           }
         });
     });
+
   });
 
+  describe('Test #PUT increase-seats', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/student-home/increase-seats";
+    let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
+    it('should send parameters to : /api/student-home/increase-seats PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .set('content-type', 'application/json')
+        .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+    LectureDao.deleteLecture(lecture);
+  });
+
+  describe('Test #PUT decrease-seats', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/student-home/decrease-seats";
+    let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
+    it('should send parameters to : /api/student-home/decrease-seats PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .set('content-type', 'application/json')
+        .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+    LectureDao.deleteLecture(lecture);
+  });
+
+  describe('Test #PUT change-type of lecture', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/teacher-home/change-type";
+    let lecture = new Lecture(10000, "C127", "C18", "12/12/12", "8:30", "10:00", 1, "18", 12);
+
+    LectureDao.addLecture(lecture);
+
+    it('should send parameters to : /api/teacher-home/change-type PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .set('content-type', 'application/json')
+        .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+
+    LectureDao.deleteLecture(10000);
+  });
+
+  //----------------------------------------- DAO tests -----------------------------------------//
   describe('Test university members', function () {
 
     describe('#Create a student', function () {
@@ -461,20 +434,36 @@ describe('Server side unit test', function () {
 
   });
 
-  describe('Test enrollments', function () {
+  describe('Test enrollment_dao', function () {
 
     describe('#Create an enrollment', function () {
       it('Creates a new enrollment', function () {
-        //For now i assume that we consider things that are not in the db
-        let testEnrollment = new Enrollment('C123', 's123@email.it');
-        return EnrollmentDao.addEnrollment(testEnrollment);
+        let testEnrollment = new Enrollment('C123', 'basile@cataldo');
+        let student = new Person("s12", "Basile", "Cataldo", "student", "basile@cataldo", "1234");
+        let lecture = new Lecture(100000, "C123", "D1234", "12/12/12", "8:00", "8:10", 1, "77", null);
+        let course = new Course("C123", "D1234", "Test course");
+        let booking = new Booking("s12", 100000, "12/12/12", "8:00");
+        return PersonDao.createPerson(student)
+                .then(LectureDao.addLecture(lecture))
+                .then(CourseDao.createCourse(course))
+                .then(BookingDao.addBoocking(booking))
+                .then(EnrollmentDao.addEnrollment(testEnrollment));
       });
     });
 
+    describe('#Gets enrolled students', function () {
+      it('Gets the list of the students enrolled to the course', function () {
+        return EnrollmentDao.getEnrolledStudentsByCourseName("Test course").then(students => assert.strictEqual(students[0].studentId, "s12"));
+      });
+    });
 
     describe('#Deletes an enrollment', function () {
       it('Deletes an enrollment', function () {
-        return EnrollmentDao.deleteEnrollment('C123', 's123@email.it');
+        return EnrollmentDao.deleteEnrollment('C123', 'basile@cataldo')
+                .then(PersonDao.deletePersonById("s12"))
+                .then(CourseDao.deleteCourseById("C123"))
+                .then(BookingDao.deleteBooking("s12", 100000))
+                .then(LectureDao.deleteLecture(100000));
       });
     });
 
@@ -486,7 +475,7 @@ describe('Server side unit test', function () {
       it("Gets a lecture by teacher's id", function () {
           let enrollment = new Enrollment("testCourse", "test@testone");
           let student = new Person("s444", "testname", "testsurname", "student", "test@testone", "1233");
-          let lecture = new Lecture(null, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "true", "71", 10000);
+          let lecture = new Lecture(null, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "1", "71", 10000);
           PersonDao.createPerson(student);
           EnrollmentDao.addEnrollment(enrollment);
           LectureDao.addLecture(lecture);
@@ -537,7 +526,7 @@ describe('Server side unit test', function () {
 
   });
 
-  describe('Test bookings', function () {
+  describe('Test booking_dao', function () {
 
     describe('#Add a booking', function () {
       it('Creates a new booking', function () {
@@ -554,9 +543,41 @@ describe('Server side unit test', function () {
 
   });
 
+  describe('Test cancelled_bookings_dao', function () {
 
+    describe('#Adds a deleted booking', function () {
+      it('Creates and adds a new deleted booking', function () {
+        let cancelledBooking = new CancelledBooking(null, "s123", 1, "12/12/12");
+        return CancelledBookingsDao.addCancelledBooking(cancelledBooking);
+      });
+    });
 
+    describe('#Delete a cancelled booking', function () {
+      it('Deletes the cancelled booking added before', function () {
+        return CancelledBookingsDao.getCancelledBookings().then(cb => CancelledBookingsDao.deleteCancelledBooking(cb[0].cancelledBookingId));
+      });
+    });
 
+  });
+
+  describe('Test cancelled_lectures_dao', function () {
+
+    describe('#Adds a deleted lecture', function () {
+      it('Creates and adds a new deleted lecture', function () {
+        let cancelledLecture = new CancelledLecture(null, "testCourse", "testTeacher", "12/12/12", "1");
+        return CancelledLecturesDao.addCancelledLecture(cancelledLecture);
+      });
+    });
+
+    describe('#Delete a cancelled lecture', function () {
+      it('Deletes the cancelled lecture added before', function () {
+        return CancelledLecturesDao.getCancelledLectures().then(cl => CancelledLecturesDao.deleteCancelledLecture(cl[0].cancelledLectureId));
+      });
+    });
+
+  });
+
+  //----------------------------------------- Email sender tests -----------------------------------------//
   describe('Send email, test', function () {
 
     const EmailSender = require('../sendemail/EmailSender');
@@ -598,8 +619,6 @@ describe('Server side unit test', function () {
       });
 
     });
-
-
 
     describe('#EmailSender sendEmail method', function () {
 

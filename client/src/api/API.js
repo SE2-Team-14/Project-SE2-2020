@@ -161,6 +161,17 @@ async function getCoursesNames() {
     throw err;
 }
 
+async function getTeacherLecturesList(id) {
+    const url = baseURL + '/getTeacherLectures';
+    const response = await fetch(`${url}/${id}`);
+    const lecturesJson = await response.json();
+
+    if (response.ok) {
+        return lecturesJson.map((l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
+    }
+    const err = { status: response.status, errors: lecturesJson.errors };
+    throw err;
+}
 async function getTeachers() {
     const url = baseURL + '/getTeachers';
     const response = await fetch(`${url}`);
@@ -259,6 +270,77 @@ async function getStatistics(date, mode, course) {
         throw err;
     }
 }
+//change type of lecture from presence to virtual
+async function changeLectureType(lecture) {
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/change-type`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(lecture),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
+//delete lecture 
+async function deleteLecture(lecture) {
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/delete-lecture`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                lecture: lecture
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
+async function addCancelledLecture(lecture) {
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/add-cancelled-lecture`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                lecture: lecture
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
 
 const API = {
     isAuthenticated,
@@ -277,6 +359,10 @@ const API = {
     deleteBooking,
     getPastLectures,
     getStatistics,
+    getTeacherLecturesList,
+    changeLectureType,
+    deleteLecture,
+    addCancelledLecture,
 };
 
 export default API;
