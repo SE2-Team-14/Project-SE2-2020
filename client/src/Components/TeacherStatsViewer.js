@@ -22,6 +22,7 @@ class TeacherStatsViewer extends React.Component {
             lectures: [],
             selectedDate: null,
             lectureTime: null,
+            cancelledStats: [],
         }
     }
 
@@ -32,7 +33,7 @@ class TeacherStatsViewer extends React.Component {
     }
 
     onSelectCourse = (course) => {
-        this.setState({ selectedCourse: course, lectures: [], mode: null, selectedDate: null, stats: [] })
+        this.setState({ selectedCourse: course, lectures: [], mode: null, selectedDate: null, stats: [], cancelledStats: [] })
     }
 
     chooseMode = (mode) => {
@@ -40,11 +41,15 @@ class TeacherStatsViewer extends React.Component {
         if (mode === "lecture") {
             API.getPastLectures(this.state.selectedCourse).then((lectures) => {
                 console.log(lectures)
-                this.setState({ lectures: lectures, stats: [], })
+                this.setState({ lectures: lectures, stats: [], cancelledStats: [] })
             })
         } else if (mode === "month" || mode === "week" || mode === "total") {
             API.getStatistics(null, mode, this.state.selectedCourse).then((stats) => {
-                this.setState({ stats: stats, selectedDate: null, lectureTime: null })
+                this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [] })
+            })
+        } else if (mode === "cancelled") {
+            API.getCancelledBookingsStats(this.state.selectedCourse).then((stats) => {
+                this.setState({ stats: [], selectedDate: null, lectureTime: null, cancelledStats: stats })
             })
         }
     }
@@ -103,6 +108,9 @@ class TeacherStatsViewer extends React.Component {
                         </Col>
                         <Col md="auto">
                             {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("total")}> View Total Bookings </Button>}
+                        </Col>
+                        <Col md="auto">
+                            {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("cancelled")}> View Cancelled Bookings </Button>}
                         </Col>
                     </Row>
                     <Row className="justify-content-md-center">
@@ -192,8 +200,27 @@ class TeacherStatsViewer extends React.Component {
                             <Legend />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
+                        {(this.state.mode === "cancelled" && this.state.cancelledStats.length > 0) && <BarChart
+                            width={500}
+                            height={300}
+                            data={this.state.cancelledStats}
+                            margin={{
+                                top: 5, right: 30, left: 20, bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+
+                            <XAxis dataKey="date">
+                                <Label value={`Cancelled bookings divided by single lecture`} offset={0} position="insideBottom" />
+                            </XAxis>
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="cancellations" fill="#0000FF" />
+                        </BarChart>}
                         {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
                         {(this.state.mode === "lecture" && this.state.lectures.length == 0) && <h4> There are no in-presence lectures registered for the course {this.state.selectedCourse}</h4>}
+                        {(this.state.mode === "cancelled" && this.state.cancelledStats == 0) && <h4> There are no cancelled bookings registered. </h4>}
 
                     </Row>
 

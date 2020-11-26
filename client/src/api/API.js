@@ -342,6 +342,18 @@ async function addCancelledLecture(lecture) {
     });
 }
 
+async function getCancelledBookingsStats(course) {
+    let url = "/cancelledBookings?course=" + course;
+    const response = await fetch(baseURL + url);
+    const statsJson = await response.json();
+    if (response.ok) {
+        return statsJson;
+    } else {
+        let err = { status: response.status, errObj: statsJson };
+        throw err;
+    }
+}
+
 const API = {
     isAuthenticated,
     login,
@@ -363,6 +375,7 @@ const API = {
     changeLectureType,
     deleteLecture,
     addCancelledLecture,
+    getCancelledBookingsStats,
 };
 
 export default API;

@@ -132,3 +132,20 @@ exports.getStatistics = function (date, mode, course) {
         }
     })
 }
+
+exports.getCancelledBookingsStats = function (course) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) AS cancellations, CANCELLED_BOOKINGS.date FROM CANCELLED_BOOKINGS, LECTURE, COURSE WHERE CANCELLED_BOOKINGS.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY LECTURE.date";
+        db.all(sql, [course], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows) {
+                    resolve(rows);
+                }
+                else
+                    resolve(undefined);
+            }
+        })
+    })
+}
