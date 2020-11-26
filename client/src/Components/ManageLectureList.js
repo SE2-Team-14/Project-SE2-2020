@@ -64,7 +64,7 @@ class ManageLectureList extends React.Component {
     }
 
     deleteLecture = (lecture) => {
-        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true, showDelete: false})));;
+        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true, showDelete: false})));
         API.addCancelledLecture(lecture);
         API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
     }
