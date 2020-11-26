@@ -67,29 +67,6 @@ describe('Server side unit test', function () {
       });
     });
 
-    /*describe('#Test /api/getCourses', function () {
-      var url = "http://localhost:3001/api/getCourses";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          
-          done();
-        });
-      });
-    });*/
-
-    /*
-    describe('#Test /api/getCourses', function () {
-      var url = "http://localhost:3001/api/getCourses";
-      it("returns status 500", function (done) {
-        request(url, function (error, response, body) {
-
-          expect(response.statusCode).to.equal(500);
-          done();
-        });
-      });
-    });
-    */
-
     describe('#Test /api/getCourses/body', function () {
       let course = new Course("courseTestId", "teacherTestId", "nameTestCourse");
       CourseDao.createCourse(course);
@@ -268,11 +245,11 @@ describe('Server side unit test', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
     let b = new Booking("s123", 1, "18/11/2020", "8.30");
+    
     it('should send parameters to : /api/student-home/book POST', function (done) {
       chai
         .request(host)
         .post(path)
-        //.field({studentId: 's1234' , lectureId: '1', date: 'd', startingTime: 'd'})
         .set('content-type', 'application/json')
         .send({ booking: b, studentName: "testName", courseName: "testCourse", date: "18/11/2020", startingTime: "8.30", recipient: "test@email.com" })
         .end(function (error, response, body) {
@@ -284,7 +261,29 @@ describe('Server side unit test', function () {
           }
         });
     });
-    BookingDao.deleteBooking("s123", 1);
+
+  });
+
+  describe('Test #POST book', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/student-home/delete-book";
+
+    it('should send a request to delete a booking: /api/student-home/delete-book DELETE', function (done) {
+      chai
+        .request(host)
+        .del(path)
+        .set('content-type', 'application/json')
+        .send({ studentId: "s123", lectureId: 1 })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+
   });
 
   describe('Test #PUT increase-seats', function () {
@@ -306,6 +305,53 @@ describe('Server side unit test', function () {
           }
         });
     });
+  });
+
+  describe('Test #PUT decrease-seats', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/student-home/decrease-seats";
+
+    it('should send parameters to : /api/student-home/decrease-seats PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .set('content-type', 'application/json')
+        .send({ lectureId: '1' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #PUT change-type of lecture', function () {
+    var host = "http://localhost:3001";
+    var path = "/api/teacher-home/change-type";
+    let lecture = new Lecture(10000, "C127", "C18", "12/12/12", "8:30", "10:00", 1, "18", 12);
+
+    LectureDao.addLecture(lecture);
+
+    it('should send parameters to : /api/teacher-home/change-type PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .set('content-type', 'application/json')
+        .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+
+    LectureDao.deleteLecture(10000);
   });
 
   //----------------------------------------- DAO tests -----------------------------------------//
