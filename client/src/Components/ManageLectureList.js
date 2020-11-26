@@ -1,6 +1,7 @@
 import React from 'react';
 import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
+const moment = require('moment');
 //import Booking from '../api/booking';
 
 class ManageLectureList extends React.Component {
@@ -30,8 +31,16 @@ class ManageLectureList extends React.Component {
     }
 
     handleChange = (lecture) => {
-        this.changeType(lecture);
-        API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+        let deadline = moment().format("HH:mm");
+        let startingTime = moment(lecture.startingTime, "HH:mm").subtract(30, "minutes").format("HH:mm");
+        if(startingTime < deadline){
+            this.setState({showChange: false, showChangeError: true});
+        }
+        else{
+            this.changeType(lecture);
+            API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+        }
+        
     }
 
     changeType = (lecture) => {
