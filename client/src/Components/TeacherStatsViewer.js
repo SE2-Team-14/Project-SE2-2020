@@ -39,17 +39,10 @@ class TeacherStatsViewer extends React.Component {
         this.setState({ mode: mode })
         if (mode === "lecture") {
             API.getPastLectures(this.state.selectedCourse).then((lectures) => {
+                console.log(lectures)
                 this.setState({ lectures: lectures, stats: [], })
             })
-        } else if (mode === "month") {
-            API.getStatistics(null, mode, this.state.selectedCourse).then((stats) => {
-                this.setState({ stats: stats, selectedDate: null, lectureTime: null })
-            })
-        } else if (mode === "week") {
-            API.getStatistics(null, mode, this.state.selectedCourse).then((stats) => {
-                this.setState({ stats: stats, selectedDate: null, lectureTime: null })
-            })
-        } else if (mode === "total") {
+        } else if (mode === "month" || mode === "week" || mode === "total") {
             API.getStatistics(null, mode, this.state.selectedCourse).then((stats) => {
                 this.setState({ stats: stats, selectedDate: null, lectureTime: null })
             })
@@ -144,7 +137,7 @@ class TeacherStatsViewer extends React.Component {
                             <Legend />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
-                        {(this.state.stats.length === 0 && this.state.selectedDate) && <h4> There are no bookings for the lecture {this.state.selectedDate}, so no statistics are available.</h4>}
+                        {(this.state.stats.length === 0 && this.state.selectedDate != null) && <h4> There are no bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}, so no statistics are available.</h4>}
                         {(this.state.mode === "month" && this.state.stats.length > 0) && <BarChart
                             width={500}
                             height={300}
@@ -199,7 +192,7 @@ class TeacherStatsViewer extends React.Component {
                             <Legend />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
-                        {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no in-presence lectures registered for the course {this.state.selectedCourse}</h4>}
+                        {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
                         {(this.state.mode === "lecture" && this.state.lectures.length == 0) && <h4> There are no in-presence lectures registered for the course {this.state.selectedCourse}</h4>}
 
                     </Row>

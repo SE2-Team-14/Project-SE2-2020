@@ -95,6 +95,7 @@ exports.getStatistics = function (date, mode, course) {
                 if (err)
                     reject(err);
                 else {
+                    console.log(rows)
                     if (rows) {
                         resolve(rows);
                     }
