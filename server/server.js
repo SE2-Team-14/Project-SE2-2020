@@ -19,6 +19,7 @@ const setMidnightTimer = require("./midnightTimer");
 const midnightTimer = require('./midnightTimer');
 const moment = require('moment');
 const CancelledLectures = require('./cancelled_lectures');
+const cancelledBookingsDao = require("./cancelled_bookings_dao");
 
 
 // Authorization error
@@ -111,7 +112,12 @@ app.get('/api/student-home/:email/bookable-lectures', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 
-//returns all courses taught by a teacher
+/**
+ * GET API 
+ * Request parameters: string containing the email of the teacher one wants to know the taught courses
+   Request body content: none
+   Response body content: list of courses taught by said teacher
+ */
 app.get("/api/courses", (req, res) => {
   courseDao.getCoursesOfTeacher(req.query.teacher).then((courses) => {
     res.json(courses);
@@ -123,10 +129,14 @@ app.get("/api/courses", (req, res) => {
     });
 })
 
-//returns all students booked for a specific course
-//called enrollment as a mistake
-app.get("/api/enrollment", (req, res) => {
-  enrollmentDao.getEnrolledStudentsByCourseName(req.query.course).then((students) => {
+/**
+ * GET API 
+ * Request parameters: string containing the name of the course for which a teacher wants to have a list of all booked students
+   Request body content: none
+   Response body content: list of booked students for all lectures of the course
+ */
+app.get("/api/bookedStudents", (req, res) => {
+  bookingDao.getBookedStudentsByCourseName(req.query.course).then((students) => {
     let empty = [];
     if (students === undefined) {
       res.json(empty)
@@ -221,6 +231,12 @@ app.put('/api/student-home/decrease-seats', (req, res) => {
   }
 });
 
+/**
+ * GET API
+ * Request Parameters: email, a string containing the email corresponding to the person one wants to have the name and surname of
+ * Request Body Content: none
+ * Response Body Content: information about the person (name, surname, email)
+ */
 app.get("/api/name", (req, res) => {
   personDao.getPersonByEmail(req.query.email).then((person) => {
     res.json(person)
@@ -241,6 +257,14 @@ app.get("/api/pastLectures", (req, res) => {
   });
 })
 
+/**
+ * GET API
+ * Request Parameters: - date: string containing the date of a lecture a teacher wants to have statistics about; set to null if the parameter mode is not equal to "lecture"
+ *                     - mode: string containing the mode of statistics a teacher wants to have (days for a single lecture, divided by week, divided by month, total bookings divided by lecture)
+ *                     - course: string containing the name of the course for which the teacher wants to have statistics
+ * Request Body Content: none
+ * Response Body Content: array containing those statistics
+ */
 app.get("/api/statistics", (req, res) => {
   bookingDao.getStatistics(req.query.date, req.query.mode, req.query.course).then((stats) => {
     res.json(stats)
@@ -290,8 +314,14 @@ app.post('/api/teacher-home/add-cancelled-lecture', (req, res) => {
   }
 });
 
+/**
+ * GET API
+ * Request Parameters: course, a string containing the name of the course for which a teacher wants to have statistics about cancelled bookings
+ * Request Body Content: none
+ * Response Body Content: array containing those statistics
+ */
 app.get("/api/cancelledBookings", (req, res) => {
-  bookingDao.getCancelledBookingsStats(req.query.course).then((stats) => {
+  cancelledBookingsDao.getCancelledBookingsStats(req.query.course).then((stats) => {
     res.json(stats)
   }).catch((err) => {
     res.status(500).json({
