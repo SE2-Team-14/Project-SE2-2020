@@ -160,6 +160,18 @@ describe('Server side unit test', function () {
       BookingDao.deleteBooking(booking);
     });
 
+    describe('#Test /api/getTeacherLectures/body', function () {
+      let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
+      LectureDao.addLecture(lecture);
+      var url = "http://localhost:3001/api/getTeacherLectures";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.body).to.deep.include(Array.from(lecture));
+          done();
+        });
+      });
+      LectureDao.deleteLecture(lecture);
+    });
 
     describe("#Test /api/getCourses", function () {
       var url = "http://localhost:3001/api/courses";
@@ -169,7 +181,7 @@ describe('Server side unit test', function () {
           done();
         })
       })
-    })
+    });
 
     describe("#Test /api/getCourses/body", function () {
       let course = new Course(1, "d123", "TestCourse");
@@ -289,13 +301,13 @@ describe('Server side unit test', function () {
   describe('Test #PUT increase-seats', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/increase-seats";
-
+    let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
     it('should send parameters to : /api/student-home/increase-seats PUT', function (done) {
       chai
         .request(host)
         .put(path)
         .set('content-type', 'application/json')
-        .send({ lectureId: '1' })
+        .send({ lecture: lecture })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -305,18 +317,19 @@ describe('Server side unit test', function () {
           }
         });
     });
+    LectureDao.deleteLecture(lecture);
   });
 
   describe('Test #PUT decrease-seats', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/decrease-seats";
-
+    let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
     it('should send parameters to : /api/student-home/decrease-seats PUT', function (done) {
       chai
         .request(host)
         .put(path)
         .set('content-type', 'application/json')
-        .send({ lectureId: '1' })
+        .send({ lecture: lecture })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -326,6 +339,7 @@ describe('Server side unit test', function () {
           }
         });
     });
+    LectureDao.deleteLecture(lecture);
   });
 
   describe('Test #PUT change-type of lecture', function () {

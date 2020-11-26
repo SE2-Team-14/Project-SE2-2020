@@ -13,14 +13,12 @@ exports.addCancelledBooking = function(booking) {
         let params = [];
         console.log("Add a cancelled booking: ", booking);
         params.push(booking.cancelledBookingId, booking.studentId, booking.lectureId, booking.date);
-
-        if (booking) 
-            db.run(sql, params, function(err) {
-                if (err) {
-                    reject(err);
-                }
-                else 
-                    resolve(this.lastID);
+        
+        db.run(sql, params, function(err) {
+            if (err) 
+                reject(err);
+            else 
+                resolve(this.lastID);
         });
     });
 }

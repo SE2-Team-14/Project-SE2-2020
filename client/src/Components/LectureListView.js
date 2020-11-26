@@ -241,7 +241,6 @@ function LectureList(props) {
 
 function LectureItem(props) {
     let find = props.findBooking(props.id, props.lecture.lectureId);
-    console.log(find);
     let courseName = props.findCourseName(props.lecture.courseId);
     let teacher = props.findTeacherName(props.lecture.teacherId);
     let maxSeats = props.findMaxSeats(props.lecture.classroomId);

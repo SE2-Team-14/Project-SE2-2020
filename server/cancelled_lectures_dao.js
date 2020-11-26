@@ -14,13 +14,11 @@ exports.addCancelledLecture = function(lecture) {
         console.log("Add a cancelled lecture: ", lecture);
         params.push(lecture.cancelledLectureId, lecture.courseId, lecture.teacherId, lecture.date, lecture.inPresence);
 
-        if (lecture) 
-            db.run(sql, params, function(err) {
-                if (err) {
-                    reject(err);
-                }
-                else 
-                    resolve(this.lastID);
+        db.run(sql, params, function(err) {
+            if (err) 
+                reject(err)
+            else 
+                resolve(this.lastID);
         });
     });
 }

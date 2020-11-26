@@ -53,8 +53,7 @@ exports.getEnrolledStudentsByCourseName = function (courseName) {
     });
 }
 
-/*
-exports.getEnrolledStudents = function (courseId) {
+/*exports.getEnrolledStudents = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM ENROLLMENT WHERE courseId = ?";
         db.all(sql, [courseId], (err, row) => {
