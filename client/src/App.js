@@ -14,12 +14,9 @@ import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
-<<<<<<< HEAD
 import TeacherStatsViewer from "./Components/TeacherStatsViewer";
-=======
 import ManageLectureList from './Components/ManageLectureList';
 import BookedLessonsCalendar from './Components/LessonsCalendar';
->>>>>>> 99d2b8938220d5fe4049dfa1be10a03bd6cac0b1
 
 import { AuthContext } from './auth/AuthContext'
 
