@@ -67,6 +67,7 @@ class LectureListView extends React.Component {
 
     handleBook = (studentId, lecture) => {
         let find=false;
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
@@ -91,6 +92,7 @@ class LectureListView extends React.Component {
 
     handleDelete = (studentId, lecture) => {
         let find=false;
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
@@ -266,12 +268,12 @@ function LectureItem(props) {
                     {props.lecture.classroomId}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.numberOfSeats &&
+                    {props.lecture.numberOfSeats != null &&
                         <>
                         {props.lecture.numberOfSeats}/{maxSeats}
                         </>
                     } 
-                    {!props.lecture.numberOfSeats &&
+                    {props.lecture.numberOfSeats==null &&
                         <>
                         {0}/{maxSeats}
                         </>

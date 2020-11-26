@@ -196,7 +196,8 @@ app.delete('/api/student-home/delete-book', (req, res) => {
 //PUT api/student-home/increase-seats
 app.put('/api/student-home/increase-seats', (req, res) => {
   const lecture = req.body;
-
+  if(lecture.numberOfSeats==null)
+    lecture.numberOfSeats=0;
   if (!lecture) {
     res.status(400).end();
   } else {
