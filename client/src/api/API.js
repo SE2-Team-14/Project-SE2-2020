@@ -223,7 +223,7 @@ async function getCourses(teacher) {
 
 //gets all students enrolled for lessons in a course
 async function getEnrollments(course) {
-    let url = "/enrollment?course=" + course;
+    let url = "/bookedStudents?course=" + course;
     const response = await fetch(baseURL + url);
     const enrollJson = await response.json();
     if (response.ok) {

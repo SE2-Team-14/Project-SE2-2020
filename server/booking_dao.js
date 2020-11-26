@@ -8,6 +8,10 @@ function createBooking(row) {
     return new Booking(row.studentId, row.lectureId, row.date, row.startingTime);
 }
 
+/** Saves the booking made by a student for a given lecture. Calculates the date in which the booking is made and saves it in the database with the received information, together with also the month in which the booking is made and the week, expressed as an interval of two dates with format DD/MM/YYYY, Monday to Sunday 
+ * 
+ * @param booking booking object to be saved in the database, contains the ID of the student that made the booking, the ID of the lecture associated with the booking, the starting time of the lecture
+ */
 exports.addBoocking = function (booking) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO BOOKING(studentId, lectureId, date, startingTime, month, week) VALUES(?, ?, ?, ?, ?, ?)';
@@ -74,6 +78,16 @@ exports.getBookings = function (studentId) {
     });
 }
 
+/** Returns an array containing statistics about a given course, with each element having these values:
+ *   - bookings: integer containing the amount of booked students associated to one of the following values, depending on the mode
+ *   - date: string, present if mode === lecture. Contains the date in which bookings have been made regarding a single lecture
+ *   - month: string, present only if mode === month. Contains the month in which the number of bookings has been done (sum of all bookings made in the month, counted without specifying the lecture)
+ *   - week: string, present only if mode === week. Contains the week in which the number of bookings has been done, espressed as an interval of dates in format DD/MM/YYYY, Monday to Sunday (sum of all bookings made in the week, counted without specifying the lecture)
+ *   - date: string, present if mode === total with a different meaning than the one above. Contains the date of a lecture and bookings contains the total amount of bookings registered for that lecture
+ * @param date string containing the date of a lecture one wants to have statistics about. Is set to null value if mode is not equal to lecture (no need to have the date of a single lecture otherwise) 
+ * @param mode string containing the mode one wants to have statistics about (days for a single lecture, divided by week, divided by month, total bookings divided by lecture)
+ * @param course string containing the name of the course one wants to have statistics about
+ */
 exports.getStatistics = function (date, mode, course) {
     return new Promise((resolve, reject) => {
         if (mode === "lecture") {
@@ -133,19 +147,25 @@ exports.getStatistics = function (date, mode, course) {
     })
 }
 
-exports.getCancelledBookingsStats = function (course) {
+
+/** Returns a list of all booked students for all lectures of a given course, together with also information about the lectures (date, starting and ending time and classroom). The list is ordered by lecture date
+ * 
+ * @param courseName string containing the name of the course for which a teacher wants to have a list of booked students
+ */
+exports.getBookedStudentsByCourseName = function (courseName) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT COUNT(*) AS cancellations, CANCELLED_BOOKINGS.date FROM CANCELLED_BOOKINGS, LECTURE, COURSE WHERE CANCELLED_BOOKINGS.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY LECTURE.date";
-        db.all(sql, [course], (err, rows) => {
+        const sql = "SELECT studentId, LECTURE.date, LECTURE.startingTime, LECTURE.endingTime, LECTURE.classroomId  FROM COURSE, LECTURE, BOOKING  WHERE COURSE.courseId = LECTURE.courseId AND  BOOKING.lectureId = LECTURE.lectureId AND  COURSE.name = ? ORDER BY LECTURE.date";
+        db.all(sql, [courseName], (err, row) => {
             if (err)
                 reject(err);
             else {
-                if (rows) {
-                    resolve(rows);
+                if (row.length > 0) {
+                    //let _students = rows.map((row => Person.createPerson(row)))[0];
+                    resolve(row);
                 }
                 else
                     resolve(undefined);
             }
-        })
-    })
+        });
+    });
 }

@@ -14,7 +14,7 @@ class BookingTable extends React.Component {
     }
 
     componentDidMount() {
-        API.getEnrollments(this.props.course).then((e) => {
+        API.getBookedStudents(this.props.course).then((e) => {
             this.setState({ enrolls: e })
         })
     }

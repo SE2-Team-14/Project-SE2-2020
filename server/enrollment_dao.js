@@ -35,24 +35,6 @@ exports.deleteEnrollment = function (courseId, email) {
     });
 }
 
-exports.getEnrolledStudentsByCourseName = function (courseName) {
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT studentId, LECTURE.date, LECTURE.startingTime, LECTURE.endingTime, LECTURE.classroomId  FROM COURSE, LECTURE, BOOKING  WHERE COURSE.courseId = LECTURE.courseId AND  BOOKING.lectureId = LECTURE.lectureId AND  COURSE.name = ? ORDER BY LECTURE.date";
-        db.all(sql, [courseName], (err, row) => {
-            if (err)
-                reject(err);
-            else {
-                if (row.length > 0) {
-                    //let _students = rows.map((row => Person.createPerson(row)))[0];
-                    resolve(row);
-                }
-                else
-                    resolve(undefined);
-            }
-        });
-    });
-}
-
 /*exports.getEnrolledStudents = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM ENROLLMENT WHERE courseId = ?";

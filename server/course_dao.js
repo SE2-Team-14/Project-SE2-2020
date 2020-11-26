@@ -73,6 +73,10 @@ exports.getCourses = function () {
     });
 }
 
+/** Returns an array containing the names of all courses taught by the teacher, if there are any
+ * 
+ * @param teacherName string containing the email of the teacher one wants to know the taught courses
+ */
 exports.getCoursesOfTeacher = function (teacherName) {
     return new Promise((resolve, reject) => {
 
