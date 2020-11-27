@@ -329,6 +329,21 @@ app.get("/api/cancelledBookings", (req, res) => {
   })
 })
 
+
+//DELETE API
+//Request parameters: empty
+//Request body: lectureId of the lecture deleted
+//Response body: empty
+app.delete('/api/teacher-home/deleteBookingByTeacher', (req, res) => {
+  let lectureId = req.body.lectureId;
+  if (!lectureId) {
+    res.status(400).end();
+  } else {
+    bookingDao.deleteBookingByTeacher(lectureId)
+      .then(() => res.status(200).end())
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  }
+})
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*

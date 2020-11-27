@@ -77,6 +77,18 @@ exports.getBookings = function (studentId) {
         });
     });
 }
+//DELETE the booking related to the lecture deleted or switch to virtual by the teacher
+exports.deleteBookingByTeacher = function(lectureId) {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM BOOKING WHERE lectureId = ?"
+        db.run(sql, [lectureId], (err, row) => {
+            if (err)
+                reject(err);
+            else
+                resolve(row);
+        });
+    });
+}
 
 /** Returns an array containing statistics about a given course, with each element having these values:
  *   - bookings: integer containing the amount of booked students associated to one of the following values, depending on the mode

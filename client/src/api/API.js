@@ -222,7 +222,7 @@ async function getCourses(teacher) {
 }
 
 //gets all students enrolled for lessons in a course
-async function getEnrollments(course) {
+async function getBookedStudents(course) {
     let url = "/bookedStudents?course=" + course;
     const response = await fetch(baseURL + url);
     const enrollJson = await response.json();
@@ -354,12 +354,35 @@ async function getCancelledBookingsStats(course) {
     }
 }
 
+async function deleteBookingByTeacher(lectureId){
+    let url = baseURL + '/teacher-home';
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/deleteBookingByTeacher`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                lectureId: lectureId
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
 const API = {
     isAuthenticated,
     login,
     getLecturesList,
     getCourses,
-    getEnrollments,
+    getBookedStudents,
     getCoursesNames,
     getTeachers,
     getClassrooms,
@@ -376,6 +399,7 @@ const API = {
     deleteLecture,
     addCancelledLecture,
     getCancelledBookingsStats,
+    deleteBookingByTeacher,
 };
 
 export default API;

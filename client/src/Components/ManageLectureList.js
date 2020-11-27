@@ -8,11 +8,12 @@ class ManageLectureList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false, lecture: ''};
+        this.state = { lectures: [], bookings: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false, lecture: ''};
     }
     componentDidMount() {
         API.getTeacherLecturesList(this.props.id)
         .then((lectures) => this.setState({lectures: lectures}));
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
     }
 
     findCourseName = (courseId) => {
@@ -32,6 +33,7 @@ class ManageLectureList extends React.Component {
         let today = moment().format("DD/MM/YYYY");
         if(lecture.date > today){
             this.deleteLecture(lecture);
+            this.deleteBookingByTeacher(lecture.lectureId);
             API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
         }else{
             if(startingTime < deadline){
@@ -39,6 +41,7 @@ class ManageLectureList extends React.Component {
             }
             else{
                 this.deleteLecture(lecture);
+                this.deleteBookingByTeacher(lecture.lectureId);
                 API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
             }
         }
@@ -51,6 +54,7 @@ class ManageLectureList extends React.Component {
         let today = moment().format("DD/MM/YYYY");
         if(lecture.date > today){
             this.changeType(lecture);
+            this.deleteBookingByTeacher(lecture.lectureId);
             API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
         }else {
             if(startingTime < deadline){
@@ -58,6 +62,7 @@ class ManageLectureList extends React.Component {
             }
             else{
                 this.changeType(lecture);
+                this.deleteBookingByTeacher(lecture.lectureId);
                 API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
             }
         }  
@@ -71,6 +76,14 @@ class ManageLectureList extends React.Component {
 
     changeType = (lecture) => {
         API.changeLectureType(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showChangeSuccess: true, showChange: false})));
+    }
+
+    deleteBookingByTeacher = (lectureId) => {
+        for(let b of this.state.bookings){
+            if(b.lectureId == lectureId)
+                API.deleteBookingByTeacher(lectureId);
+        }
+        
     }
 
     handleClickChange = (lecture) => {
@@ -251,7 +264,7 @@ function LectureItemManage(props) {
                     
                 </Col>
                 <Col xs={1} className='text-center'>
-                    <Button onClick={() => props.handleClickDelete(props.lecture)}>Delete</Button>
+                    <Button variant='danger' onClick={() => props.handleClickDelete(props.lecture)}>Delete</Button>
                 </Col>
                 <Col xs={2} className='text-center'>
                     {props.lecture.inPresence == 0 &&
