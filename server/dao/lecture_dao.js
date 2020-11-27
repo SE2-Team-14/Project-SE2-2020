@@ -117,23 +117,6 @@ exports.decreaseBookedSeats = function (lectureId) {
     });
 }
 
-exports.getMaxSeats = function (classroomId) {
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT CLASSROOM.maxNumberOfSeats FROM CLASSROOM C, LECTURE L WHERE C.classroom = L.classroomId AND C.classroom IN (SELECT classroom FROM CLASSROOM WHERE classroom = ?)";
-        db.all(sql, [classroomId], (err, row) => {
-            if (err) {
-                reject(err);
-            } else {
-                if (row) {
-                    resolve(row);
-                } else {
-                    resolve(undefined);
-                }
-            }
-        })
-    })
-}
-
 exports.getTomorrowsLecturesList = function (teacherId) {
     let tomorrow = moment().format('DD/MM/YYYY');
 
