@@ -65,12 +65,7 @@ class TeacherStatsViewer extends React.Component {
 
     /*
       TODO: - custom tooltip per i grafici?
-      PROGRESS: - modificato salvataggio bookings per inserire data e mese di prenotazione
-                - API per ottenimento statistiche funziona per settimana, mese e singola lezione
-                - interazione tra diverse modalità funzionante
-                - aggiunto grafico con totale prenotazioni per tutte le lezioni
-                - aggiunta ora alla singola lezione 
-                - calcolo date di inizio e fine settimana
+      
      */
 
     render() {

@@ -78,7 +78,7 @@ exports.getBookings = function (studentId) {
     });
 }
 //DELETE the booking related to the lecture deleted or switch to virtual by the teacher
-exports.deleteBookingByTeacher = function(lectureId) {
+exports.deleteBookingByTeacher = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM BOOKING WHERE lectureId = ?"
         db.run(sql, [lectureId], (err, row) => {
@@ -160,7 +160,7 @@ exports.getStatistics = function (date, mode, course) {
 }
 
 
-/** Returns a list of all booked students for all lectures of a given course, together with also information about the lectures (date, starting and ending time and classroom). The list is ordered by lecture date
+/** Returns a list of all booked students for all future lectures of a given course, together with also information about the lectures (date, starting and ending time and classroom). The list is ordered by lecture date and also includes lectures that take place in the current day
  * 
  * @param courseName string containing the name of the course for which a teacher wants to have a list of booked students
  */
@@ -173,7 +173,15 @@ exports.getBookedStudentsByCourseName = function (courseName) {
             else {
                 if (row.length > 0) {
                     //let _students = rows.map((row => Person.createPerson(row)))[0];
-                    resolve(row);
+                    let today = moment().subtract(1, 'days');
+                    let newRow = [];
+                    for (let i = 0; i < row.length; i++) {
+                        let date = moment(row[i]["date"], "DD/MM/YYYY")
+                        if (today.isBefore(date)) {
+                            newRow.push(row[i])
+                        }
+                    }
+                    resolve(newRow);
                 }
                 else
                     resolve(undefined);
