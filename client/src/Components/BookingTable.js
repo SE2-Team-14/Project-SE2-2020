@@ -82,13 +82,13 @@ class BookingTable extends React.Component {
     render() {
         return (
             <>{this.state.enrolls.length === 0 && <ListGroup>
-                <Row className='justify-content-around'>
-                    <h1>There are no bookings yet for the course {this.props.course}</h1>
+                <Row className='justify-content-md-center'>
+                    <h4>There are no bookings yet for future lectures for the course {this.props.course}</h4>
                 </Row>
             </ListGroup>}
                 {this.state.enrolls.length > 0 && <ListGroup>
-                    <Row className='justify-content-around'>
-                        <h1>Booked Students for the course {this.props.course}</h1>
+                    <Row className='justify-content-md-center'>
+                        <h4>Booked Students for all future lectures for the course {this.props.course}</h4>
                     </Row>
                     <ListGroup.Item className='border'>
                         <Row className='justify-content-around'>

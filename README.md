@@ -21,7 +21,7 @@
 - GET `/api/bookedStudents`
   - Request Parameters: string containing the name of the course for which a teacher wants to have a list of all booked students
   - Request Body Content: none
-  - Response Body Content: list of booked students for all lectures of the course
+  - Response Body Content: list of booked students for all future lectures of the course (including lectures taking place in the present day)
 - GET `/api/name`
   - Request Parameters: string containing the email corresponding to the person one wants to have the name and surname of
   - Request Body Content: none
