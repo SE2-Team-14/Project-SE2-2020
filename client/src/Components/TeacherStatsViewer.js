@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Jumbotron from "react-bootstrap/Jumbotron"
 
 import {
-    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label,
+    BarChart, Bar, /*Cell,*/ XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label,
 } from 'recharts';
 
 class TeacherStatsViewer extends React.Component {

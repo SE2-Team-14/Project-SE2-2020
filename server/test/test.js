@@ -495,7 +495,7 @@ describe('Server side unit test', function () {
           LectureDao.addLecture(lecture);
           LectureDao.increaseBookedSeats(lecture.lectureId);
           return LectureDao.getLectureById(10000)
-                  .then((lecture) => assert.strictEqual(lecture.numberOfSeats, 2))
+                  .then((l) => assert.strictEqual(l.numberOfSeats, 2))
                   .then(LectureDao.deleteLecture(10000));
           //return assert.strictEqual(lecture.numberOfSeats, 3);
       });
@@ -507,7 +507,7 @@ describe('Server side unit test', function () {
         LectureDao.addLecture(lecture);
         LectureDao.decreaseBookedSeats(lecture.lectureId);
         return LectureDao.getLectureById(10000)
-                .then((lecture) => assert.strictEqual(lecture.numberOfSeats, 0))
+                .then((l) => assert.strictEqual(l.numberOfSeats, 0))
                 .then(LectureDao.deleteLecture(10000));
       });
     });
@@ -532,7 +532,7 @@ describe('Server side unit test', function () {
         LectureDao.addLecture(lecture);
         LectureDao.changeLectureType(lecture.lectureId);
         return LectureDao.getLectureById(10000)
-                .then((lecture) => assert.strictEqual(lecture.inPresence, "0"))
+                .then((l) => assert.strictEqual(l.inPresence, "0"))
                 .then(LectureDao.deleteLecture(10000));
       });
     });
@@ -598,6 +598,7 @@ describe('Server side unit test', function () {
     describe('#Delete booking by teacher', function(){
       it('Delete a booking when a teacher delete or change a lecture', function(){
         let testBooking = new Booking('s123456', 1, 'tomorrow', '15:00');
+        BookingDao.addBoocking(testBooking);
         return BookingDao.deleteBookingByTeacher(1);
       });
     });
