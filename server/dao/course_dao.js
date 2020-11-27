@@ -1,7 +1,7 @@
 'use strict';
 
-const db = require('./db');
-const Course = require('./course');
+const db = require('../db');
+const Course = require('../bean/course');
 
 
 function createCourse(row) {

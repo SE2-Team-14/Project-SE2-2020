@@ -1,9 +1,9 @@
 'use strict';
 
-const db = require('./db');
-const Enrollment = require('./enrollment');
-const Course = require('./course_dao');
-const Person = require('./person_dao');
+const db = require('../db');
+const Enrollment = require('../bean/enrollment');
+const Course = require('../dao/course_dao');
+const Person = require('../dao/person_dao');
 
 exports.addEnrollment = function (enrollment) {
     return new Promise((resolve, reject) => {

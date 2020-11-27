@@ -6,20 +6,19 @@ const jsonwebtoken = require("jsonwebtoken");
 const morgan = require('morgan'); // logging middleware
 const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
-const lectureDao = require('./lecture_dao');
-const personDao = require('./person_dao')
-const courseDao = require("./course_dao");
-const enrollmentDao = require("./enrollment_dao");
-const classroomDao = require('./classroom_dao');
-const bookingDao = require('./booking_dao');
-const cancelledLectureDao = require('./cancelled_lectures_dao');
-const Booking = require('./booking');
-const EmailSender = require('./sendemail/EmailSender');
-const setMidnightTimer = require("./midnightTimer");
-const midnightTimer = require('./midnightTimer');
+const lectureDao = require('./dao/lecture_dao');
+const personDao = require('./dao/person_dao')
+const courseDao = require("./dao/course_dao");
+const enrollmentDao = require("./dao/enrollment_dao");
+const classroomDao = require('./dao/classroom_dao');
+const bookingDao = require('./dao/booking_dao');
+const cancelledLectureDao = require('./dao/cancelled_lectures_dao');
+const Booking = require('./bean/booking');
+const EmailSender = require('./utils/EmailSender');
+const setMidnightTimer = require("./utils/midnightTimer");
 const moment = require('moment');
-const CancelledLectures = require('./cancelled_lectures');
-const cancelledBookingsDao = require("./cancelled_bookings_dao");
+const CancelledLectures = require('./bean/cancelled_lectures');
+const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
 
 
 // Authorization error

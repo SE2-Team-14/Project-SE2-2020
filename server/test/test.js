@@ -1,22 +1,23 @@
 'use strict';
 
 const assert = require('assert');
-const Person = require('../person');
-const Course = require('../course');
-const Lecture = require('../lecture');
-const Enrollment = require('../enrollment');
-const Classroom = require('../classroom');
-const Booking = require('../booking');
-const CancelledBooking = require('../cancelled_bookings');
-const CancelledLecture = require('../cancelled_lectures');
-const PersonDao = require('../person_dao');
-const CourseDao = require('../course_dao');
-const LectureDao = require('../lecture_dao');
-const EnrollmentDao = require('../enrollment_dao');
-const ClassroomDao = require('../classroom_dao');
-const BookingDao = require('../booking_dao');
-const CancelledBookingsDao = require('../cancelled_bookings_dao');
-const CancelledLecturesDao = require('../cancelled_lectures_dao');
+const Person = require('../bean/person');
+const Course = require('../bean/course');
+const Lecture = require('../bean/lecture');
+const Enrollment = require('../bean/enrollment');
+const Classroom = require('../bean/classroom');
+const Booking = require('../bean/booking');
+const CancelledBooking = require('../bean/cancelled_bookings');
+const CancelledLecture = require('../bean/cancelled_lectures');
+const PersonDao = require('../dao/person_dao');
+const CourseDao = require('../dao/course_dao');
+const LectureDao = require('../dao/lecture_dao');
+const EnrollmentDao = require('../dao/enrollment_dao');
+const ClassroomDao = require('../dao/dao/classroom_dao');
+const BookingDao = require('../dao/booking_dao');
+const CancelledBookingsDao = require('../dao/cancelled_bookings_dao');
+const CancelledLecturesDao = require('../dao/cancelled_lectures_dao');
+const EmailSender = require('../utils/EmailSender');
 
 const chai = require('chai');
 const expect = chai.expect;
@@ -580,7 +581,6 @@ describe('Server side unit test', function () {
   //----------------------------------------- Email sender tests -----------------------------------------//
   describe('Send email, test', function () {
 
-    const EmailSender = require('../sendemail/EmailSender');
     const correctEmail = "pulsebs14.notification@gmail.com";
     const correctFakeUserEmail = "pulsebs.fakeuser@gmail.com"
     const correctPassword = "team142020";

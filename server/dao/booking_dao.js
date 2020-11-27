@@ -1,7 +1,7 @@
 'use strict';
 
-const db = require('./db');
-const Booking = require('./booking');
+const db = require('../db');
+const Booking = require('../bean/booking');
 const moment = require("moment")
 
 function createBooking(row) {
