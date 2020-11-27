@@ -61,20 +61,13 @@ class TeacherStatsViewer extends React.Component {
         })
     }
 
-
-
-    /*
-      TODO: - custom tooltip per i grafici?
-      
-     */
-
     render() {
         return (
             <>
                 <Jumbotron>
-                    <Row className="vheight-100">
-                        <Col sm={4}></Col>
-                        <Col sm={4} className="below-nav">
+                    <Row className="justify-content-md-center">
+                        <Col md="auto"></Col>
+                        <Col md="auto" className="below-nav">
                             {(this.state.courses.length > 0) && <Dropdown>
                                 <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                     Choose the Course you want to view statistics of
@@ -85,6 +78,7 @@ class TeacherStatsViewer extends React.Component {
                             </Dropdown>}
 
                         </Col>
+                        <Col md="auto"></Col>
                     </Row>
                     <Row className="justify-content-md-center">
                         {
@@ -124,7 +118,7 @@ class TeacherStatsViewer extends React.Component {
 
                         {(this.state.stats.length > 0 && this.state.mode === "lecture") && <BarChart
                             width={500}
-                            height={300}
+                            height={400}
                             data={this.state.stats}
                             margin={{
                                 top: 5, right: 30, left: 20, bottom: 5,
@@ -135,15 +129,15 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="date">
                                 <Label value={`Bookings for the lesson ${this.state.selectedDate} ${this.state.lectureTime}`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend />
+                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.stats.length === 0 && this.state.selectedDate != null) && <h4> There are no bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}, so no statistics are available.</h4>}
                         {(this.state.mode === "month" && this.state.stats.length > 0) && <BarChart
                             width={500}
-                            height={300}
+                            height={400}
                             data={this.state.stats}
                             margin={{
                                 top: 5, right: 30, left: 20, bottom: 5,
@@ -154,14 +148,14 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="month">
                                 <Label value={`Bookings divided by month`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend />
+                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.mode === "week" && this.state.stats.length > 0) && <BarChart
                             width={500}
-                            height={300}
+                            height={400}
                             data={this.state.stats}
                             margin={{
                                 top: 5, right: 30, left: 20, bottom: 5,
@@ -172,14 +166,14 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="week">
                                 <Label value={`Bookings divided by week`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend />
+                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.mode === "total" && this.state.stats.length > 0) && <BarChart
                             width={500}
-                            height={300}
+                            height={400}
                             data={this.state.stats}
                             margin={{
                                 top: 5, right: 30, left: 20, bottom: 5,
@@ -190,14 +184,14 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="date">
                                 <Label value={`Bookings divided by single lecture`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend />
+                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.mode === "cancelled" && this.state.cancelledStats.length > 0) && <BarChart
                             width={500}
-                            height={300}
+                            height={400}
                             data={this.state.cancelledStats}
                             margin={{
                                 top: 5, right: 30, left: 20, bottom: 5,
@@ -208,9 +202,9 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="date">
                                 <Label value={`Cancelled bookings divided by single lecture`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend />
+                            <Legend verticalAlign="top" />
                             <Bar dataKey="cancellations" fill="#0000FF" />
                         </BarChart>}
                         {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
