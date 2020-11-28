@@ -46,11 +46,11 @@ class LectureListView extends React.Component {
     }
     
     addBooking = (booking, studentName, courseName, date, startingTime, recipient) => {
-        API.bookSeat(booking, studentName, courseName, date, startingTime, recipient);
+        API.bookSeat(booking, studentName, courseName, date, startingTime, recipient).then(() => API.getAllBookings().then((bookings) => this.setState({bookings: bookings})));
     }
 
     deleteBooking = (studentId, lectureId) => {
-        API.deleteBooking(studentId, lectureId);
+        API.deleteBooking(studentId, lectureId).then(() => API.getAllBookings().then((bookings) => this.setState({bookings: bookings})));
     }
 
     handleIncreaseSeats = (lecture) => {
@@ -97,11 +97,11 @@ class LectureListView extends React.Component {
         }
 
     handleClickBook = (id, lecture) => {
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showBook: true, lecture: lecture, id: id})));
+        this.setState({showBook: true, lecture: lecture, id: id});
     }
 
     handleClickDelete = (id, lecture) => {
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showDelete: true, lecture: lecture, id: id})));
+        this.setState({showDelete: true, lecture: lecture, id: id});
     }
 
     handleClose = () => {
