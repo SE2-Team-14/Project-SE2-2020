@@ -376,6 +376,30 @@ async function deleteBookingByTeacher(lectureId){
         }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
     });
 }
+//calendar
+async function getBookings(studentId) {
+    const url = baseURL + '/getBookings';
+    const response = await fetch(`${url}/${studentId}`);
+    const bookingsJson = await response.json();
+
+    if (response.ok) {
+        return bookingsJson.map((b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime));
+    }
+    const err = { status: response.status, errors: bookingsJson.errors };
+    throw err;
+}
+
+async function getLectureById(lectureId) {
+    const url = baseURL + '/getLectureById';
+    const response = await fetch(`${url}/${lectureId}`);
+    const lecturesJson = await response.json();
+
+    if (response.ok) {
+        return lecturesJson;
+    }
+    const err = { status: response.status, errors: lecturesJson.errors };
+    throw err;
+}
 
 const API = {
     isAuthenticated,
@@ -400,6 +424,8 @@ const API = {
     addCancelledLecture,
     getCancelledBookingsStats,
     deleteBookingByTeacher,
+    getBookings,
+    getLectureById,
 };
 
 export default API;
