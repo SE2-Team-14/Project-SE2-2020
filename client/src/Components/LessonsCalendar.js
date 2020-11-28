@@ -123,20 +123,17 @@ class LessonsCalendar extends React.Component {
       API.getLectureById(b.lectureId).then((lectures) => {
         let bschedule = Object.assign({}, Schedule);
 
-        let date = moment(lectures.date, 'DD/MM/YYYY').format('YYYY-MM-DD')
-
-        let startingHours = moment(lectures.startingTime, 'HH:mm').format('HH:mm')
-        let endingHours = moment(lectures.endingTime, 'HH:mm').format('HH:mm')
-
-        let start = date + 'T' + startingHours ;
+        let date = moment(lectures.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        let startingHours = moment(lectures.startingTime, 'HH:mm').format('HH:mm');
+        let endingHours = moment(lectures.endingTime, 'HH:mm').format('HH:mm');
+        let start = date + 'T' + startingHours;
         let end = date + 'T' + endingHours;
+
         bschedule.title = this.findCourseName(lectures.courseId);
         bschedule.startDate = start;
         bschedule.endDate = end;
         schedulerData_.push(bschedule);
         this.setState({ schedulerLectures: schedulerData_ })
-
-
       })
 
     }
@@ -145,15 +142,13 @@ class LessonsCalendar extends React.Component {
   render() {
     const { currentDate } = this.state.currentDate;
     let schedulerData = []
-    let i = 0;
-    for (let a of this.state.schedulerLectures) {
-      schedulerData.push(this.state.schedulerLectures[i])
-      i++;
-    }
+
+    for (let a of this.state.schedulerLectures) 
+      schedulerData.push(a)
 
     return (
       <Paper>
-        <Scheduler data={schedulerData}//eventSettings = {{dataSource : schedulerData}}
+        <Scheduler data={schedulerData}
           height={660}>
           <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange} />
           <WeekView
