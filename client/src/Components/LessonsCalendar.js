@@ -18,11 +18,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import API from '../api/API';
-import Schedule from '../api/schedule';
-
-
-//npm i --save @devexpress/dx-react-core @devexpress/dx-react-scheduler
-//npm i --save @devexpress/dx-react-scheduler-material-ui
+import Schedule from '../api/schedule'
 
 const style = theme => ({
   todayCell: {
@@ -80,20 +76,19 @@ const DayScaleCellBase = ({ classes, ...restProps }) => {
 
 const DayScaleCell = withStyles(style, { name: 'DayScaleCell' })(DayScaleCellBase);
 
-const Appointment = ({
-  children, style, ...restProps
-}) => (
-    <Appointments.Appointment
-      {...restProps}
-      style={{
-        ...style,
-        backgroundColor: '#BC1515',
-        borderRadius: '8px',
-      }}
-    >
-      {children}
-    </Appointments.Appointment>
-  );
+const Appointment = ({children, style, ...restProps}) => (
+  <Appointments.Appointment
+    {...restProps}
+    style={{
+      ...style,
+      //backgroundColor: corso, 
+      borderRadius: '8px',
+    }}
+  >
+    {children}
+  </Appointments.Appointment>
+);
+
 class LessonsCalendar extends React.Component {
 
   constructor(props) {
@@ -106,6 +101,7 @@ class LessonsCalendar extends React.Component {
       schedulerLectures: [],
     };
   }
+
   componentDidMount() {
     this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
     API.getBookings(this.props.studentId).then((bookings) => this.setState({ bookings: bookings }, () => this.findDates()));
@@ -114,11 +110,10 @@ class LessonsCalendar extends React.Component {
   findCourseName = (courseId) => {
     let course = this.props.courses.find((c) => c.courseId == courseId);
     return course.name;
-}
+  }
 
   findDates = () => {
-    let schedulerData_ = []
-    let i = 0;
+    let schedulerData_ = [];
     for (let b of this.state.bookings) {
       API.getLectureById(b.lectureId).then((lectures) => {
         let bschedule = Object.assign({}, Schedule);
@@ -132,24 +127,38 @@ class LessonsCalendar extends React.Component {
         bschedule.title = this.findCourseName(lectures.courseId);
         bschedule.startDate = start;
         bschedule.endDate = end;
+
         schedulerData_.push(bschedule);
         this.setState({ schedulerLectures: schedulerData_ })
       })
-
     }
   }
 
   render() {
     const { currentDate } = this.state.currentDate;
-    let schedulerData = []
+    let schedulerData = [...this.state.schedulerLectures]
 
-    for (let a of this.state.schedulerLectures) 
-      schedulerData.push(a)
-
+    /*function hashCode(str) { // java String#hashCode
+      var hash = 0;
+      for (var i = 0; i < str.length; i++) {
+         hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return hash;
+    } 
+  
+    function intToRGB(i){
+      var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
+  
+      return "00000".substring(0, 6 - c.length) + c;
+    }
+    */
+    //for (let a of this.state.schedulerLectures){ 
+      //corso = '#' + intToRGB(hashCode(a.title))
+    //}
+    //
     return (
       <Paper>
-        <Scheduler data={schedulerData}
-          height={660}>
+        <Scheduler data={schedulerData} height={660}>
           <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange} />
           <WeekView
             startDayHour={"8:00"}
@@ -166,15 +175,9 @@ class LessonsCalendar extends React.Component {
             dayScaleCellComponent={DayScaleCell}
           />
           <MonthView />
-          <Appointments
-            appointmentComponent={Appointment}
-          />
-          <AppointmentTooltip
-            showCloseButton
-          />
-          <AppointmentForm
-            readOnly
-          />
+          <Appointments appointmentComponent={Appointment}/>
+          <AppointmentTooltip showCloseButton/>
+          <AppointmentForm readOnly/>
           <Toolbar />
           <ViewSwitcher />
           <DateNavigator />
