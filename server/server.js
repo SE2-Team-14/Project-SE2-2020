@@ -169,6 +169,13 @@ app.get('/api/getAllBookings', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+app.get('/api/getBookings/:studentId', (req, res) => { 
+  let studentId = req.params.studentId;
+  bookingDao.getBookings(studentId).then((bookings) => {res.json(bookings) 
+                                                        console.log(bookings);})
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
 app.get('/api/getTeacherLectures/:id', (req, res) => {
   let id = req.params.id;
   lectureDao.getTeacherLectureList(id).then((lectures) => res.json(lectures))
@@ -343,6 +350,12 @@ app.delete('/api/teacher-home/deleteBookingByTeacher', (req, res) => {
       .then(() => res.status(200).end())
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
+})
+
+app.get('/api/getLectureById/:lectureId', (req, res) => {
+  let lectureId = req.params.lectureId;
+  lectureDao.getLectureById(lectureId).then((lectures) => res.json(lectures))
+   .catch((err) => res.status(500).json({ errors: [{ msg: err}]}));
 })
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
