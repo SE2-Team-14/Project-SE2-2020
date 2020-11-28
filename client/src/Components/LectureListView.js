@@ -46,11 +46,11 @@ class LectureListView extends React.Component {
     }
     
     addBooking = (booking, studentName, courseName, date, startingTime, recipient) => {
-        API.bookSeat(booking, studentName, courseName, date, startingTime, recipient);
+        API.bookSeat(booking, studentName, courseName, date, startingTime, recipient).then(() => API.getAllBookings().then((bookings) => this.setState({bookings: bookings})));
     }
 
     deleteBooking = (studentId, lectureId) => {
-        API.deleteBooking(studentId, lectureId);
+        API.deleteBooking(studentId, lectureId).then(() => API.getAllBookings().then((bookings) => this.setState({bookings: bookings})));
     }
 
     handleIncreaseSeats = (lecture) => {
@@ -66,59 +66,46 @@ class LectureListView extends React.Component {
     }
 
     handleBook = (studentId, lecture) => {
-        let find=false;
+        /*let find=false;
         
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
-        }
-        
-        if(find)
-            this.setState({showDoubleBookError: true});
-        else {
+        }*/
             let b = Object.assign({}, Booking);
             b.studentId = studentId;
             b.lectureId = lecture.lectureId;
             b.date = lecture.date;
             b.startingTime = lecture.startingTime;
-
             this.addBooking(b, this.state.student.name, this.findCourseName(lecture.courseId), lecture.date, lecture.startingTime, this.props.email);
             this.handleIncreaseSeats(lecture);
-            API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
-            this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
-                .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})));      
-        }
+            API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showBook: false}, () => API.getLecturesList(this.props.email)
+            .then((lectures) => this.setState({lectures: lectures, showBookSuccess: true})))));          
     }
 
     handleDelete = (studentId, lecture) => {
-        let find=false;
+        /*let find=false;
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
-        }
-        if(!find)
-        {
-            this.setState({showDeleteFail: true});
-        }
-        else
-        {
+        }*/
             this.deleteBooking(studentId, lecture.lectureId)
             this.handleDecreaseSeats(lecture)
             API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
              this.setState({showDelete: false}, () => API.getLecturesList(this.props.email)
                 .then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true})));      
         }
-    }
+
     handleClickBook = (id, lecture) => {
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showBook: true, lecture: lecture, id: id})));
+        this.setState({showBook: true, lecture: lecture, id: id});
     }
 
     handleClickDelete = (id, lecture) => {
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showDelete: true, lecture: lecture, id: id})));
+        this.setState({showDelete: true, lecture: lecture, id: id});
     }
 
     handleClose = () => {
-        this.setState({ showBook: false, showBookSuccess: false, showDoubleBookError: false, showDelete: false, showDeleteSuccess : false, showDeleteFail : false });
+        this.setState({ showBook: false, showBookSuccess: false,  showDelete: false, showDeleteSuccess : false });
     }
 
     render() {
@@ -159,15 +146,6 @@ class LectureListView extends React.Component {
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-                <Modal controlid='BookError' show={this.state.showDoubleBookError} onHide={this.handleClose} animation={false} >
-                    <Modal.Header closeButton>
-                       <Modal.Title>ERROR!</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>You have already book this lesson!</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
                 <Modal controlid='DeleteSuccess' show={this.state.showDeleteSuccess} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
                        <Modal.Title>Confirm deleting</Modal.Title>
@@ -177,21 +155,13 @@ class LectureListView extends React.Component {
                         <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-                <Modal controlid='DeleteFail' show={this.state.showDeleteFail} onHide={this.handleClose} animation={false} >
-                    <Modal.Header closeButton>
-                       <Modal.Title>ERROR!</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>You are not booked for this lesson!</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
+                
             </Jumbotron>
 
         );
     }
-}
 
+}
 function LectureList(props) {
 
     return (

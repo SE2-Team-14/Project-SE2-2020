@@ -67,7 +67,7 @@ exports.getBookings = function (studentId) {
             if (err)
                 reject(err);
             else {
-                if (rows.length > 0) {
+                if (rows) {
                     let _booking = rows.map((row => createBooking(row)));
                     resolve(_booking);
                 }
