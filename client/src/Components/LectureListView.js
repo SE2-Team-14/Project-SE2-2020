@@ -282,7 +282,7 @@ function LectureItem(props) {
                 <Col xs={1} className='text-center'>
                     {(find == true) &&
                     <>
-                        <Button onClick={() => props.handleClickDelete(props.id, props.lecture)}>Delete</Button>
+                        <Button variant='danger' onClick={() => props.handleClickDelete(props.id, props.lecture)}>Delete</Button>
                     </>
                     }
                     {(find == false) &&
