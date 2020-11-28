@@ -171,8 +171,7 @@ app.get('/api/getAllBookings', (req, res) => {
 
 app.get('/api/getBookings/:studentId', (req, res) => { 
   let studentId = req.params.studentId;
-  bookingDao.getBookings(studentId).then((bookings) => {res.json(bookings) 
-                                                        console.log(bookings);})
+  bookingDao.getBookings(studentId).then((bookings) => res.json(bookings))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 

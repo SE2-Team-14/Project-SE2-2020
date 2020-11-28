@@ -202,7 +202,7 @@ async function getAllBookings() {
     const bookingsJson = await response.json();
 
     if (response.ok) {
-        return bookingsJson.map((b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime));
+        return bookingsJson.map((b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime, b.month, b.week));
     }
     const err = { status: response.status, errors: bookingsJson.errors };
     throw err;
@@ -383,10 +383,12 @@ async function getBookings(studentId) {
     const bookingsJson = await response.json();
 
     if (response.ok) {
-        return bookingsJson.map((b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime));
+        return bookingsJson.map((b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime, b.month, b.week));
+    } else {
+        const err = { status: response.status, errors: bookingsJson.errors };
+        throw err;
     }
-    const err = { status: response.status, errors: bookingsJson.errors };
-    throw err;
+    
 }
 
 async function getLectureById(lectureId) {
