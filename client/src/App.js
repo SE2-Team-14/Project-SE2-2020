@@ -99,7 +99,7 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email/booked-calendar" render={(props) => {
               let email = props.match.params.email;
-              return (<BookedLessonsCalendar email={email}></BookedLessonsCalendar>)
+              return (<BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses = {this.state.courses}></BookedLessonsCalendar>)
             }}>
             </Route>
 
