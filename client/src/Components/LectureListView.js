@@ -67,7 +67,7 @@ class LectureListView extends React.Component {
 
     handleBook = (studentId, lecture) => {
         let find=false;
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
+        
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
@@ -92,7 +92,6 @@ class LectureListView extends React.Component {
 
     handleDelete = (studentId, lecture) => {
         let find=false;
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
         for(let b of this.state.bookings){
             if(b.studentId == studentId && b.lectureId == lecture.lectureId )
                 find = true;
@@ -111,11 +110,11 @@ class LectureListView extends React.Component {
         }
     }
     handleClickBook = (id, lecture) => {
-        this.setState({showBook: true, lecture: lecture, id: id});
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showBook: true, lecture: lecture, id: id})));
     }
 
     handleClickDelete = (id, lecture) => {
-        this.setState({showDelete: true, lecture: lecture, id: id});
+        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}, () => this.setState({showDelete: true, lecture: lecture, id: id})));
     }
 
     handleClose = () => {
