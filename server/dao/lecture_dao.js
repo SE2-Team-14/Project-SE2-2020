@@ -74,8 +74,9 @@ exports.getLecturesList = function (email) {
 
 exports.getTeacherLectureList = function (id) {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? and date >= DATE("now")';
-        db.all(sql, [id], (err, rows) => {
+        let today = moment().format("DD/MM/YYYY");
+        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? and date >= ?';
+        db.all(sql, [id, today], (err, rows) => {
             if (err)
                 reject(err);
             else {
