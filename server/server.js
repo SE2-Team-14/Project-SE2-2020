@@ -169,7 +169,7 @@ app.get('/api/getAllBookings', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
-app.get('/api/getBookings/:studentId', (req, res) => { 
+app.get('/api/getBookings/:studentId', (req, res) => {
   let studentId = req.params.studentId;
   bookingDao.getBookings(studentId).then((bookings) => res.json(bookings))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
@@ -272,6 +272,10 @@ app.get("/api/pastLectures", (req, res) => {
  */
 app.get("/api/statistics", (req, res) => {
   bookingDao.getStatistics(req.query.date, req.query.mode, req.query.course).then((stats) => {
+    let empty = [];
+    if (stats === undefined) {
+      res.json(empty)
+    }
     res.json(stats)
   }).catch((err) => {
     res.status(500).json({
@@ -354,7 +358,7 @@ app.delete('/api/teacher-home/deleteBookingByTeacher', (req, res) => {
 app.get('/api/getLectureById/:lectureId', (req, res) => {
   let lectureId = req.params.lectureId;
   lectureDao.getLectureById(lectureId).then((lectures) => res.json(lectures))
-   .catch((err) => res.status(500).json({ errors: [{ msg: err}]}));
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)

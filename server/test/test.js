@@ -65,8 +65,8 @@ describe('Server side unit test', function () {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(lecture));
           EnrollmentDao.deleteEnrollment("testCourseId1", "student1@test.it")
-                       .then(PersonDao.deletePersonById("s1"))
-                       .then(LectureDao.deleteLecture(1));
+            .then(PersonDao.deletePersonById("s1"))
+            .then(LectureDao.deleteLecture(1));
           done();
         });
       });
@@ -166,7 +166,7 @@ describe('Server side unit test', function () {
           done();
         });
       });
-      
+
     });
     // #6 Test that http://localhost:3001/api/getTeacherLectures returns the right lectures
     describe('#Test /api/getTeacherLectures/body', function () {
@@ -226,7 +226,7 @@ describe('Server side unit test', function () {
           done();
         })
       })
-      
+
     })
 
   });
@@ -296,7 +296,7 @@ describe('Server side unit test', function () {
           }
         });
     });
-    
+
   });
 
   describe('Test #PUT decrease-seats', function () {
@@ -453,9 +453,9 @@ describe('Server side unit test', function () {
         EnrollmentDao.addEnrollment(enrollment);
         LectureDao.addLecture(lecture);
         return LectureDao.getLecturesList("test@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"))
-        .then(LectureDao.deleteLecture(2))
-        .then(PersonDao.deletePersonById("s444"))
-        .then(EnrollmentDao.deleteEnrollment("testCourse", "test@testone"));
+          .then(LectureDao.deleteLecture(2))
+          .then(PersonDao.deletePersonById("s444"))
+          .then(EnrollmentDao.deleteEnrollment("testCourse", "test@testone"));
       });
     });
 
@@ -466,8 +466,8 @@ describe('Server side unit test', function () {
         PersonDao.createPerson(teacher);
         LectureDao.addLecture(lecture);
         return LectureDao.getTeacherLectureList("d444").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"))
-        .then(LectureDao.deleteLecture(lecture.lectureId))
-        .then(PersonDao.deletePersonById("d444"));
+          .then(LectureDao.deleteLecture(lecture.lectureId))
+          .then(PersonDao.deletePersonById("d444"));
       });
     });
 
@@ -674,6 +674,62 @@ describe('Server side unit test', function () {
         })
       })
     });
+
+    describe("#Test lecture mode empty", function () {
+      it("Gets an empty list of bookings for an existing lecture", function () {
+        let testLecture = new Lecture(11111, "Ctest", "testTeacher", "30/11/2025", "12:00", "13:00", true, "5A", 20);
+        let testCourse = new Course("Ctest", "testCourse", "CtestName");
+        LectureDao.addLecture(testLecture);
+        CourseDao.createCourse(testCourse);
+        return BookingDao.getStatistics(testLecture.date, "lecture", testCourse.name).then((s) => {
+          assert.strictEqual(s, undefined);
+          LectureDao.deleteLecture(testLecture.lectureId);
+          CourseDao.deleteCourseById(testCourse.courseId);
+        })
+      })
+    })
+
+    describe("#Test week mode empty", function () {
+      it("Gets an empty list of bookings for the given week", function () {
+        let testLecture = new Lecture(11111, "Ctest", "testTeacher", "30/11/2025", "12:00", "13:00", true, "5A", 20);
+        let testCourse = new Course("Ctest", "testCourse", "CtestName");
+        LectureDao.addLecture(testLecture);
+        CourseDao.createCourse(testCourse);
+        return BookingDao.getStatistics(null, "week", testCourse.name).then((s) => {
+          assert.strictEqual(s, undefined);
+          LectureDao.deleteLecture(testLecture.lectureId);
+          CourseDao.deleteCourseById(testCourse.courseId);
+        })
+      })
+    })
+
+    describe("#Test month mode empty", function () {
+      it("Gets an empty list of bookings for the specified month", function () {
+        let testLecture = new Lecture(11111, "Ctest", "testTeacher", "30/11/2025", "12:00", "13:00", true, "5A", 20);
+        let testCourse = new Course("Ctest", "testCourse", "CtestName");
+        LectureDao.addLecture(testLecture);
+        CourseDao.createCourse(testCourse);
+        return BookingDao.getStatistics(null, "month", testCourse.name).then((s) => {
+          assert.strictEqual(s, undefined);
+          LectureDao.deleteLecture(testLecture.lectureId);
+          CourseDao.deleteCourseById(testCourse.courseId);
+        })
+      })
+    })
+
+    describe("#Test total mode empty", function () {
+      it("Gets an empty list of bookings for the specified lecture", function () {
+        let testLecture = new Lecture(11111, "Ctest", "testTeacher", "30/11/2025", "12:00", "13:00", true, "5A", 20);
+        let testCourse = new Course("Ctest", "testCourse", "CtestName");
+        LectureDao.addLecture(testLecture);
+        CourseDao.createCourse(testCourse);
+        return BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
+          assert.strictEqual(s, undefined);
+          LectureDao.deleteLecture(testLecture.lectureId);
+          CourseDao.deleteCourseById(testCourse.courseId);
+        })
+      })
+    })
 
   });
 

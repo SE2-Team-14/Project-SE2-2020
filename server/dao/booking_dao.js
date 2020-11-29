@@ -108,7 +108,7 @@ exports.getStatistics = function (date, mode, course) {
                 if (err)
                     reject(err);
                 else {
-                    if (rows) {
+                    if (rows.length > 0) {
                         resolve(rows);
                     }
                     else
@@ -122,7 +122,7 @@ exports.getStatistics = function (date, mode, course) {
                     reject(err);
                 else {
                     console.log(rows)
-                    if (rows) {
+                    if (rows.length > 0) {
                         resolve(rows);
                     }
                     else
@@ -135,7 +135,7 @@ exports.getStatistics = function (date, mode, course) {
                 if (err)
                     reject(err);
                 else {
-                    if (rows) {
+                    if (rows.length > 0) {
                         resolve(rows);
                     }
                     else
@@ -148,7 +148,7 @@ exports.getStatistics = function (date, mode, course) {
                 if (err)
                     reject(err);
                 else {
-                    if (rows) {
+                    if (rows.length > 0) {
                         resolve(rows);
                     }
                     else
