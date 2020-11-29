@@ -302,7 +302,23 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
     res.status(400).end();
   } else {
     lectureDao.deleteLecture(lecture.lectureId)
-      .then(() => res.status(200).end())
+      .then(() => 
+      {
+        bookingDao.findEmailByCourse(lecture.courseId)
+        .then((emails) => {
+          emails.forEach(email => {
+            const subject = "Lecture deleted";
+            const message = `Dear ${email.PersonName},\n` +
+            `the lecture of course ${email.CourseName} of date ${email.LectureDate} \n` +
+            `at ${email.LectureStartTime} has been deleted.\n` +
+            `Please book another lecture if you need.`
+            emailSender.sendEmail(email.Email, subject, message)
+          });
+          
+        })
+        res.status(200).end()
+      }
+      )
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
