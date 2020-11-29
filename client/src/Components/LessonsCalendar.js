@@ -20,8 +20,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import API from '../api/API';
 import Schedule from '../api/schedule'
-import ColorResources from '../api/colorResources';
-import Instances from '../api/instances'
+import ColorResources from '../api/ColorResources';
+import Instances from '../api/Instances'
 
 const style = theme => ({
   todayCell: {
