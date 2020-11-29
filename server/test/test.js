@@ -42,7 +42,7 @@ describe('Server side unit test', function () {
 
   //----------------------------------------- API tests -----------------------------------------//
   describe('Server #GET methods tests', function () {
-
+    //Test that http://localhost:3001/api/student-home/student@test.it/bookable-lectures returns 200
     describe('#Test /api/student-home/:email/bookable-lectures', function () {
       var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
       it("returns status 200", function (done) {
@@ -52,37 +52,41 @@ describe('Server side unit test', function () {
         });
       });
     });
-
+    //#1 Test that http://localhost:3001/api/student-home/student@test.it/bookable-lectures returns the right lectures
     describe('#Test /api/student-home/student@test.it/bookable-lectures', function () {
-      let student = new Person("s12345", "testName", "testSurname", "Student", "student@test.it", "Password");
+      let student = new Person("s1", "testName1", "testSurname1", "Student", "student1@test.it", "Password");
       PersonDao.createPerson(student);
-      let lecture = new Lecture(12345, "testCourseId", "testTeacherId", "testDate", "testStartingTime", "testEndingTime", "1", 12, 0);
+      let lecture = new Lecture(1, "testCourseId1", "testTeacherId1", "testDate1", "testStartingTime1", "testEndingTime1", "1", 12, 0);
       LectureDao.addLecture(lecture);
-      let enrollment = new Enrollment("testCourseId", "student@test.it");
+      let enrollment = new Enrollment("testCourseId1", "student1@test.it");
       EnrollmentDao.addEnrollment(enrollment);
-      var url = "http://localhost:3001/api/student-home/student@test.it/bookable-lectures";
-      it("returns lecture 12345", function (done) {
+      var url = "http://localhost:3001/api/student-home/student1@test.it/bookable-lectures";
+      it("returns lecture 1", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(lecture));
+          EnrollmentDao.deleteEnrollment("testCourseId1", "student1@test.it")
+                       .then(PersonDao.deletePersonById("s1"))
+                       .then(LectureDao.deleteLecture(1));
           done();
         });
       });
     });
-
+    // #2 Test that http://localhost:3001/api/getCourses returns the right courses
     describe('#Test /api/getCourses/body', function () {
-      let course = new Course("courseTestId", "teacherTestId", "nameTestCourse");
+      let course = new Course("testCourseId2", "teacherTestId2", "nameTestCourse2");
       CourseDao.createCourse(course);
       var url = "http://localhost:3001/api/getCourses";
-      it("returns courseTestId", function (done) {
+      it("returns courseTestId2", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(course));
           expect(response.statusCode).to.equal(200);
+          CourseDao.deleteCourseById("testCourseId2");
           done();
         });
       });
 
     });
-
+    //Test that http://localhost:3001/api/getTeachers returns 200
     describe('#Test /api/getTeachers', function () {
       var url = "http://localhost:3001/api/getTeachers";
       it("returns status 200", function (done) {
@@ -92,19 +96,20 @@ describe('Server side unit test', function () {
         });
       });
     });
-
+    // #3 Test that http://localhost:3001/api/getTeachers returns the right teachers
     describe('#Test /api/getTeachers/body', function () {
-      let teacher = new Person(1, "testName", "testSurname", "Teacher", "teacher@test.it", "password");
+      let teacher = new Person("d3", "testName3", "testSurname3", "Teacher", "teacher3@test.it", "password");
       PersonDao.createPerson(teacher);
       var url = "http://localhost:3001/api/getTeachers";
-      it("returns status 200", function (done) {
+      it("returns teacher d3", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(teacher));
+          PersonDao.deletePersonById("d3");
           done();
         });
       });
     });
-
+    //Test that http://localhost:3001/api/getClassrooms returns 200
     describe('#Test /api/getClassrooms', function () {
       var url = "http://localhost:3001/api/getClassrooms";
       it("returns status 200", function (done) {
@@ -114,21 +119,22 @@ describe('Server side unit test', function () {
         });
       });
     });
-
+    //#4 Test that http://localhost:3001/api/getClassrooms returns the right classrooms
     describe('#Test /api/getClassrooms/body', function () {
-      let classroom = new Classroom("10A", 50);
+      let classroom = new Classroom("4", 50);
       ClassroomDao.addClassroom(classroom);
       var url = "http://localhost:3001/api/getClassrooms";
-      it("returns status 200", function (done) {
+      it("returns classroom 4", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(classroom));
+          ClassroomDao.deleteClassroom("4");
           done();
 
         });
       });
 
     });
-
+    //Test that http://localhost:3001/api/name returns 200
     describe('#Test /api/name', function () {
       var url = "http://localhost:3001/api/name";
       it("returns status 200", function (done) {
@@ -138,7 +144,7 @@ describe('Server side unit test', function () {
         });
       });
     });
-
+    //Test that http://localhost:3001/api/getBookings returns 200
     describe('#Test /api/getAllBookings', function () {
       var url = "http://localhost:3001/api/getAllBookings";
       it("returns status 200", function (done) {
@@ -148,33 +154,34 @@ describe('Server side unit test', function () {
         });
       });
     });
-
+    //#5 Test that http://localhost:3001/api/getBookings returns the right bookings
     describe('#Test /api/getAllBookings/body', function () {
-      let booking = new Booking(1, 154, "date", "startingTime");
+      let booking = new Booking("5", 5, "date5", "startingTime5");
       BookingDao.addBoocking(booking);
       var url = "http://localhost:3001/api/getAllBookings";
-      it("returns status 200", function (done) {
+      it("returns booking 5", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(booking));
+          BookingDao.deleteBooking("5", 5);
           done();
         });
       });
-      BookingDao.deleteBooking(booking);
+      
     });
-
+    // #6 Test that http://localhost:3001/api/getTeacherLectures returns the right lectures
     describe('#Test /api/getTeacherLectures/body', function () {
-      let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
+      let lecture = new Lecture(6, "c6", "d6", "6/6/6", "8:30", "10:00", 1, "6", 6);
       LectureDao.addLecture(lecture);
       var url = "http://localhost:3001/api/getTeacherLectures";
-      it("returns status 200", function (done) {
+      it("returns lecture 6", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(lecture));
+          LectureDao.deleteLecture(lecture.lectureId);
           done();
         });
       });
-      LectureDao.deleteLecture(lecture);
     });
-
+    //Test that http://localhost:3001/api/getCourses returns 200
     describe("#Test /api/getCourses", function () {
       var url = "http://localhost:3001/api/courses";
       it("returns status 200", function (done) {
@@ -184,52 +191,20 @@ describe('Server side unit test', function () {
         })
       })
     });
-
+    //#7 Test that http://localhost:3001/api/getCourses returns the right courses
     describe("#Test /api/getCourses/body", function () {
-      let course = new Course(1, "d123", "TestCourse");
+      let course = new Course(7, "d7", "TestCourse7");
       CourseDao.createCourse(course);
       var url = "http://localhost:3001/api/courses";
-      it("returns status 200", function (done) {
+      it("returns course 7", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(course));
+          CourseDao.deleteCourseById(7);
           done();
         });
       });
-      CourseDao.deleteCourseById(course.courseId);
     })
-
-    /*Need to change with the new name of the API
-    describe("#Test /api/getEnrollments", function () {
-      var url = "http://localhost:3001/api/enrollment";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        })
-      })
-    })
-    
-    describe("#Test /api/getEnrollments/body", function () {
-      let student = new Person("s1", "TestN", "TestS", "Student", "test@email", "Testing");
-      PersonDao.createPerson(student);
-      let lecture = new Lecture(10, "c1", "d123", "today", "now", "now+60", true, "7i", 50);
-      LectureDao.addLecture(lecture);
-      let booking = new Booking("s1", 10, "today", "now");
-      BookingDao.addBoocking(booking);
-      let res = { studentId: student.id, date: lecture.date, startingTime: lecture.startingTime, endingTime: lecture.endingTime, classroomId: lecture.classroomId };
-      var url = "http://localhost:3001/api/enrollment";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.body).to.deep.include(Array.from(res));
-          done();
-        })
-      })
-      PersonDao.deletePersonById(student.id);
-      LectureDao.deleteLecture(lecture.lectureId);
-      BookingDao.deleteBooking(student.id, lecture.lectureId);
-    })
-    */
-
+    //Test that http://localhost:3001/api/getPersonName returns 200
     describe("#Test /api/getPersonName", function () {
       var url = "http://localhost:3001/api/name";
       it("returns status 200", function (done) {
@@ -239,33 +214,34 @@ describe('Server side unit test', function () {
         })
       })
     })
-
+    //#8 Test that http://localhost:3001/api/getPersonName returns the right teacheName
     describe("#Test /api/getPersonName/body", function () {
-      let person = new Person(1, "TestName", "TestSurname", "Teacher", "email@test.com", "Testing");
+      let person = new Person("d8", "TestName8", "TestSurname8", "Teacher8", "email8@test.com", "Testing");
       PersonDao.createPerson(person);
       var url = "http://localhost:3001/api/name";
-      it("returns status 200", function (done) {
+      it("returns person 8", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(person));
+          PersonDao.deletePersonById(person.id);
           done();
         })
       })
-      PersonDao.deletePersonById(person.id);
+      
     })
 
   });
-
+  //#9
   describe('Test #POST book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/book";
-    let b = new Booking("s123", 1, "18/11/2020", "8.30");
+    let b = new Booking("s9", 9, "18/11/2020", "8.30");
 
     it('should send parameters to : /api/student-home/book POST', function (done) {
       chai
         .request(host)
         .post(path)
         .set('content-type', 'application/json')
-        .send({ booking: b, studentName: "testName", courseName: "testCourse", date: "18/11/2020", startingTime: "8.30", recipient: "test@email.com" })
+        .send({ booking: b, studentName: "testName9", courseName: "testCourse9", date: "18/11/2020", startingTime: "8.30", recipient: "test9@email.com" })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -277,7 +253,7 @@ describe('Server side unit test', function () {
     });
 
   });
-
+  //#9.1
   describe('Test #POST book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/delete-book";
@@ -287,7 +263,7 @@ describe('Server side unit test', function () {
         .request(host)
         .del(path)
         .set('content-type', 'application/json')
-        .send({ studentId: "s123", lectureId: 1 })
+        .send({ studentId: "s9", lectureId: 9 })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -299,11 +275,11 @@ describe('Server side unit test', function () {
     });
 
   });
-
+  //#11
   describe('Test #PUT increase-seats', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/increase-seats";
-    let lecture = new Lecture(1000, "C18", "C17", "12/12/12", "8:30", "10:00", 1, "77", 12);
+    let lecture = new Lecture(11, "c11", "d11", "12/12/12", "8:30", "10:00", 1, "11", 11);
     it('should send parameters to : /api/student-home/increase-seats PUT', function (done) {
       chai
         .request(host)
@@ -315,11 +291,12 @@ describe('Server side unit test', function () {
             done(error);
           } else {
             expect(response.statusCode).to.equal(200);
+            LectureDao.deleteLecture(11);
             done();
           }
         });
     });
-    LectureDao.deleteLecture(lecture);
+    
   });
 
   describe('Test #PUT decrease-seats', function () {
@@ -471,21 +448,26 @@ describe('Server side unit test', function () {
       it("Gets a lecture by teacher's id", function () {
         let enrollment = new Enrollment("testCourse", "test@testone");
         let student = new Person("s444", "testname", "testsurname", "student", "test@testone", "1233");
-        let lecture = new Lecture(null, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "1", "71", 10000);
+        let lecture = new Lecture(2, "testCourse", "testTeacher", "19/11/2020", "8.30", "13.00", "1", "71", 10000);
         PersonDao.createPerson(student);
         EnrollmentDao.addEnrollment(enrollment);
         LectureDao.addLecture(lecture);
-        return LectureDao.getLecturesList("test@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"));
+        return LectureDao.getLecturesList("test@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"))
+        .then(LectureDao.deleteLecture(2))
+        .then(PersonDao.deletePersonById("s444"))
+        .then(EnrollmentDao.deleteEnrollment("testCourse", "test@testone"));
       });
     });
 
     describe('#Gets the list of lectures of the teacher', function () {
       it("Gets a lecture by teacher's id", function () {
         let teacher = new Person("d444", "testTeacherName", "testTeacherSurname", "teacher", "teacher@testone", "1233");
-        let lecture = new Lecture(null, "testCourse", "d444", "28/11/2020", "8.30", "13.00", "1", "71", 10000);
+        let lecture = new Lecture(3, "testCourse", "d444", "28/11/2020", "8.30", "13.00", "1", "71", 10000);
         PersonDao.createPerson(teacher);
         LectureDao.addLecture(lecture);
-        return LectureDao.getTeacherLectureList("d444").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"));
+        return LectureDao.getTeacherLectureList("d444").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse"))
+        .then(LectureDao.deleteLecture(lecture.lectureId))
+        .then(PersonDao.deletePersonById("d444"));
       });
     });
 
@@ -624,9 +606,11 @@ describe('Server side unit test', function () {
 
       describe("#Test lecture mode", function () {
         it("Gets the list of bookings for the specified lecture", function () {
+          let today = moment().format("DD/MM/YYYY");
           let testLecture = new Lecture(11111, "Ctest", "testTeacher", "30/11/2025", "12:00", "13:00", true, "5A", 20);
           let testCourse = new Course("Ctest", "testCourse", "CtestName");
-          let testBooking = new Booking("s1000", 11111, "27/11/2020", "12:00");
+          let testBooking = new Booking("s1000", 11111, today, "12:00");
+
           LectureDao.addLecture(testLecture);
           BookingDao.addBoocking(testBooking);
           CourseDao.createCourse(testCourse);
