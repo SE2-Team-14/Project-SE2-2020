@@ -64,9 +64,6 @@ describe('Server side unit test', function () {
       it("returns lecture 1", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(lecture));
-          EnrollmentDao.deleteEnrollment("testCourseId1", "student1@test.it")
-            .then(PersonDao.deletePersonById("s1"))
-            .then(LectureDao.deleteLecture(1));
           done();
         });
       });
@@ -80,7 +77,6 @@ describe('Server side unit test', function () {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(course));
           expect(response.statusCode).to.equal(200);
-          CourseDao.deleteCourseById("testCourseId2");
           done();
         });
       });
@@ -104,7 +100,6 @@ describe('Server side unit test', function () {
       it("returns teacher d3", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(teacher));
-          PersonDao.deletePersonById("d3");
           done();
         });
       });
@@ -127,7 +122,6 @@ describe('Server side unit test', function () {
       it("returns classroom 4", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(classroom));
-          ClassroomDao.deleteClassroom("4");
           done();
 
         });
@@ -162,7 +156,6 @@ describe('Server side unit test', function () {
       it("returns booking 5", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(booking));
-          BookingDao.deleteBooking("5", 5);
           done();
         });
       });
@@ -176,7 +169,6 @@ describe('Server side unit test', function () {
       it("returns lecture 6", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(lecture));
-          LectureDao.deleteLecture(lecture.lectureId);
           done();
         });
       });
@@ -199,7 +191,6 @@ describe('Server side unit test', function () {
       it("returns course 7", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(course));
-          CourseDao.deleteCourseById(7);
           done();
         });
       });
@@ -222,7 +213,6 @@ describe('Server side unit test', function () {
       it("returns person 8", function (done) {
         request(url, function (error, response, body) {
           expect(response.body).to.deep.include(Array.from(person));
-          PersonDao.deletePersonById(person.id);
           done();
         })
       })
@@ -291,7 +281,6 @@ describe('Server side unit test', function () {
             done(error);
           } else {
             expect(response.statusCode).to.equal(200);
-            LectureDao.deleteLecture(11);
             done();
           }
         });
@@ -314,7 +303,6 @@ describe('Server side unit test', function () {
             done(error);
           } else {
             expect(response.statusCode).to.equal(200);
-            LectureDao.deleteLecture(12);
             done();
           }
         });
@@ -340,7 +328,6 @@ describe('Server side unit test', function () {
             done(error);
           } else {
             expect(response.statusCode).to.equal(200);
-            LectureDao.deleteLecture(13);
             done();
           }
         });
@@ -455,9 +442,6 @@ describe('Server side unit test', function () {
         PersonDao.createPerson(student);
         EnrollmentDao.addEnrollment(enrollment);
         return LectureDao.getLecturesList("test18@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"));
-          //.then(LectureDao.deleteLecture(18))
-          //.then(PersonDao.deletePersonById("s18"))
-          //.then(EnrollmentDao.deleteEnrollment("testCourse18", "test18@testone"));
       });
     });
     //#19
@@ -469,8 +453,6 @@ describe('Server side unit test', function () {
         PersonDao.createPerson(teacher);
         LectureDao.addLecture(lecture);
         return LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse19"))
-          //.then(LectureDao.deleteLecture(lecture.lectureId))
-          .then(PersonDao.deletePersonById("d19"));
       });
     });
     //#20
@@ -481,7 +463,6 @@ describe('Server side unit test', function () {
         LectureDao.increaseBookedSeats(lecture.lectureId);
         return LectureDao.getLectureById(20)
           .then((l) => assert.strictEqual(l.numberOfSeats, 21))
-          //.then(LectureDao.deleteLecture(20));
       });
     });
     //#21
@@ -492,7 +473,6 @@ describe('Server side unit test', function () {
         LectureDao.decreaseBookedSeats(lecture.lectureId);
         return LectureDao.getLectureById(21)
           .then((l) => assert.strictEqual(l.numberOfSeats, 20))
-          .then(LectureDao.deleteLecture(21));
       });
     });
     //#22
@@ -505,8 +485,6 @@ describe('Server side unit test', function () {
         LectureDao.addLecture(lecture);
         return LectureDao.getTomorrowsLecturesList("d22")
           .then(lectures => assert.strictEqual(lectures[0].courseId, "testCourseTomorrow22"))
-          //.then(LectureDao.deleteLecture(22))
-          .then(PersonDao.deletePersonById("d22"));
       });
     });
     //#23
@@ -517,7 +495,6 @@ describe('Server side unit test', function () {
         LectureDao.changeLectureType(lecture.lectureId);
         return LectureDao.getLectureById(23)
           .then((l) => assert.strictEqual(l.inPresence, "0"))
-          .then(LectureDao.deleteLecture(23));
       });
     });
     //#24
@@ -604,9 +581,6 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return BookingDao.getBookedStudentsByCourseName("courseName28").then((b) => {
           assert.strictEqual(b[0].studentId, testBooking.studentId)
-          LectureDao.deleteLecture(testLecture.lectureId);
-          CourseDao.deleteCourseById(testCourse.courseId);
-          BookingDao.deleteBooking(testBooking.studentId, testBooking.lectureId);
         });
       })
     })
@@ -625,9 +599,6 @@ describe('Server side unit test', function () {
           CourseDao.createCourse(testCourse);
           return BookingDao.getStatistics(testLecture.date, "lecture", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testBooking.date);
-            LectureDao.deleteLecture(testLecture.lectureId);
-            CourseDao.deleteCourseById(testCourse.courseId);
-            BookingDao.deleteBooking(testBooking.studentId, testBooking.lectureId);
           })
         })
       })
@@ -642,9 +613,6 @@ describe('Server side unit test', function () {
           CourseDao.createCourse(testCourse);
           return BookingDao.getStatistics(null, "week", testCourse.name).then((s) => {
             assert.strictEqual(s[0].bookings, 1);
-            LectureDao.deleteLecture(testLecture.lectureId);
-            CourseDao.deleteCourseById(testCourse.courseId);
-            BookingDao.deleteBooking(testBooking.studentId, testBooking.lectureId);
           })
         })
       })
@@ -659,9 +627,6 @@ describe('Server side unit test', function () {
           CourseDao.createCourse(testCourse);
           return BookingDao.getStatistics(null, "month", testCourse.name).then((s) => {
             assert.strictEqual(s[0].bookings, 1);
-            LectureDao.deleteLecture(testLecture.lectureId);
-            CourseDao.deleteCourseById(testCourse.courseId);
-            BookingDao.deleteBooking(testBooking.studentId, testBooking.lectureId);
           })
         })
       })
@@ -676,9 +641,6 @@ describe('Server side unit test', function () {
           BookingDao.addBoocking(testBooking);
           return BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testLecture.date);
-            LectureDao.deleteLecture(testLecture.lectureId);
-            //CourseDao.deleteCourseById(testCourse.courseId);
-            BookingDao.deleteBooking(testBooking.studentId, testBooking.lectureId);
           })
         })
       })
@@ -692,8 +654,6 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return BookingDao.getStatistics(testLecture.date, "lecture", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-          LectureDao.deleteLecture(testLecture.lectureId);
-          CourseDao.deleteCourseById(testCourse.courseId);
         })
       })
     })
@@ -706,8 +666,6 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return BookingDao.getStatistics(null, "week", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-          LectureDao.deleteLecture(testLecture.lectureId);
-          CourseDao.deleteCourseById(testCourse.courseId);
         })
       })
     })
@@ -720,8 +678,6 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return BookingDao.getStatistics(null, "month", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-          LectureDao.deleteLecture(testLecture.lectureId);
-          CourseDao.deleteCourseById(testCourse.courseId);
         })
       })
     })
@@ -734,8 +690,6 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-          LectureDao.deleteLecture(testLecture.lectureId);
-          CourseDao.deleteCourseById(testCourse.courseId);
         })
       })
     })
@@ -767,9 +721,6 @@ describe('Server side unit test', function () {
         CancelledBookingsDao.addCancelledBooking(testCancBooking);
         return CancelledBookingsDao.getCancelledBookingsStats(testCourse.name).then((s) => {
           assert.strictEqual(s[0].date, testLecture.date);
-          LectureDao.deleteLecture(testLecture.lectureId);
-          CourseDao.deleteCourseById(testCourse.courseId);
-          CancelledBookingsDao.deleteCancelledBooking(testCancBooking.cancelledBookingId);
         })
       })
     })

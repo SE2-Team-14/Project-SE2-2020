@@ -14,11 +14,14 @@ import {
   ViewSwitcher,
   MonthView,
   DayView,
+  Resources,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import API from '../api/API';
 import Schedule from '../api/schedule'
+import ColorResources from '../api/colorResources';
+import Instances from '../api/instances'
 
 const style = theme => ({
   todayCell: {
@@ -76,18 +79,7 @@ const DayScaleCellBase = ({ classes, ...restProps }) => {
 
 const DayScaleCell = withStyles(style, { name: 'DayScaleCell' })(DayScaleCellBase);
 
-const Appointment = ({children, style, ...restProps}) => (
-  <Appointments.Appointment
-    {...restProps}
-    style={{
-      ...style,
-      //backgroundColor: corso, 
-      borderRadius: '8px',
-    }}
-  >
-    {children}
-  </Appointments.Appointment>
-);
+let titles = [];
 
 class LessonsCalendar extends React.Component {
 
@@ -99,7 +91,9 @@ class LessonsCalendar extends React.Component {
       bookings: [],
       lectures: [],
       schedulerLectures: [],
-    };
+      resources: [],
+     };
+
   }
 
   componentDidMount() {
@@ -114,6 +108,7 @@ class LessonsCalendar extends React.Component {
 
   findDates = () => {
     let schedulerData_ = [];
+  
     for (let b of this.state.bookings) {
       API.getLectureById(b.lectureId).then((lectures) => {
         let bschedule = Object.assign({}, Schedule);
@@ -123,42 +118,59 @@ class LessonsCalendar extends React.Component {
         let endingHours = moment(lectures.endingTime, 'HH:mm').format('HH:mm');
         let start = date + 'T' + startingHours;
         let end = date + 'T' + endingHours;
+        let courseName = this.findCourseName(lectures.courseId)
+        titles.push(courseName);
 
-        bschedule.title = this.findCourseName(lectures.courseId);
+        bschedule.title = courseName;
         bschedule.startDate = start;
         bschedule.endDate = end;
 
         schedulerData_.push(bschedule);
-        this.setState({ schedulerLectures: schedulerData_ })
+        this.setState({ schedulerLectures: schedulerData_ }, () => this.generateResources())
       })
     }
   }
 
+  hashCode = (str) => {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) 
+       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    return hash;
+  } 
+
+  intToRGB = (i) => {
+    var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
+    return "00000".substring(0, 6 - c.length) + c;
+  }
+
+  generateResources = () => {
+    let v = [];
+    let res = Object.assign({}, ColorResources);
+    res.id = 1;
+    res.fieldName = "title";
+    res.instances = [];
+    
+
+    for(let title of titles){
+      let instance = Object.assign({}, Instances);
+      instance.id = title;
+      instance.color = '#' + this.intToRGB(this.hashCode(title));
+      res.instances.push(instance);
+    }
+    v.push(res);
+    this.setState({resources: v});
+  }
+
   render() {
     const { currentDate } = this.state.currentDate;
-    let schedulerData = [...this.state.schedulerLectures]
+    let schedulerData = [...this.state.schedulerLectures];
+    let res = [...this.state.resources];
 
-    /*function hashCode(str) { // java String#hashCode
-      var hash = 0;
-      for (var i = 0; i < str.length; i++) {
-         hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      return hash;
-    } 
-  
-    function intToRGB(i){
-      var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
-  
-      return "00000".substring(0, 6 - c.length) + c;
-    }
-    */
-    //for (let a of this.state.schedulerLectures){ 
-      //corso = '#' + intToRGB(hashCode(a.title))
-    //}
-    //
     return (
+      <React.Fragment>
+
       <Paper>
-        <Scheduler data={schedulerData} height={660}>
+        <Scheduler data={schedulerData} height={660} >
           <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange} />
           <WeekView
             startDayHour={"8:00"}
@@ -167,15 +179,10 @@ class LessonsCalendar extends React.Component {
             timeTableCellComponent={TimeTableCell}
             dayScaleCellComponent={DayScaleCell}
           />
-          <DayView
-            startDayHour={"8:00"}
-            endDayHour={"19:30"}
-            excludedDays={[0, 6]}
-            timeTableCellComponent={TimeTableCell}
-            dayScaleCellComponent={DayScaleCell}
-          />
+          <DayView startDayHour={"8:00"} endDayHour={"19:30"}/>
           <MonthView />
-          <Appointments appointmentComponent={Appointment}/>
+          <Appointments/>
+          <Resources data={res}/> 
           <AppointmentTooltip showCloseButton/>
           <AppointmentForm readOnly/>
           <Toolbar />
@@ -184,6 +191,7 @@ class LessonsCalendar extends React.Component {
           <TodayButton />
         </Scheduler>
       </Paper>
+      </React.Fragment>
     );
   }
 }
