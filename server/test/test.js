@@ -454,9 +454,9 @@ describe('Server side unit test', function () {
         LectureDao.addLecture(lecture);
         PersonDao.createPerson(student);
         EnrollmentDao.addEnrollment(enrollment);
-        return LectureDao.getLecturesList("test18@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"))
+        return LectureDao.getLecturesList("test18@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"));
           //.then(LectureDao.deleteLecture(18))
-          .then(PersonDao.deletePersonById("s18"))
+          //.then(PersonDao.deletePersonById("s18"))
           //.then(EnrollmentDao.deleteEnrollment("testCourse18", "test18@testone"));
       });
     });
@@ -530,7 +530,7 @@ describe('Server side unit test', function () {
         PersonDao.createPerson(student);
         LectureDao.addLecture(lecture);
         EnrollmentDao.addEnrollment(enrollment);
-        return LectureDao.getLecturesList("student24@test").then(lectures => LectureDao.getLectureById(24).then((lecture => assert.strictEqual(lecture.courseId, "testCourse24"))));
+        return LectureDao.getLectureById(24).then((l => assert.strictEqual(l.courseId, "testCourse24")));
       });
     });
     //#24.1
