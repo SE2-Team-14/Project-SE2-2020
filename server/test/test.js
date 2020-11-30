@@ -1,5 +1,8 @@
 'use strict';
 
+const dbsettings = require('../db/dbsettings');
+dbsettings.test = true;
+
 const assert = require('assert');
 const Person = require('../bean/person');
 const Course = require('../bean/course');
@@ -27,6 +30,7 @@ const chaiHttp = require('chai-http');
 const runServer = require('../server');
 const { resolve } = require('path');
 var request = require("request");
+const db = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
@@ -832,7 +836,7 @@ describe('Server side unit test', function () {
   /**close the server after the test **/
   after(done => {
     server.close(done);
-    
+    db.deleteFromDisk();
   });
 
 });
