@@ -10,7 +10,7 @@ exports.addClassroom = function(classroom) {
 	return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO CLASSROOM(classroom, maxNumberOfSeats) VALUES(?, ?)';
         let params = [];
-        console.log("New classroom: ", classroom);
+        //console.log("New classroom: ", classroom);
         params.push(classroom.classroom, classroom.maxNumberOfSeats);
 
         if (classroom) 

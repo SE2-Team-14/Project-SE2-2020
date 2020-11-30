@@ -19,7 +19,7 @@ exports.addBoocking = function (booking) {
         let month = moment(new Date()).format("MMMM")
         let week = moment().startOf("isoWeek").format("DD/MM/YYYY") + "-" + moment().endOf("isoWeek").format("DD/MM/YYYY");
         let params = [];
-        console.log("New booking: ", booking);
+        //console.log("New booking: ", booking);
         params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week);
 
         if (booking)
@@ -138,7 +138,7 @@ exports.getStatistics = function (date, mode, course) {
                 if (err)
                     reject(err);
                 else {
-                    console.log(rows)
+                    //console.log(rows)
                     if (rows.length > 0) {
                         resolve(rows);
                     }

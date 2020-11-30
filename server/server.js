@@ -18,6 +18,7 @@ const EmailSender = require('./utils/EmailSender');
 const setMidnightTimer = require("./utils/midnightTimer");
 const moment = require('moment');
 const CancelledLectures = require('./bean/cancelled_lectures');
+const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
 
 
@@ -286,7 +287,7 @@ app.get("/api/statistics", (req, res) => {
 
 app.put('/api/teacher-home/change-type', (req, res) => {
   const lecture = req.body;
-  console.log(lecture);
+  //console.log(lecture);
   if (!lecture) {
     res.status(400).end();
   } else {
@@ -334,6 +335,23 @@ app.post('/api/teacher-home/add-cancelled-lecture', (req, res) => {
     res.status(400).end();
   } else {
     cancelledLectureDao.addCancelledLecture(cancelledLecture)
+      .then((id) => (res.status(201).json({ "id": id })))
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  }
+});
+
+app.post('/api/teacher-home/add-cancelled-booking', (req, res) => {
+  const studentId = req.body.studentId;
+  const lectureId = req.body.lectureId;
+  const date = moment().format("DD/MM/YYYY");
+  const cancelledBooking = new CancelledBooking();
+  cancelledBooking.studentId = studentId;
+  cancelledBooking.lectureId = lectureId;
+  cancelledBooking.date = date;
+  if (!studentId || !lectureId) {
+    res.status(400).end();
+  } else {
+    cancelledBookingsDao.addCancelledBooking(cancelledBooking)
       .then((id) => (res.status(201).json({ "id": id })))
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }

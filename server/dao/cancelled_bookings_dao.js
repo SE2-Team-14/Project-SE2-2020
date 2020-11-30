@@ -7,13 +7,12 @@ function createCancelledBooking(row) {
     return new CancelledBooking(row.cancelledBookingId, row.studentId, row.lectureId, row.date);
 }
 
-exports.addCancelledBooking = function (booking) {
+exports.addCancelledBooking = function (cancelledBooking) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO CANCELLED_BOOKINGS(cancelledBookingId, studentId, lectureId, date) VALUES(?, ?, ?, ?)';
+        const sql = 'INSERT INTO CANCELLED_BOOKINGS (studentId, lectureId, date) VALUES( ?, ?, ?)';
         let params = [];
-        console.log("Add a cancelled booking: ", booking);
-        params.push(booking.cancelledBookingId, booking.studentId, booking.lectureId, booking.date);
-
+        //console.log("Add a cancelled lecture: ", lecture);
+        params.push(cancelledBooking.studentId, cancelledBooking.lectureId, cancelledBooking.date);
         db.run(sql, params, function (err) {
             if (err)
                 reject(err);

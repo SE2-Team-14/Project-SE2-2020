@@ -12,7 +12,7 @@ exports.createCourse = function (course) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO COURSE(courseId, teacherId, name) VALUES(?, ?, ?)';
         let params = [];
-        console.log("New course: ", course);
+        //console.log("New course: ", course);
         params.push(course.courseId, course.teacherId, course.name);
 
         if (course)

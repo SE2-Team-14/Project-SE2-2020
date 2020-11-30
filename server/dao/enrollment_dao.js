@@ -9,7 +9,7 @@ exports.addEnrollment = function (enrollment) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO ENROLLMENT(courseId, email) VALUES(?, ?)';
         let params = [];
-        console.log("New enrollment: ", enrollment);
+        //console.log("New enrollment: ", enrollment);
         params.push(enrollment.courseId, enrollment.email);
 
         if (enrollment)

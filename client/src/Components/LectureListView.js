@@ -53,6 +53,10 @@ class LectureListView extends React.Component {
         API.deleteBooking(studentId, lectureId).then(() => API.getAllBookings().then((bookings) => this.setState({bookings: bookings})));
     }
 
+    addDeletedBooking = (studentId, lectureId) => {
+        API.addCancelledBooking(studentId, lectureId);
+    }
+
     handleIncreaseSeats = (lecture) => {
         API.increaseSeats(lecture);
     }
@@ -66,12 +70,6 @@ class LectureListView extends React.Component {
     }
 
     handleBook = (studentId, lecture) => {
-        /*let find=false;
-        
-        for(let b of this.state.bookings){
-            if(b.studentId == studentId && b.lectureId == lecture.lectureId )
-                find = true;
-        }*/
             let b = Object.assign({}, Booking);
             b.studentId = studentId;
             b.lectureId = lecture.lectureId;
@@ -84,12 +82,8 @@ class LectureListView extends React.Component {
     }
 
     handleDelete = (studentId, lecture) => {
-        /*let find=false;
-        for(let b of this.state.bookings){
-            if(b.studentId == studentId && b.lectureId == lecture.lectureId )
-                find = true;
-        }*/
             this.deleteBooking(studentId, lecture.lectureId)
+            this.addDeletedBooking(studentId, lecture.lectureId)
             this.handleDecreaseSeats(lecture)
             API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
              this.setState({showDelete: false}, () => API.getLecturesList(this.props.email)
@@ -254,9 +248,15 @@ function LectureItem(props) {
                         <Button variant='danger' onClick={() => props.handleClickDelete(props.id, props.lecture)}>Delete</Button>
                     </>
                     }
-                    {(find == false) &&
+                    {((find == false) && (props.lecture.numberOfSeats < maxSeats)) &&
                     <>
                          <Button onClick={() => props.handleClickBook(props.id, props.lecture)}>Book</Button>
+                    </>
+
+                    }
+                    {((find == false) && (props.lecture.numberOfSeats >= maxSeats)) &&
+                    <>
+                         <Button disabled> Book</Button>
                     </>
 
                     }

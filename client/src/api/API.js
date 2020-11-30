@@ -342,6 +342,31 @@ async function addCancelledLecture(lecture) {
     });
 }
 
+async function addCancelledBooking(studentId, lectureId) {
+    const url = baseURL + '/teacher-home';
+
+    return new Promise((resolve, reject) => {
+        fetch(`${url}/add-cancelled-booking`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentId: studentId,
+                lectureId : lectureId,
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                resolve(null);
+            } else {
+                response.json()
+                    .then((obj) => { reject(obj); })
+                    .catch((err) => reject({ errors: [{ param: 'Application', msg: 'Cannot parse server response' }] }));
+            }
+        }).catch((err) => { reject({ errors: [{ param: 'Server', msg: 'Cannot communicate' }] }) });
+    });
+}
+
 async function getCancelledBookingsStats(course) {
     let url = "/cancelledBookings?course=" + course;
     const response = await fetch(baseURL + url);
@@ -428,6 +453,7 @@ const API = {
     deleteBookingByTeacher,
     getBookings,
     getLectureById,
+    addCancelledBooking,
 };
 
 export default API;

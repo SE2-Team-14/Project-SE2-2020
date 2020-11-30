@@ -11,7 +11,7 @@ exports.createPerson = function(person) {
 	return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO PERSON(id, name, surname, role, email, password) VALUES(?, ?, ?, ?, ?, ?)';
         let params = [];
-        console.log("New university member: ", person);
+        //console.log("New university member: ", person);
         params.push(person.id, person.name, person.surname, person.role, person.email, person.password);
 
         if (person) 
@@ -63,7 +63,7 @@ exports.getPersonByEmail = function(email) {
 				else{
 					if(rows.length>0){
                         let _person = rows.map((person => createPerson(person)))[0];
-                        console.log(_person);
+                        //console.log(_person);
 						resolve(_person);
 					} else{
 						resolve(undefined);

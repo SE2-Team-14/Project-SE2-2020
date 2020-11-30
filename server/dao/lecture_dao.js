@@ -12,7 +12,7 @@ exports.addLecture = function (lecture) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
         let params = [];
-        console.log("New lecture: ", lecture);
+        //console.log("New lecture: ", lecture);
         params.push(lecture.lectureId, lecture.courseId, lecture.teacherId, lecture.date, lecture.startingTime, lecture.endingTime, lecture.inPresence, lecture.classroomId, lecture.numberOfSeats);
 
         if (lecture)
@@ -61,9 +61,16 @@ exports.getLecturesList = function (email) {
             if (err)
                 reject(err);
             else {
-                if (rows.length > 0) {
-                    let _lectures = rows.map((row => createLecture(row)));
-                    resolve(_lectures);
+                if (rows) {
+                    let today = moment().subtract(1, 'days');
+                    let newRow = [];
+                    for (let i = 0; i < rows.length; i++) {
+                        let date = moment(rows[i]["date"], "DD/MM/YYYY")
+                        if (today.isBefore(date)) {
+                            newRow.push(rows[i])
+                        }
+                    }
+                    resolve(newRow);
                 }
                 else
                     resolve(undefined);
@@ -161,7 +168,7 @@ exports.getPastLectures = function (course) {
     })
 }
 exports.changeLectureType = function (lectureId) {
-    console.log(lectureId);
+    //console.log(lectureId);
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET inPresence = "0" WHERE lectureId = ?';
         db.run(sql, [lectureId], function (err) {
