@@ -25,7 +25,7 @@ const db = new sqlite.Database(`${path}`, (err) => {
 // adding a method to remove de database from the filesystem
 db.deleteFromDisk = () => {
     // the file paths are relative to server folder
-    fs.unlinkSync('./db/'+path);
+    fs.unlinkSync(path);
 }
 
 module.exports = db;
