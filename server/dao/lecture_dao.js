@@ -92,7 +92,7 @@ exports.getTeacherLectureList = function (id) {
                     for (let i = 0; i < rows.length; i++) {
                         let date = moment(rows[i]["date"], "DD/MM/YYYY")
                         if (today.isBefore(date)) {
-                            newRow.push(row[i])
+                            newRow.push(rows[i])
                         }
                     }
                     resolve(newRow);
