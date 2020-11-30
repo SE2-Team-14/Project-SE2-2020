@@ -90,6 +90,23 @@ exports.deleteBookingByTeacher = function (lectureId) {
     });
 }
 
+exports.findEmailByLecture = function (lectureId) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT p.name AS PersonName , p.email AS Email, c.name AS CourseName, l.date AS LectureDate, l.startingTime AS LectureStartTime FROM BOOKING b, PERSON p, LECTURE l, COURSE c WHERE b.studentId = p.id AND b.lectureId = l.lectureId AND l.courseId = c.courseId AND b.lectureId = ?";
+        db.get(sql, [courseId], (err, row) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows.length > 0) {
+                    resolve(_emails);
+                }
+                else
+                    resolve(undefined);
+            }
+        });
+    });
+}
+
 /** Returns an array containing statistics about a given course, with each element having these values:
  *   - bookings: integer containing the amount of booked students associated to one of the following values, depending on the mode
  *   - date: string, present if mode === lecture. Contains the date in which bookings have been made regarding a single lecture
