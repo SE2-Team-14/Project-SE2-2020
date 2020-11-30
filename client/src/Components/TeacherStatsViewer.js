@@ -5,7 +5,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Jumbotron from "react-bootstrap/Jumbotron"
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Container from "react-bootstrap/Container";
+
 
 import {
     BarChart, Bar, /*Cell,*/ XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label,
@@ -80,11 +82,13 @@ class TeacherStatsViewer extends React.Component {
                         </Col>
                         <Col md="auto"></Col>
                     </Row>
+                    <Row className="h-75 d-inline-block">{""}</Row>
                     <Row className="justify-content-md-center">
                         {
                             (this.state.courses.length > 0 && this.state.selectedCourse !== null) && <h4> Statistics for the course {this.state.selectedCourse}</h4>
                         }
                     </Row>
+                    <Row className="h-75 d-inline-block">{""}</Row>
                     <Row className="justify-content-md-center">
                         <Col md="auto">
                             {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("lecture")}> View Bookings of Single Lecture </Button>}
@@ -102,6 +106,7 @@ class TeacherStatsViewer extends React.Component {
                             {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("cancelled")}> View Cancelled Bookings </Button>}
                         </Col>
                     </Row>
+                    <Row className="h-75 d-inline-block">{""}</Row>
                     <Row className="justify-content-md-center">
 
                         {(this.state.mode === "lecture" && this.state.lectures.length > 0) && <Dropdown>
@@ -114,6 +119,7 @@ class TeacherStatsViewer extends React.Component {
                         </Dropdown>}
 
                     </Row>
+                    <Row className="h-75 d-inline-block">{""}</Row>
                     <Row className="justify-content-md-center">
 
                         {(this.state.stats.length > 0 && this.state.mode === "lecture") && <BarChart
@@ -126,12 +132,11 @@ class TeacherStatsViewer extends React.Component {
                         >
                             <CartesianGrid strokeDasharray="3 3" />
 
-                            <XAxis dataKey="date">
+                            <XAxis dataKey="date" height={50}>
                                 <Label value={`Bookings for the lesson ${this.state.selectedDate} ${this.state.lectureTime}`} offset={0} position="insideBottom" />
                             </XAxis>
                             <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.stats.length === 0 && this.state.selectedDate != null) && <h4> There are no bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}, so no statistics are available.</h4>}
@@ -145,12 +150,11 @@ class TeacherStatsViewer extends React.Component {
                         >
                             <CartesianGrid strokeDasharray="3 3" />
 
-                            <XAxis dataKey="month">
+                            <XAxis dataKey="month" height={50}>
                                 <Label value={`Bookings divided by month`} offset={0} position="insideBottom" />
                             </XAxis>
                             <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.mode === "week" && this.state.stats.length > 0) && <BarChart
@@ -163,12 +167,11 @@ class TeacherStatsViewer extends React.Component {
                         >
                             <CartesianGrid strokeDasharray="3 3" />
 
-                            <XAxis dataKey="week">
+                            <XAxis dataKey="week" height={50}>
                                 <Label value={`Bookings divided by week`} offset={0} position="insideBottom" />
                             </XAxis>
                             <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.mode === "total" && this.state.stats.length > 0) && <BarChart
@@ -181,12 +184,11 @@ class TeacherStatsViewer extends React.Component {
                         >
                             <CartesianGrid strokeDasharray="3 3" />
 
-                            <XAxis dataKey="date">
+                            <XAxis dataKey="date" height={50}>
                                 <Label value={`Bookings divided by single lecture`} offset={0} position="insideBottom" />
                             </XAxis>
                             <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend verticalAlign="top" />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
                         {(this.state.mode === "cancelled" && this.state.cancelledStats.length > 0) && <BarChart
@@ -199,12 +201,11 @@ class TeacherStatsViewer extends React.Component {
                         >
                             <CartesianGrid strokeDasharray="3 3" />
 
-                            <XAxis dataKey="date">
+                            <XAxis dataKey="date" height={50}>
                                 <Label value={`Cancelled bookings divided by single lecture`} offset={0} position="insideBottom" />
                             </XAxis>
                             <YAxis allowDecimals={false} />
                             <Tooltip />
-                            <Legend verticalAlign="top" />
                             <Bar dataKey="cancellations" fill="#0000FF" />
                         </BarChart>}
                         {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
