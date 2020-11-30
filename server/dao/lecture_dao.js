@@ -74,17 +74,24 @@ exports.getLecturesList = function (email) {
 
 exports.getTeacherLectureList = function (id) {
     return new Promise((resolve, reject) => {
-        let today = moment().format("DD/MM/YYYY");
-        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? and date >= ?';
-        db.all(sql, [id, today], (err, rows) => {
+        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ?';
+        db.all(sql, [id], (err, rows) => {
             if (err)
                 reject(err);
             else {
                 if (rows) {
-                    let lectures = rows.map((row => createLecture(row)));
-                    resolve(lectures);
+                    let today = moment().subtract(1, 'days');
+                    let newRow = [];
+                    for (let i = 0; i < row.length; i++) {
+                        let date = moment(row[i]["date"], "DD/MM/YYYY")
+                        if (today.isBefore(date)) {
+                            newRow.push(row[i])
+                         }
+                    }
+                    resolve(newRow);
                 }
-                else {
+                else 
+                {
                     resolve(undefined);
                 }
             }
