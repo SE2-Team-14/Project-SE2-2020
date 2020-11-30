@@ -11,7 +11,7 @@ const path = './db/'+(dbsettings.test ? testdb : productiondb);
 
 if(dbsettings.test == true){ 
     // the file paths are relative to server folder
-    fs.copyFileSync('./db/' + productiondb, './db/' + testdb); // copy the old database in the new file
+    fs.copyFileSync('./db/' + "vuotodb.db", './db/' + testdb); // copy the old database in the new file
 }
 
 
@@ -25,6 +25,7 @@ const db = new sqlite.Database(`${path}`, (err) => {
 // adding a method to remove de database from the filesystem
 db.deleteFromDisk = () => {
     // the file paths are relative to server folder
+    db.close();
     fs.unlinkSync(path);
 }
 
