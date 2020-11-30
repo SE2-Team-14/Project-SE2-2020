@@ -25,6 +25,7 @@ class TeacherStatsViewer extends React.Component {
             selectedDate: null,
             lectureTime: null,
             cancelledStats: [],
+            maxStat: 0,
         }
     }
 
@@ -42,16 +43,31 @@ class TeacherStatsViewer extends React.Component {
         this.setState({ mode: mode })
         if (mode === "lecture") {
             API.getPastLectures(this.state.selectedCourse).then((lectures) => {
-                console.log(lectures)
                 this.setState({ lectures: lectures, stats: [], cancelledStats: [] })
             })
         } else if (mode === "month" || mode === "week" || mode === "total") {
             API.getStatistics(null, mode, this.state.selectedCourse).then((stats) => {
-                this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [] })
+                let max = 0;
+                let num = 0;
+                for (let i = 0; i < stats.length; i++) {
+                    num = stats[i].bookings;
+                    if (num > max) {
+                        max = num;
+                    }
+                }
+                this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max })
             })
         } else if (mode === "cancelled") {
             API.getCancelledBookingsStats(this.state.selectedCourse).then((stats) => {
-                this.setState({ stats: [], selectedDate: null, lectureTime: null, cancelledStats: stats })
+                let max = 0;
+                let num = 0;
+                for (let i = 0; i < stats.length; i++) {
+                    num = stats[i].cancellations;
+                    if (num > max) {
+                        max = num;
+                    }
+                }
+                this.setState({ stats: [], selectedDate: null, lectureTime: null, cancelledStats: stats, maxStat: max })
             })
         }
     }
@@ -59,7 +75,15 @@ class TeacherStatsViewer extends React.Component {
     onSelectLecture = (lecture) => {
         let lectureTime = lecture.startingTime + "-" + lecture.endingTime;
         API.getStatistics(lecture.date, this.state.mode, this.state.selectedCourse).then((stats) => {
-            this.setState({ stats: stats, selectedDate: lecture.date, lectureTime: lectureTime })
+            let max = 0;
+            let num = 0;
+            for (let i = 0; i < stats.length; i++) {
+                num = stats[i].bookings;
+                if (num > max) {
+                    max = num;
+                }
+            }
+            this.setState({ stats: stats, selectedDate: lecture.date, lectureTime: lectureTime, maxStat: max })
         })
     }
 
@@ -135,7 +159,7 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="date" height={50}>
                                 <Label value={`Bookings for the lesson ${this.state.selectedDate} ${this.state.lectureTime}`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis allowDecimals={false} />
+                            <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
                             <Tooltip />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
@@ -153,7 +177,7 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="month" height={50}>
                                 <Label value={`Bookings divided by month`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis allowDecimals={false} />
+                            <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
                             <Tooltip />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
@@ -170,7 +194,7 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="week" height={50}>
                                 <Label value={`Bookings divided by week`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis allowDecimals={false} />
+                            <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
                             <Tooltip />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
@@ -187,7 +211,7 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="date" height={50}>
                                 <Label value={`Bookings divided by single lecture`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis allowDecimals={false} />
+                            <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
                             <Tooltip />
                             <Bar dataKey="bookings" fill="#0000FF" />
                         </BarChart>}
@@ -204,7 +228,7 @@ class TeacherStatsViewer extends React.Component {
                             <XAxis dataKey="date" height={50}>
                                 <Label value={`Cancelled bookings divided by single lecture`} offset={0} position="insideBottom" />
                             </XAxis>
-                            <YAxis allowDecimals={false} />
+                            <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
                             <Tooltip />
                             <Bar dataKey="cancellations" fill="#0000FF" />
                         </BarChart>}
