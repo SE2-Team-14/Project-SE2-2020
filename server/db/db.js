@@ -6,10 +6,10 @@ const sqlite = require('sqlite3');
 
 const testdb = 'tmpdb.db';
 const productiondb = 'testdb.db';
-const path = (dbsettings.test ? testdb : productiondb);
+const path = './db/'+(dbsettings.test ? testdb : productiondb);
 
 
-if(dbsettings.test){ 
+if(dbsettings.test == true){ 
     // the file paths are relative to server folder
     fs.copyFileSync('./db/' + productiondb, './db/' + testdb); // copy the old database in the new file
 }
