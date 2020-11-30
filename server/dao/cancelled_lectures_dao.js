@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('../db');
+const db = require('../db/db');
 const CancelledLecture = require('../bean/cancelled_lectures');
 
 function createCancelledLecture(row){

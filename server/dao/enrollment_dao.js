@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('../db');
+const db = require('../db/db');
 const Enrollment = require('../bean/enrollment');
 const Course = require('../dao/course_dao');
 const Person = require('../dao/person_dao');
