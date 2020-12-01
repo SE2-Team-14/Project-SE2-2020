@@ -317,25 +317,23 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
   if (!lecture) {
     res.status(400).end();
   } else {
-    lectureDao.deleteLecture(lecture.lectureId)
-      .then(() => 
-      {
-        bookingDao.findEmailByCourse(lecture.courseId)
-        .then((emails) => {
-          emails.forEach(email => {
-            const subject = "Lecture deleted";
-            const message = `Dear ${email.PersonName},\n` +
-            `the lecture of course ${email.CourseName} of date ${email.LectureDate} \n` +
-            `at ${email.LectureStartTime} has been deleted.\n` +
-            `Please book another lecture if you need.`
-            emailSender.sendEmail(email.Email, subject, message)
-          });
-          
-        })
+        bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then(list => {
+            for(let item of list){
+              personDao.getPersonByID(item.studentId).then(student => {
+                const subject = 'Lecture cancelled';
+                const recipient = student.email;
+                console.log(student.email)
+                const message = `Dear ${student.name},\n` + 
+                                `the lecture for the course ${item.name} has been cancelled.`;
+
+                emailSender.sendEmail(recipient, subject, message);
+              })
+            }
         res.status(200).end()
-      }
-      )
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+      lectureDao.deleteLecture(lecture.lectureId).then((res) => {res.status(200).end()
+      }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
 

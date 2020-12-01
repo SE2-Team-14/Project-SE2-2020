@@ -32,8 +32,8 @@ class ManageLectureList extends React.Component {
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(1, "hour").format("HH:mm");
         let today = moment().format("DD/MM/YYYY");
         if(lecture.date > today){
-            this.deleteLecture(lecture);
-            this.deleteBookingByTeacher(lecture.lectureId);
+            this.deleteLecture(lecture)
+            //this.deleteBookingByTeacher(lecture.lectureId);
             API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
         }else{
             if(startingTime < deadline){
@@ -69,7 +69,7 @@ class ManageLectureList extends React.Component {
     }
 
     deleteLecture = (lecture) => {
-        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true, showDelete: false})));
+        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true, showDelete: false}, () => this.deleteBookingByTeacher(lecture))));
         API.addCancelledLecture(lecture);
         API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
     }

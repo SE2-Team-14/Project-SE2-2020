@@ -85,7 +85,7 @@ exports.getLecturesList = function (email) {
             if (err)
                 reject(err);
             else {
-                if (rows.length > 0) {
+                if (rows) {
                     let today = moment().subtract(1, 'days');
                     let newRow = [];
                     for (let i = 0; i < rows.length; i++) {
@@ -114,7 +114,7 @@ exports.getTeacherLectureList = function (id) {
             if (err)
                 reject(err);
             else {
-                if (rows.length > 0) {
+                if (rows) {
                     let today = moment().subtract(1, 'days');
                     let newRow = [];
                     for (let i = 0; i < rows.length; i++) {
