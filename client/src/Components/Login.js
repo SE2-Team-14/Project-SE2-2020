@@ -18,20 +18,38 @@ class Login extends React.Component {
     this.state.submitted = false;
   }
 
+  /**
+   * Called when the user inserts a new parameter in the form (username, password)
+   * @param name a string containing the name of the parameter to be updated
+   * @param value a string containing the value of the parameter to be updated
+   */
   updateField = (name, value) => {
     this.setState({ [name]: value });
   }
 
+  /**
+   * Called when the user inserts a new username in the form
+   * @param event an Object containing information about the insertion event, including name of the changed element and changed value
+   */
   onChangeUsername = (event) => {
     this.updateField(event.target.name, event.target.value);
   };
 
-  //Chekc if the password is valid
+  /**
+   * Called when the user inserts a new password in the form
+   * @param event an Object containing information about the insertion event, including name of the changed element and changed value
+   * 
+   * Have to check if the password is valid
+   */
   onChangePassword = (event) => {
     event.target.setCustomValidity("");
     this.updateField(event.target.name, event.target.value);
   }
 
+  /**
+   * Called when the user chooses to submit the form, checks if the form is valid with all parameters inserted correctly and, if they are, performs login
+   * @param event an Object containing information about the submission event
+   */
   handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -42,6 +60,11 @@ class Login extends React.Component {
     }
   }
 
+  /**
+   * Calls the API that checks if email and password inserted are of a user registered in the database.
+   * Allows access if they are correct and shows and error message if they aren't.
+   * @param user a Person object containing email and password of the user that is trying to log into the system
+   */
   login = (user) => {
     API.login(user).then((res) => {
       if (res.error_no == 0) {
@@ -54,6 +77,10 @@ class Login extends React.Component {
     })
   }
 
+  /**
+   * Renders the form that implements the login to the application.
+   * After a successful login redirects a user to the appropriate homepage based on his role: Student, Teacher, Officer(not yet implemented), Manager(not yet implemented)
+   */
   render() {
     return (
       <AuthContext.Consumer>

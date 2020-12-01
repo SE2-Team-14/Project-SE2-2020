@@ -26,16 +26,34 @@ class TeacherStatsViewer extends React.Component {
         }
     }
 
+    /**
+     * Retrieves the list of all courses taught by the teacher with the associated email.
+     */
     componentDidMount() {
         API.getCourses(this.props.email).then((courses) => {
             this.setState({ courses: courses })
         })
     }
 
+    /**
+     * Changes the state to remember the last selected course. 
+     * Resets all other parameters to have a fresh start from previous actions.
+     * @param course a Course object containing information about the selected course
+     */
     onSelectCourse = (course) => {
         this.setState({ selectedCourse: course, lectures: [], mode: null, selectedDate: null, stats: [], cancelledStats: [] })
     }
 
+    /**
+     * Sets the mode chosen by the teacher to view statistics, with different behaviors:
+     *  - lecture mode: calls the API that retrieves all past lectures of the course, resets already registered information about statistics 
+     *  - month mode: calls the API that retrieves the statistics for the specified mode(amount of bookings made in each separate month) and saves them, resets already registered information about lectures chosen before
+     *  - week mode: calls the API that retrieves the statistics for the specified mode(amount of bookings made in each separate week, espressed as an interval of dates in format DD/MM/YYYY, Monday to Sunday) and saves them, resets already registered information about lectures chosen before
+     *  - total mode: calls the API that retrieves the statistics for the specified mode(amount of total bookings made for each separate lecture) and saves them, resets already registered information about lectures chosen before
+     *  - cancelled mode: calls the API that retrieves the statistics about cancelled lectures(amount of cancelled bookings for each separate lecture) and saves them, resets already registered information about lectures chosen before
+     * All modes except the lecture one also calculate the maximum value for each statistic and save it in the state, to put it as the maximum value that can be shown in the graph
+     * @param mode a string containing the mode chosen by the teacher
+     */
     chooseMode = (mode) => {
         this.setState({ mode: mode })
         if (mode === "lecture") {
@@ -69,6 +87,12 @@ class TeacherStatsViewer extends React.Component {
         }
     }
 
+    /**
+     * Called when the teacher chooses a lecture while in lecture mode.
+     * Calls the API that retrieves statistics in the specified mode (amount of bookings made in separate days for the lecture that took part in the chosen date) and saves them.
+     * Calculates the maximum amount of the statistics and saves it in the state to have it as the maximum amount in the graph; also saves the starting and ending time of the lecture in format HH:MM-HH:MM
+     * @param lecture a Lecture object containing information about the lecture chosen in the dropdown menu
+     */
     onSelectLecture = (lecture) => {
         let lectureTime = lecture.startingTime + "-" + lecture.endingTime;
         API.getStatistics(lecture.date, this.state.mode, this.state.selectedCourse).then((stats) => {
@@ -84,6 +108,12 @@ class TeacherStatsViewer extends React.Component {
         })
     }
 
+    /**
+     * Renders a dropdown button that allows a teacher to select, among all the courses taught by him, one he wishes to see statistics of.
+     * After choosing a course the teacher can choose with buttons the mode according to which he wants to see stats (single lecture, by week, by month, total bookings divided by lecture, cancelled bookings per lecture)
+     * Choosing lecture mode renders another dropdown menu with all past lectures of the course.
+     * After choosing any lecture (or a different mode) a bar graph is rendered, showing all bookings according to the chosen mode.
+     */
     render() {
         return (
             <>
