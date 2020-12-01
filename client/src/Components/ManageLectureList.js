@@ -10,23 +10,41 @@ class ManageLectureList extends React.Component {
         super(props);
         this.state = { lectures: [], bookings: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false, lecture: '' };
     }
+
+    /**
+     * Retrieves the list of all future lectures of the teacher and the list of all registered bookings
+     */
     componentDidMount() {
         API.getTeacherLecturesList(this.props.id)
             .then((lectures) => this.setState({ lectures: lectures }));
         API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }));
     }
 
+    /**
+     * Retrieves the name of a course based on its identifier
+     * @param courseId a string containing the identifier of the course whose name is to be retrieved
+     */
     findCourseName = (courseId) => {
         let course = this.props.courses.find((c) => c.courseId == courseId);
         return course.name;
     }
 
 
+    /**
+     * Retrieves the maximum number of available seats in a classroom
+     * @param classroomId a string containing the identifier of the classroom whose number of seats is to be found
+     */
     findMaxSeats = (classroomId) => {
         let classroom = this.props.classrooms.find((c) => c.classroom == classroomId);
         return classroom.maxNumberOfSeats;
     }
 
+    /**
+     * Called when a teacher chooses to confirm the cancellation of a lecture in the corresponding modal.
+     * Checks if the lecture isn't taking place in the current date: if true then it can be deleted with no issue, while if it is then it checks if there's enough time (up to one hour before the start of the lecture)
+     * If the lecture can be deleted it calls the adequate methods, while if it can't is shows an error modal.
+     * @param lecture a Lecture object containing information about the lecture to be deleted
+     */
     handleDelete = (lecture) => {
         let deadline = moment().format("HH:mm");
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(1, "hour").format("HH:mm");
@@ -48,6 +66,12 @@ class ManageLectureList extends React.Component {
 
     }
 
+    /**
+     * Called when a teacher chooses to confirm the change of type of a lecture (from in presence to virtual) in the corresponding modal.
+     * Checks if the lecture isn't taking place in the current date: if true then it can be deleted with no issue, while if it is then it checks if there's enough time (up to 30 minutes before the start of the lecture)
+     * If the lecture type can be changed it calls the adequate methods, while if it can't is shows an error modal.
+     * @param lecture a Lecture object containing information about the lecture whose type has to be changed
+     */
     handleChange = (lecture) => {
         let deadline = moment().format("HH:mm");
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(30, "minutes").format("HH:mm");
@@ -68,17 +92,31 @@ class ManageLectureList extends React.Component {
         }
     }
 
+    /**
+     * Calls the API that deletes a lecture and the API that saves the newly cancelled lecture in the appropriate table
+     * Calls the API that gets the list of future lectures of the teacher to have it updated and closes the confirmation modal
+     * @param lecture a Lecture object containing information about the lecture to be deleted
+     */
     deleteLecture = (lecture) => {
         API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures, showDeleteSuccess: true, showDelete: false })));
         API.addCancelledLecture(lecture);
         API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures }));
     }
 
+    /**
+     * Changes the type of lecture to be virtual instead of in presence.
+     * Calls the API that updates the lecture to the new type, then the API that gets the updated list of future lectures of the teacher, then closes the modal.
+     * @param lecture a Lecture object containing information about the lecture whose type has to be changed
+     */
     changeType = (lecture) => {
         lecture.inPresence = "0";
         API.updateLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures, showChangeSuccess: true, showChange: false })));
     }
 
+    /**
+     * Checks, for all bookings, if a booking has been made for a lecture that has been deleted/changed to virtual and calls the API that deletes a booking in such case.
+     * @param lectureId an integer corresponding to the identifier of the lecture that has been deleted/changed to virtual
+     */
     deleteBookingByTeacher = (lectureId) => {
         for (let b of this.state.bookings) {
             if (b.lectureId == lectureId)
@@ -87,19 +125,36 @@ class ManageLectureList extends React.Component {
 
     }
 
+    /**
+     * Called when a teacher chooses to change the type of a lesson from in presence to virtual.
+     * Opens the modal asking for confirmation.
+     * @param lecture a Lecture object containing information about the lecture whose type has to be changed
+     */
     handleClickChange = (lecture) => {
         this.setState({ showChange: true, lecture: lecture });
     }
 
+    /**
+     * Called when a teacher chooses to delete a lesson.
+     * Opens the modal asking for confirmation.
+     * @param lecture a Lecture object containing information about the lecture to be deleted.
+     */
     handleClickDelete = (lecture) => {
         this.setState({ showDelete: true, lecture: lecture });
     }
 
+    /**
+     * Called when a teacher closes one of the modals shown on the page (confirmation of cancellation, confirmation of type changing, error)
+     */
     handleClose = () => {
         this.setState({ showChange: false, showChangeSuccess: false, showChangeError: false, showDelete: false, showDeleteError: false, showDeleteSuccess: false });
     }
 
 
+    /**
+     * Renders a list of all future lectures for courses taught by the teacher and the different modals that can pop up (confirmation of cancellation, confirmation of type changing, error, cancellation ending successfully, type changing ending successfully).
+     * 
+     */
     render() {
 
         return (
@@ -171,6 +226,10 @@ class ManageLectureList extends React.Component {
     }
 }
 
+/**
+ * Renders the list of all future lectures of the teacher.
+ * @param props array of Lecture objects, functions to close modals, functions to find name of the course and maximum amount of available seats.
+ */
 function LectureListManage(props) {
 
     return (
@@ -217,6 +276,10 @@ function LectureListManage(props) {
 
 }
 
+/**
+ * Renders a list item made of one future lecture of the teacher, with a button to delete the lecture and one to change its type to virtual.
+ * @param props a single Lecture object with its identifier, functions to close modals, functions to find name of the course and maximum amount of available seats.
+ */
 function LectureItemManage(props) {
     let courseName = props.findCourseName(props.lecture.courseId);
     let maxSeats = props.findMaxSeats(props.lecture.classroomId);

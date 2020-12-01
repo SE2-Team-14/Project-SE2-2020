@@ -92,23 +92,38 @@ class LessonsCalendar extends React.Component {
       lectures: [],
       schedulerLectures: [],
       resources: [],
-     };
+    };
 
   }
 
+  /**
+   * Sets the function that will be used to change the current date shown by the calendar
+   * Calls the API that retrieves all bookings of the logged student
+   */
   componentDidMount() {
     this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
     API.getBookings(this.props.studentId).then((bookings) => this.setState({ bookings: bookings }, () => this.findDates()));
   }
 
+  /**
+   * Returns the name of the course having the associated identifier
+   * @param courseId a string containing the identifier of the course whose name is to be returned
+   */
   findCourseName = (courseId) => {
     let course = this.props.courses.find((c) => c.courseId == courseId);
     return course.name;
   }
 
+  /**
+   * Calculates, for all future lessons booked by the student, an array schedule data made objects, each one made of
+   *  - name of the course
+   *  - starting hour of the lesson (with also the date)
+   *  - ending hour of the lesson
+   * Then calls the function that generates the color resources associated with each schedule element
+   */
   findDates = () => {
     let schedulerData_ = [];
-  
+
     for (let b of this.state.bookings) {
       API.getLectureById(b.lectureId).then((lectures) => {
         let bschedule = Object.assign({}, Schedule);
@@ -131,36 +146,54 @@ class LessonsCalendar extends React.Component {
     }
   }
 
+  /**
+   * Calculates the hash value of a given string, corresponding to a name of a course
+   * @param str a string containing the name of the course whose hash has to be computed
+   */
   hashCode = (str) => {
     var hash = 0;
-    for (var i = 0; i < str.length; i++) 
-       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    for (var i = 0; i < str.length; i++)
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
     return hash;
-  } 
+  }
 
+  /**
+   * Calculates the logical AND between a mask and a hash value and then returns an hexadecimal value. Said value is the color associated with the name of a course, making it so that every course has a different, unique color associated.
+   * @param i an hexadecimal value containing the hash value computed with the name of the course
+   */
   intToRGB = (i) => {
     var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
     return "00000".substring(0, 6 - c.length) + c;
   }
 
+  /**
+   * Generates a ColorResource object, whose instances are calculated for each course present in the schedule (each course has a color associated to it)
+   */
   generateResources = () => {
     let v = [];
     let res = Object.assign({}, ColorResources);
     res.id = 1;
     res.fieldName = "title";
     res.instances = [];
-    
 
-    for(let title of titles){
+
+    for (let title of titles) {
       let instance = Object.assign({}, Instances);
       instance.id = title;
       instance.color = '#' + this.intToRGB(this.hashCode(title));
       res.instances.push(instance);
     }
     v.push(res);
-    this.setState({resources: v});
+    this.setState({ resources: v });
   }
 
+  /**
+   * Renders the calendar that shows to a student all his future booked seats in all lessons.
+   * The calendar only shows days from Monday to Friday and hours from 8:00 to 19:30, and can support different levels of viewing information (by single day, by week, by month)
+   * 
+   * currentViewNameChange is not defined in the code
+   * To be removed?
+   */
   render() {
     const { currentDate } = this.state.currentDate;
     let schedulerData = [...this.state.schedulerLectures];
@@ -169,28 +202,28 @@ class LessonsCalendar extends React.Component {
     return (
       <React.Fragment>
 
-      <Paper>
-        <Scheduler data={schedulerData} height={660} >
-          <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange} />
-          <WeekView
-            startDayHour={"8:00"}
-            endDayHour={"19:30"}
-            excludedDays={[0, 6]}
-            timeTableCellComponent={TimeTableCell}
-            dayScaleCellComponent={DayScaleCell}
-          />
-          <DayView startDayHour={"8:00"} endDayHour={"19:30"}/>
-          <MonthView />
-          <Appointments/>
-          <Resources data={res}/> 
-          <AppointmentTooltip showCloseButton/>
-          <AppointmentForm readOnly/>
-          <Toolbar />
-          <ViewSwitcher />
-          <DateNavigator />
-          <TodayButton />
-        </Scheduler>
-      </Paper>
+        <Paper>
+          <Scheduler data={schedulerData} height={660} >
+            <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange} />
+            <WeekView
+              startDayHour={"8:00"}
+              endDayHour={"19:30"}
+              excludedDays={[0, 6]}
+              timeTableCellComponent={TimeTableCell}
+              dayScaleCellComponent={DayScaleCell}
+            />
+            <DayView startDayHour={"8:00"} endDayHour={"19:30"} />
+            <MonthView />
+            <Appointments />
+            <Resources data={res} />
+            <AppointmentTooltip showCloseButton />
+            <AppointmentForm readOnly />
+            <Toolbar />
+            <ViewSwitcher />
+            <DateNavigator />
+            <TodayButton />
+          </Scheduler>
+        </Paper>
       </React.Fragment>
     );
   }
