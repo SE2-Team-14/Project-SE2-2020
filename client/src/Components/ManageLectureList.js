@@ -8,12 +8,12 @@ class ManageLectureList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], bookings: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false, lecture: ''};
+        this.state = { lectures: [], bookings: [], showDelete: false, showDeleteSuccess: false, showDeleteError: false, showChange: false, showChangeError: false, showChangeSuccess: false, lecture: '' };
     }
     componentDidMount() {
         API.getTeacherLecturesList(this.props.id)
-        .then((lectures) => this.setState({lectures: lectures}));
-        API.getAllBookings().then((bookings) => this.setState({bookings: bookings}));
+            .then((lectures) => this.setState({ lectures: lectures }));
+        API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }));
     }
 
     findCourseName = (courseId) => {
@@ -31,91 +31,91 @@ class ManageLectureList extends React.Component {
         let deadline = moment().format("HH:mm");
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(1, "hour").format("HH:mm");
         let today = moment().format("DD/MM/YYYY");
-        if(lecture.date > today){
+        if (lecture.date > today) {
             this.deleteLecture(lecture);
             this.deleteBookingByTeacher(lecture.lectureId);
-            API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
-        }else{
-            if(startingTime < deadline){
-                this.setState({showDelete: false, showDeleteError: true});
+            API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures }));
+        } else {
+            if (startingTime < deadline) {
+                this.setState({ showDelete: false, showDeleteError: true });
             }
-            else{
+            else {
                 this.deleteLecture(lecture);
                 this.deleteBookingByTeacher(lecture.lectureId);
-                API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+                API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures }));
             }
         }
-        
+
     }
 
     handleChange = (lecture) => {
         let deadline = moment().format("HH:mm");
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(30, "minutes").format("HH:mm");
         let today = moment().format("DD/MM/YYYY");
-        if(lecture.date > today){ // FIXME: remove unecessary nested id statement
+        if (lecture.date > today) { // FIXME: remove unecessary nested id statement
             this.changeType(lecture);
             this.deleteBookingByTeacher(lecture.lectureId);
-            API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
-        }else {
-            if(startingTime < deadline){
-                this.setState({showChange: false, showChangeError: true});
+            API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures }));
+        } else {
+            if (startingTime < deadline) {
+                this.setState({ showChange: false, showChangeError: true });
             }
-            else{
+            else {
                 this.changeType(lecture);
                 this.deleteBookingByTeacher(lecture.lectureId);
-                API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+                API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures }));
             }
-        }  
+        }
     }
 
     deleteLecture = (lecture) => {
-        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showDeleteSuccess: true, showDelete: false})));
+        API.deleteLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures, showDeleteSuccess: true, showDelete: false })));
         API.addCancelledLecture(lecture);
-        API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+        API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures }));
     }
 
     changeType = (lecture) => {
         lecture.inPresence = "0";
-        API.updateLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showChangeSuccess: true, showChange: false})));
+        API.updateLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures, showChangeSuccess: true, showChange: false })));
     }
 
     deleteBookingByTeacher = (lectureId) => {
-        for(let b of this.state.bookings){
-            if(b.lectureId == lectureId)
+        for (let b of this.state.bookings) {
+            if (b.lectureId == lectureId)
                 API.deleteBookingByTeacher(lectureId);
         }
-        
+
     }
 
     handleClickChange = (lecture) => {
-        this.setState({showChange: true, lecture: lecture});
+        this.setState({ showChange: true, lecture: lecture });
     }
 
     handleClickDelete = (lecture) => {
-        this.setState({showDelete: true, lecture: lecture});
+        this.setState({ showDelete: true, lecture: lecture });
     }
 
     handleClose = () => {
-        this.setState({showChange: false, showChangeSuccess: false, showChangeError: false, showDelete: false, showDeleteError: false, showDeleteSuccess: false});
+        this.setState({ showChange: false, showChangeSuccess: false, showChangeError: false, showDelete: false, showDeleteError: false, showDeleteSuccess: false });
     }
 
-   
+
     render() {
 
         return (
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureListManage lecture={this.state.lectures} findCourseName={this.findCourseName}  findMaxSeats={this.findMaxSeats} handleClickChange={this.handleClickChange} handleClickDelete={this.handleClickDelete}/>
+                        <LectureListManage lecture={this.state.lectures} findCourseName={this.findCourseName} findMaxSeats={this.findMaxSeats} handleClickChange={this.handleClickChange} handleClickDelete={this.handleClickDelete} />
                     </Col>
                 </Row>
                 <Modal controlid='Delete' show={this.state.showDelete} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                       <Modal.Title>Confirm deleting</Modal.Title>
+                        <Modal.Title>Confirm deleting</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Do you want to confirm your deleting?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleDelete(this.state.lecture)}>Yes</Button>
+                        <Button variant='primary' onClick={() => this.handleDelete(this.state.lecture)}>Yes</Button>
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
@@ -125,44 +125,44 @@ class ManageLectureList extends React.Component {
                     </Modal.Header>
                     <Modal.Body>Do you want to change your type of lecture (from in presence to virtual)?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleChange(this.state.lecture)}>Yes</Button>
+                        <Button variant='primary' onClick={() => this.handleChange(this.state.lecture)}>Yes</Button>
                         <Button variant='secondary' onClick={this.handleClose}>No</Button>
                     </Modal.Footer>
                 </Modal>
                 <Modal controlid='DeleteSuccess' show={this.state.showDeleteSuccess} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                       <Modal.Title>Confirm deleting</Modal.Title>
+                        <Modal.Title>Confirm deleting</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Congrats, your lecture is delete! A mail to the students is sent!</Modal.Body>
+                    <Modal.Body>Congrats, your lecture is deleted! A mail has been sent to all students!</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                        <Button variant='primary' onClick={() => this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 <Modal controlid='DeleteError' show={this.state.showDeleteError} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                       <Modal.Title>ERROR!</Modal.Title>
+                        <Modal.Title>ERROR!</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>You can't delete this lesson now! Time is expire!</Modal.Body>
+                    <Modal.Body>You can't delete this lesson now! Time is expired!</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                        <Button variant='primary' onClick={() => this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 <Modal controlid='ChangeSuccess' show={this.state.showChangeSuccess} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                       <Modal.Title>Confirm changing</Modal.Title>
+                        <Modal.Title>Confirm changing</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Your lesson has been changed. Now is a virtual lecture!</Modal.Body>
+                    <Modal.Body>Your lesson has been changed. Now it is a virtual lecture!</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                        <Button variant='primary' onClick={() => this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 <Modal controlid='ChangeError' show={this.state.showChangeError} onHide={this.handleClose} animation={false} >
                     <Modal.Header closeButton>
-                       <Modal.Title>ERROR!</Modal.Title>
+                        <Modal.Title>ERROR!</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>You can't change this lesson now! Time is expire</Modal.Body>
+                    <Modal.Body>You can't change this lesson now! Time is expired!</Modal.Body>
                     <Modal.Footer>
-                        <Button variant='primary' onClick={()=>this.handleClose()}>Close</Button>
+                        <Button variant='primary' onClick={() => this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </Jumbotron>
@@ -204,9 +204,9 @@ function LectureListManage(props) {
 
             </ListGroup.Item>
             {
-                 props.lecture.map((l) =>
+                props.lecture.map((l) =>
 
-                    <LectureItemManage key={l.lectureId} lecture={l} findCourseName = {props.findCourseName} findMaxSeats={props.findMaxSeats} handleClickChange={props.handleClickChange} handleClickDelete={props.handleClickDelete}/>
+                    <LectureItemManage key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findMaxSeats={props.findMaxSeats} handleClickChange={props.handleClickChange} handleClickDelete={props.handleClickDelete} />
                 )
 
 
@@ -237,53 +237,53 @@ function LectureItemManage(props) {
                     {props.lecture.endingTime}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.inPresence == true || props.lecture.inPresence ==1) &&
-                    <>
-                         {props.lecture.classroomId}
-                    </>}
+                    {(props.lecture.inPresence == true || props.lecture.inPresence == 1) &&
+                        <>
+                            {props.lecture.classroomId}
+                        </>}
                     {(props.lecture.inPresence == false || props.lecture.inPresence == 0) &&
-                    <>
-                         Virtual Classroom
+                        <>
+                            Virtual Classroom
                     </>}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence ==1)) &&
+                    {(props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence == 1)) &&
                         <>
-                        {props.lecture.numberOfSeats}/{maxSeats}
-                        </>
-                    } 
-                    {(!props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence ==1)) &&
-                        <>
-                        {0}/{maxSeats}
+                            {props.lecture.numberOfSeats}/{maxSeats}
                         </>
                     }
-                    {(props.lecture.inPresence == false || props.lecture.inPresence == 0 ) &&
-                    <>
-                         Free to entry
+                    {(!props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence == 1)) &&
+                        <>
+                            {0}/{maxSeats}
+                        </>
+                    }
+                    {(props.lecture.inPresence == false || props.lecture.inPresence == 0) &&
+                        <>
+                            Free to entry
                     </>}
-                        
-                    
+
+
                 </Col>
                 <Col xs={1} className='text-center'>
                     <Button variant='danger' onClick={() => props.handleClickDelete(props.lecture)}>Delete</Button>
                 </Col>
                 <Col xs={2} className='text-center'>
                     {props.lecture.inPresence == 0 &&
-                    <>
-                        <Button disabled>Change Type</Button>
-                    </>
+                        <>
+                            <Button disabled>Change Type</Button>
+                        </>
                     }
                     {props.lecture.inPresence == 1 &&
-                    <>
-                        <Button onClick={() => props.handleClickChange(props.lecture)}>Change type</Button>
-                    </>
+                        <>
+                            <Button onClick={() => props.handleClickChange(props.lecture)}>Change type</Button>
+                        </>
                     }
-                    
+
                 </Col>
             </Row>
         </ListGroup.Item>
     );
-    
+
 }
 
 

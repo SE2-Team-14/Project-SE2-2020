@@ -52,6 +52,9 @@ if (require.main === module) { // start the server only if it is not imported by
 const emailSender = new EmailSender('gmail', "pulsebs14.notification@gmail.com", "team142020");
 setMidnightTimer(() => sendEmailsAtMidnight());
 
+/**
+ * Sends, at midnight of every day, an email to every teacher involved in the booking system an email reporting the lectures that will take place in the day to come and the number of students booked for every lecture
+ */
 function sendEmailsAtMidnight() {
 
   personDao.getTeachers().then((teachers) => {
@@ -78,7 +81,13 @@ function sendEmailsAtMidnight() {
   })
 }
 
-
+/**
+ * POST API
+  - Request Parameters: none
+  - Request Body Content: object that contains the information of the credentials (username, password)
+  - Response Body Content: object that contains the name of the user, his id, email and role in the University
+  - Error: if wrong credentials
+ */
 app.post('/api/login', (req, res) => {
   const person = req.body;
   if (!person) {
@@ -103,7 +112,12 @@ app.post('/api/login', (req, res) => {
   }
 })
 
-//Network part for book a seat
+/**
+ * GET API
+ * Request Parameters: none 
+ * Request Body Content: none
+ * Response Body Content: array of Lecture objects
+ */
 app.get('/api/student-home/:email/bookable-lectures', (req, res) => {
   lectureDao.getLecturesList(req.params.email)
     .then((lectures) => {
@@ -114,9 +128,9 @@ app.get('/api/student-home/:email/bookable-lectures', (req, res) => {
 
 /**
  * GET API 
- * Request parameters: string containing the email of the teacher one wants to know the taught courses
-   Request body content: none
-   Response body content: list of courses taught by said teacher
+ * Request Parameters: string containing the email of the teacher one wants to know the taught courses
+   Request Body Content: none
+   Response Body Content: list of courses taught by said teacher
  */
 app.get("/api/courses", (req, res) => {
   courseDao.getCoursesOfTeacher(req.query.teacher).then((courses) => {
@@ -150,39 +164,80 @@ app.get("/api/bookedStudents", (req, res) => {
     });
 })
 
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array of Course objects
+ */
 app.get("/api/getCourses", (req, res) => {
   courseDao.getCourses().then((courses) => res.json(courses))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array of Person objects where all objects have the role of a Teacher
+ */
 app.get("/api/getTeachers", (req, res) => {
   personDao.getTeachers().then((teachers) => res.json(teachers))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array of Classroom objects
+ */
 app.get("/api/getClassrooms", (req, res) => {
   classroomDao.getClassrooms().then((classrooms) => res.json(classrooms))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array of Booking objects
+ */
 app.get('/api/getAllBookings', (req, res) => {
   bookingDao.getAllBookings().then((bookings) => res.json(bookings))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: string containing the identifier of the student whose future bookings are to be retrieved
+ * Request Body Content: none
+ * Response Body Content: an array of Booking objects containing all bookings for future lectures of the student
+ */
 app.get('/api/getBookings/:studentId', (req, res) => {
   let studentId = req.params.studentId;
   bookingDao.getBookings(studentId).then((bookings) => res.json(bookings))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: string containing the identifier of the teacher whose future lectures are to be retrieved
+ * Request Body Content: none
+ * Response Body Content: an array of Lecture objects containing all future lectures of the teacher
+ */
 app.get('/api/getTeacherLectures/:id', (req, res) => {
   let id = req.params.id;
   lectureDao.getTeacherLectureList(id).then((lectures) => res.json(lectures))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
-//POST api/student-home/book
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: Booking object containing information about a booking made by a student, array containing the email of the student that made the booking
+ * Response Body Content: none
+ */
 app.post('/api/student-home/book', (req, res) => {
   const booking = req.body.booking;
   const recipient = req.body.recipient;
@@ -202,6 +257,12 @@ app.post('/api/student-home/book', (req, res) => {
   }
 });
 
+/**
+ * DELETE API
+ * Request Parameters: none
+ * Request Body Content: integer corresponding to the identifier of a booked lecture, string containing the identifier of the student that booked said lecture and then deleted the booking
+ * Response Body Content: none
+ */
 app.delete('/api/student-home/delete-book', (req, res) => {
   const lectureId = req.body.lectureId;
   const studentId = req.body.studentId;
@@ -238,6 +299,12 @@ app.put('/api/student-home/decrease-seats', (req, res) => {
 });
 */
 
+/**
+ * PUT API
+ * Request Parameters: none
+ * Request Body Content: Lecture object containing information about a lecture that needs to be updated
+ * Response Body Content: none
+ */
 app.put('/api/lectures', (req, res) => {
   const lecture = req.body;
 
@@ -266,6 +333,12 @@ app.get("/api/name", (req, res) => {
   });
 })
 
+/**
+ * GET API
+ * Request Parameters: a string containing the name of the course whose past lectures are to be retrieved
+ * Request Body Content: none
+ * Response Body Content: an array of Lecture objects, ordered by the date in which the lecture took place
+ */
 app.get("/api/pastLectures", (req, res) => {
   lectureDao.getPastLectures(req.query.course).then((lectures) => {
     res.json(lectures)
@@ -312,26 +385,33 @@ app.put('/api/teacher-home/change-type', (req, res) => {
 });
 */
 
+/**
+ * DELETE API
+ * Request Parameters: none
+ * Request Body Content: a Lecture object corresponding to the lecture to be deleted
+ * Response Body Content: none
+ * 
+ * After the lesson has been deleted from the database an email is sent to all students that were booked for said lesson to inform them of the cancellation
+ */
 app.delete('/api/teacher-home/delete-lecture', (req, res) => {
   const lecture = req.body.lecture;
   if (!lecture) {
     res.status(400).end();
   } else {
     lectureDao.deleteLecture(lecture.lectureId)
-      .then(() => 
-      {
+      .then(() => {
         bookingDao.findEmailByCourse(lecture.courseId)
-        .then((emails) => {
-          emails.forEach(email => {
-            const subject = "Lecture deleted";
-            const message = `Dear ${email.PersonName},\n` +
-            `the lecture of course ${email.CourseName} of date ${email.LectureDate} \n` +
-            `at ${email.LectureStartTime} has been deleted.\n` +
-            `Please book another lecture if you need.`
-            emailSender.sendEmail(email.Email, subject, message)
-          });
-          
-        })
+          .then((emails) => {
+            emails.forEach(email => {
+              const subject = "Lecture deleted";
+              const message = `Dear ${email.PersonName},\n` +
+                `the lecture of course ${email.CourseName} of date ${email.LectureDate} \n` +
+                `at ${email.LectureStartTime} has been deleted.\n` +
+                `Please book another lecture if you need.`
+              emailSender.sendEmail(email.Email, subject, message)
+            });
+
+          })
         res.status(200).end()
       }
       )
@@ -339,6 +419,12 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
   }
 });
 
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: a Lecture object containing information about a cancelled lecture that has to be added to the appropriate table in the database
+ * Response Body Content: an integer corresponding to the identifier of the cancelled lecture
+ */
 app.post('/api/teacher-home/add-cancelled-lecture', (req, res) => {
   const lecture = req.body.lecture;
   const cancelledLecture = new CancelledLectures();
@@ -355,6 +441,12 @@ app.post('/api/teacher-home/add-cancelled-lecture', (req, res) => {
   }
 });
 
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: a string containing the identifier of the student that made the now deleted booking, an integer corresponding to the lecture whose status has been changed
+ * Response Body Content: an integer corresponding to the identifier of the cancelled booking
+ */
 app.post('/api/teacher-home/add-cancelled-booking', (req, res) => {
   const studentId = req.body.studentId;
   const lectureId = req.body.lectureId;
@@ -388,11 +480,14 @@ app.get("/api/cancelledBookings", (req, res) => {
   })
 })
 
-
-//DELETE API
-//Request parameters: empty
-//Request body: lectureId of the lecture deleted
-//Response body: empty
+/**
+ * DELETE API
+ * Request Parameters: none
+ * Request Body Content: an integer corresponding to the lecture whose status has been changed
+ * Response Body Content: none
+ * 
+ * Booking cancellation is performed when a teacher changes an in presence lecture to be virtual or directly deletes it; bookings are deleted for all students.
+ */
 app.delete('/api/teacher-home/deleteBookingByTeacher', (req, res) => {
   let lectureId = req.body.lectureId;
   if (!lectureId) {
@@ -404,6 +499,12 @@ app.delete('/api/teacher-home/deleteBookingByTeacher', (req, res) => {
   }
 })
 
+/**
+ * GET API
+ * Request Parameters: an integer corresponding to the identifier of the lecture to be retrieved
+ * Request Body Content: none
+ * Response Body Content: a Lecture object containing information about the desired lecture
+ */
 app.get('/api/getLectureById/:lectureId', (req, res) => {
   let lectureId = req.params.lectureId;
   lectureDao.getLectureById(lectureId).then((lectures) => res.json(lectures))

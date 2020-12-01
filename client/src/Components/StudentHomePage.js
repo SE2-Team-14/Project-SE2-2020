@@ -19,12 +19,19 @@ class StudentHomePage extends React.Component {
     this.state.surname = "";
   }
 
+  /**
+   * Retrieves, using the email used to access the system, a Person object containing name and surname of the logged in user
+   */
   componentDidMount() {
     API.getPersonName(this.props.email).then((person) => {
       this.setState({ name: person.name, surname: person.surname })
     })
   }
 
+  /**
+   * Never Called
+   * To be removed?
+   */
   login = (user) => {
     API.login(user).then((res) => {
       if (res.error_no == 0) {
@@ -37,6 +44,9 @@ class StudentHomePage extends React.Component {
     })
   }
 
+  /**
+   * Renders a welcome message, showing name and surname of the logged in user with some generic icons on the sides of the page. Very stilish,
+   */
   render() {
     return (
       <AuthContext.Consumer>

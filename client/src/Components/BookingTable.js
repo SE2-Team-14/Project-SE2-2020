@@ -9,84 +9,60 @@ class BookingTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            enrolls: [],
+            bookings: [],
         }
     }
 
+    /**
+     * Obtains all booked students for all future lectures for the course received as prop by the father component BookedStudentsList
+     */
     componentDidMount() {
-        API.getBookedStudents(this.props.course).then((e) => {
-            this.setState({ enrolls: e })
+        API.getBookedStudents(this.props.course).then((b) => {
+            this.setState({ bookings: b })
         })
     }
 
-
-
-    /*createRow = (enroll) => {
-        console.log(enroll)
-        return (
-
-            <tr>
-                <td> {enroll.id}</td>
-                <td> {enroll.date}</td>
-                <td> {enroll.startingTime}</td>
-                <td> {enroll.endingTime}</td>
-                <td> {enroll.classroomId}</td>
-
-            </tr>
-        )
-    }
-    <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                    {this.state.enrolls.length === 0 && <h4> There are no bookings yet for the course {this.props.course}</h4>}
-                    {this.state.enrolls.length > 0 && <h4> Bookings for the course {this.props.course}</h4>}
-                    {this.state.enrolls.length > 0 && <Table bordered striped={true} size="sm">
-                        <thead>
-                            <tr>
-                                <th> Student ID </th>
-                                <th> Lesson Date </th>
-                                <th> Starting Time </th>
-                                <th> Ending Time </th>
-                                <th> Classroom </th>
-                            </tr>
-                        </thead>
-                        <tbody>{this.state.enrolls.map((e) => this.createRow(e))}</tbody>
-
-                    </Table>}
-                </Jumbotron>*/
-
-
-    TableItem = (enroll) => {
+    /**
+     * Renders a new row for the list of bookings.
+     * Receives a booking from all the future bookings of the course and renders date, starting hour, ending hour and classroom of the lecture and identifier of the booked student for the lecture
+     */
+    TableItem = (booking) => {
 
         return (
             <ListGroup.Item className='border mt-1'>
                 <Row className='justify-content-around'>
                     <Col xs={1} className='text-center'>
-                        {enroll.date}
+                        {booking.date}
                     </Col>
                     <Col xs={1} className='text-center'>
-                        {enroll.startingTime}
+                        {booking.startingTime}
                     </Col>
                     <Col xs={1} className='text-center'>
-                        {enroll.endingTime}
+                        {booking.endingTime}
                     </Col>
                     <Col xs={1} className='text-center'>
-                        {enroll.classroomId}
+                        {booking.classroomId}
                     </Col>
                     <Col xs={1} className='text-center'>
-                        {enroll.studentId}
+                        {booking.studentId}
                     </Col>
                 </Row>
             </ListGroup.Item>
         );
     }
 
+    /**
+     * Renders all booked students for all future lectures in the related course with a list showing date, starting time, ending time and classroom of every lecture and identifier of the booked student.
+     * If no future bookings are available yet (because there are no lectures or no booked students) a message is shown instead of an empty page or an empty list.
+     */
     render() {
         return (
-            <>{this.state.enrolls.length === 0 && <ListGroup>
+            <>{this.state.bookings.length === 0 && <ListGroup>
                 <Row className='justify-content-md-center'>
                     <h4>There are no bookings yet for future lectures for the course {this.props.course}</h4>
                 </Row>
             </ListGroup>}
-                {this.state.enrolls.length > 0 && <ListGroup>
+                {this.state.bookings.length > 0 && <ListGroup>
                     <Row className='justify-content-md-center'>
                         <h4>Booked Students for all future lectures for the course {this.props.course}</h4>
                     </Row>
@@ -111,7 +87,7 @@ class BookingTable extends React.Component {
 
                     </ListGroup.Item>
                     {
-                        this.state.enrolls.map((e) =>
+                        this.state.bookings.map((e) =>
 
                             this.TableItem(e)
                         )

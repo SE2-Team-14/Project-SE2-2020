@@ -8,6 +8,13 @@ import { NavLink } from 'react-router-dom';
 const Header = (props) => {
 
 
+  /**
+   * Renders the header present in all pages.
+   * Said header is different based on the fact that the user is logged or not (logout button present only in the first case, login present only in the second) and on the role of the user:
+   *  - a student can access a page with a list of all bookable future lectures (where he can also cancel bookings) and a page with a calendar containing all already booked future lectures
+   *  - a teacher can access a page with a list of all booked students for future lectures, a page where he can change the status of a lecture (in presence or not) or delete it and a page where he can see statistics about bookings with different metrics available
+   * Different roles also have access to a different homepage, reachable by clicking on the PULSeBS button in the leftmost part of the header.
+   */
   return (
 
     <AuthContext.Consumer>
