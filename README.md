@@ -74,16 +74,8 @@
   - request parameters: empty
   - request body: the new object CancelledLectures 
   - response body: the id of the new object
-- PUT `/api/student-home/increase-seats`
-  - request parameters: the lecture to update
-  - request body: the lecture to update
-  - response body: empty
-- PUT `/api/student-home/decrease-seats`
-  - request parameters: empty
-  - request body: the lecture to update
-  - response body: empty
-- PUT `/api/teacher-home/change-type`
-  - request parameters: empty
+- PUT `/api/lectures`
+  - request parameters: empty'
   - request body: the lecture to update
   - response body: empty
 - DELETE `/api/teacher-home/delete-lecture`

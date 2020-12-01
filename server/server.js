@@ -209,7 +209,7 @@ app.delete('/api/student-home/delete-book', (req, res) => {
     .then(() => res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
-
+/*
 //PUT api/student-home/increase-seats
 app.put('/api/student-home/increase-seats', (req, res) => {
   const lecture = req.body;
@@ -232,6 +232,19 @@ app.put('/api/student-home/decrease-seats', (req, res) => {
     res.status(400).end();
   } else {
     lectureDao.decreaseBookedSeats(lecture.lectureId)
+      .then(() => res.status(200).end())
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  }
+});
+*/
+
+app.put('/api/lectures', (req, res) => {
+  const lecture = req.body;
+
+  if (!lecture) {
+    res.status(400).end();
+  } else {
+    lectureDao.updateLecture(lecture)
       .then(() => res.status(200).end())
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
@@ -285,6 +298,7 @@ app.get("/api/statistics", (req, res) => {
   });
 })
 
+/*
 app.put('/api/teacher-home/change-type', (req, res) => {
   const lecture = req.body;
   //console.log(lecture);
@@ -296,6 +310,7 @@ app.put('/api/teacher-home/change-type', (req, res) => {
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
+*/
 
 app.delete('/api/teacher-home/delete-lecture', (req, res) => {
   const lecture = req.body.lecture;

@@ -58,11 +58,13 @@ class LectureListView extends React.Component {
     }
 
     handleIncreaseSeats = (lecture) => {
-        API.increaseSeats(lecture);
+        lecture.numberOfSeats ++;
+        API.updateLecture(lecture);
     }
 
     handleDecreaseSeats = (lecture) => {
-        API.decreaseSeats(lecture);
+        lecture.numberOfSeats --;
+        API.updateLecture(lecture);
     }
 
     handleEmail = (recipient, subject, message) => {

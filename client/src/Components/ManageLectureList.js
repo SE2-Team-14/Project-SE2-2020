@@ -52,7 +52,7 @@ class ManageLectureList extends React.Component {
         let deadline = moment().format("HH:mm");
         let startingTime = moment(lecture.startingTime, "HH:mm").subtract(30, "minutes").format("HH:mm");
         let today = moment().format("DD/MM/YYYY");
-        if(lecture.date > today){
+        if(lecture.date > today){ // FIXME: remove unecessary nested id statement
             this.changeType(lecture);
             this.deleteBookingByTeacher(lecture.lectureId);
             API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
@@ -75,7 +75,8 @@ class ManageLectureList extends React.Component {
     }
 
     changeType = (lecture) => {
-        API.changeLectureType(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showChangeSuccess: true, showChange: false})));
+        lecture.inPresence = "0";
+        API.updateLecture(lecture).then(() => API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures, showChangeSuccess: true, showChange: false})));
     }
 
     deleteBookingByTeacher = (lectureId) => {
