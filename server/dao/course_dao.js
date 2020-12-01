@@ -1,13 +1,24 @@
 'use strict';
 
+/**
+ * Contains methods that access the COURSE table in the database
+ */
 const db = require('../db/db');
 const Course = require('../bean/course');
 
-
+/**
+ * Creates, from the result of a query performed on the database, a new Course object
+ * 
+ * @param row an Object corresponding to one tuple obtained from a query on the Course table
+ */
 function createCourse(row) {
     return new Course(row.courseId, row.teacherId, row.name);
 }
 
+/**
+ * Inserts a new course in the database
+ * @param course a Course object containing information about the course to be inserted (identifier, identifier of the teacher that supervises the course, name)
+ */
 exports.createCourse = function (course) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO COURSE(courseId, teacherId, name) VALUES(?, ?, ?)';
@@ -27,6 +38,10 @@ exports.createCourse = function (course) {
     });
 }
 
+/**
+ * Deletes a course from the database
+ * @param courseId a string containing the identifier of the course to be deleted
+ */
 exports.deleteCourseById = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM COURSE WHERE courseId = ?";
@@ -39,6 +54,10 @@ exports.deleteCourseById = function (courseId) {
     });
 }
 
+/**
+ * Returns a Course object
+ * @param courseId a string containing the identifier of the course to be retrieved
+ */
 exports.getCourseByID = function (courseId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM COURSE WHERE courseId = ?";
@@ -55,6 +74,9 @@ exports.getCourseByID = function (courseId) {
     });
 }
 
+/**
+ * Returns all courses present in the database, with no particular filtering
+ */
 exports.getCourses = function () {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM COURSE";

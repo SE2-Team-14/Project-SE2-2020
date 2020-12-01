@@ -1,16 +1,23 @@
 'use strict';
 
+/**
+ * Contains methods that access the BOOKING table inside the database, using Booking objects to return retrieved values
+ */
 const db = require('../db/db');
 const Booking = require('../bean/booking');
 const moment = require("moment")
 
+/**
+ * Creates, from the result of a query performed on the database, a new Booking object
+ * @param row an Object corresponding to one tuple obtained from a query on the BOOKING table
+ */
 function createBooking(row) {
     return new Booking(row.studentId, row.lectureId, row.date, row.startingTime);
 }
 
 /** Saves the booking made by a student for a given lecture. Calculates the date in which the booking is made and saves it in the database with the received information, together with also the month in which the booking is made and the week, expressed as an interval of two dates with format DD/MM/YYYY, Monday to Sunday 
  * 
- * @param booking booking object to be saved in the database, contains the ID of the student that made the booking, the ID of the lecture associated with the booking, the starting time of the lecture
+ * @param booking Booking object to be saved in the database, contains the ID of the student that made the booking, the ID of the lecture associated with the booking, the starting time of the lecture
  */
 exports.addBoocking = function (booking) {
     return new Promise((resolve, reject) => {
@@ -19,7 +26,6 @@ exports.addBoocking = function (booking) {
         let month = moment(new Date()).format("MMMM")
         let week = moment().startOf("isoWeek").format("DD/MM/YYYY") + "-" + moment().endOf("isoWeek").format("DD/MM/YYYY");
         let params = [];
-        //console.log("New booking: ", booking);
         params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week);
 
         if (booking)
@@ -32,7 +38,11 @@ exports.addBoocking = function (booking) {
             });
     });
 }
-
+/**
+ * Deletes a registered booking from the table
+ * @param studentId a string containing the identifier of the student that made the booking and then deleted it
+ * @param lectureId an integer corresponding to the identifier of the lecture for which the student booked and then deleted a seat
+ */
 exports.deleteBooking = function (studentId, lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM BOOKING WHERE studentId = ? AND lectureId = ?";
@@ -45,6 +55,9 @@ exports.deleteBooking = function (studentId, lectureId) {
     });
 }
 
+/**
+ * Returns an array containing all bookings present in the database, with no further filtering
+ */
 exports.getAllBookings = function () {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM BOOKING";
@@ -60,6 +73,11 @@ exports.getAllBookings = function () {
         })
     })
 }
+
+/**
+ * Returns an array containing all bookings made by a student (both past and future bookings are retrieved)
+ * @param studentId a string containing the identifier of the student whose bookings are to be taken
+ */
 exports.getBookings = function (studentId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM BOOKING WHERE studentId = ?";
@@ -77,7 +95,10 @@ exports.getBookings = function (studentId) {
         });
     });
 }
-//DELETE the booking related to the lecture deleted or switch to virtual by the teacher
+/**
+ * Deletes a booking after a teacher deletes a lecture or switches it from in presence to virtual. Removes all bookings from the lecture altogether
+ * @param lectureId an integer corresponding to the identifier of the lecture that was deleted/changed by the teacher
+ */
 exports.deleteBookingByTeacher = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM BOOKING WHERE lectureId = ?"
@@ -89,7 +110,15 @@ exports.deleteBookingByTeacher = function (lectureId) {
         });
     });
 }
-
+/**
+ * Returns, after a teacher deletes a lecture or changes it to be virtual, an array containing the following information:
+ *  - PersonName: a string containing the name of the student booked at the lecture
+ *  - Email: a string containing the email of the booked student, which will receive an email containing information about a change in lecture settings (deletion/switch to virtual from in presence)
+ *  - CourseName: a string containing the name of the course that contains the lecture involved
+ *  - LectureDate: a string containing the date in which the lesson was supposed to take place, in format DD/MM/YYYY
+ *  - LectureStartTime: a string containing the hour at which the lesson was supposed to start, in format HH:MM
+ * @param lectureId an integer corresponding to the identifier of the deleted/changed lecture
+ */
 exports.findEmailByLecture = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT p.name AS PersonName , p.email AS Email, c.name AS CourseName, l.date AS LectureDate, l.startingTime AS LectureStartTime FROM BOOKING b, PERSON p, LECTURE l, COURSE c WHERE b.studentId = p.id AND b.lectureId = l.lectureId AND l.courseId = c.courseId AND b.lectureId = ?";
@@ -138,7 +167,6 @@ exports.getStatistics = function (date, mode, course) {
                 if (err)
                     reject(err);
                 else {
-                    //console.log(rows)
                     if (rows.length > 0) {
                         resolve(rows);
                     }

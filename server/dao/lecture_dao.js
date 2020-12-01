@@ -1,13 +1,25 @@
 'use strict';
 
+/**
+ * Contains methods that access the LECTURE table in the database
+ */
 const db = require('../db/db');
 const Lecture = require('../bean/lecture');
 const moment = require('moment');
 
+/**
+ * Creates, from the result of a query performed on the database, a new Lecture object
+ * 
+ * @param row an Object corresponding to one tuple obtained from a query on the LECTURE table
+ */
 function createLecture(row) {
     return new Lecture(row.lectureId, row.courseId, row.teacherId, row.date, row.startingTime, row.endingTime, row.inPresence, row.classroomId, row.numberOfSeats);
 }
 
+/**
+ * Inserts a new lecture in the database
+ * @param lecture a Lecture object containing information about the new lecture(identifier, course and teacher identifier, date of the lecture, starting and ending time, whether the lesson is in presence or not, classroom identifier, number of seats already booked)
+ */
 exports.addLecture = function (lecture) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -26,6 +38,10 @@ exports.addLecture = function (lecture) {
     });
 }
 
+/**
+ * Deletes a lecture from the database
+ * @param lectureId an integer corresponding to the identifier of the lecture to be deleted
+ */
 exports.deleteLecture = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "DELETE FROM LECTURE WHERE lectureId = ?";
@@ -38,6 +54,10 @@ exports.deleteLecture = function (lectureId) {
     });
 }
 
+/**
+ * Returns a Lecture object
+ * @param lectureId an integer corresponding to the identifier of the lecture to be retrieved
+ */
 exports.getLectureById = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM LECTURE WHERE lectureId = ?";
@@ -54,6 +74,10 @@ exports.getLectureById = function (lectureId) {
     });
 }
 
+/**
+ * Returns an array containing all in presence lectures of a student. Only the lectures that are in the future (from the current day included onwards) are kept and returned to the calling function.
+ * @param email a string containing the email of the student whose future in presence lectures are to be retrieved
+ */
 exports.getLecturesList = function (email) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM LECTURE WHERE inPresence = 1 AND courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?)";
@@ -79,6 +103,10 @@ exports.getLecturesList = function (email) {
     });
 }
 
+/**
+ * Returns an array containing all future lectures of a teacher
+ * @param id a string containing the identifier of the teacher whose future lectures are to be retrieved
+ */
 exports.getTeacherLectureList = function (id) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM LECTURE WHERE teacherId = ?';
@@ -86,7 +114,7 @@ exports.getTeacherLectureList = function (id) {
             if (err)
                 reject(err);
             else {
-                if (rows.length>0) {
+                if (rows.length > 0) {
                     let today = moment().subtract(1, 'days');
                     let newRow = [];
                     for (let i = 0; i < rows.length; i++) {
@@ -133,7 +161,11 @@ exports.decreaseBookedSeats = function (lectureId) {
 }
 */
 
-// TODO: need to encrease the number of updatable fields 
+/**
+ * Updates information about a lecture (number of booked seats, whether the lecture is in presence or not)
+ * @param lecture a Lecture object containing information about the lecture to be updated (identifier, new amount of booked seats, changes to the in presence status)
+ */
+// TODO: need to increase the number of updatable fields 
 exports.updateLecture = function (lecture) {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET numberOfSeats = ?, inPresence = ? WHERE lectureId = ?';
@@ -147,6 +179,10 @@ exports.updateLecture = function (lecture) {
     });
 }
 
+/**
+ * Returns an array containing all lectures of a teacher that will take place in the following day. The function is called at midnight to the send in an email the retrieved information about the incoming day.
+ * @param teacherId a string containing the identifier of the teacher whose future lectures are to be retrieved
+ */
 exports.getTomorrowsLecturesList = function (teacherId) {
     let tomorrow = moment().format('DD/MM/YYYY');
 
@@ -166,6 +202,10 @@ exports.getTomorrowsLecturesList = function (teacherId) {
     });
 }
 
+/**
+ * Returns an array of all lectures of a course, ordered by the date in which the lecture took place
+ * @param course a string containing the name of the courses whose lectures are to be retrieved
+ */
 exports.getPastLectures = function (course) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM LECTURE, COURSE WHERE LECTURE.courseId = COURSE.courseId AND COURSE.name = ? ORDER BY LECTURE.date";
