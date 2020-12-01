@@ -436,20 +436,19 @@ describe('Server side unit test', function () {
   });
 
   describe('Test lectures', function () {
-    /*//#18
+    //#18
     describe('#Gets a list of lectures', function () {
       it("Gets a list of lectures", async function () {
-        let today = moment().subtract(1, 'days');
-        
-        let enrollment = new Enrollment("testCourse18", "test18@testone");
-        let student = new Person("s18", "testname18", "testsurname18", "student", "test18@testone", "1233");
+        let today = moment().format("DD/MM/YYYY");
         let lecture = new Lecture(18, "testCourse18", "testTeacher18", today, "8.30", "13.00", "1", "18", 18);
         LectureDao.addLecture(lecture);
-        PersonDao.createPerson(student);
+        let enrollment = new Enrollment("testCourse18", "test18@testone");
         EnrollmentDao.addEnrollment(enrollment);
+        let student = new Person("s18", "testname18", "testsurname18", "student", "test18@testone", "1233");
+        PersonDao.createPerson(student);
         return await LectureDao.getLecturesList("test18@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"));
       });
-    });*/
+    });
     //#19
     describe('#Gets the list of lectures of the teacher', function () {
       it("Gets a lecture by teacher's id", async function () {
@@ -580,11 +579,11 @@ describe('Server side unit test', function () {
     describe("#Test getBookedStudentsByCourseName", function () {
       it("Gets the list of booked students for future lectures", async function () {
         let testLecture = new Lecture(28, "c28", "testTeacher28", "28/11/2028", "12:00", "13:00", "1", "28", 28);
-        let testCourse = new Course("c28", "testCourse28", "courseName28");
-        let testBooking = new Booking("s28", 28, "27/11/2020", "12:00", "November", "23/11/2020-29/11/2020");
         LectureDao.addLecture(testLecture);
-        BookingDao.addBoocking(testBooking);
+        let testCourse = new Course("c28", "testCourse28", "courseName28");
         CourseDao.createCourse(testCourse);
+        let testBooking = new Booking("s28", 28, "27/11/2020", "12:00", "November", "23/11/2020-29/11/2020");
+        BookingDao.addBoocking(testBooking);
         return await BookingDao.getBookedStudentsByCourseName("courseName28").then((b) => {
           assert.strictEqual(b[0].studentId, testBooking.studentId)
         });
@@ -626,11 +625,11 @@ describe('Server side unit test', function () {
       describe("#Test month mode", function () {
         it("Gets the list of bookings for the specified month", async function () {
           let testLecture = new Lecture(31, "c31", "testTeacher31", "01/12/2025", "12:00", "13:00", "1", "31", 31);
-          let testCourse = new Course("c31", "testCourse31", "courseName31");
-          let testBooking = new Booking("s31", 31, "27/11/2020", "12:00");
           LectureDao.addLecture(testLecture);
-          BookingDao.addBoocking(testBooking);
+          let testCourse = new Course("c31", "testCourse31", "courseName31");
           CourseDao.createCourse(testCourse);
+          let testBooking = new Booking("s31", 31, "27/11/2020", "12:00");
+          BookingDao.addBoocking(testBooking);
           return await BookingDao.getStatistics(null, "month", testCourse.name).then((s) => {
             assert.strictEqual(s[0].bookings, 1);
           })
@@ -640,10 +639,10 @@ describe('Server side unit test', function () {
       describe("#Test total mode", function () {
         it("Gets the list of all bookings of the course, divided by single lecture", async function () {
           let testLecture = new Lecture(32, "c32", "testTeacher32", "2/12/2025", "12:00", "13:00", "1", "32", 32);
-          let testCourse = new Course("c32", "testCourse", "courseName32");
-          let testBooking = new Booking("s32", 32, "27/11/2020", "12:00");
-          CourseDao.createCourse(testCourse);
           LectureDao.addLecture(testLecture);
+          let testCourse = new Course("c32", "testCourse", "courseName32");
+          CourseDao.createCourse(testCourse);
+          let testBooking = new Booking("s32", 32, "27/11/2020", "12:00");
           BookingDao.addBoocking(testBooking);
           return await BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testLecture.date);
