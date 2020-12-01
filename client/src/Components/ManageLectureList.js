@@ -53,6 +53,7 @@ class ManageLectureList extends React.Component {
             this.deleteLecture(lecture)
             this.deleteBookingByTeacher(lecture.lectureId);
             API.getTeacherLecturesList(this.props.id).then((lectures) => this.setState({lectures: lectures}));
+            this.setState({showDelete: false});
         }else{
             if(startingTime < deadline){
                 this.setState({showDelete: false, showDeleteError: true});
