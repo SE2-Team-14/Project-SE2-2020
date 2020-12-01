@@ -111,29 +111,33 @@ class App extends React.Component {
                 </Col>
               </Row>
             </Route>
+           
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
               return (<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />);
             }} />
+            
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;
               return (<BookedStudentsList email={email}></BookedStudentsList>)
             }}>
             </Route>
+            
             <Route exact path="/teacher-home/:email/statistics" render={(props) => {
               let email = props.match.params.email;
               return (<TeacherStatsViewer email={email}></TeacherStatsViewer>)
             }}></Route>
+            
             <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
               let email = props.match.params.email;
               return (<ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>)
             }}></Route>
+
             <Route>
-              <Redirect to='/student-home' />
+              <Redirect to='/login' />
             </Route>
 
           </Switch>
-
         </Container>
       </AuthContext.Provider>
     );

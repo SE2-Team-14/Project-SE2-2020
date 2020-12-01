@@ -105,6 +105,7 @@ exports.getTeacherLectureList = function (id) {
     });
 }
 
+/*
 exports.increaseBookedSeats = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET numberOfSeats = numberOfSeats + 1 WHERE lectureId = ?';
@@ -122,6 +123,21 @@ exports.decreaseBookedSeats = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET numberOfSeats = numberOfSeats - 1 WHERE lectureId = ?';
         db.run(sql, [lectureId], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(null);
+            }
+        });
+    });
+}
+*/
+
+// TODO: need to encrease the number of updatable fields 
+exports.updateLecture = function (lecture) {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE LECTURE SET numberOfSeats = ?, inPresence = ? WHERE lectureId = ?';
+        db.run(sql, [lecture.numberOfSeats, lecture.inPresence, lecture.lectureId], function (err) {
             if (err) {
                 reject(err);
             } else {
@@ -167,6 +183,8 @@ exports.getPastLectures = function (course) {
 
     })
 }
+
+/*
 exports.changeLectureType = function (lectureId) {
     //console.log(lectureId);
     return new Promise((resolve, reject) => {
@@ -180,3 +198,4 @@ exports.changeLectureType = function (lectureId) {
         });
     });
 }
+*/

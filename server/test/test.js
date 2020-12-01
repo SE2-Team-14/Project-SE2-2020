@@ -45,6 +45,7 @@ describe('Server side unit test', function () {
   });
 
   //----------------------------------------- API tests -----------------------------------------//
+ 
   describe('Server #GET methods tests', function () {
     //Test that http://localhost:3001/api/student-home/student@test.it/bookable-lectures returns 200
     describe('#Test /api/student-home/:email/bookable-lectures', function () {
@@ -270,11 +271,11 @@ describe('Server side unit test', function () {
 
   });
   //#11
-  describe('Test #PUT increase-seats', function () {
+  describe('Test #PUT update lecture', function () {
     var host = "http://localhost:3001";
-    var path = "/api/student-home/increase-seats";
+    var path = "/api/lectures";
     let lecture = new Lecture(11, "c11", "d11", "12/12/12", "8:30", "10:00", 1, "11", 11);
-    it('should send parameters to : /api/student-home/increase-seats PUT', function (done) {
+    it('should send parameters to : /api/lectures PUT', function (done) {
       chai
         .request(host)
         .put(path)
@@ -291,6 +292,7 @@ describe('Server side unit test', function () {
     });
 
   });
+  /*
   //#12
   describe('Test #PUT decrease-seats', function () {
     var host = "http://localhost:3001";
@@ -339,8 +341,10 @@ describe('Server side unit test', function () {
 
     
   });
+  */
 
   //----------------------------------------- DAO tests -----------------------------------------//
+ 
   describe('Test university members', function () {
     //#14
     describe('#Create a student', function () {
@@ -460,6 +464,7 @@ describe('Server side unit test', function () {
         return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse19"))
       });
     });
+    /*
     //#20
     describe('#Gets the new value of seats(+1)', function () {
       it("Gets a new value of seats", async function () {
@@ -480,6 +485,7 @@ describe('Server side unit test', function () {
           .then((l) => assert.strictEqual(l.numberOfSeats, 20))
       });
     });
+    */
     //#22
     describe('#Gets the list of tomorrow lectures', function () {
       it("Gets the list of tomorrow lectures by teacher's id", async function () {
@@ -492,6 +498,7 @@ describe('Server side unit test', function () {
           .then(lectures => assert.strictEqual(lectures[0].courseId, "testCourseTomorrow22"))
       });
     });
+    /*
     //#23
     describe('#Change type of a lecture', function () {
       it("Change a lecture by lecture's id", async function () {
@@ -502,6 +509,7 @@ describe('Server side unit test', function () {
           .then((l) => assert.strictEqual(l.inPresence, "0"))
       });
     });
+    */
     //#24
     describe('#Gets a lecture', function () {
       it('Gets a lecture by its id', async function () {
