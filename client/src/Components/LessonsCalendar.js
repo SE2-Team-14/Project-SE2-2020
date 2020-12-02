@@ -86,7 +86,6 @@ class LessonsCalendar extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       currentDate: moment(),
       bookings: [],
@@ -134,8 +133,10 @@ class LessonsCalendar extends React.Component {
         let start = date + 'T' + startingHours;
         let end = date + 'T' + endingHours;
         let courseName = this.findCourseName(lectures.courseId)
-        titles.push(courseName);
-
+        let titleOb = new Object({courseName: '', classroom: ''});
+        titleOb.courseName = courseName;
+        titleOb.classroom = lectures.classroomId;
+        titles.push(titleOb);
         bschedule.title = courseName;
         bschedule.startDate = start;
         bschedule.endDate = end;
@@ -176,14 +177,15 @@ class LessonsCalendar extends React.Component {
     res.fieldName = "title";
     res.instances = [];
 
-
-    for (let title of titles) {
-      let instance = Object.assign({}, Instances);
-      instance.id = title;
-      instance.text = title;
-      instance.color = '#' + this.intToRGB(this.hashCode(title));
-      res.instances.push(instance);
-    }
+    console.log(titles);
+      for (let title of titles) {
+        console.log(title);
+        let instance = Object.assign({}, Instances);
+        instance.id = title.courseName;
+        instance.text = "Classroom: " + title.classroom;
+        instance.color = '#' + this.intToRGB(this.hashCode(title.courseName));
+        res.instances.push(instance);
+      }
     v.push(res);
     this.setState({ resources: v });
   }

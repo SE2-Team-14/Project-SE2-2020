@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Redirect } from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Redirect to="/home" />
     <App />
     </BrowserRouter>
   </React.StrictMode>,
