@@ -14,7 +14,7 @@
   sudo docker pull team14se2/pulsebs:clientRelease1
 
 * To run the server image:
-  sudo docker run sudo docker run -d -p 3001:3001 team14se2/pulsebs:serverRelease1
+  sudo docker run -p 3001:3001 team14se2/pulsebs:serverRelease1
  
  * To run the client image:
   sudo docker run -it --rm -v ${PWD}:/client -v /src/node_modules -p 3000:3000 -e CHOKIDAR_USEPOLLING=true team14se2/pulsebs:clientRelease1
