@@ -23,7 +23,7 @@ async function isAuthenticated() {
  * @param user a Person object containing email and password inserted at login phase
  */
 async function login(user) {
-    return fetchMethod("POST", baseURL + "/login", user);
+    return fetchMethodAndResolveResponse("POST", baseURL + "/login", user);
 }
 /**
  * Returns a Person object containing name and surname required
@@ -144,7 +144,7 @@ async function deleteBooking(studentId, lectureId) {
  * @param lectureId an integer corresponding to the identifier of the lecture whose bookings are to be deleted
  */
 async function deleteBookingByTeacher(lectureId) {
-    let url = baseURL + '/teacher-home';
+    let url = baseURL + '/teacher-home/deleteBookingByTeacher';
     return fetchMethod("DELETE", url, { lectureId: lectureId});
 }
 
@@ -265,7 +265,7 @@ async function getCancelledBookingsStats(course) {
 //--------------------------------UTILS------------------------------
 
 
-/**Simplify the execution of the fetch api for a specific method
+/**Simplify the execution of the fetch api for a specific method without reolving the response
  * @param method a string containig the method 'GET', 'POST', 'DELETE', 'PUT' 
  * @param URL a string containing the URL for the requested API
  * @param param the object containing the body of the post, delete, or put, or the OPTIONAL function to map the response of a GET
@@ -273,6 +273,22 @@ async function getCancelledBookingsStats(course) {
  * 
 */
 async function fetchMethod(method, URL, param){
+    return _fetchMethod(false, method, URL, param)
+}
+
+/**Simplify the execution of the fetch api for a specific method and resolve the response
+ * @param method a string containig the method 'GET', 'POST', 'DELETE', 'PUT' 
+ * @param URL a string containing the URL for the requested API
+ * @param param the object containing the body of the post, delete, or put, or the OPTIONAL function to map the response of a GET
+ * @return the response of the API
+ * 
+*/
+async function fetchMethodAndResolveResponse(method, URL, param){
+    return _fetchMethod(true, method, URL, param)
+}
+
+
+async function _fetchMethod(resolveResponse, method, URL, param){
     if(method == "GET"){
         return _fetchGET(URL, param);
     }
@@ -286,7 +302,7 @@ async function fetchMethod(method, URL, param){
                 body: JSON.stringify(param),
             }).then((response) => {
                 if (response.ok) {
-                    resolve(response.json());
+                    resolve(resolveResponse ? response.json() : null);
                 } else {
                     response.json()
                         .then((obj) => { reject(obj); })

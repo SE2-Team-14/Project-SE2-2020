@@ -19,7 +19,7 @@ const Header = (props) => {
 
     <AuthContext.Consumer>
       {(context) => (
-
+        
         <Navbar bg="info" variant="dark" expand="md" className='col-12'>
 
           {context.authUser == null && <Navbar.Brand as={NavLink} to="/login">
