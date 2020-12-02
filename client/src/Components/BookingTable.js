@@ -3,7 +3,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron'
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+import { AuthContext } from '../auth/AuthContext'
 import API from '../api/API';
 
 class BookingTable extends React.Component {
@@ -58,6 +58,8 @@ class BookingTable extends React.Component {
      */
     render() {
         return (
+            <AuthContext.Consumer>
+            {(context) => (
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 {this.state.bookings.length === 0 && <ListGroup>
                 <Row className='justify-content-around'>
@@ -98,6 +100,8 @@ class BookingTable extends React.Component {
                     }
                 </ListGroup>}
             </Jumbotron>
+            )}
+            </AuthContext.Consumer>
         )
     }
 }

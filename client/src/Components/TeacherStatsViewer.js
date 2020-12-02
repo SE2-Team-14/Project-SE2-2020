@@ -7,8 +7,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Jumbotron from "react-bootstrap/Jumbotron";
 import {
-    BarChart, Bar, /*Cell,*/ XAxis, YAxis, CartesianGrid, Tooltip, Label,
+    BarChart, Bar, /*Cell,*/ XAxis, YAxis, CartesianGrid, Tooltip, /*Label,*/
 } from 'recharts';
+import { AuthContext } from '../auth/AuthContext';
 
 class TeacherStatsViewer extends React.Component {
     constructor(props) {
@@ -116,6 +117,8 @@ class TeacherStatsViewer extends React.Component {
      */
     render() {
         return (
+            <AuthContext.Consumer>
+            {(context) => (
             <>
                 <Jumbotron>
                     <Row className="justify-content-md-center">
@@ -300,7 +303,8 @@ class TeacherStatsViewer extends React.Component {
                     </Row>
 
                 </Jumbotron>
-            </>)
+            </>)}
+            </AuthContext.Consumer>)
     }
 }
 

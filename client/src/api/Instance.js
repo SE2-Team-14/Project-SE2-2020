@@ -5,8 +5,9 @@
  * @param color an hexadecimal value corresponding to the calculated hash value of the color associated to the title
  */
 class Instance {
-    constructor(id, color) {
+    constructor(id, text, color) {
         this.id = id;
+        this.text = text;
         this.color = color;
     }
 }

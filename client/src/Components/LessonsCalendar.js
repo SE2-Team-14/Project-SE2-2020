@@ -1,6 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment'
+import { AuthContext } from '../auth/AuthContext'
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
@@ -92,8 +93,7 @@ class LessonsCalendar extends React.Component {
       lectures: [],
       schedulerLectures: [],
       resources: [],
-    };
-
+    };  
   }
 
   /**
@@ -104,7 +104,7 @@ class LessonsCalendar extends React.Component {
     this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
     API.getBookings(this.props.studentId).then((bookings) => this.setState({ bookings: bookings }, () => this.findDates()));
   }
-
+  
   /**
    * Returns the name of the course having the associated identifier
    * @param courseId a string containing the identifier of the course whose name is to be returned
@@ -180,6 +180,7 @@ class LessonsCalendar extends React.Component {
     for (let title of titles) {
       let instance = Object.assign({}, Instances);
       instance.id = title;
+      instance.text = title;
       instance.color = '#' + this.intToRGB(this.hashCode(title));
       res.instances.push(instance);
     }
@@ -200,12 +201,14 @@ class LessonsCalendar extends React.Component {
     let res = [...this.state.resources];
 
     return (
+      <AuthContext.Consumer>
+      {(context) => (
       <React.Fragment>
 
         <Paper>
           <Scheduler data={schedulerData} height={660} >
             <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} onCurrentViewNameChange={this.currentViewNameChange} />
-            <WeekView
+            <WeekView 
               startDayHour={"8:00"}
               endDayHour={"19:30"}
               excludedDays={[0, 6]}
@@ -225,6 +228,8 @@ class LessonsCalendar extends React.Component {
           </Scheduler>
         </Paper>
       </React.Fragment>
+      )}
+      </AuthContext.Consumer>
     );
   }
 }

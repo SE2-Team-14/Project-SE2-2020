@@ -2,6 +2,7 @@ import React from 'react';
 import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
 import Booking from '../api/booking';
+import { AuthContext } from '../auth/AuthContext';
 
 class LectureListView extends React.Component {
 
@@ -184,6 +185,8 @@ class LectureListView extends React.Component {
     render() {
 
         return (
+            <AuthContext.Consumer>
+            {(context) => (
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
@@ -230,7 +233,8 @@ class LectureListView extends React.Component {
                 </Modal>
 
             </Jumbotron>
-
+            )}
+            </AuthContext.Consumer>
         );
     }
 

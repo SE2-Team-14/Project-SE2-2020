@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { AuthContext } from '../auth/AuthContext'
 import API from '../api/API';
 
 
@@ -39,9 +39,13 @@ class BookedStudentsList extends React.Component {
      */
     render() {
         return (
+            <AuthContext.Consumer>
+            {(context) => (
             <>
                 {this.state.tables}
             </>
+            )}
+            </AuthContext.Consumer>
         );
     }
 }

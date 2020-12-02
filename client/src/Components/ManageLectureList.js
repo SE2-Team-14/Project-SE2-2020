@@ -1,6 +1,7 @@
 import React from 'react';
 import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
+import { AuthContext } from '../auth/AuthContext'
 const moment = require('moment');
 
 class ManageLectureList extends React.Component {
@@ -158,6 +159,8 @@ class ManageLectureList extends React.Component {
     render() {
 
         return (
+            <AuthContext.Consumer>
+            {(context) => (
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
@@ -221,7 +224,8 @@ class ManageLectureList extends React.Component {
                     </Modal.Footer>
                 </Modal>
             </Jumbotron>
-
+            )}
+            </AuthContext.Consumer>
         );
     }
 }

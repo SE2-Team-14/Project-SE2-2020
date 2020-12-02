@@ -1,5 +1,3 @@
-const { max } = require("moment");
-
 /**
  * Classroom object used to keep track of information about a classroom present in the system
  * 
