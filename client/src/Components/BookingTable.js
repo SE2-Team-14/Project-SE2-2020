@@ -1,4 +1,5 @@
 import React from 'react';
+import Jumbotron from 'react-bootstrap/Jumbotron'
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -57,14 +58,15 @@ class BookingTable extends React.Component {
      */
     render() {
         return (
-            <>{this.state.bookings.length === 0 && <ListGroup>
-                <Row className='justify-content-md-center'>
+            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+                {this.state.bookings.length === 0 && <ListGroup>
+                <Row className='justify-content-around'>
                     <h4>There are no bookings yet for future lectures for the course {this.props.course}</h4>
                 </Row>
             </ListGroup>}
                 {this.state.bookings.length > 0 && <ListGroup>
-                    <Row className='justify-content-md-center'>
-                        <h4>Booked Students for all future lectures for the course {this.props.course}</h4>
+                    <Row className='justify-content-around'>
+                        <h4>Booked Students for all future lectures for the course {this.props.course} (N° {this.state.bookings.length})</h4>
                     </Row>
                     <ListGroup.Item className='border'>
                         <Row className='justify-content-around'>
@@ -95,7 +97,7 @@ class BookingTable extends React.Component {
 
                     }
                 </ListGroup>}
-            </>
+            </Jumbotron>
         )
     }
 }

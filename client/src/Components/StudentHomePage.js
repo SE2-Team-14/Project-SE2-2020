@@ -31,7 +31,7 @@ class StudentHomePage extends React.Component {
   /**
    * Never Called
    * To be removed?
-   */
+   
   login = (user) => {
     API.login(user).then((res) => {
       if (res.error_no == 0) {
@@ -42,7 +42,7 @@ class StudentHomePage extends React.Component {
       }
       console.log(res)
     })
-  }
+  }*/
 
   /**
    * Renders a welcome message, showing name and surname of the logged in user with some generic icons on the sides of the page. Very stilish,

@@ -2,7 +2,6 @@ import React from 'react';
 import { ListGroup, Col, Row, Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
 const moment = require('moment');
-//import Booking from '../api/booking';
 
 class ManageLectureList extends React.Component {
 
@@ -311,17 +310,12 @@ function LectureItemManage(props) {
                     </>}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence == 1)) &&
+                    {props.lecture.inPresence == 1 &&
                         <>
                             {props.lecture.numberOfSeats}/{maxSeats}
                         </>
                     }
-                    {(!props.lecture.numberOfSeats && (props.lecture.inPresence == true || props.lecture.inPresence == 1)) &&
-                        <>
-                            {0}/{maxSeats}
-                        </>
-                    }
-                    {(props.lecture.inPresence == false || props.lecture.inPresence == 0) &&
+                    { props.lecture.inPresence == 0 &&
                         <>
                             Free to entry
                     </>}

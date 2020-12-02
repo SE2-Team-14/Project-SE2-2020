@@ -62,14 +62,6 @@ class LectureListView extends React.Component {
         return classroom.maxNumberOfSeats;
     }
 
-    /** 
-    * Never Called
-    * To be removed? 
-    */
-    handleDeleteClick = (lecture, lectureId) => {
-        this.setState({ showDeleteSuccess: true, booklecture: lecture, booklectureId: lectureId });
-    }
-
     /**
      * Calls the API that will book a seat for the logged student for a particular lecture.
      * Retrieves, after saving the booking, all existing bookings again to update the rendered page and stop a student from booking the same lecture multiple times.
@@ -121,13 +113,6 @@ class LectureListView extends React.Component {
         API.updateLecture(lecture);
     }
 
-    /**
-     * Never called
-     * To be removed?
-     */
-    handleEmail = (recipient, subject, message) => {
-        API.sendEmail(recipient, subject, message);
-    }
 
     /**
      * Called when a student, while inside the modal that pops up after choosing to book a seat for a lecture, confirms his intention to book a seat by pressing the yes button.
@@ -339,16 +324,7 @@ function LectureItem(props) {
                     {props.lecture.classroomId}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {props.lecture.numberOfSeats != null &&
-                        <>
-                            {props.lecture.numberOfSeats}/{maxSeats}
-                        </>
-                    }
-                    {props.lecture.numberOfSeats == null &&
-                        <>
-                            {0}/{maxSeats}
-                        </>
-                    }
+                    {props.lecture.numberOfSeats}/{maxSeats}
                 </Col>
                 <Col xs={1} className='text-center'>
                     {(find == true) &&
