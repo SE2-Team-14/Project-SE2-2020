@@ -398,7 +398,7 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
   if (!lecture) {
     res.status(400).end();
   } else {
-        bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then(list => {
+        bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then((list) => {
             for(let item of list){
               personDao.getPersonByID(item.studentId).then(student => {
                 const subject = 'Lecture cancelled';
@@ -409,9 +409,7 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
                 emailSender.sendEmail(recipient, subject, message);
               })
             }
-        res.status(200).end()
-      }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-
+      })
       lectureDao.deleteLecture(lecture.lectureId).then((res) => {res.status(200).end()
       }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
