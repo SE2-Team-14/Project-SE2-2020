@@ -62,11 +62,11 @@
   - request parameters: empty
   - request body: empty
   - response body: an array of objects Booking
-- GET `/api//api/getTeacherLectures/:id`
+- GET `/api/getTeacherLectures/:id`
   - request parameters: empty
   - request body: empty
   - response body: an array of objects Lecture of the teacher with id = id
-- POST `/api/student-home/book`
+- POST `/api/bookings`
   - request parameters: empty
   - request body: the new object Booking and the recipient
   - response body: empty

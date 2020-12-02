@@ -228,10 +228,10 @@ describe('Server side unit test', function () {
   //#9
   describe('Test #POST book', function () {
     var host = "http://localhost:3001";
-    var path = "/api/student-home/book";
+    var path = "/api/bookings";
     let b = new Booking("s9", 9, "18/11/2020", "8.30");
 
-    it('should send parameters to : /api/student-home/book POST', function (done) {
+    it('should send parameters to : /api/bookings POST', function (done) {
       chai
         .request(host)
         .post(path)
@@ -845,6 +845,7 @@ describe('Server side unit test', function () {
   /**close the server after the test **/
   after(done => {
     server.close(done);
+    db.close();
     db.deleteFromDisk();
   });
 

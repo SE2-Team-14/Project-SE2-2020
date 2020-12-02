@@ -27,7 +27,7 @@ class BookedStudentsList extends React.Component {
         }).then(() => {
 
             for (let i = 0; i < this.state.courses.length; i++) {
-                tables.push(<BookingTable course={this.state.courses[i]}></BookingTable>)
+                tables.push(<BookingTable key={i} course={this.state.courses[i]}></BookingTable>)
             }
             this.setState({ tables: tables })
         })

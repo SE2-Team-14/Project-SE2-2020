@@ -238,7 +238,7 @@ app.get('/api/getTeacherLectures/:id', (req, res) => {
  * Request Body Content: Booking object containing information about a booking made by a student, array containing the email of the student that made the booking
  * Response Body Content: none
  */
-app.post('/api/student-home/book', (req, res) => {
+app.post('/api/bookings', (req, res) => {
   const booking = req.body.booking;
   const recipient = req.body.recipient;
   const subject = "Booking confirmed";
