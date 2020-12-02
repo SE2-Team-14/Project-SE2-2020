@@ -148,19 +148,19 @@ class TeacherStatsViewer extends React.Component {
                     <Row className="h-75 d-inline-block">{""}</Row>
                     <Row className="justify-content-md-center">
                         <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("lecture")}> View Bookings of Single Lecture </Button>}
+                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='lecture'} onClick={() => this.chooseMode("lecture")}> View Bookings of Single Lecture </Button>}
                         </Col>
                         <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("week")}> View Bookings by Week </Button>}
+                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='week'} onClick={() => this.chooseMode("week")}> View Bookings by Week </Button>}
                         </Col>
                         <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("month")}> View Bookings by Month </Button>}
+                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='month'} onClick={() => this.chooseMode("month")}> View Bookings by Month </Button>}
                         </Col>
                         <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("total")}> View Total Bookings </Button>}
+                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='total'} onClick={() => this.chooseMode("total")}> View Total Bookings </Button>}
                         </Col>
                         <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" onClick={() => this.chooseMode("cancelled")}> View Cancelled Bookings </Button>}
+                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='cancelled'} onClick={() => this.chooseMode("cancelled")}> View Cancelled Bookings </Button>}
                         </Col>
                     </Row>
                     <Row className="h-75 d-inline-block">{""}</Row>

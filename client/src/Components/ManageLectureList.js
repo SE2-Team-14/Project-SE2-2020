@@ -338,12 +338,12 @@ function LectureItemManage(props) {
                 <Col xs={2} className='text-center'>
                     {props.lecture.inPresence == 0 &&
                         <>
-                            <Button disabled>Change Type</Button>
+                            <Button disabled>Switch to virtual</Button>
                         </>
                     }
                     {props.lecture.inPresence == 1 &&
                         <>
-                            <Button onClick={() => props.handleClickChange(props.lecture)}>Change type</Button>
+                            <Button onClick={() => props.handleClickChange(props.lecture)}>Switch to virtual</Button>
                         </>
                     }
 
