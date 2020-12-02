@@ -1,6 +1,7 @@
 import React from 'react';
 import { AuthContext } from '../auth/AuthContext'
 import API from '../api/API';
+import { Redirect } from 'react-router-dom';
 
 
 import BookingTable from "./BookingTable"
@@ -42,6 +43,7 @@ class BookedStudentsList extends React.Component {
             <AuthContext.Consumer>
             {(context) => (
             <>
+                {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                 {this.state.tables}
             </>
             )}

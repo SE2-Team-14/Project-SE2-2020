@@ -6,6 +6,8 @@ import Row from 'react-bootstrap/Row';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faParagraph } from '@fortawesome/free-solid-svg-icons'
+import { Redirect } from 'react-router-dom';
+
 
 import API from '../api/API';
 
@@ -52,7 +54,7 @@ class StudentHomePage extends React.Component {
       <AuthContext.Consumer>
         {(context) => (
           <>
-            {/*(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>  TODO: quando funzionera il login*/}
+          {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
               <FontAwesomeIcon icon={faParagraph} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
               {(this.state.name && this.state.surname) && <h1> Welcome {this.state.name}{" "}{this.state.surname}</h1>}

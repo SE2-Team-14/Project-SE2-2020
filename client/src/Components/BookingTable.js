@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { AuthContext } from '../auth/AuthContext'
 import API from '../api/API';
+import { Redirect } from 'react-router-dom';
+
 
 class BookingTable extends React.Component {
     constructor(props) {
@@ -60,6 +62,8 @@ class BookingTable extends React.Component {
         return (
             <AuthContext.Consumer>
             {(context) => (
+            <>
+            {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 {this.state.bookings.length === 0 && <ListGroup>
                 <Row className='justify-content-around'>
@@ -100,6 +104,7 @@ class BookingTable extends React.Component {
                     }
                 </ListGroup>}
             </Jumbotron>
+            </>
             )}
             </AuthContext.Consumer>
         )

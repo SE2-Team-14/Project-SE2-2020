@@ -10,6 +10,8 @@ import {
     BarChart, Bar, /*Cell,*/ XAxis, YAxis, CartesianGrid, Tooltip, /*Label,*/
 } from 'recharts';
 import { AuthContext } from '../auth/AuthContext';
+import { Redirect } from 'react-router-dom';
+
 
 class TeacherStatsViewer extends React.Component {
     constructor(props) {
@@ -120,6 +122,7 @@ class TeacherStatsViewer extends React.Component {
             <AuthContext.Consumer>
             {(context) => (
             <>
+            {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                 <Jumbotron>
                     <Row className="justify-content-md-center">
                         <Col md="auto"></Col>

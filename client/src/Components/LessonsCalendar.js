@@ -23,6 +23,8 @@ import API from '../api/API';
 import Schedule from '../api/schedule'
 import ColorResources from '../api/ColorResource';
 import Instances from '../api/Instance'
+import { Redirect } from 'react-router-dom';
+
 
 const style = theme => ({
   todayCell: {
@@ -205,6 +207,8 @@ class LessonsCalendar extends React.Component {
     return (
       <AuthContext.Consumer>
       {(context) => (
+        <>
+        {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
       <React.Fragment>
 
         <Paper>
@@ -230,6 +234,7 @@ class LessonsCalendar extends React.Component {
           </Scheduler>
         </Paper>
       </React.Fragment>
+      </>
       )}
       </AuthContext.Consumer>
     );

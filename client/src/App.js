@@ -51,7 +51,7 @@ class App extends React.Component {
     if (err) {
       if (err.status && err.status === 401) {
         this.setState({ authErr: err.errorObj });
-        //this.props.history.push("/officer-registration"); // TODO: to be changed with the login page
+        this.props.history.push("/login"); // TODO: to be changed with the login page
       }
     }
   }
@@ -81,6 +81,9 @@ class App extends React.Component {
 
     return (
       <AuthContext.Provider value={value}>
+        {
+          !this.state.authUser && <Redirect to="/login"></Redirect> // if there is no user in the system, redirect to the login page
+        } 
         <Header logout={this.logout} />
         <Container fluid>
           <Switch>
@@ -99,7 +102,7 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email/booked-calendar" render={(props) => {
               let email = props.match.params.email;
-              return (<BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses = {this.state.courses}></BookedLessonsCalendar>)
+              return <>{this.state.authUser && <BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses = {this.state.courses}></BookedLessonsCalendar>} </>
             }}>
             </Route>
 
@@ -114,7 +117,7 @@ class App extends React.Component {
            
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
-              return (<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />);
+            return <>{this.state.authUser &&<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
             }} />
             
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
@@ -130,7 +133,7 @@ class App extends React.Component {
             
             <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
               let email = props.match.params.email;
-              return (<ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>)
+               return <>{this.state.authUser &&  <ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>}</>
             }}></Route>
 
             <Route>
