@@ -23,7 +23,7 @@ exports.createCourse = function (course) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO COURSE(courseId, teacherId, name) VALUES(?, ?, ?)';
         let params = [];
-        //console.log("New course: ", course);
+        
         params.push(course.courseId, course.teacherId, course.name);
 
         if (course)
@@ -116,20 +116,4 @@ exports.getCoursesOfTeacher = function (teacherName) {
         });
     });
 }
-/*
-exports.getTeacherSurname = function(courseId){
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT PERSON.surname FROM PERSON P, COURSE C WHERE P.id = C.teacherId AND P.id IN (SELECT teacherId FROM COURSE WHERE courseId = ?)";
-        db.all(sql, [courseId], (err, row) => {
-            if (err) {
-                reject(err);
-            } else {
-                if (row) {
-                    resolve(row);
-                } else {
-                    resolve(undefined);
-                }
-            }
-        })
-    })
-}*/
+

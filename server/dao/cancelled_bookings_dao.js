@@ -23,7 +23,6 @@ exports.addCancelledBooking = function (cancelledBooking) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO CANCELLED_BOOKINGS (studentId, lectureId, date) VALUES( ?, ?, ?)';
         let params = [];
-        //console.log("Add a cancelled lecture: ", lecture);
         params.push(cancelledBooking.studentId, cancelledBooking.lectureId, cancelledBooking.date);
         db.run(sql, params, function (err) {
             if (err)

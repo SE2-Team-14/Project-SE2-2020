@@ -403,9 +403,8 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
               personDao.getPersonByID(item.studentId).then(student => {
                 const subject = 'Lecture cancelled';
                 const recipient = student.email;
-                console.log(student.email)
                 const message = `Dear ${student.name},\n` + 
-                                `the lecture for the course ${item.name} has been cancelled.`;
+                                `the lecture for the course ${item.name} of ${item.date} at ${item.startingTime} has been cancelled.`;
 
                 emailSender.sendEmail(recipient, subject, message);
               })

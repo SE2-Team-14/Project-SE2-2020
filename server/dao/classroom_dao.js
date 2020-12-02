@@ -66,19 +66,3 @@ exports.getClassrooms = function () {
         })
     })
 }
-/*
-exports.getMaxNumberOfSeats = function(classroom){
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT maxNumberOfSeats FROM CLASSROOM WHERE classroom = ?";
-        db.all(sql, [classroom], (err, row) => {
-            if(err)
-                reject(err);
-            else{
-                if(row)
-                    resolve(row);
-                else
-                    resolve(undefined);
-            }
-        });
-    });
-}*/

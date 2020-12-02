@@ -24,7 +24,7 @@ exports.addLecture = function (lecture) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
         let params = [];
-        //console.log("New lecture: ", lecture);
+        
         params.push(lecture.lectureId, lecture.courseId, lecture.teacherId, lecture.date, lecture.startingTime, lecture.endingTime, lecture.inPresence, lecture.classroomId, lecture.numberOfSeats);
 
         if (lecture)
@@ -80,7 +80,7 @@ exports.getLectureById = function (lectureId) {
  */
 exports.getLecturesList = function (email) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM LECTURE WHERE inPresence = 1 AND courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?)";
+        const sql = "SELECT * FROM LECTURE WHERE inPresence = 1 AND courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?) ORDER BY date, startingTime";
         db.all(sql, [email], (err, rows) => {
             if (err)
                 reject(err);
@@ -109,7 +109,7 @@ exports.getLecturesList = function (email) {
  */
 exports.getTeacherLectureList = function (id) {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ?';
+        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? ORDER BY date, startingTime';
         db.all(sql, [id], (err, rows) => {
             if (err)
                 reject(err);
@@ -133,33 +133,7 @@ exports.getTeacherLectureList = function (id) {
     });
 }
 
-/*
-exports.increaseBookedSeats = function (lectureId) {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE LECTURE SET numberOfSeats = numberOfSeats + 1 WHERE lectureId = ?';
-        db.run(sql, [lectureId], function (err) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(null);
-            }
-        });
-    });
-}
 
-exports.decreaseBookedSeats = function (lectureId) {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE LECTURE SET numberOfSeats = numberOfSeats - 1 WHERE lectureId = ?';
-        db.run(sql, [lectureId], function (err) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(null);
-            }
-        });
-    });
-}
-*/
 
 /**
  * Updates information about a lecture (number of booked seats, whether the lecture is in presence or not)
@@ -223,19 +197,3 @@ exports.getPastLectures = function (course) {
 
     })
 }
-
-/*
-exports.changeLectureType = function (lectureId) {
-    //console.log(lectureId);
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE LECTURE SET inPresence = "0" WHERE lectureId = ?';
-        db.run(sql, [lectureId], function (err) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(null);
-            }
-        });
-    });
-}
-*/

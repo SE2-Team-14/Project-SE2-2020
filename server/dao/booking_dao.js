@@ -247,7 +247,6 @@ exports.getBookedStudentsByLectureId = function (lectureId) {
                 reject(err);
             else {
                 if (row) {
-                    console.log("AAAAAAAAAAA " + row);
                     let today = moment().subtract(1, 'days');
                     let newRow = [];
                     for (let i = 0; i < row.length; i++) {
