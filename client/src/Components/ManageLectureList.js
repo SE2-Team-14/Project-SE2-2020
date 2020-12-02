@@ -300,11 +300,11 @@ function LectureItemManage(props) {
                     {props.lecture.endingTime}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(props.lecture.inPresence == true || props.lecture.inPresence == 1) &&
+                    {props.lecture.inPresence == 1 &&
                         <>
                             {props.lecture.classroomId}
                         </>}
-                    {(props.lecture.inPresence == false || props.lecture.inPresence == 0) &&
+                    {props.lecture.inPresence == 0 &&
                         <>
                             Virtual Classroom
                     </>}
