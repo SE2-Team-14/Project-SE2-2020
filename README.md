@@ -29,13 +29,13 @@
 
 ## Example Users:
 
-* pulsebs14.notification@gmail.com  team142020 (Teacher)
+* Ines.Beneventi@politu.it  team14 (Teacher)
 
-* pusebs.fakeuser@gmail.com team142020 (Student)
+* s900000@students.politu.it team14 (Student)
 
-* leporialessandro@hotmail.it alessandrolepori (Student)
+* danieleaurigemmapolitu.it team14 (Manager)
 
-* gaetanoepiro@outlook.it gaetanoepiro (Student)
+* gaetanoepiro@outlook.it team14 (SupportOfficer)
 
 
 ## List of all used APIs
@@ -118,6 +118,6 @@
   - response body: empty
 
 - GET `/api/contacttracing`
-  - request query parameters: personId, the positive student to be tracked
+  - request query parameters: personId, the positive person to be tracked
   - request body: empty
   - response body: a list of string containing information about people being in contact with the positive person
