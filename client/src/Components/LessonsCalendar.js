@@ -179,9 +179,7 @@ class LessonsCalendar extends React.Component {
     res.fieldName = "title";
     res.instances = [];
 
-    console.log(titles);
       for (let title of titles) {
-        console.log(title);
         let instance = Object.assign({}, Instances);
         instance.id = title.courseName;
         instance.text = "Classroom: " + title.classroom;

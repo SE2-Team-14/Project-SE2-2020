@@ -361,12 +361,12 @@ app.get("/api/statistics", (req, res) => {
   bookingDao.getStatistics(req.query.date, req.query.mode, req.query.course).then((stats) => {
     let empty = [];
     if (stats === undefined) {
-      res.json(empty)
+      stats = empty;
     }
     res.json(stats)
   }).catch((err) => {
     res.status(500).json({
-      errors: [{ msg: "Error while getting statistics" }],
+      errors: [{ msg: err }],
     });
   });
 })
@@ -410,7 +410,7 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
               })
             }
       })
-      lectureDao.deleteLecture(lecture.lectureId).then((res) => {res.status(200).end()
+      lectureDao.deleteLecture(lecture.lectureId).then(() => {res.status(200).end()
       }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
