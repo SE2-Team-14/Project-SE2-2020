@@ -19,6 +19,18 @@
  * To run the client image:
   sudo docker run -it --rm -v ${PWD}:/client -v /src/node_modules -p 3000:3000 -e CHOKIDAR_USEPOLLING=true team14se2/pulsebs:clientRelease1
 
+
+## Example Users:
+
+* pulsebs14.notification@gmail.com  team142020 (Teacher)
+
+* pusebs.fakeuser@gmail.com team142020 (Student)
+
+* leporialessandro@hotmail.it alessandrolepori (Student)
+
+* gaetanoepiro@outlook.it gaetanoepiro (Student)
+
+
 ## List of all used APIs
 
 - POST `/api/`
