@@ -10,7 +10,6 @@ import API from '../api/API';
 
 import Person from '../api/Person'
 
-
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -77,6 +76,16 @@ class Login extends React.Component {
     })
   }
 
+  //TODO: move where it belongs. It's here just for test
+  handleLoadData = () => {
+    //API.loadStudents().then((res) => {
+      //console.log("Students successfully loaded");
+    //})
+    API.loadTeachers().then((res) => {
+      console.log("Teachers successfully loaded");
+    })
+  }
+
   /**
    * Renders the form that implements the login to the application.
    * After a successful login redirects a user to the appropriate homepage based on his role: Student, Teacher, Officer(not yet implemented), Manager(not yet implemented)
@@ -110,11 +119,13 @@ class Login extends React.Component {
                     <Form.Group>
                       <Button variant="primary" type="submit">Login</Button>
                     </Form.Group>
+                    
                   </Form>
 
                 </Col>
               </Row>
             </Container>
+            <Button onClick={() => this.handleLoadData()}>I'm a button</Button>
           </>
         )}
       </AuthContext.Consumer>

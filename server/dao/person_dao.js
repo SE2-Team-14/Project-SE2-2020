@@ -12,7 +12,7 @@ const Person = require('../bean/person');
  * @param row an Object corresponding to one tuple obtained from a query on the PERSON table
  */
 function createPerson(row) {
-    return new Person(row.id, row.name, row.surname, row.role, row.email, row.password);
+    return new Person(row.id, row.name, row.surname, row.role, row.email, row.password, row.city, row.birthday, row.ssn);
 }
 
 /**
@@ -21,9 +21,9 @@ function createPerson(row) {
  */
 exports.createPerson = function (person) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO PERSON(id, name, surname, role, email, password) VALUES(?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO PERSON(id, name, surname, role, email, password, city, birthday, ssn) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
         let params = [];
-        params.push(person.id, person.name, person.surname, person.role, person.email, person.password);
+        params.push(person.id, person.name, person.surname, person.role, person.email, person.password, person.city, person.birthday, person.ssn);
 
         if (person)
             db.run(sql, params, function (err) {

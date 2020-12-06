@@ -8,13 +8,16 @@
  * @param password a string containing the password used by the person to access the booking system in the login phase
  */
 class Person {
-    constructor(id, name, surname, role, email, password) {
+    constructor(id, name, surname, role, email, password, city, birthday, ssn) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.role = role;
         this.email = email;
         this.password = password;
+        this.city = city;
+        this.birthday = birthday;
+        this.ssn = ssn;
     }
 }
 

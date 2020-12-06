@@ -34,6 +34,24 @@ async function getPersonName(email) {
     return await fetchMethod("GET", baseURL + url);
 }
 
+//--------------------------------------LOADING DATA-------------------------------------
+
+/**
+ * Loads into the system the list of all students stored in a CSV file
+ */
+async function loadStudents() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-students`);
+}
+
+/**
+ * Loads into the system the list of all teachers stored in a CSV file
+ */
+async function loadTeachers() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-teachers`);
+}
+
 
 
 //--------------------------------------LECTURES-------------------------------------
@@ -335,7 +353,6 @@ async function _fetchGET(URL, mapFunction){
     }
 }
 
-
 const API = {
     isAuthenticated,
     login,
@@ -360,6 +377,8 @@ const API = {
     getBookings,
     getLectureById,
     addCancelledBooking,
+    loadStudents,
+    loadTeachers,
 };
 
 export default API;

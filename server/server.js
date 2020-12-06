@@ -20,6 +20,7 @@ const moment = require('moment');
 const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
+const DataLoader = require('./utils/DataLoader');
 
 
 // Authorization error
@@ -506,6 +507,40 @@ app.get('/api/getLectureById/:lectureId', (req, res) => {
   lectureDao.getLectureById(lectureId).then((lectures) => res.json(lectures))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-students', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Students.csv';
+
+  dataLoader.readStudentsCSV(filePath)
+    .then(() => (res.status(201).end()))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-teachers', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Professors.csv';
+
+  dataLoader.readTeachersCSV(filePath)
+    .then(() => (res.status(201).end()))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*
