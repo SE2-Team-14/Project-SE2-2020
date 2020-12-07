@@ -10,35 +10,41 @@ const Person = require('../dao/person_dao');
 
 /**
  * Inserts information about a new enrollment (student and course) in the database
- * @param enrollment an Enrollment object containing information about the enrollment (course identifier, student email)
+ * @param enrollment an Enrollment array containing information about the enrollment (course identifier, student id)
  */
-exports.addEnrollment = function (enrollment) {
+exports.addEnrollment = function (enrollments) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO ENROLLMENT(courseId, email) VALUES(?, ?)';
-        let params = [];
-        
-        params.push(enrollment.courseId, enrollment.email);
 
-        if (enrollment)
-            db.run(sql, params, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else
-                    resolve(this.lastID);
-            });
+        let sql = 'INSERT INTO ENROLLMENT(courseId, id) VALUES ';
+
+        for(let i=0; i<enrollments.length-1; i++)
+            sql += '(?, ?), ';
+        sql += '(?, ?);';
+
+        let params = [];
+
+        for(let i=0; i<enrollments.length; i++)
+            params.push(enrollments[i].courseId, enrollments[i].id);
+        
+
+        db.run(sql, params, function (err) {
+            if (err) 
+                reject(err);
+            else
+                resolve(this.lastID);
+        });
     });
 }
 
 /**
  * Deletes an enrollment from the database
  * @param courseId a string containing the identifier of the course the student was enrolled in
- * @param email a string containing the email of the student that isn't enrolled anymore in the course
+ * @param id a string containing the id of the student that isn't enrolled anymore in the course
  */
-exports.deleteEnrollment = function (courseId, email) {
+exports.deleteEnrollment = function (courseId, id) {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM ENROLLMENT WHERE courseId = ? AND email = ?";
-        db.all(sql, [courseId, email], (err, row) => {
+        const sql = "DELETE FROM ENROLLMENT WHERE courseId = ? AND id = ?";
+        db.all(sql, [courseId, id], (err, row) => {
             if (err)
                 reject(err);
             else

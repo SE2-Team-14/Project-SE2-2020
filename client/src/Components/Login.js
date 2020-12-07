@@ -81,8 +81,17 @@ class Login extends React.Component {
     //API.loadStudents().then((res) => {
       //console.log("Students successfully loaded");
     //})
-    API.loadTeachers().then((res) => {
-      console.log("Teachers successfully loaded");
+    //API.loadTeachers().then((res) => {
+      //console.log("Teachers successfully loaded");
+    //})
+    //API.loadEnrollment().then((res) => {
+      //console.log("Enrollments successfully loaded");
+    //})
+    //API.loadCourses().then((res) => {
+      //console.log("Courses successfully loaded");
+    //})
+    API.loadSchedule().then((res) => {
+      console.log("Schedule successfully loaded");
     })
   }
 

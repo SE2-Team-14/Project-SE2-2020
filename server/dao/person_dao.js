@@ -17,22 +17,28 @@ function createPerson(row) {
 
 /**
  * Inserts information about a new person involved with the booking system in the database
- * @param person a Person object containing all information to be inserted (identifier, name and surname, role in the system, email and password used during the login to access the system)
+ * @param people a Person array containing all information to be inserted (identifier, name and surname, role in the system, email and password used during the login to access the system)
  */
-exports.createPerson = function (person) {
+exports.createPerson = function (people) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO PERSON(id, name, surname, role, email, password, city, birthday, ssn) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        let params = [];
-        params.push(person.id, person.name, person.surname, person.role, person.email, person.password, person.city, person.birthday, person.ssn);
+        let sql = 'INSERT INTO PERSON(id, name, surname, role, email, password, city, birthday, ssn) VALUES';
+        
+        for(let i=0; i<people.length-1; i++)
+            sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?), ';
+        sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
-        if (person)
-            db.run(sql, params, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else
-                    resolve(this.lastID);
-            });
+        let params = [];
+
+        for(let i=0; i<people.length; i++)
+            params.push(people[i].id, people[i].name, people[i].surname, people[i].role, people[i].email, people[i].password, people[i].city, people[i].birthday, people[i].ssn);
+
+        db.run(sql, params, function (err) {
+            if (err) 
+                reject(err);
+                
+            else
+                resolve(this.lastID);
+        });
     });
 }
 

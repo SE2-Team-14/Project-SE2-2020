@@ -12,29 +12,34 @@ const Course = require('../bean/course');
  * @param row an Object corresponding to one tuple obtained from a query on the Course table
  */
 function createCourse(row) {
-    return new Course(row.courseId, row.teacherId, row.name);
+    return new Course(row.courseId, row.teacherId, row.name, row.year, row.semester);
 }
 
 /**
  * Inserts a new course in the database
- * @param course a Course object containing information about the course to be inserted (identifier, identifier of the teacher that supervises the course, name)
+ * @param courses a Course array containing information about the course to be inserted (identifier, identifier of the teacher that supervises the course, name)
  */
-exports.createCourse = function (course) {
+exports.createCourse = function (courses) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO COURSE(courseId, teacherId, name) VALUES(?, ?, ?)';
-        let params = [];
+        let sql = 'INSERT INTO COURSE(courseId, teacherId, name, year, semester) VALUES';
         
-        params.push(course.courseId, course.teacherId, course.name);
+        for(let i=0; i<courses.length-1; i++)
+            sql += '(?, ?, ?, ?, ?), ';
+        sql += '(?, ?, ?, ?, ?);';
 
-        if (course)
-            db.run(sql, params, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(this.lastID);
-                }
-            });
+        let params = [];
+
+        for(let i=0; i<courses.length; i++)
+            params.push(courses[i].courseId, courses[i].teacherId, courses[i].name, courses[i].year, courses[i].semester);
+
+        db.run(sql, params, function (err) {
+            if (err) 
+                reject(err);
+                
+            else 
+                resolve(this.lastID);
+        
+        });
     });
 }
 

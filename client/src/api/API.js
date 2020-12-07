@@ -52,7 +52,29 @@ async function loadTeachers() {
     return fetchMethod("POST", `${url}/load-teachers`);
 }
 
+/**
+ * Loads into the system the list of all teachers stored in a CSV file
+ */
+async function loadEnrollment() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-enrollments`);
+}
 
+/**
+ * Loads into the system the list of all courses stored in a CSV file
+ */
+async function loadCourses() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-courses`);
+}
+
+/**
+ * Loads into the system the list of all courses stored in a CSV file
+ */
+async function loadSchedule() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-schedule`);
+}
 
 //--------------------------------------LECTURES-------------------------------------
 /**
@@ -379,6 +401,9 @@ const API = {
     addCancelledBooking,
     loadStudents,
     loadTeachers,
+    loadEnrollment,
+    loadCourses,
+    loadSchedule,
 };
 
 export default API;

@@ -519,7 +519,7 @@ app.post('/api/load-students', (req, res) => {
   const filePath = 'data/Students.csv';
 
   dataLoader.readStudentsCSV(filePath)
-    .then(() => (res.status(201).end()))
+    .then(async (result) => (await res.status(201).json(result.lenght)))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 
 });
@@ -535,11 +535,58 @@ app.post('/api/load-teachers', (req, res) => {
   const filePath = 'data/Professors.csv';
 
   dataLoader.readTeachersCSV(filePath)
-    .then(() => (res.status(201).end()))
+    .then(async (result) => (await res.status(201).json(result.lenght)))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 
 });
 
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-enrollments', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Enrollment.csv';
+
+  dataLoader.readEnrollmentsCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-courses', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Courses.csv';
+
+  dataLoader.readCoursesCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-schedule', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Schedule.csv';
+
+  dataLoader.readScheduleCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
