@@ -26,10 +26,7 @@ class TeacherStatsViewer extends React.Component {
             lectureTime: null,
             cancelledStats: [],
             maxStat: 0,
-            stats2: [
-                { name: "C1", bookings: 10, date: "today" },
-                { name: "C2", bookings: 5, date: "today" }
-            ]
+            noBookings: true,
         }
     }
 
@@ -41,8 +38,8 @@ class TeacherStatsViewer extends React.Component {
             this.setState({ courses: courses })
         }).then(() => {
             API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
-                console.log(stats)
-                this.setState({ stats: stats })
+                let noBookings = stats[0].name === null;
+                this.setState({ stats: stats, noBookings: noBookings })
             })
         })
     }
@@ -148,7 +145,7 @@ class TeacherStatsViewer extends React.Component {
                             <Row className="justify-content-md-center">
                                 <Col md="auto"></Col>
                                 <Col md="auto" className="below-nav">
-                                    {(this.state.courses.length > 0) && <Dropdown>
+                                    {(this.state.courses.length > 0 && !this.state.noBookings) && <Dropdown>
                                         <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                             Choose the Course you want to view statistics of
                     </Dropdown.Toggle>
@@ -156,9 +153,9 @@ class TeacherStatsViewer extends React.Component {
                                             {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.name}>{course.name}</Dropdown.Item>))}
                                         </Dropdown.Menu>
                                     </Dropdown>}
-
+                                    {(this.state.mode === "start" && this.state.noBookings) && <h4> There are no statistics about bookings available yet.</h4>}
                                 </Col>
-                                <Col md="auto"> <Button variant="outline-info" active={this.state.mode == "start"} onClick={() => this.chooseMode("start")}> View Total Bookings of all Courses </Button></Col>
+                                <Col md="auto"> {(!this.state.noBookings) && <Button variant="outline-info" active={this.state.mode == "start"} onClick={() => this.chooseMode("start")} > View Total Bookings of all Courses </Button>}</Col>
                             </Row>
                             <Row className="h-75 d-inline-block">{""}</Row>
                             <Row className="justify-content-md-center">
@@ -320,7 +317,7 @@ class TeacherStatsViewer extends React.Component {
                                             </BarChart>
                                         </Col>
                                     </>}
-                                {(this.state.mode === "start") &&
+                                {(this.state.mode === "start" && !this.state.noBookings) &&
                                     <>
                                         <Col md="auto">
                                             <h4> Total bookings made for each course </h4>

@@ -603,7 +603,7 @@ app.post('/api/student-home/put-in-queue', (req, res) => {
   const studentId = req.body.studentId;
   const courseId = req.body.courseId;
   const lectureId = req.body.lectureId;
-  
+
   if (!courseId || !lectureId) {
     res.status(400).end();
   } else {
@@ -625,11 +625,11 @@ app.get('/api/studentInWaitinglist', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
- * GET API
- * Request Parameters: a string containing the email of a teacher that wants to know all bookings made for all his courses
- * Request Body Content: none
- * Response Body Content: an array containing all bookings made for all courses of a teacher
- */
+/* GET API
+* Request Parameters: a string containing the email of a teacher that wants to know all bookings made for all his courses
+* Request Body Content: none
+* Response Body Content: an array containing all bookings made for all courses of a teacher
+*/
 app.get("/api/allCoursesStatistics", (req, res) => {
   bookingDao.getTeacherCoursesStatistics(req.query.teacher).then((stats) => {
     res.json(stats)
