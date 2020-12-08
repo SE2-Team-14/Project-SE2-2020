@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faParagraph } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom';
 
-import ManagerStatsViewer from "./ManagerStatsViewer.js";
-
 import API from '../api/API';
 
 

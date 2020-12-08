@@ -13,8 +13,8 @@ const CourseDao = require('../dao/course_dao');
 const ClassroomDao = require('../dao/classroom_dao');
 const LectureDao = require('../dao/lecture_dao');
 
-function associateDay(weekday){
-    switch(weekday){
+function associateDay(weekday) {
+    switch (weekday) {
         case 'mon':
             return 1;
         case 'tue':
@@ -28,83 +28,83 @@ function associateDay(weekday){
     }
 }
 
-class DataLoader{
+class DataLoader {
 
-    async readStudentsCSV (filePath) {
+    async readStudentsCSV(filePath) {
         const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()  
+        const csvData = csvFile.toString()
         return new Promise(resolve => {
             Papa.parse(csvData, {
                 header: true,
                 complete: async results => {
                     let students = [];
-                    for(let i=0; i<results.data.length; i++){
+                    for (let i = 0; i < results.data.length; i++) {
                         let dataStudent = results.data[i];
                         let student = new Person(
                             dataStudent.Id,
                             dataStudent.Name,
-                            dataStudent.Surname, 
+                            dataStudent.Surname,
                             "Student",
-                            dataStudent.OfficialEmail, 
+                            dataStudent.OfficialEmail,
                             "team14",
-                            dataStudent.City, 
+                            dataStudent.City,
                             moment(dataStudent.Birthday).format('DD/MM/YYYY'),
                             dataStudent.SSN
                         );
                         students.push(student);
                     }
                     const chunk = 100;
-                    for(let i=0, j=students.length; i<j; i+=chunk) 
-                        await PersonDao.createPerson(students.slice(i, i+chunk));
-                    console.log('Complete', results.data.length, 'records.'); 
+                    for (let i = 0, j = students.length; i < j; i += chunk)
+                        await PersonDao.createPerson(students.slice(i, i + chunk));
+                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
         });
-    };
+    }
 
-    async readTeachersCSV (filePath) {
+    async readTeachersCSV(filePath) {
         const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()  
+        const csvData = csvFile.toString()
         return new Promise(resolve => {
             Papa.parse(csvData, {
                 header: true,
                 complete: async results => {
                     let teachers = [];
-                    for(let i=0; i<results.data.length; i++){
+                    for (let i = 0; i < results.data.length; i++) {
                         let dataTeacher = results.data[i];
                         let teacher = new Person(
                             dataTeacher.Number,
                             dataTeacher.GivenName,
-                            dataTeacher.Surname, 
+                            dataTeacher.Surname,
                             "Teacher",
-                            dataTeacher.OfficialEmail, 
+                            dataTeacher.OfficialEmail,
                             "team14",
-                            null, 
+                            null,
                             null,
                             dataTeacher.SSN
                         );
                         teachers.push(teacher);
                     }
                     const chunk = 100;
-                    for(let i=0, j=teachers.length; i<j; i+=chunk) 
-                        await PersonDao.createPerson(teachers.slice(i, i+chunk));
-                    console.log('Complete', results.data.length, 'records.'); 
+                    for (let i = 0, j = teachers.length; i < j; i += chunk)
+                        await PersonDao.createPerson(teachers.slice(i, i + chunk));
+                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
         });
-    };
+    }
 
-    async readEnrollmentsCSV (filePath) {
+    async readEnrollmentsCSV(filePath) {
         const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()  
+        const csvData = csvFile.toString()
         return new Promise(resolve => {
             Papa.parse(csvData, {
                 header: true,
                 complete: async results => {
                     let enrollments = [];
-                    for(let i=0; i<results.data.length; i++){
+                    for (let i = 0; i < results.data.length; i++) {
                         let dataEnrollment = results.data[i];
                         let enrollment = new Enrollment(
                             dataEnrollment.Code,
@@ -113,28 +113,28 @@ class DataLoader{
                         enrollments.push(enrollment);
                     }
                     const chunk = 100;
-                    for(let i=0, j=enrollments.length; i<j; i+=chunk) 
-                        await EnrollmentDao.addEnrollment(enrollments.slice(i, i+chunk));
-                    console.log('Complete', results.data.length, 'records.'); 
+                    for (let i = 0, j = enrollments.length; i < j; i += chunk)
+                        await EnrollmentDao.addEnrollment(enrollments.slice(i, i + chunk));
+                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
         });
-    };
+    }
 
-    async readCoursesCSV (filePath) {
+    async readCoursesCSV(filePath) {
         const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()  
+        const csvData = csvFile.toString()
         return new Promise(resolve => {
             Papa.parse(csvData, {
                 header: true,
                 complete: async results => {
                     let courses = [];
-                    for(let i=0; i<results.data.length; i++){
+                    for (let i = 0; i < results.data.length; i++) {
                         let dataCourse = results.data[i];
                         let course = new Course(
                             dataCourse.Code,
-                            dataCourse.Teacher, 
+                            dataCourse.Teacher,
                             dataCourse.Course,
                             dataCourse.Year,
                             dataCourse.Semester
@@ -142,28 +142,28 @@ class DataLoader{
                         courses.push(course);
                     }
                     const chunk = 100;
-                    for(let i=0, j=courses.length; i<j; i+=chunk) 
-                        await CourseDao.createCourse(courses.slice(i, i+chunk));
-                    console.log('Complete', results.data.length, 'records.'); 
+                    for (let i = 0, j = courses.length; i < j; i += chunk)
+                        await CourseDao.createCourse(courses.slice(i, i + chunk));
+                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
         });
-    };
+    }
 
-    async readScheduleCSV (filePath) {
+    async readScheduleCSV(filePath) {
         const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()  
+        const csvData = csvFile.toString()
         return new Promise(resolve => {
             Papa.parse(csvData, {
                 header: true,
                 complete: async results => {
                     let lectures = [];
-                    for(let i=0; i<results.data.length; i++){
+                    for (let i = 0; i < results.data.length; i++) {
                         let data = results.data[i];
-                        
+
                         let c = await ClassroomDao.getClassroom(data.Room);
-                        if(c === undefined){
+                        if (c === undefined) {
                             let classroom = new Classroom(data.Room, data.Seats);
                             await ClassroomDao.addClassroom(classroom);
                         }
@@ -177,17 +177,17 @@ class DataLoader{
                         let date = moment().day(day);
 
                         let teacher = await CourseDao.getCourseByID(data.Code);
-                        
-                        while(1){
-                            if(date > endOfSemester)
+
+                        while (1) {
+                            if (date > endOfSemester)
                                 break;
-                            else{
+                            else {
                                 let lecture = new Lecture(
-                                    null, 
+                                    null,
                                     data.Code,
                                     teacher.teacherId,
                                     date.format('DD/MM/YYYY'),
-                                    startingTime, 
+                                    startingTime,
                                     endingTime,
                                     1,
                                     data.Room,
@@ -200,15 +200,15 @@ class DataLoader{
                     }
 
                     let chunk = 100;
-                    for(let i=0, j=lectures.length; i<j; i+=chunk) 
-                        await LectureDao.addLecture(lectures.slice(i, i+chunk));
+                    for (let i = 0, j = lectures.length; i < j; i += chunk)
+                        await LectureDao.addLecture(lectures.slice(i, i + chunk));
 
-                    console.log('Complete', results.data.length, 'records.'); 
+                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
         });
-    };
+    }
 
 }
 

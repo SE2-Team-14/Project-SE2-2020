@@ -23,21 +23,22 @@ function createLecture(row) {
 exports.addLecture = function (lectures) {
     return new Promise((resolve, reject) => {
         let sql = 'INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) VALUES';
-        
-        for(let i=0; i<lectures.length-1; i++)
+
+        for (let i = 0; i < lectures.length - 1; i++)
             sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?), ';
         sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
         let params = [];
-        
-        for(let i=0; i<lectures.length; i++)
+
+        for (let i = 0; i < lectures.length; i++)
             params.push(lectures[i].lectureId, lectures[i].courseId, lectures[i].teacherId, lectures[i].date, lectures[i].startingTime, lectures[i].endingTime, lectures[i].inPresence, lectures[i].classroomId, lectures[i].numberOfSeats);
 
         db.run(sql, params, function (err) {
-            if (err) 
+            if (err)
                 reject(err);
-            else
-            resolve(this.lastID);
+            else {
+                resolve(this.lastID);
+            }
         });
     });
 }
