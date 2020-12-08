@@ -5,10 +5,12 @@
  * @param name a string containing the name of the course
  */
 class Course {
-    constructor(courseId, teacherId, name) {
+    constructor(courseId, teacherId, name, year, semester) {
         this.courseId = courseId;
         this.teacherId = teacherId;
         this.name = name;
+        this.year = year;
+        this.semester = semester;
     }
 }
 

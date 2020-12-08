@@ -8,8 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import API from '../api/API';
 
-import Person from '../api/Person'
-
+import Person from '../api/Person';
 
 class Login extends React.Component {
   constructor(props) {
@@ -112,6 +111,7 @@ class Login extends React.Component {
                     <Form.Group>
                       <Button variant="primary" type="submit">Login</Button>
                     </Form.Group>
+                    
                   </Form>
 
                 </Col>

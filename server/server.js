@@ -13,6 +13,7 @@ const enrollmentDao = require("./dao/enrollment_dao");
 const classroomDao = require('./dao/classroom_dao');
 const bookingDao = require('./dao/booking_dao');
 const cancelledLectureDao = require('./dao/cancelled_lectures_dao');
+const waitingListDao = require('./dao/waiting_list_dao');
 const Booking = require('./bean/booking');
 const EmailSender = require('./utils/EmailSender');
 const setMidnightTimer = require("./utils/midnightTimer");
@@ -20,6 +21,7 @@ const moment = require('moment');
 const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
+const DataLoader = require('./utils/DataLoader');
 
 
 // Authorization error
@@ -509,6 +511,120 @@ app.get('/api/getLectureById/:lectureId', (req, res) => {
 })
 
 /**
+
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-students', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Students.csv';
+
+  dataLoader.readStudentsCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-teachers', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Professors.csv';
+
+  dataLoader.readTeachersCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-enrollments', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Enrollment.csv';
+
+  dataLoader.readEnrollmentsCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-courses', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Courses.csv';
+
+  dataLoader.readCoursesCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/load-schedule', (req, res) => {
+  const dataLoader = new DataLoader();
+  const filePath = 'data/Schedule.csv';
+
+  dataLoader.readScheduleCSV(filePath)
+    .then(async (result) => (await res.status(201).json(result.lenght)))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+//-----------------------------------WAITING LIST------------------------------------
+
+/**
+ * POST API
+ * Request Parameters: 
+ * Request Body Content:
+ * Response Body Content: 
+ */
+app.post('/api/student-home/put-in-queue', (req, res) => {
+  const studentId = req.body.studentId;
+  const courseId = req.body.courseId;
+  const lectureId = req.body.lectureId;
+  
+  if (!courseId || !lectureId) {
+    res.status(400).end();
+  } else {
+    waitingListDao.insertInWaitingList(studentId, courseId, lectureId)
+      .then(() => (res.status(200).end()))
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  }
+});
+
+/**
+ * GET API
+ * Request Parameters: 
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.get('/api/studentInWaitinglist', (req, res) => {
+  waitingListDao.getFirstStudentInWaitingList(req.query.courseId, req.query.lectureId)
+    .then((result) => res.json(result.studentId))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
  * GET API
  * Request Parameters: a string containing the email of a teacher that wants to know all bookings made for all his courses
  * Request Body Content: none
@@ -531,6 +647,7 @@ app.get("/api/allCoursesStats", (req, res) => {
     res.json(stats)
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
+
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*

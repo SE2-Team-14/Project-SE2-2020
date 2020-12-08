@@ -4,9 +4,9 @@
  * @param email a string containing the email of the student who is enrolled in a course
  */
 class Enrollment {
-    constructor(courseId, email) {
+    constructor(courseId, id) {
         this.courseId = courseId;
-        this.email = email;
+        this.id = id;
     }
 }
 

@@ -34,7 +34,47 @@ async function getPersonName(email) {
     return await fetchMethod("GET", baseURL + url);
 }
 
+//--------------------------------------LOADING DATA-------------------------------------
 
+/**
+ * Loads into the system the list of all students stored in a CSV file
+ */
+async function loadStudents() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-students`);
+}
+
+/**
+ * Loads into the system the list of all teachers stored in a CSV file
+ */
+async function loadTeachers() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-teachers`);
+}
+
+/**
+ * Loads into the system the list of all teachers stored in a CSV file
+ */
+async function loadEnrollment() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-enrollments`);
+}
+
+/**
+ * Loads into the system the list of all courses stored in a CSV file
+ */
+async function loadCourses() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-courses`);
+}
+
+/**
+ * Loads into the system the list of all courses stored in a CSV file
+ */
+async function loadSchedule() {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/load-schedule`);
+}
 
 //--------------------------------------LECTURES-------------------------------------
 /**
@@ -280,6 +320,40 @@ async function getAllCoursesStatistics() {
 }
 
 
+//-----------------------------------WAITING LIST------------------------------------
+
+/**
+ * Inserts a student in the waiting list
+ * @param studentId 
+ * @param courseId
+ * @param lectureId 
+ */
+async function putInWaitingList(studentId, lectureId) {
+    const url = baseURL + '/student-home';
+    return fetchMethod("POST", `${url}/put-in-queue`, { studentId: studentId, lectureId: lectureId, });
+}
+
+/**
+ * Returns the first student in the waiting list for a specific course and lecture
+ * @param courseId a string containing the id of the course 
+ * @param lectureId a string containing the id of the lecture 
+ */
+async function getFirstStudentInWaitingList(lectureId) {
+    let url = "/studentInWaitinglist?lectureId=" + lectureId;
+    return await fetchMethod("GET", baseURL + url);
+}
+
+/**
+ * Deletes an existing booking in the waiting list
+ * @param studentId a string containing the identifier of the student that wishes to delete the booking
+ * @param lectureId an integer corresponding to the identifier of the lecture associated with the booking to delete
+ */
+async function deleteFromWaitingList(studentId, lectureId) {
+    const url = baseURL + '/student-home';
+    return fetchMethod("DELETE", `${url}/delete-from-waiting-list`, { studentId: studentId, lectureId: lectureId });
+}
+
+
 //--------------------------------UTILS------------------------------
 
 
@@ -353,7 +427,6 @@ async function _fetchGET(URL, mapFunction) {
     }
 }
 
-
 const API = {
     isAuthenticated,
     login,
@@ -378,6 +451,13 @@ const API = {
     getBookings,
     getLectureById,
     addCancelledBooking,
+    loadStudents,
+    loadTeachers,
+    loadEnrollment,
+    loadCourses,
+    loadSchedule,
+    getFirstStudentInWaitingList,
+    putInWaitingList,
     getTeacherCoursesStatistics,
     getAllCourses,
     getAllCoursesStatistics,

@@ -23,16 +23,15 @@ exports.addClassroom = function (classroom) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO CLASSROOM(classroom, maxNumberOfSeats) VALUES(?, ?)';
         let params = [];
+
         params.push(classroom.classroom, classroom.maxNumberOfSeats);
 
-        if (classroom)
-            db.run(sql, params, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else
-                    resolve(this.lastID);
-            });
+        db.run(sql, params, function (err) {
+            if (err) 
+                reject(err);
+            else
+                resolve(this.lastID);
+        });
     });
 }
 
@@ -63,6 +62,26 @@ exports.getClassrooms = function () {
                 reject(err);
             else
                 resolve(rows.map((row => createClassroom(row))))
+        })
+    })
+}
+
+/**
+ * Returns a classroom given its id
+ */
+exports.getClassroom = function (classroom) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM CLASSROOM WHERE classroom = ?";
+        db.get(sql, [classroom], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(createClassroom(row));
+                } else {
+                    resolve(undefined);
+                }
+            }
         })
     })
 }
