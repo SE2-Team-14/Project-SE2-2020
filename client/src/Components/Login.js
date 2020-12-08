@@ -8,9 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import API from '../api/API';
 
-import Person from '../api/Person'
-
-const moment = require("moment")
+import Person from '../api/Person';
 
 class Login extends React.Component {
   constructor(props) {
@@ -78,25 +76,6 @@ class Login extends React.Component {
     })
   }
 
-  //TODO: move where it belongs. It's here just for test
-  handleLoadData = () => {
-    //API.loadStudents().then((res) => {
-      //console.log("Students successfully loaded");
-    //})
-    //API.loadTeachers().then((res) => {
-      //console.log("Teachers successfully loaded");
-    //})
-    //API.loadEnrollment().then((res) => {
-      //console.log("Enrollments successfully loaded");
-    //})
-    //API.loadCourses().then((res) => {
-      //console.log("Courses successfully loaded");
-    //})
-    API.loadSchedule().then((res) => {
-      console.log("Schedule successfully loaded");
-    })
-  }
-
   /**
    * Renders the form that implements the login to the application.
    * After a successful login redirects a user to the appropriate homepage based on his role: Student, Teacher, Officer(not yet implemented), Manager(not yet implemented)
@@ -136,7 +115,6 @@ class Login extends React.Component {
                 </Col>
               </Row>
             </Container>
-            <Button onClick={() => this.handleLoadData()}>I'm a button</Button>
           </>
         )}
       </AuthContext.Consumer>
