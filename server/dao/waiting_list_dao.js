@@ -10,16 +10,15 @@ const moment = require("moment")
 /**
  * Inserts in the database a new cancelled booking
  * @param stundetId a string containing the identifier of the student
- * @param courseId a string containing the id of the course
  * @param lessonId a string containing the id of the lesson
  */
-exports.insertInWaitingList = function (studentId, courseId, lectureId) {
+exports.insertInWaitingList = function (studentId, lectureId) {
     return new Promise((resolve, reject) => {
         const day = moment().format('DD/MM/YYYY');
         const time = moment().format('HH:mm');
-        const sql = 'INSERT INTO WAITING_LIST(studentId, lectureId, courseId, bookingDate, bookingTime) VALUES(?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO WAITING_LIST(studentId, lectureId, bookingDate, bookingTime) VALUES(?, ?, ?, ?)';
         let params = [];
-        params.push(studentId, courseId, lectureId, day, time);
+        params.push(studentId, lectureId, day, time);
         db.run(sql, params, function (err) {
             if (err)
                 reject(err);
@@ -29,11 +28,11 @@ exports.insertInWaitingList = function (studentId, courseId, lectureId) {
     });
 }
 
-exports.getFirstStudentInWaitingList = function (courseId, lectureId) {
+exports.getFirstStudentInWaitingList = function (lectureId) {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT studentId FROM WAITING_LIST WHERE courseId = ? AND lectureId = ? AND bookingDate = (SELECT MIN(bookingDate) FROM WAITING_LIST WHERE courseId = ? AND lectureId = ?) AND bookingTime = (SELECT MIN(bookingTime) FROM WAITING_LIST WHERE courseId = ? AND lectureId = ?)';
+        const sql = 'SELECT studentId FROM WAITING_LIST WHERE lectureId = ? AND bookingDate = (SELECT MIN(bookingDate) FROM WAITING_LIST WHERE lectureId = ?) AND bookingTime = (SELECT MIN(bookingTime) FROM WAITING_LIST WHERE lectureId = ?)';
         let params = [];
-        params.push(courseId, lectureId, courseId, lectureId, courseId, lectureId);
+        params.push(lectureId, lectureId, lectureId);
         db.get(sql, params, (err, row) => {
             if (err) {
                 reject(err);
@@ -44,6 +43,23 @@ exports.getFirstStudentInWaitingList = function (courseId, lectureId) {
                     resolve(undefined);
                 }
             }
+        });
+    });
+}
+
+/**
+ * Deletes a registered booking in the waiting list from the table
+ * @param studentId a string containing the identifier of the student that made the booking and then deleted it
+ * @param lectureId an integer corresponding to the identifier of the lecture for which the student booked and then deleted a seat
+ */
+exports.deleteFromWaitingList = function (studentId, lectureId) {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM WAITING_LIST WHERE studentId = ? AND lectureId = ?";
+        db.all(sql, [studentId, lectureId], (err, row) => {
+            if (err)
+                reject(err);
+            else
+                resolve(row);
         });
     });
 }
