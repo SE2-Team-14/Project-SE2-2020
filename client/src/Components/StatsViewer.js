@@ -13,7 +13,7 @@ import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
 
 
-class ManagerStatsViewer extends React.Component {
+class StatsViewer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,16 +31,24 @@ class ManagerStatsViewer extends React.Component {
     }
 
     /**
-     * Retrieves the list of all courses present and the total of bookings made for each course
+     * Retrieves the list of all courses taught by the teacher with the associated email.
      */
     componentDidMount() {
-        API.getAllCourses().then((courses) => {
+        API.getCourses(this.props.email).then((courses) => {
             this.setState({ courses: courses })
         }).then(() => {
-            API.getAllCoursesStatistics().then((stats) => {
-                let noBookings = stats[0].name === null;
-                this.setState({ stats: stats, noBookings: noBookings })
-            })
+            if (this.props.role === "Teacher") {
+                API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
+                    let noBookings = stats[0].name === null;
+                    this.setState({ stats: stats, noBookings: noBookings })
+                })
+            } else if (this.props.role === "Manager") {
+                API.getAllCoursesStatistics().then((stats) => {
+                    let noBookings = stats[0].name === null;
+                    this.setState({ stats: stats, noBookings: noBookings })
+                })
+            }
+
         })
     }
 
@@ -94,17 +102,32 @@ class ManagerStatsViewer extends React.Component {
                 this.setState({ stats: [], selectedDate: null, lectureTime: null, cancelledStats: stats, maxStat: max })
             })
         } else if (mode === "start") {
-            API.getAllCoursesStatistics().then((stats) => {
-                let max = 0;
-                let num = 0;
-                for (let i = 0; i < stats.length; i++) {
-                    num = stats[i].total;
-                    if (num > max) {
-                        max = num;
+            if (this.props.role === "Teacher") {
+                API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
+                    let max = 0;
+                    let num = 0;
+                    for (let i = 0; i < stats.length; i++) {
+                        num = stats[i].total;
+                        if (num > max) {
+                            max = num;
+                        }
                     }
-                }
-                this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null, })
-            })
+                    this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null, })
+                })
+            } else if (this.props.role === "Manager") {
+                API.getAllCoursesStatistics().then((stats) => {
+                    let max = 0;
+                    let num = 0;
+                    for (let i = 0; i < stats.length; i++) {
+                        num = stats[i].total;
+                        if (num > max) {
+                            max = num;
+                        }
+                    }
+                    this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null, })
+                })
+            }
+
         }
     }
 
@@ -353,4 +376,4 @@ class ManagerStatsViewer extends React.Component {
     }
 }
 
-export default ManagerStatsViewer;
+export default StatsViewer;

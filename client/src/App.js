@@ -15,10 +15,10 @@ import TeacherHomePage from './Components/TeacherHomePage';
 import ManagerHomePage from "./Components/ManagerHomePage";
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
-import TeacherStatsViewer from "./Components/TeacherStatsViewer";
 import ManageLectureList from './Components/ManageLectureList';
 import BookedLessonsCalendar from './Components/LessonsCalendar';
-import ManagerStatsViewer from "./Components/ManagerStatsViewer";
+import StatsViewer from "./Components/StatsViewer";
+
 
 import { AuthContext } from './auth/AuthContext'
 
@@ -112,7 +112,7 @@ class App extends React.Component {
               return (
                 <>
                   <ManagerHomePage email={email}></ManagerHomePage>
-                  <ManagerStatsViewer></ManagerStatsViewer>
+                  <StatsViewer role="Manager"></StatsViewer>
                 </>)
             }}>
             </Route>
@@ -139,7 +139,7 @@ class App extends React.Component {
 
             <Route exact path="/teacher-home/:email/statistics" render={(props) => {
               let email = props.match.params.email;
-              return (<TeacherStatsViewer email={email}></TeacherStatsViewer>)
+              return (<StatsViewer email={email} role="Teacher"></StatsViewer>)
             }}></Route>
 
             <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
