@@ -13,7 +13,7 @@ import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
 
 
-class TeacherStatsViewer extends React.Component {
+class ManagerStatsViewer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,14 +34,13 @@ class TeacherStatsViewer extends React.Component {
     }
 
     /**
-     * Retrieves the list of all courses taught by the teacher with the associated email.
+     * Retrieves the list of all courses present and the total of bookings made for each course
      */
     componentDidMount() {
-        API.getCourses(this.props.email).then((courses) => {
+        API.getAllCourses().then((courses) => {
             this.setState({ courses: courses })
         }).then(() => {
-            API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
-                console.log(stats)
+            API.getAllCoursesStatistics().then((stats) => {
                 this.setState({ stats: stats })
             })
         })
@@ -97,7 +96,7 @@ class TeacherStatsViewer extends React.Component {
                 this.setState({ stats: [], selectedDate: null, lectureTime: null, cancelledStats: stats, maxStat: max })
             })
         } else if (mode === "start") {
-            API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
+            API.getAllCoursesStatistics().then((stats) => {
                 let max = 0;
                 let num = 0;
                 for (let i = 0; i < stats.length; i++) {
@@ -356,4 +355,4 @@ class TeacherStatsViewer extends React.Component {
     }
 }
 
-export default TeacherStatsViewer;
+export default ManagerStatsViewer;

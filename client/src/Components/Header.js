@@ -19,7 +19,7 @@ const Header = (props) => {
 
     <AuthContext.Consumer>
       {(context) => (
-        
+
         <Navbar bg="info" variant="dark" expand="md" className='col-12'>
 
           {context.authUser == null && <Navbar.Brand as={NavLink} to="/login">
@@ -29,6 +29,9 @@ const Header = (props) => {
             PULSeBS
           </Navbar.Brand>}
           {(context.authUser != null && context.authUser.role === "Teacher") && <Navbar.Brand as={NavLink} to={`/teacher-home/${context.authUser.email}`}>
+            PULSeBS
+          </Navbar.Brand>}
+          {(context.authUser != null && context.authUser.role === "Manager") && <Navbar.Brand as={NavLink} to={`/manager-home/${context.authUser.email}`}>
             PULSeBS
           </Navbar.Brand>}
           <Nav className="mr-auto">

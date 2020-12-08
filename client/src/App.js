@@ -12,11 +12,13 @@ import Header from './Components/Header';
 import Login from './Components/Login';
 import StudentHomePage from './Components/StudentHomePage';
 import TeacherHomePage from './Components/TeacherHomePage';
+import ManagerHomePage from "./Components/ManagerHomePage";
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
 import TeacherStatsViewer from "./Components/TeacherStatsViewer";
 import ManageLectureList from './Components/ManageLectureList';
 import BookedLessonsCalendar from './Components/LessonsCalendar';
+import ManagerStatsViewer from "./Components/ManagerStatsViewer";
 
 import { AuthContext } from './auth/AuthContext'
 
@@ -83,7 +85,7 @@ class App extends React.Component {
       <AuthContext.Provider value={value}>
         {
           !this.state.authUser && <Redirect to="/login"></Redirect> // if there is no user in the system, redirect to the login page
-        } 
+        }
         <Header logout={this.logout} />
         <Container fluid>
           <Switch>
@@ -102,7 +104,16 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email/booked-calendar" render={(props) => {
               let email = props.match.params.email;
-              return <>{this.state.authUser && <BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses = {this.state.courses}></BookedLessonsCalendar>} </>
+              return <>{this.state.authUser && <BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses={this.state.courses}></BookedLessonsCalendar>} </>
+            }}>
+            </Route>
+            <Route exact path="/manager-home/:email" render={(props) => {
+              let email = props.match.params.email;
+              return (
+                <>
+                  <ManagerHomePage email={email}></ManagerHomePage>
+                  <ManagerStatsViewer></ManagerStatsViewer>
+                </>)
             }}>
             </Route>
 
@@ -114,27 +125,28 @@ class App extends React.Component {
                 </Col>
               </Row>
             </Route>
-           
+
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               let email = props.match.params.email;
-            return <>{this.state.authUser &&<LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
+              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
             }} />
-            
+
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;
               return (<BookedStudentsList email={email}></BookedStudentsList>)
             }}>
             </Route>
-            
+
             <Route exact path="/teacher-home/:email/statistics" render={(props) => {
               let email = props.match.params.email;
               return (<TeacherStatsViewer email={email}></TeacherStatsViewer>)
             }}></Route>
-            
+
             <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
               let email = props.match.params.email;
-               return <>{this.state.authUser &&  <ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>}</>
+              return <>{this.state.authUser && <ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>}</>
             }}></Route>
+
 
             <Route>
               <Redirect to='/login' />
@@ -142,7 +154,7 @@ class App extends React.Component {
 
           </Switch>
         </Container>
-      </AuthContext.Provider>
+      </AuthContext.Provider >
     );
   }
 }

@@ -90,6 +90,8 @@ class Login extends React.Component {
               && <Redirect to={`/teacher-home/${context.authUser.email}`} />}
             {this.state.submitted && (context.authUser != null && context.authUser.role === "Student")
               && <Redirect to={`/student-home/${context.authUser.email}`} />}
+            {this.state.submitted && (context.authUser != null && context.authUser.role === "Manager")
+              && <Redirect to={`/manager-home/${context.authUser.email}`} />}
             <Container fluid>
               <Row>
                 <Col>
