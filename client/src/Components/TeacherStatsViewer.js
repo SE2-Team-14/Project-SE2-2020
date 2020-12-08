@@ -26,6 +26,10 @@ class TeacherStatsViewer extends React.Component {
             lectureTime: null,
             cancelledStats: [],
             maxStat: 0,
+            stats2: [
+                { name: "C1", bookings: 10, date: "today" },
+                { name: "C2", bookings: 5, date: "today" }
+            ]
         }
     }
 
@@ -120,193 +124,193 @@ class TeacherStatsViewer extends React.Component {
     render() {
         return (
             <AuthContext.Consumer>
-            {(context) => (
-            <>
-            {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-                <Jumbotron>
-                    <Row className="justify-content-md-center">
-                        <Col md="auto"></Col>
-                        <Col md="auto" className="below-nav">
-                            {(this.state.courses.length > 0) && <Dropdown>
-                                <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
-                                    Choose the Course you want to view statistics of
+                {(context) => (
+                    <>
+                        {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
+                        <Jumbotron>
+                            <Row className="justify-content-md-center">
+                                <Col md="auto"></Col>
+                                <Col md="auto" className="below-nav">
+                                    {(this.state.courses.length > 0) && <Dropdown>
+                                        <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
+                                            Choose the Course you want to view statistics of
                     </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.name}>{course.name}</Dropdown.Item>))}
-                                </Dropdown.Menu>
-                            </Dropdown>}
+                                        <Dropdown.Menu>
+                                            {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.name}>{course.name}</Dropdown.Item>))}
+                                        </Dropdown.Menu>
+                                    </Dropdown>}
 
-                        </Col>
-                        <Col md="auto"></Col>
-                    </Row>
-                    <Row className="h-75 d-inline-block">{""}</Row>
-                    <Row className="justify-content-md-center">
-                        {
-                            (this.state.courses.length > 0 && this.state.selectedCourse !== null) && <h4> Statistics for the course {this.state.selectedCourse}</h4>
-                        }
-                    </Row>
-                    <Row className="h-75 d-inline-block">{""}</Row>
-                    <Row className="justify-content-md-center">
-                        <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='lecture'} onClick={() => this.chooseMode("lecture")}> View Bookings of Single Lecture </Button>}
-                        </Col>
-                        <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='week'} onClick={() => this.chooseMode("week")}> View Bookings by Week </Button>}
-                        </Col>
-                        <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='month'} onClick={() => this.chooseMode("month")}> View Bookings by Month </Button>}
-                        </Col>
-                        <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='total'} onClick={() => this.chooseMode("total")}> View Total Bookings </Button>}
-                        </Col>
-                        <Col md="auto">
-                            {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode=='cancelled'} onClick={() => this.chooseMode("cancelled")}> View Cancelled Bookings </Button>}
-                        </Col>
-                    </Row>
-                    <Row className="h-75 d-inline-block">{""}</Row>
-                    <Row className="justify-content-md-center">
+                                </Col>
+                                <Col md="auto"></Col>
+                            </Row>
+                            <Row className="h-75 d-inline-block">{""}</Row>
+                            <Row className="justify-content-md-center">
+                                {
+                                    (this.state.courses.length > 0 && this.state.selectedCourse !== null) && <h4> Statistics for the course {this.state.selectedCourse}</h4>
+                                }
+                            </Row>
+                            <Row className="h-75 d-inline-block">{""}</Row>
+                            <Row className="justify-content-md-center">
+                                <Col md="auto">
+                                    {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode == 'lecture'} onClick={() => this.chooseMode("lecture")}> View Bookings of Single Lecture </Button>}
+                                </Col>
+                                <Col md="auto">
+                                    {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode == 'week'} onClick={() => this.chooseMode("week")}> View Bookings by Week </Button>}
+                                </Col>
+                                <Col md="auto">
+                                    {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode == 'month'} onClick={() => this.chooseMode("month")}> View Bookings by Month </Button>}
+                                </Col>
+                                <Col md="auto">
+                                    {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode == 'total'} onClick={() => this.chooseMode("total")}> View Total Bookings </Button>}
+                                </Col>
+                                <Col md="auto">
+                                    {this.state.selectedCourse != null && <Button variant="outline-info" active={this.state.mode == 'cancelled'} onClick={() => this.chooseMode("cancelled")}> View Cancelled Bookings </Button>}
+                                </Col>
+                            </Row>
+                            <Row className="h-75 d-inline-block">{""}</Row>
+                            <Row className="justify-content-md-center">
 
-                        {(this.state.mode === "lecture" && this.state.lectures.length > 0) && <Dropdown>
-                            <Dropdown.Toggle variant="outline-info" id="dropdown-basic" title={this.state.selectedCourse}>
-                                Choose the lecture you want to view statistics of
+                                {(this.state.mode === "lecture" && this.state.lectures.length > 0) && <Dropdown>
+                                    <Dropdown.Toggle variant="outline-info" id="dropdown-basic" title={this.state.selectedCourse}>
+                                        Choose the lecture you want to view statistics of
                     </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                {this.state.lectures.map((lecture) => (<Dropdown.Item onClick={() => this.onSelectLecture(lecture)} key={lecture.date}>{lecture.date} {lecture.startingTime} - {lecture.endingTime}</Dropdown.Item>))}
-                            </Dropdown.Menu>
-                        </Dropdown>}
+                                    <Dropdown.Menu>
+                                        {this.state.lectures.map((lecture) => (<Dropdown.Item onClick={() => this.onSelectLecture(lecture)} key={lecture.date}>{lecture.date} {lecture.startingTime} - {lecture.endingTime}</Dropdown.Item>))}
+                                    </Dropdown.Menu>
+                                </Dropdown>}
 
-                    </Row>
-                    <Row className="h-75 d-inline-block">{""}</Row>
-                    <Row className="justify-content-md-center align-items-center">
-                        {(this.state.stats.length > 0 && this.state.mode === "lecture") &&
-                            <>
-                                <Col md="auto" className="align-items-center">
-                                    <h4>Bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}</h4>
-                                </Col>
-                                <Col md="auto">
-                                    <BarChart
-                                        width={500}
-                                        height={400}
-                                        data={this.state.stats}
-                                        margin={{
-                                            top: 5, right: 30, left: 20, bottom: 5,
-                                        }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
+                            </Row>
+                            <Row className="h-75 d-inline-block">{""}</Row>
+                            <Row className="justify-content-md-center align-items-center">
+                                {(this.state.stats.length > 0 && this.state.mode === "lecture") &&
+                                    <>
+                                        <Col md="auto" className="align-items-center">
+                                            <h4>Bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}</h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.stats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
 
-                                        <XAxis dataKey="date" height={50}>
-                                        </XAxis>
-                                        <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                        <Tooltip />
-                                        <Bar dataKey="bookings" fill="#33FFF3" />
-                                    </BarChart>
-                                </Col>
-                            </>}
-                        {(this.state.stats.length === 0 && this.state.selectedDate != null) && <h4> There are no bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}, so no statistics are available.</h4>}
-                        {(this.state.mode === "month" && this.state.stats.length > 0) &&
-                            <>
-                                <Col md="auto">
-                                    <h4>Bookings divided by month</h4>
-                                </Col>
-                                <Col md="auto">
-                                    <BarChart
-                                        width={500}
-                                        height={400}
-                                        data={this.state.stats}
-                                        margin={{
-                                            top: 5, right: 30, left: 20, bottom: 5,
-                                        }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="date" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip />
+                                                <Bar dataKey="bookings" fill="#9FFEF7" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
+                                {(this.state.stats.length === 0 && this.state.selectedDate != null) && <h4> There are no bookings for the lecture {this.state.selectedDate} {this.state.lectureTime}, so no statistics are available.</h4>}
+                                {(this.state.mode === "month" && this.state.stats.length > 0) &&
+                                    <>
+                                        <Col md="auto">
+                                            <h4>Bookings divided by month</h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.stats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
 
-                                        <XAxis dataKey="month" height={50}>
-                                        </XAxis>
-                                        <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                        <Tooltip />
-                                        <Bar dataKey="bookings" fill="#FFE912" />
-                                    </BarChart>
-                                </Col>
-                            </>}
-                        {(this.state.mode === "week" && this.state.stats.length > 0) &&
-                            <>
-                                <Col md="auto">
-                                    <h4>Bookings divided by week</h4>
-                                </Col>
-                                <Col md="auto">
-                                    <BarChart
-                                        width={500}
-                                        height={400}
-                                        data={this.state.stats}
-                                        margin={{
-                                            top: 5, right: 30, left: 20, bottom: 5,
-                                        }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="month" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip />
+                                                <Bar dataKey="bookings" fill="#FEFB94" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
+                                {(this.state.mode === "week" && this.state.stats.length > 0) &&
+                                    <>
+                                        <Col md="auto">
+                                            <h4>Bookings divided by week</h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.stats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
 
-                                        <XAxis dataKey="week" height={50}>
-                                        </XAxis>
-                                        <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                        <Tooltip />
-                                        <Bar dataKey="bookings" fill="#0EDD1E" />
-                                    </BarChart>
-                                </Col>
-                            </>}
-                        {(this.state.mode === "total" && this.state.stats.length > 0) &&
-                            <>
-                                <Col md="auto">
-                                    <h4>Bookings divided by single lecture</h4>
-                                </Col>
-                                <Col md="auto">
-                                    <BarChart
-                                        width={500}
-                                        height={400}
-                                        data={this.state.stats}
-                                        margin={{
-                                            top: 5, right: 30, left: 20, bottom: 5,
-                                        }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="week" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip />
+                                                <Bar dataKey="bookings" fill="#C2FE9F" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
+                                {(this.state.mode === "total" && this.state.stats.length > 0) &&
+                                    <>
+                                        <Col md="auto">
+                                            <h4>Bookings divided by single lecture</h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.stats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
 
-                                        <XAxis dataKey="date" height={50}>
-                                        </XAxis>
-                                        <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                        <Tooltip />
-                                        <Bar dataKey="bookings" fill="#FD1010" />
-                                    </BarChart>
-                                </Col>
-                            </>}
-                        {(this.state.mode === "cancelled" && this.state.cancelledStats.length > 0) &&
-                            <>
-                                <Col md="auto">
-                                    <h4>Cancelled bookings divided by single lecture</h4>
-                                </Col>
-                                <Col md="auto">
-                                    <BarChart
-                                        width={500}
-                                        height={400}
-                                        data={this.state.cancelledStats}
-                                        margin={{
-                                            top: 5, right: 30, left: 20, bottom: 5,
-                                        }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="date" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip />
+                                                <Bar dataKey="bookings" fill="#FF756A" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
+                                {(this.state.mode === "cancelled" && this.state.cancelledStats.length > 0) &&
+                                    <>
+                                        <Col md="auto">
+                                            <h4>Cancelled bookings divided by single lecture</h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.cancelledStats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
 
-                                        <XAxis dataKey="date" height={50}>
-                                        </XAxis>
-                                        <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                        <Tooltip />
-                                        <Bar dataKey="cancellations" fill="#736F70" />
-                                    </BarChart>
-                                </Col>
-                            </>}
-                        {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
-                        {(this.state.mode === "lecture" && this.state.lectures.length == 0) && <h4> There are no in-presence lectures registered for the course {this.state.selectedCourse}</h4>}
-                        {(this.state.mode === "cancelled" && this.state.cancelledStats == 0) && <h4> There are no cancelled bookings registered. </h4>}
+                                                <XAxis dataKey="date" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip />
+                                                <Bar dataKey="cancellations" fill="#736F70" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
+                                {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
+                                {(this.state.mode === "lecture" && this.state.lectures.length == 0) && <h4> There are no in-presence lectures registered for the course {this.state.selectedCourse}</h4>}
+                                {(this.state.mode === "cancelled" && this.state.cancelledStats == 0) && <h4> There are no cancelled bookings registered. </h4>}
 
-                    </Row>
+                            </Row>
 
-                </Jumbotron>
-            </>)}
+                        </Jumbotron>
+                    </>)}
             </AuthContext.Consumer>)
     }
 }
