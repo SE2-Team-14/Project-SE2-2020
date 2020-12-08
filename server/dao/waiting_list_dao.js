@@ -31,14 +31,20 @@ exports.insertInWaitingList = function (studentId, courseId, lectureId) {
 
 exports.getFirstStudentInWaitingList = function (courseId, lectureId) {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM WAITING_LIST WHERE courseId = ? AND lectureId = ? AND bookingDate = (SELECT MIN(bookingDate) FROM WAITING_LIST WHERE courseId = ? AND lectureId = ?) AND bookingTime = (SELECT MIN(bookingTime) FROM WAITING_LIST WHERE courseId = ? AND lectureId = ?)';
+        const sql = 'SELECT studentId FROM WAITING_LIST WHERE courseId = ? AND lectureId = ? AND bookingDate = (SELECT MIN(bookingDate) FROM WAITING_LIST WHERE courseId = ? AND lectureId = ?) AND bookingTime = (SELECT MIN(bookingTime) FROM WAITING_LIST WHERE courseId = ? AND lectureId = ?)';
         let params = [];
-        params.push(courseId, lectureId);
-        db.run(sql, params, function (err) {
-            if (err)
+        params.push(courseId, lectureId, courseId, lectureId, courseId, lectureId);
+        db.get(sql, params, (err, row) => {
+            if (err) {
                 reject(err);
-            else
-                resolve(this.lastID);
+            } else {
+                if (row) {
+                    console.log(row)
+                    resolve(row);
+                } else {
+                    resolve(undefined);
+                }
+            }
         });
     });
 }

@@ -13,6 +13,7 @@ const enrollmentDao = require("./dao/enrollment_dao");
 const classroomDao = require('./dao/classroom_dao');
 const bookingDao = require('./dao/booking_dao');
 const cancelledLectureDao = require('./dao/cancelled_lectures_dao');
+const waitingListDao = require('./dao/waiting_list_dao');
 const Booking = require('./bean/booking');
 const EmailSender = require('./utils/EmailSender');
 const setMidnightTimer = require("./utils/midnightTimer");
@@ -587,6 +588,20 @@ app.post('/api/load-schedule', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 
 });
+
+//-----------------------------------WAITING LIST------------------------------------
+
+/**
+ * GET API
+ * Request Parameters: 
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.get('/api/studentInWaitinglist', (req, res) => {
+  waitingListDao.getFirstStudentInWaitingList(req.query.courseId, req.query.lectureId)
+    .then((result) => res.json(result.studentId))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
 
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)

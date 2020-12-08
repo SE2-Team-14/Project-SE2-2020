@@ -302,6 +302,19 @@ async function getCancelledBookingsStats(course) {
 }
 
 
+//-----------------------------------WAITING LIST------------------------------------
+
+/**
+ * Returns the first student in the waiting list for a specific course and lecture
+ * @param courseId a string containing the id of the course 
+ * @param lectureId a string containing the id of the lecture 
+ */
+async function getFirstStudentInWaitingList(courseId, lectureId) {
+    let url = "/studentInWaitinglist?courseId=" + courseId + "&lectureId=" + lectureId;
+    return await fetchMethod("GET", baseURL + url);
+}
+
+
 //--------------------------------UTILS------------------------------
 
 
@@ -404,6 +417,7 @@ const API = {
     loadEnrollment,
     loadCourses,
     loadSchedule,
+    getFirstStudentInWaitingList,
 };
 
 export default API;
