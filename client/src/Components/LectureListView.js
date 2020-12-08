@@ -10,7 +10,21 @@ class LectureListView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { lectures: [], showBook: false, showBookSuccess: false, id: '', lecture: '', bookings: [], student: '', showDoubleBookError: false, showDelete: false, showDeleteSuccess: false, showDeleteFail: false };
+        this.state = { 
+            lectures: [],
+            showBook: false,
+            showBookSuccess: false,
+            id: '',
+            lecture: '',
+            bookings: [],
+            student: '',
+            showDoubleBookError: false,
+            showDelete: false,
+            showDeleteSuccess: false,
+            showDeleteFail: false, 
+            showBookWaitingList: false,
+            showBookWaitingListSuccess: false
+        };
     }
 
     /**
@@ -153,6 +167,19 @@ class LectureListView extends React.Component {
     }
 
     /**
+     * Called when a student, while inside the modal that pops up after choosing to cancel a booked seat, confirms his intention to delete the booking by pressing the yes button.
+     * Calls all functions related to deleting a booking and saving information about this deletion.
+     * After saving is done updates the list of all bookings and of lectures of the student, and also stops showing the modal asking for booking confirmation and shows instead one that confirms saving ended successfully.
+     * @param studentId a string containing the identifier of the student that performed the cancellation
+     * @param lecture a Lecture object containing all information related to the unbooked lecture
+     */
+    handleBookWaitingList = (studentId, lecture) => {
+        API.putInWaitingList(studentId, lecture);
+        this.setState({ showBookWaitingList: false}, () => API.getLecturesList(this.props.email)
+        .then((lectures) => this.setState({ lectures: lectures, showBookWaitingListSuccess: true })));
+    }
+
+    /**
      * Called when a students clicks on the Book button associated to a lecture with no already booked seat and enough seats left in the rendered list. 
      * Shows the modal for confirming a booking.
      * @param id a string containing the identifier of the student that is performing the booking
@@ -172,12 +199,15 @@ class LectureListView extends React.Component {
         this.setState({ showDelete: true, lecture: lecture, id: id });
     }
 
+    handleClickBookWaitingList = (studentId, lecture) => {
+        this.setState({ showWaitingList: true, studentId : studentId, lecture: lecture});
+    }
     /**
      * Called when a students chooses to close any of the modals shown by the page.
      * Closes the modal.
      */
     handleClose = () => {
-        this.setState({ showBook: false, showBookSuccess: false, showDelete: false, showDeleteSuccess: false });
+        this.setState({ showBook: false, showBookSuccess: false, showDelete: false, showDeleteSuccess: false, showBookWaitingList: false, showBookWaitingListSuccess: false});
     }
 
     /**
@@ -194,7 +224,7 @@ class LectureListView extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} />
+                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} handleClickWaitingList={this.handleClickWaitingList} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} />
                     </Col>
                 </Row>
                 <Modal controlid='Book' show={this.state.showBook} onHide={this.handleClose} animation={false} >
@@ -235,7 +265,25 @@ class LectureListView extends React.Component {
                         <Button variant='primary' onClick={() => this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-
+                <Modal controlid='BookWaitingList' show={this.state.showBookWaitingList} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirm booking in the waiting list</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Do you want to confirm your book in the waiting list?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={() => this.handleBookWaitingList(this.state.id, this.state.lecture)}>Yes</Button>
+                        <Button variant='secondary' onClick={this.handleClose}>No</Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal controlid='BookWaitingListSuccess' show={this.state.showBookWaitingListSuccess} onHide={this.handleClose} animation={false} >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirm booking in the waiting list</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Your prenotation has been booked in the waiting list</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='primary' onClick={() => this.handleClose()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </Jumbotron>
             </>
             )}
@@ -286,7 +334,7 @@ function LectureList(props) {
             {
                 props.lecture.map((l) =>
 
-                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} />
+                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} handleClickWaitingList={props.handleClickWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} />
                 )
 
 
@@ -349,7 +397,7 @@ function LectureItem(props) {
                     }
                     {((find == false) && (props.lecture.numberOfSeats >= maxSeats)) &&
                         <>
-                            <Button disabled> Book</Button>
+                            <Button onClick={() => props.handleClickBookWaitingList(props.id, props.lecture)}> Add in Waiting List</Button>
                         </>
 
                     }
