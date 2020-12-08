@@ -10,9 +10,7 @@ import API from './api/API';
 
 import Header from './Components/Header';
 import Login from './Components/Login';
-import StudentHomePage from './Components/StudentHomePage';
-import TeacherHomePage from './Components/TeacherHomePage';
-import ManagerHomePage from "./Components/ManagerHomePage";
+import HomePage from "./Components/HomePage";
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
 import ManageLectureList from './Components/ManageLectureList';
@@ -92,13 +90,13 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (<StudentHomePage email={email}></StudentHomePage>)
+              return (<HomePage email={email}></HomePage>)
             }}>
             </Route>
 
             <Route exact path="/teacher-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (<TeacherHomePage email={email}></TeacherHomePage>)
+              return (<HomePage email={email}></HomePage>)
             }}>
             </Route>
 
@@ -111,7 +109,7 @@ class App extends React.Component {
               let email = props.match.params.email;
               return (
                 <>
-                  <ManagerHomePage email={email}></ManagerHomePage>
+                  <HomePage email={email}></HomePage>
                   <StatsViewer role="Manager"></StatsViewer>
                 </>)
             }}>

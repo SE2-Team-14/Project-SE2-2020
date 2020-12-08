@@ -7,14 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faParagraph } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom';
 
+
 import API from '../api/API';
 
 
-class ManagerHomePage extends React.Component {
+class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.state.showBookings = false;
         this.state.name = "";
         this.state.surname = "";
     }
@@ -48,14 +48,17 @@ class ManagerHomePage extends React.Component {
                                     }
                                 </Col>
                             </Row>
-
                         </Jumbotron>
-
                     </>
                 )}
             </AuthContext.Consumer>
         );
     }
+    /** 
+     * When we decide to implement particular features in different homepages we can pass a string containing the role of the person when calling this component from App.js
+     * (<HomePage email={email} role="Teacher" />), with possible roles being Student or Teacher
+     * No use for passing the role of Manager since there's a Component for that already
+     */
 }
 
-export default ManagerHomePage;
+export default HomePage;
