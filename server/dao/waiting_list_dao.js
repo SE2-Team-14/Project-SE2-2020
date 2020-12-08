@@ -39,7 +39,6 @@ exports.getFirstStudentInWaitingList = function (courseId, lectureId) {
                 reject(err);
             } else {
                 if (row) {
-                    console.log(row)
                     resolve(row);
                 } else {
                     resolve(undefined);

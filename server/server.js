@@ -592,6 +592,26 @@ app.post('/api/load-schedule', (req, res) => {
 //-----------------------------------WAITING LIST------------------------------------
 
 /**
+ * POST API
+ * Request Parameters: 
+ * Request Body Content:
+ * Response Body Content: 
+ */
+app.post('/api/student-home/put-in-queue', (req, res) => {
+  const studentId = req.body.studentId;
+  const courseId = req.body.courseId;
+  const lectureId = req.body.lectureId;
+  
+  if (!courseId || !lectureId) {
+    res.status(400).end();
+  } else {
+    waitingListDao.insertInWaitingList(studentId, courseId, lectureId)
+      .then(() => (res.status(200).end()))
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  }
+});
+
+/**
  * GET API
  * Request Parameters: 
  * Request Body Content: 

@@ -305,6 +305,17 @@ async function getCancelledBookingsStats(course) {
 //-----------------------------------WAITING LIST------------------------------------
 
 /**
+ * Inserts a student in the waiting list
+ * @param studentId 
+ * @param courseId
+ * @param lectureId 
+ */
+async function putInWaitingList(studentId, courseId, lectureId) {
+    const url = baseURL + '/student-home';
+    return fetchMethod("POST", `${url}/put-in-queue`, { studentId: studentId, courseId: courseId, lectureId: lectureId, });
+}
+
+/**
  * Returns the first student in the waiting list for a specific course and lecture
  * @param courseId a string containing the id of the course 
  * @param lectureId a string containing the id of the lecture 
@@ -418,6 +429,7 @@ const API = {
     loadCourses,
     loadSchedule,
     getFirstStudentInWaitingList,
+    putInWaitingList,
 };
 
 export default API;
