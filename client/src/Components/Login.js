@@ -10,6 +10,8 @@ import API from '../api/API';
 
 import Person from '../api/Person'
 
+const moment = require("moment")
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -90,9 +92,9 @@ class Login extends React.Component {
     //API.loadCourses().then((res) => {
       //console.log("Courses successfully loaded");
     //})
-    //API.loadSchedule().then((res) => {
-      //console.log("Schedule successfully loaded");
-    //})
+    API.loadSchedule().then((res) => {
+      console.log("Schedule successfully loaded");
+    })
   }
 
   /**

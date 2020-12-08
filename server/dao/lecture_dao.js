@@ -20,21 +20,25 @@ function createLecture(row) {
  * Inserts a new lecture in the database
  * @param lecture a Lecture object containing information about the new lecture(identifier, course and teacher identifier, date of the lecture, starting and ending time, whether the lesson is in presence or not, classroom identifier, number of seats already booked)
  */
-exports.addLecture = function (lecture) {
+exports.addLecture = function (lectures) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        let sql = 'INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats) VALUES';
+        
+        for(let i=0; i<lectures.length-1; i++)
+            sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?), ';
+        sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?);';
+
         let params = [];
         
-        params.push(lecture.lectureId, lecture.courseId, lecture.teacherId, lecture.date, lecture.startingTime, lecture.endingTime, lecture.inPresence, lecture.classroomId, lecture.numberOfSeats);
+        for(let i=0; i<lectures.length; i++)
+            params.push(lectures[i].lectureId, lectures[i].courseId, lectures[i].teacherId, lectures[i].date, lectures[i].startingTime, lectures[i].endingTime, lectures[i].inPresence, lectures[i].classroomId, lectures[i].numberOfSeats);
 
-        if (lecture)
-            db.run(sql, params, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else
-                    resolve(this.lastID);
-            });
+        db.run(sql, params, function (err) {
+            if (err) 
+                reject(err);
+            else
+            resolve(this.lastID);
+        });
     });
 }
 

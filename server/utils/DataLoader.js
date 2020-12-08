@@ -6,10 +6,27 @@ const Person = require('../bean/person');
 const Enrollment = require('../bean/enrollment');
 const Course = require('../bean/course');
 const Classroom = require('../bean/classroom');
+const Lecture = require('../bean/lecture');
 const PersonDao = require('../dao/person_dao');
 const EnrollmentDao = require('../dao/enrollment_dao');
 const CourseDao = require('../dao/course_dao');
 const ClassroomDao = require('../dao/classroom_dao');
+const LectureDao = require('../dao/lecture_dao');
+
+function associateDay(weekday){
+    switch(weekday){
+        case 'mon':
+            return 1;
+        case 'tue':
+            return 2;
+        case 'wed':
+            return 3;
+        case 'thu':
+            return 4;
+        case 'fri':
+            return 5;
+    }
+}
 
 class DataLoader{
 
@@ -141,28 +158,51 @@ class DataLoader{
             Papa.parse(csvData, {
                 header: true,
                 complete: async results => {
-                    let classrooms = [];
-                    let classroom;
+                    let lectures = [];
                     for(let i=0; i<results.data.length; i++){
-                        let classroomData = results.data[i];
-                        classroom = new Classroom(
-                            classroomData.Room, 
-                            classroomData.Seats
-                        );
-                        let found = false;
-                        for(let i=0; i<classrooms.length; i++){
-                            if(classrooms[i].classroom == classroom.classroom){
-                                found = true;
-                                break;
-                            }
+                        let data = results.data[i];
+                        
+                        let c = await ClassroomDao.getClassroom(data.Room);
+                        if(c === undefined){
+                            let classroom = new Classroom(data.Room, data.Seats);
+                            await ClassroomDao.addClassroom(classroom);
                         }
-                        if(found==false)
-                            classrooms.push(classroom);
+
+                        let time = data.Time.toString().split('-');
+                        let startingTime = time[0];
+                        let endingTime = time[1];
+
+                        let day = associateDay(data.Day.toLowerCase());
+                        const endOfSemester = moment('2021-01-16');
+                        let date = moment().day(day);
+
+                        let teacher = await CourseDao.getCourseByID(data.Code);
+                        
+                        while(1){
+                            if(date > endOfSemester)
+                                break;
+                            else{
+                                let lecture = new Lecture(
+                                    null, 
+                                    data.Code,
+                                    teacher.teacherId,
+                                    date.format('DD/MM/YYYY'),
+                                    startingTime, 
+                                    endingTime,
+                                    1,
+                                    data.Room,
+                                    0
+                                )
+                                lectures.push(lecture);
+                            }
+                            date = moment(date).add(1, 'week');
+                        }
                     }
-                    console.log(classrooms);
-                    const chunk = 10;
-                    for(let i=0, j=classrooms.length; i<j; i+=chunk) 
-                        await ClassroomDao.addClassroom(classrooms.slice(i, i+chunk));
+
+                    let chunk = 100;
+                    for(let i=0, j=lectures.length; i<j; i+=chunk) 
+                        await LectureDao.addLecture(lectures.slice(i, i+chunk));
+
                     console.log('Complete', results.data.length, 'records.'); 
                     resolve(results.data);
                 }

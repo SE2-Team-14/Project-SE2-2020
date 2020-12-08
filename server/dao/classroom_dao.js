@@ -19,18 +19,12 @@ function createClassroom(row) {
  * Inserts a new classroom in the database
  * @param classroom a Classroom object containing information about the classroom (identifier and maximum number of seats/booked students allowed)
  */
-exports.addClassroom = function (classrooms) {
+exports.addClassroom = function (classroom) {
     return new Promise((resolve, reject) => {
-        let sql = 'INSERT INTO CLASSROOM(classroom, maxNumberOfSeats) VALUES';
-        
-        for(let i=0; i<classrooms.length-1; i++)
-            sql += '(?, ?), ';
-        sql += '(?, ?);';
-
+        const sql = 'INSERT INTO CLASSROOM(classroom, maxNumberOfSeats) VALUES(?, ?)';
         let params = [];
 
-        for(let i=0; i<classrooms.length; i++)
-            params.push(classrooms[i].classroom, classrooms[i].maxNumberOfSeats);
+        params.push(classroom.classroom, classroom.maxNumberOfSeats);
 
         db.run(sql, params, function (err) {
             if (err) 
@@ -68,6 +62,26 @@ exports.getClassrooms = function () {
                 reject(err);
             else
                 resolve(rows.map((row => createClassroom(row))))
+        })
+    })
+}
+
+/**
+ * Returns a classroom given its id
+ */
+exports.getClassroom = function (classroom) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM CLASSROOM WHERE classroom = ?";
+        db.get(sql, [classroom], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(createClassroom(row));
+                } else {
+                    resolve(undefined);
+                }
+            }
         })
     })
 }
