@@ -221,7 +221,11 @@ async function getClassrooms() {
 async function getCourses(teacher) {
     let url = "/courses?teacher=" + teacher;
     return fetchMethod("GET", baseURL + url);
+}
 
+async function getAllCourses() {
+    let url = "/getAllCourses";
+    return fetchMethod("GET", baseURL + url);
 }
 
 
@@ -267,6 +271,11 @@ async function getCancelledBookingsStats(course) {
  */
 async function getTeacherCoursesStatistics(email) {
     let url = "/allCoursesStatistics?teacher=" + email;
+    return await fetchMethod("GET", baseURL + url);
+}
+
+async function getAllCoursesStatistics() {
+    let url = "/allCoursesStats";
     return await fetchMethod("GET", baseURL + url);
 }
 
@@ -370,6 +379,8 @@ const API = {
     getLectureById,
     addCancelledBooking,
     getTeacherCoursesStatistics,
+    getAllCourses,
+    getAllCoursesStatistics,
 };
 
 export default API;

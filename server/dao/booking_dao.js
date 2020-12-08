@@ -264,10 +264,34 @@ exports.getBookedStudentsByLectureId = function (lectureId) {
     });
 }
 
+/**
+ * Returns a list of all bookings made for all separate courses of a teacher
+ * @param email a string containing the email of the teacher that wants to have statistics
+ */
 exports.getTeacherCoursesStatistics = function (email) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT COUNT(*) AS total, COURSE.name FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId AND PERSON.id = COURSE.teacherId AND PERSON.email = ?";
         db.all(sql, [email], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows.length > 0) {
+                    resolve(rows);
+                }
+                else
+                    resolve(undefined);
+            }
+        })
+    })
+}
+
+/**
+ * Returns a list of all bookings made for all courses
+ */
+exports.getAllCoursesStatistics = function () {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) AS total, COURSE.name FROM BOOKING, COURSE, LECTURE WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId";
+        db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);
             else {

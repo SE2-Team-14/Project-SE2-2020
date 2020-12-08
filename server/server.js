@@ -519,6 +519,18 @@ app.get("/api/allCoursesStatistics", (req, res) => {
     res.json(stats)
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
+
+app.get("/api/getAllCourses", (req, res) => {
+  courseDao.getCourses().then((courses) => {
+    res.json(courses)
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+app.get("/api/allCoursesStats", (req, res) => {
+  bookingDao.getAllCoursesStatistics().then((stats) => {
+    res.json(stats)
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)
 /*
