@@ -263,3 +263,20 @@ exports.getBookedStudentsByLectureId = function (lectureId) {
         });
     });
 }
+
+exports.getTeacherCoursesStatistics = function (email) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) AS total, COURSE.name FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId AND PERSON.id = COURSE.teacherId AND PERSON.email = ?";
+        db.all(sql, [email], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows.length > 0) {
+                    resolve(rows);
+                }
+                else
+                    resolve(undefined);
+            }
+        })
+    })
+}

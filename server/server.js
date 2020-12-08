@@ -398,20 +398,21 @@ app.delete('/api/teacher-home/delete-lecture', (req, res) => {
   if (!lecture) {
     res.status(400).end();
   } else {
-        bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then((list) => {
-            for(let item of list){
-              personDao.getPersonByID(item.studentId).then(student => {
-                const subject = 'Lecture cancelled';
-                const recipient = student.email;
-                const message = `Dear ${student.name},\n` + 
-                                `the lecture for the course ${item.name} of ${item.date} at ${item.startingTime} has been cancelled.`;
+    bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then((list) => {
+      for (let item of list) {
+        personDao.getPersonByID(item.studentId).then(student => {
+          const subject = 'Lecture cancelled';
+          const recipient = student.email;
+          const message = `Dear ${student.name},\n` +
+            `the lecture for the course ${item.name} of ${item.date} at ${item.startingTime} has been cancelled.`;
 
-                emailSender.sendEmail(recipient, subject, message);
-              })
-            }
-      })
-      lectureDao.deleteLecture(lecture.lectureId).then(() => {res.status(200).end()
-      }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+          emailSender.sendEmail(recipient, subject, message);
+        })
+      }
+    })
+    lectureDao.deleteLecture(lecture.lectureId).then(() => {
+      res.status(200).end()
+    }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }
 });
 
@@ -505,6 +506,18 @@ app.get('/api/getLectureById/:lectureId', (req, res) => {
   let lectureId = req.params.lectureId;
   lectureDao.getLectureById(lectureId).then((lectures) => res.json(lectures))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+/**
+ * GET API
+ * Request Parameters: a string containing the email of a teacher that wants to know all bookings made for all his courses
+ * Request Body Content: none
+ * Response Body Content: an array containing all bookings made for all courses of a teacher
+ */
+app.get("/api/allCoursesStatistics", (req, res) => {
+  bookingDao.getTeacherCoursesStatistics(req.query.teacher).then((stats) => {
+    res.json(stats)
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 //----------------------COOKIE--------------------------
 //TODO: to be tested (if needed)

@@ -20,7 +20,7 @@ class TeacherStatsViewer extends React.Component {
             stats: [],
             courses: [],
             selectedCourse: null,
-            mode: null,
+            mode: "start",
             lectures: [],
             selectedDate: null,
             lectureTime: null,
@@ -39,6 +39,11 @@ class TeacherStatsViewer extends React.Component {
     componentDidMount() {
         API.getCourses(this.props.email).then((courses) => {
             this.setState({ courses: courses })
+        }).then(() => {
+            API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
+                console.log(stats)
+                this.setState({ stats: stats })
+            })
         })
     }
 
@@ -91,6 +96,18 @@ class TeacherStatsViewer extends React.Component {
                 }
                 this.setState({ stats: [], selectedDate: null, lectureTime: null, cancelledStats: stats, maxStat: max })
             })
+        } else if (mode === "start") {
+            API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
+                let max = 0;
+                let num = 0;
+                for (let i = 0; i < stats.length; i++) {
+                    num = stats[i].total;
+                    if (num > max) {
+                        max = num;
+                    }
+                }
+                this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null, })
+            })
         }
     }
 
@@ -141,7 +158,7 @@ class TeacherStatsViewer extends React.Component {
                                     </Dropdown>}
 
                                 </Col>
-                                <Col md="auto"></Col>
+                                <Col md="auto"> <Button variant="outline-info" active={this.state.mode == "start"} onClick={() => this.chooseMode("start")}> View Total Bookings of all Courses </Button></Col>
                             </Row>
                             <Row className="h-75 d-inline-block">{""}</Row>
                             <Row className="justify-content-md-center">
@@ -201,7 +218,7 @@ class TeacherStatsViewer extends React.Component {
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
                                                 <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                                <Tooltip />
+                                                <Tooltip itemStyle={{ color: "black" }} />
                                                 <Bar dataKey="bookings" fill="#9FFEF7" />
                                             </BarChart>
                                         </Col>
@@ -226,7 +243,7 @@ class TeacherStatsViewer extends React.Component {
                                                 <XAxis dataKey="month" height={50}>
                                                 </XAxis>
                                                 <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                                <Tooltip />
+                                                <Tooltip itemStyle={{ color: "black" }} />
                                                 <Bar dataKey="bookings" fill="#FEFB94" />
                                             </BarChart>
                                         </Col>
@@ -250,7 +267,7 @@ class TeacherStatsViewer extends React.Component {
                                                 <XAxis dataKey="week" height={50}>
                                                 </XAxis>
                                                 <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                                <Tooltip />
+                                                <Tooltip itemStyle={{ color: "black" }} />
                                                 <Bar dataKey="bookings" fill="#C2FE9F" />
                                             </BarChart>
                                         </Col>
@@ -274,7 +291,7 @@ class TeacherStatsViewer extends React.Component {
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
                                                 <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                                <Tooltip />
+                                                <Tooltip itemStyle={{ color: "black" }} />
                                                 <Bar dataKey="bookings" fill="#FF756A" />
                                             </BarChart>
                                         </Col>
@@ -298,8 +315,32 @@ class TeacherStatsViewer extends React.Component {
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
                                                 <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
-                                                <Tooltip />
+                                                <Tooltip itemStyle={{ color: "black" }} />
                                                 <Bar dataKey="cancellations" fill="#736F70" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
+                                {(this.state.mode === "start") &&
+                                    <>
+                                        <Col md="auto">
+                                            <h4> Total bookings made for each course </h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.stats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+                                                <CartesianGrid strokeDasharray="3 3" />
+
+                                                <XAxis dataKey="name" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip itemStyle={{ color: "black" }} />
+                                                <Bar dataKey="total" fill="#736F70" />
                                             </BarChart>
                                         </Col>
                                     </>}

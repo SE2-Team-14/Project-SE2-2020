@@ -88,7 +88,7 @@ async function getPastLectures(course) {
  */
 async function deleteLecture(lecture) {
     const url = baseURL + '/teacher-home';
-    return fetchMethod("DELETE", `${url}/delete-lecture`,{lecture: lecture});
+    return fetchMethod("DELETE", `${url}/delete-lecture`, { lecture: lecture });
 }
 
 
@@ -101,7 +101,7 @@ async function deleteLecture(lecture) {
  */
 async function addCancelledLecture(lecture) {
     const url = baseURL + '/teacher-home';
-    return fetchMethod("POST", `${url}/add-cancelled-lecture`, {lecture: lecture});
+    return fetchMethod("POST", `${url}/add-cancelled-lecture`, { lecture: lecture });
 }
 
 
@@ -120,13 +120,13 @@ async function addCancelledLecture(lecture) {
 async function bookSeat(booking, studentName, courseName, date, startingTime, recipient) {
     const url = baseURL + '/bookings';
     return fetchMethod("POST", url, {
-                booking: booking,
-                studentName: studentName,
-                courseName: courseName,
-                date: date,
-                startingTime: startingTime,
-                recipient: recipient,
-            });
+        booking: booking,
+        studentName: studentName,
+        courseName: courseName,
+        date: date,
+        startingTime: startingTime,
+        recipient: recipient,
+    });
 }
 
 /**
@@ -145,7 +145,7 @@ async function deleteBooking(studentId, lectureId) {
  */
 async function deleteBookingByTeacher(lectureId) {
     let url = baseURL + '/teacher-home/deleteBookingByTeacher';
-    return fetchMethod("DELETE", url, { lectureId: lectureId});
+    return fetchMethod("DELETE", url, { lectureId: lectureId });
 }
 
 /**
@@ -194,7 +194,7 @@ async function getCoursesNames() {
  */
 async function getTeachers() {
     const url = baseURL + '/getTeachers';
-    return await fetchMethod ("GET", `${url}`, (t) => new Person(t.id, t.name, t.surname, t.role, t.email, t.password));
+    return await fetchMethod("GET", `${url}`, (t) => new Person(t.id, t.name, t.surname, t.role, t.email, t.password));
 
 }
 
@@ -261,6 +261,15 @@ async function getCancelledBookingsStats(course) {
     return await fetchMethod("GET", baseURL + url);
 }
 
+/**
+ * Returns statistics about total bookings made for all courses
+ * @param email a string containing the email of the teacher that wants to know all bookings for all his courses
+ */
+async function getTeacherCoursesStatistics(email) {
+    let url = "/allCoursesStatistics?teacher=" + email;
+    return await fetchMethod("GET", baseURL + url);
+}
+
 
 //--------------------------------UTILS------------------------------
 
@@ -272,7 +281,7 @@ async function getCancelledBookingsStats(course) {
  * @return the response of the API
  * 
 */
-async function fetchMethod(method, URL, param){
+async function fetchMethod(method, URL, param) {
     return _fetchMethod(false, method, URL, param)
 }
 
@@ -283,16 +292,16 @@ async function fetchMethod(method, URL, param){
  * @return the response of the API
  * 
 */
-async function fetchMethodAndResolveResponse(method, URL, param){
+async function fetchMethodAndResolveResponse(method, URL, param) {
     return _fetchMethod(true, method, URL, param)
 }
 
 
-async function _fetchMethod(resolveResponse, method, URL, param){
-    if(method == "GET"){
+async function _fetchMethod(resolveResponse, method, URL, param) {
+    if (method == "GET") {
         return _fetchGET(URL, param);
     }
-    if(method == "POST" || method == "DELETE" || method == "PUT"){
+    if (method == "POST" || method == "DELETE" || method == "PUT") {
         return new Promise((resolve, reject) => {
             fetch(URL, {
                 method: method,
@@ -321,11 +330,11 @@ async function _fetchMethod(resolveResponse, method, URL, param){
  * @return the response of the API
  * 
 */
-async function _fetchGET(URL, mapFunction){
+async function _fetchGET(URL, mapFunction) {
     const response = await fetch(URL);
     const responseJSON = await response.json();
     if (response.ok) {
-        if(!mapFunction)
+        if (!mapFunction)
             return responseJSON;
         else
             return responseJSON.map(mapFunction);
@@ -360,6 +369,7 @@ const API = {
     getBookings,
     getLectureById,
     addCancelledBooking,
+    getTeacherCoursesStatistics,
 };
 
 export default API;
