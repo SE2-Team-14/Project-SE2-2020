@@ -125,8 +125,8 @@ class App extends React.Component {
             </Route>
 
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
-              let email = props.match.params.email;
-              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
+              //let email = props.match.params.email;
+              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={this.state.authUser.email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
             }} />
 
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {

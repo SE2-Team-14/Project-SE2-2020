@@ -4,6 +4,7 @@ import API from '../api/API';
 import Booking from '../api/booking';
 import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
+const moment = require("moment");
 
 
 class LectureListView extends React.Component {
@@ -26,13 +27,14 @@ class LectureListView extends React.Component {
             showBookWaitingListSuccess: false
         };
     }
+    //.sort((a,b) => moment(a.date, "DD/MM/YYYY").isBefore(moment(b.date, "DD/MM/YYYY")));
 
     /**
      * Retrieves the list of all future lectures for courses of the student, all existing bookings and the name of the person
      */
     componentDidMount() {
-        API.getLecturesList(this.props.email)
-            .then((lectures) => this.setState({ lectures: lectures }));
+        API.getLecturesList(this.props.id)
+            .then((lectures) => this.setState({ lectures: lectures}));
         this.setState({ id: this.props.id });
         API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }));
         API.getPersonName(this.props.email).then((student) => this.setState({ student: student }));
@@ -44,6 +46,15 @@ class LectureListView extends React.Component {
      * @param lectureId an integer corresponding to the identifier of the lecture the student may be booked in
      */
     findBooking = (studentId, lectureId) => {
+        let find = false;
+        for (let b of this.state.bookings) {
+            if ((b.studentId == studentId) && (b.lectureId == lectureId))
+                find = true;
+        }
+        return find;
+    }
+
+    findBookingWaitingList = (studentId, lectureId) => {
         let find = false;
         for (let b of this.state.bookings) {
             if ((b.studentId == studentId) && (b.lectureId == lectureId))
@@ -146,7 +157,7 @@ class LectureListView extends React.Component {
         b.startingTime = lecture.startingTime;
         this.addBooking(b, this.state.student.name, this.findCourseName(lecture.courseId), lecture.date, lecture.startingTime, this.props.email);
         this.handleIncreaseSeats(lecture);
-        API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }, () => this.setState({ showBook: false }, () => API.getLecturesList(this.props.email)
+        API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }, () => this.setState({ showBook: false }, () => API.getLecturesList(this.props.id)
             .then((lectures) => this.setState({ lectures: lectures, showBookSuccess: true })))));
     }
 
@@ -162,7 +173,7 @@ class LectureListView extends React.Component {
         this.addDeletedBooking(studentId, lecture.lectureId)
         this.handleDecreaseSeats(lecture)
         API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }));
-        this.setState({ showDelete: false }, () => API.getLecturesList(this.props.email)
+        this.setState({ showDelete: false }, () => API.getLecturesList(this.props.id)
             .then((lectures) => this.setState({ lectures: lectures, showDeleteSuccess: true })));
     }
 
@@ -174,8 +185,8 @@ class LectureListView extends React.Component {
      * @param lecture a Lecture object containing all information related to the unbooked lecture
      */
     handleBookWaitingList = (studentId, lecture) => {
-        API.putInWaitingList(studentId, lecture);
-        this.setState({ showBookWaitingList: false}, () => API.getLecturesList(this.props.email)
+        API.putInWaitingList(studentId, lecture.lectureId);
+        this.setState({ showBookWaitingList: false}, () => API.getLecturesList(this.props.id)
         .then((lectures) => this.setState({ lectures: lectures, showBookWaitingListSuccess: true })));
     }
 
@@ -200,7 +211,7 @@ class LectureListView extends React.Component {
     }
 
     handleClickBookWaitingList = (studentId, lecture) => {
-        this.setState({ showWaitingList: true, studentId : studentId, lecture: lecture});
+        this.setState({ showBookWaitingList: true, studentId : studentId, lecture: lecture});
     }
     /**
      * Called when a students chooses to close any of the modals shown by the page.
@@ -214,8 +225,7 @@ class LectureListView extends React.Component {
      * Renders a list of all future lectures for courses the student is enrolled in and the different modals that can pop up (confirmation of booking, confirmation of cancelling a booked seat, booking ended successfully, cancellation ended successfully).
      * 
      */
-    render() {
-
+    render() {        
         return (
             <AuthContext.Consumer>
             {(context) => (
@@ -224,7 +234,7 @@ class LectureListView extends React.Component {
             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
-                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} handleClickWaitingList={this.handleClickWaitingList} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} />
+                        <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} handleClickBookWaitingList={this.handleClickBookWaitingList} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} />
                     </Col>
                 </Row>
                 <Modal controlid='Book' show={this.state.showBook} onHide={this.handleClose} animation={false} >
@@ -334,7 +344,7 @@ function LectureList(props) {
             {
                 props.lecture.map((l) =>
 
-                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} handleClickWaitingList={props.handleClickWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} />
+                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} handleClickBookWaitingList={props.handleClickBookWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} />
                 )
 
 
@@ -399,7 +409,6 @@ function LectureItem(props) {
                         <>
                             <Button onClick={() => props.handleClickBookWaitingList(props.id, props.lecture)}> Add in Waiting List</Button>
                         </>
-
                     }
                 </Col>
             </Row>

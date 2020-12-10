@@ -120,8 +120,8 @@ app.post('/api/login', (req, res) => {
  * Request Body Content: none
  * Response Body Content: array of Lecture objects
  */
-app.get('/api/student-home/:email/bookable-lectures', (req, res) => {
-  lectureDao.getLecturesList(req.params.email)
+app.get('/api/student-home/:id/bookable-lectures', (req, res) => {
+  lectureDao.getLecturesList(req.params.id)
     .then((lectures) => {
       res.json(lectures);
     })
@@ -601,13 +601,12 @@ app.post('/api/load-schedule', (req, res) => {
  */
 app.post('/api/student-home/put-in-queue', (req, res) => {
   const studentId = req.body.studentId;
-  const courseId = req.body.courseId;
   const lectureId = req.body.lectureId;
 
-  if (!courseId || !lectureId) {
+  if (!studentId || !lectureId) {
     res.status(400).end();
   } else {
-    waitingListDao.insertInWaitingList(studentId, courseId, lectureId)
+    waitingListDao.insertInWaitingList(studentId, lectureId)
       .then(() => (res.status(200).end()))
       .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
   }

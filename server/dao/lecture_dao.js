@@ -83,10 +83,10 @@ exports.getLectureById = function (lectureId) {
  * Returns an array containing all in presence lectures of a student. Only the lectures that are in the future (from the current day included onwards) are kept and returned to the calling function.
  * @param email a string containing the email of the student whose future in presence lectures are to be retrieved
  */
-exports.getLecturesList = function (email) {
+exports.getLecturesList = function (id) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM LECTURE WHERE inPresence = 1 AND courseId IN (SELECT courseId FROM ENROLLMENT WHERE email = ?) ORDER BY date, startingTime";
-        db.all(sql, [email], (err, rows) => {
+        const sql = "SELECT * FROM LECTURE WHERE inPresence = 1 AND courseId IN (SELECT courseId FROM ENROLLMENT WHERE id = ?)";
+        db.all(sql, [id], (err, rows) => {
             if (err)
                 reject(err);
             else {
@@ -99,6 +99,13 @@ exports.getLecturesList = function (email) {
                             newRow.push(rows[i])
                         }
                     }
+                    newRow.sort((a,b) => 
+                    { 
+                        if(moment(a.date + ":" + a.startingTime , "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime , "DD/MM/YYYY:HH:mm")))
+                            return 1;
+                        else
+                            return -1;
+                    });
                     resolve(newRow);
                 }
                 else
@@ -128,6 +135,13 @@ exports.getTeacherLectureList = function (id) {
                             newRow.push(rows[i])
                         }
                     }
+                    newRow.sort((a,b) => 
+                    { 
+                        if(moment(a.date + ":" + a.startingTime , "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime , "DD/MM/YYYY:HH:mm")))
+                            return 1;
+                        else
+                            return -1;
+                    });
                     resolve(newRow);
                 }
                 else {
