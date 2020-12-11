@@ -59,7 +59,7 @@ In this document you can find the documentation about our system testing. For ea
 ### Test 2 (A teacher receive a mail )
 - As a teacher I receive a mail at 23:00 with the number of students booked for my next lecture.
 
-![MailNumberStudents](./testImage/TeacherScreen/MailNumberStudents.JPG)
+![MailNumberStudents](./testImage/TeacherScreen/MailNumberStudents.jpg)
 
 ## Story 3 
 ##### As a teacher I want to access the list of students booked for my lectures so that I am informed.
