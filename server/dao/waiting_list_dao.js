@@ -4,8 +4,31 @@
  * Contains methods that access the WAITING_LIST table in the database
  */
 const db = require('../db/db');
-const waiting_list = require('../bean/waiting_list');
-const moment = require("moment")
+const moment = require("moment");
+const WaitingList = require('../bean/waiting_list');
+
+
+function createWaitingList(row) {
+    return new WaitingList(row.studentId, row.lectureId, row.bookingDate, row.bookingTime);
+}
+
+exports.getAllWaitingList = function () {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM WAITING_LIST";
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows)
+                {
+                    resolve(rows.map((row) => createWaitingList(row)));
+                }
+                else
+                    resolve(undefined);
+            }
+        })
+    })
+}
 
 /**
  * Inserts in the database a new cancelled booking

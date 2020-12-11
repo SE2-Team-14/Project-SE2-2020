@@ -3,6 +3,7 @@ import Lecture from './lecture';
 import Person from './Person';
 import Classroom from './classroom';
 import Booking from './booking';
+import WaitingList from './waiting_list';
 const baseURL = "http://localhost:3001/api";
 
 
@@ -328,6 +329,17 @@ async function getAllCoursesStatistics() {
  * @param courseId
  * @param lectureId 
  */
+
+/**
+ * Returns a list of all bookings in the waiting list existing in the database
+ */
+async function getAllWaitingList() {
+    const url = baseURL + '/getAllWaitingList';
+    console.log(url);
+    return await fetchMethod("GET", `${url}`, (w) => new WaitingList(w.studentId, w.lessonId, w.bookingDate, w.bookingTime));
+}
+
+
 async function putInWaitingList(studentId, lectureId) {
     const url = baseURL + '/student-home';
     return fetchMethod("POST", `${url}/put-in-queue`, { studentId: studentId, lectureId: lectureId, });
@@ -461,6 +473,7 @@ const API = {
     getTeacherCoursesStatistics,
     getAllCourses,
     getAllCoursesStatistics,
+    getAllWaitingList,
 };
 
 export default API;

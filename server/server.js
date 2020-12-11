@@ -594,6 +594,18 @@ app.post('/api/load-schedule', (req, res) => {
 //-----------------------------------WAITING LIST------------------------------------
 
 /**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array of Booking objects
+ */
+app.get('/api/getAllWaitingList', (req, res) => {
+  console.log(waitingListDao.getAllWaitingList())
+  waitingListDao.getAllWaitingList().then((waitingList) => res.json(waitingList))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
+/**
  * POST API
  * Request Parameters: 
  * Request Body Content:
