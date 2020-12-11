@@ -70,3 +70,20 @@ exports.getCancelledLectures = function () {
         })
     })
 }
+
+exports.getCancelledLecturesStats = function () {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) AS cancellations, COURSE.name AS courseName, PERSON.name, PERSON.surname FROM COURSE, CANCELLED_LECTURES, PERSON WHERE CANCELLED_LECTURES.courseId = COURSE.courseId  AND COURSE.teacherId = PERSON.id GROUP BY PERSON.id";
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (rows) {
+                    resolve(rows)
+                } else {
+                    resolve(undefined)
+                }
+            }
+        })
+    })
+}

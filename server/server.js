@@ -653,9 +653,39 @@ app.get("/api/getAllCourses", (req, res) => {
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array containing the total count of bookings made for each course
+ */
 app.get("/api/allCoursesStats", (req, res) => {
   bookingDao.getAllCoursesStatistics().then((stats) => {
     res.json(stats)
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array containing all courses with name and surname of the teacher in charge of each course
+ */
+app.get("/api/getCoursesAndTeachers", (req, res) => {
+  courseDao.getCoursesAndTeachers().then((courses) => {
+    res.json(courses);
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array containing statistics about cancelled lectures for every course
+ */
+app.get("/api/cancelledLecturesStats", (req, res) => {
+  cancelledLectureDao.getCancelledLecturesStats().then((stats) => {
+    res.json(stats);
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 

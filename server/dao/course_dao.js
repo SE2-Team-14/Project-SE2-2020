@@ -22,23 +22,23 @@ function createCourse(row) {
 exports.createCourse = function (courses) {
     return new Promise((resolve, reject) => {
         let sql = 'INSERT INTO COURSE(courseId, teacherId, name, year, semester) VALUES';
-        
-        for(let i=0; i<courses.length-1; i++)
+
+        for (let i = 0; i < courses.length - 1; i++)
             sql += '(?, ?, ?, ?, ?), ';
         sql += '(?, ?, ?, ?, ?);';
 
         let params = [];
 
-        for(let i=0; i<courses.length; i++)
+        for (let i = 0; i < courses.length; i++)
             params.push(courses[i].courseId, courses[i].teacherId, courses[i].name, courses[i].year, courses[i].semester);
 
         db.run(sql, params, function (err) {
-            if (err) 
+            if (err)
                 reject(err);
-                
-            else 
+
+            else
                 resolve(this.lastID);
-        
+
         });
     });
 }
@@ -107,7 +107,7 @@ exports.getCourses = function () {
 exports.getCoursesOfTeacher = function (teacherName) {
     return new Promise((resolve, reject) => {
 
-        const sql = "SELECT COURSE.name FROM COURSE, PERSON WHERE COURSE.teacherId = PERSON.id AND PERSON.email = ?";
+        const sql = "SELECT COURSE.name, COURSE.courseId FROM COURSE, PERSON WHERE COURSE.teacherId = PERSON.id AND PERSON.email = ?";
         db.all(sql, [teacherName], (err, row) => {
             if (err) {
                 reject(err);
@@ -122,3 +122,19 @@ exports.getCoursesOfTeacher = function (teacherName) {
     });
 }
 
+exports.getCoursesAndTeachers = function () {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COURSE.name as courseName, PERSON.name, PERSON.surname, COURSE.courseId FROM COURSE, PERSON WHERE COURSE.teacherId = PERSON.id"
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (rows) {
+                    resolve(rows);
+                } else {
+                    resolve(undefined);
+                }
+            }
+        })
+    })
+}

@@ -264,12 +264,21 @@ async function getCourses(teacher) {
     return fetchMethod("GET", baseURL + url);
 }
 
+/**
+ * Returns a list of all courses present in the database
+ */
 async function getAllCourses() {
     let url = "/getAllCourses";
     return fetchMethod("GET", baseURL + url);
 }
 
-
+/**
+ * Returns a list of all courses with also information about the teacher in charge of each course
+ */
+async function getCoursesAndTeachers() {
+    let url = "/getCoursesAndTeachers";
+    return fetchMethod("GET", baseURL + url);
+}
 //-------------------------STUDENTS----------------------------
 
 /**
@@ -315,11 +324,22 @@ async function getTeacherCoursesStatistics(email) {
     return await fetchMethod("GET", baseURL + url);
 }
 
+/**
+ * Returns statistics about total bookings made for all courses available
+ * @param email a string containing the email of the teacher that wants to know all bookings for all his courses
+ */
 async function getAllCoursesStatistics() {
     let url = "/allCoursesStats";
     return await fetchMethod("GET", baseURL + url);
 }
 
+/**
+ * Returns statistics about cancelled lectures for all courses available
+ */
+async function getCancelledLecturesStats() {
+    let url = "/cancelledLecturesStats";
+    return await fetchMethod("GET", baseURL + url);
+}
 
 //-----------------------------------WAITING LIST------------------------------------
 
@@ -474,6 +494,8 @@ const API = {
     getAllCourses,
     getAllCoursesStatistics,
     getAllWaitingList,
+    getCoursesAndTeachers,
+    getCancelledLecturesStats,
 };
 
 export default API;
