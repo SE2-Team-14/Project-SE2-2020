@@ -78,7 +78,7 @@ class Login extends React.Component {
 
   /**
    * Renders the form that implements the login to the application.
-   * After a successful login redirects a user to the appropriate homepage based on his role: Student, Teacher, Officer(not yet implemented), Manager(not yet implemented)
+   * After a successful login redirects a user to the appropriate homepage based on his role: Student, Teacher, Officer, Manager(not yet implemented)
    */
   render() {
     return (
@@ -92,6 +92,8 @@ class Login extends React.Component {
               && <Redirect to={`/student-home/${context.authUser.email}`} />}
             {this.state.submitted && (context.authUser != null && context.authUser.role === "Manager")
               && <Redirect to={`/manager-home/${context.authUser.email}`} />}
+            {this.state.submitted && (context.authUser != null && context.authUser.role === "SupportOfficer")
+              && <Redirect to={`/support-officer-home/${context.authUser.email}`} />}
             <Container fluid>
               <Row>
                 <Col>

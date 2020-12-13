@@ -31,7 +31,7 @@ const Header = (props) => {
           {(context.authUser != null && context.authUser.role === "Teacher") && <Navbar.Brand as={NavLink} to={`/teacher-home/${context.authUser.email}`}>
             PULSeBS
           </Navbar.Brand>}
-          {(context.authUser != null && context.authUser.role === "Manager") && <Navbar.Brand as={NavLink} to={`/manager-home/${context.authUser.email}`}>
+          {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Navbar.Brand as={NavLink} to={`/support-officer-home/${context.authUser.email}`}>
             PULSeBS
           </Navbar.Brand>}
           <Nav className="mr-auto">
@@ -40,6 +40,7 @@ const Header = (props) => {
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/booked-lectures`} >Booked Lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/manage-lectures`} >Manage Lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/statistics`} >Statistics</Nav.Link>}
+            {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Nav.Link as={NavLink} to={`/support-officer-home/${context.authUser.email}/loader`} >Load Data</Nav.Link>}
           </Nav>
           <Nav className="ml-md-auto">
             {context.authUser &&
