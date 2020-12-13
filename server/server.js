@@ -22,6 +22,7 @@ const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
 const DataLoader = require('./utils/DataLoader');
+const Lecture = require('./bean/lecture');
 
 
 // Authorization error
@@ -269,7 +270,29 @@ app.delete('/api/student-home/delete-book', (req, res) => {
   const lectureId = req.body.lectureId;
   const studentId = req.body.studentId;
   bookingDao.deleteBooking(studentId, lectureId)
-    .then(() => res.status(200).end())
+    .then(() => {
+      waitingListDao.getFirstStudentInWaitingList(lectureId)
+      .then( (result) => {
+        lectureDao.getLectureById(lectureId).then((lecture) => {
+          bookingDao.addBoocking({studentId:result.studentId, lectureId: lectureId, startingTime: lecture.startingTime}).then(() => {
+            waitingListDao.deleteFromWaitingList(result.studentId, lectureId).then(() => {
+              personDao.getPersonByID(result.studentId).then((person) => {
+                courseDao.getCourseByID(lecture.courseId).then((course) => {
+                  const subject = "Moved from waiting list";
+                  const message = `Dear ${person.name} ${person.surname},\n` +
+                  `you have been moved from the waiting list of the course ` + course.name +
+                  ` of ${lecture.date} at ${lecture.startingTime} to the the list of students booked as someone has canceled his booking.\n` +
+                  `Don't forget to attend the lecture.`
+                  console.log(message)
+                  emailSender.sendEmail(person.email, subject, message)
+                  res.status(200).end()
+                })
+              })
+            })
+          })
+        })
+      })
+    })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 /*
