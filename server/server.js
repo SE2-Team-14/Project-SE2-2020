@@ -22,7 +22,7 @@ const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
 const DataLoader = require('./utils/DataLoader');
-
+const fileUpload = require('express-fileupload');
 
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
@@ -36,6 +36,7 @@ app.use(morgan('tiny'));
 
 app.use(express.json());
 
+app.use(fileUpload());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -510,84 +511,50 @@ app.get('/api/getLectureById/:lectureId', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
-/**
-
- * POST API
- * Request Parameters: none
- * Request Body Content: 
- * Response Body Content: 
- */
-app.post('/api/load-students', (req, res) => {
+app.post('/upload/:inputType/', (req, res) => {
+  if (req.files === null) {
+    return res.status(400).json({ msg: 'No file uploaded' });
+  }
+  const file = req.files.file;
+  const inputType = req.params.inputType;
   const dataLoader = new DataLoader();
-  const filePath = 'data/Students.csv';
 
-  dataLoader.readStudentsCSV(filePath)
-    .then(async (result) => (await res.status(201).json(result.lenght)))
-    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+  file.mv(`${__dirname}/data/${file.name}`, err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
 
-});
+    let filePath = `${__dirname}/data/${file.name}`;
 
-/**
- * POST API
- * Request Parameters: none
- * Request Body Content: 
- * Response Body Content: 
- */
-app.post('/api/load-teachers', (req, res) => {
-  const dataLoader = new DataLoader();
-  const filePath = 'data/Professors.csv';
-
-  dataLoader.readTeachersCSV(filePath)
-    .then(async (result) => (await res.status(201).json(result.lenght)))
-    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-
-});
-
-/**
- * POST API
- * Request Parameters: none
- * Request Body Content: 
- * Response Body Content: 
- */
-app.post('/api/load-enrollments', (req, res) => {
-  const dataLoader = new DataLoader();
-  const filePath = 'data/Enrollment.csv';
-
-  dataLoader.readEnrollmentsCSV(filePath)
-    .then(async (result) => (await res.status(201).json(result.lenght)))
-    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-
-});
-
-/**
- * POST API
- * Request Parameters: none
- * Request Body Content: 
- * Response Body Content: 
- */
-app.post('/api/load-courses', (req, res) => {
-  const dataLoader = new DataLoader();
-  const filePath = 'data/Courses.csv';
-
-  dataLoader.readCoursesCSV(filePath)
-    .then(async (result) => (await res.status(201).json(result.lenght)))
-    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-
-});
-
-/**
- * POST API
- * Request Parameters: none
- * Request Body Content: 
- * Response Body Content: 
- */
-app.post('/api/load-schedule', (req, res) => {
-  const dataLoader = new DataLoader();
-  const filePath = 'data/Schedule.csv';
-
-  dataLoader.readScheduleCSV(filePath)
-    .then(async (result) => (await res.status(201).json(result.lenght)))
-    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+    switch (inputType) {
+      case "student":
+        dataLoader.readStudentsCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+        break;
+      case "teacher":
+        dataLoader.readTeachersCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+        break;
+      case "enrollment":
+        dataLoader.readEnrollmentsCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));    
+        break;
+      case "schedule":
+        dataLoader.readScheduleCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+        break;
+      case "course":
+        dataLoader.readCoursesCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+        break;
+    }
+  });
 
 });
 

@@ -1,8 +1,14 @@
-import React from 'react';
-import { Jumbotron, Button, FormText } from 'react-bootstrap';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Jumbotron, Button } from 'react-bootstrap';
+
 const Papa = require('papaparse');
 
 const LoadDataView = () => {
+  const [file, setFile] = useState("");
+  const [inputType, setFileType] = useState("");
+  const [filename, setFilename] = useState('Choose File');
+
   const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
   const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN";
   const enrollmentHeader = "Code,Student";
@@ -22,45 +28,63 @@ const LoadDataView = () => {
 
     switch (header.join(",")) {
       case studentHeader:
-        console.log("Student header");
+        setFileType("student");
         break;
       case teacherHeader:
-        console.log("Teacher header");
+        setFileType("teacher");
         break;
       case enrollmentHeader:
-        console.log("Enrollment header");
+        setFileType("enrollment");
         break;
       case scheduleHeader:
-        console.log("Schedule header");
+        setFileType("schedule");
         break;
       case coursesHeader:
-        console.log("Course header");
+        setFileType("course");
         break;
       default:
         alert("The file does not contains students or the format is wrong!");
         break;
     }
-      
   }
 
-  const onChange = (file) => {
+  const onChange = (e) => {
+    let file = e.target.files[0]
     let fileData = new FileReader();
-    fileData.onload = handleFile;
+    fileData.onloadend = handleFile;
     fileData.readAsText(file);
+
+    setFile(e.target.files[0]);
+    setFilename(e.target.files[0].name);
   }
 
   const onSubmit = async e => {
     e.preventDefault();
-    //const formData = new FormData();
-    //formData.append('file', file);
+    const formData = new FormData();
+    formData.append('file', file);
 
+    try {
+      const res = await axios.post(`/upload/${inputType}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('File Uploaded');
+    } catch (err) {
+      if (err.response.status === 500) {
+        console.log('There was a problem with the server');
+      } else {
+        console.log(err.response.data.msg);
+      }
+    }
   };
 
   return (
     <Jumbotron className="text-center">
       <h4>Select a file to load data into the system </h4>
       <p></p>
-      <input type="file" id="students" accept=".csv" onChange={e => onChange(e.target.files[0])} />
+      <input type="file" id="students" accept=".csv" onChange={onChange} />
       <Button onClick={onSubmit}>Submit</Button>
     </Jumbotron>
   );
