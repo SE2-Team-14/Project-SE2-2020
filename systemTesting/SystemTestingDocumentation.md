@@ -467,7 +467,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ## Story 11
 ###### As a booking manager I want to monitor usage (booking, cancellations, attendance) of the system.
-<<<<<<< HEAD
+
 ### Test 23 (A booking manages accesses the system and views the statistics page for all courses, where he can see the total amount of bookings for all courses present)
 
 - Like a booking manager I need to put my credentials in the login form and then press the Login button.

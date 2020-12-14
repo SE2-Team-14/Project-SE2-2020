@@ -12,6 +12,7 @@ const Classroom = require('../bean/classroom');
 const Booking = require('../bean/booking');
 const CancelledBooking = require('../bean/cancelled_bookings');
 const CancelledLecture = require('../bean/cancelled_lectures');
+const WaitingList = require('../bean/waiting_list');
 const PersonDao = require('../dao/person_dao');
 const CourseDao = require('../dao/course_dao');
 const LectureDao = require('../dao/lecture_dao');
@@ -21,6 +22,7 @@ const BookingDao = require('../dao/booking_dao');
 const CancelledBookingsDao = require('../dao/cancelled_bookings_dao');
 const CancelledLecturesDao = require('../dao/cancelled_lectures_dao');
 const EmailSender = require('../utils/EmailSender');
+const WaitingListDao = require('../dao/waiting_list_dao');
 
 const moment = require('moment');
 const chai = require('chai');
@@ -826,6 +828,39 @@ describe('Server side unit test', function () {
         return await CancelledLecturesDao.getCancelledLectures().then(cl => CancelledLecturesDao.deleteCancelledLecture(cl[0].cancelledLectureId));
       });
     });
+
+  });
+
+  describe('Test waitinglist_dao', function () {
+    //#40
+    describe('#Insert In Waiting List ', function () {
+      it('Insert In Waiting List ', async function () {
+        return await WaitingListDao.insertInWaitingList("s40", 40);
+            });
+    });
+    //#40.1
+    describe('#Delete from waiting list', function () {
+      it('Deletes from waiting list', async function () {
+        return await WaitingListDao.deleteFromWaitingList('s40', 40);
+      });
+    });
+    //#41
+    describe('#Get first in waiting list ', function () {
+      it('Get first in waiting list ', async function () {
+        WaitingListDao.insertInWaitingList("s41", 41);
+        WaitingListDao.insertInWaitingList("s411", 41);
+        return await WaitingListDao.getFirstStudentInWaitingList(41).then((f) => assert.strictEqual(f.studentId, "s41"));
+            });
+    });
+    //#42
+    describe('#Get all the waiting list ', function () {
+      it('Get all the waiting list ', async function () {
+        WaitingListDao.insertInWaitingList("s41", 41);
+        WaitingListDao.insertInWaitingList("s411", 41);
+        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 2));
+            });
+    });
+
 
   });
 
