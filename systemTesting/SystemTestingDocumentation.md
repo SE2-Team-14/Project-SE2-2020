@@ -643,8 +643,6 @@ In this document you can find the documentation about our system testing. For ea
 - If I click on the button "View Attendance of all Lectures" a graph is shown.
 
 ![AttendanceStats](./testImage/ManagerScreen/AttendanceStats.PNG)
-=======
->>>>>>> 0195955568ed94a4565012e40367307749f791e4
 
 ## Story 12
 ###### As a support officer I want to upload the list of students, courses, teachers, lectures, and classes to setup the system.
