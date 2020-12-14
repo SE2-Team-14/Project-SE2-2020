@@ -122,12 +122,12 @@ exports.deleteBookingByTeacher = function (lectureId) {
 exports.findEmailByLecture = function (lectureId) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT p.name AS PersonName , p.email AS Email, c.name AS CourseName, l.date AS LectureDate, l.startingTime AS LectureStartTime FROM BOOKING b, PERSON p, LECTURE l, COURSE c WHERE b.studentId = p.id AND b.lectureId = l.lectureId AND l.courseId = c.courseId AND b.lectureId = ?";
-        db.get(sql, [lectureId], (err, rows) => {
+        db.all(sql, [lectureId], (err, rows) => {
             if (err)
                 reject(err);
             else {
-                if (rows.length > 0) {
-                    resolve(_emails);
+                if (rows) {
+                    resolve(rows);
                 }
                 else
                     resolve(undefined);
