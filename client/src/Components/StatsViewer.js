@@ -256,7 +256,7 @@ class StatsViewer extends React.Component {
                                         <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                             Choose the Course you want to view statistics of
                     </Dropdown.Toggle>
-                                        <Dropdown.Menu style={{ overflowY: 'scroll', maxHeight: "200px" }}>
+                                        <Dropdown.Menu className="dropdown-menu pre-scrollable" style={{ overflowY: 'scroll', maxHeight: "200px" }}>
                                             {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.courseId}>{course.name}</Dropdown.Item>))}
                                         </Dropdown.Menu>
                                     </Dropdown>}
