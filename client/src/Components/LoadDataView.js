@@ -1,63 +1,69 @@
 import React from 'react';
-import { AuthContext } from '../auth/AuthContext'
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faParagraph } from '@fortawesome/free-solid-svg-icons'
-import { Redirect } from 'react-router-dom';
-import   P5 from 'p5';
+import { Jumbotron, Button, FormText } from 'react-bootstrap';
+const Papa = require('papaparse');
 
+const LoadDataView = () => {
+  const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
+  const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN";
+  const enrollmentHeader = "Code,Student";
+  const scheduleHeader = "Code,Room,Day,Seats,Time";
+  const coursesHeader = "Code,Year,Semester,Course,Teacher";
 
-import API from '../api/API';
+  const handleFile = (e) => {
+    const content = e.target.result.toString();
+    let header = "";
 
-const p5  = new P5(); // create a p5 instance 
-
-class LoadDataView extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-        this.state.name = "";
-        this.state.surname = "";
-    }
-
-
-    componentDidMount() {
-        // when the component are mounted, we insert the load file button
-        let loadButton = p5.createFileInput(this.handleFile); // create the button
-        loadButton.parent("load-button-div"); // set the parent element in wich display the button
-    }
-
-    /**Callback in which we handle the choosen file*/
-    handleFile(file) {
-        console.log(file);
-        if (file.name.endsWith(".csv")) { // checking if the file is a csv file
-            p5.loadTable(file.data, "csv", "header", (csv) => { // callback to use the loaded file
-              console.log(csv.getRowCount(), csv.getRow(0))
-            });// load and parse the csv from the choosen file
-        } else {
-          alert("The choosen file is not a csv file");
-        }
+    Papa.parse(content, {
+      header: false,
+      complete: results => {
+        header = results.data[0]
       }
+    })
 
-    /**
-     * Renders a welcome message, showing name and surname of the logged in user with some generic icons on the sides of the page. Very stilish,
-     */
-    render() {
-        return (
-            <AuthContext.Consumer>
-                {(context) => (
-                    <>
-                        {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                            <div id="load-button-div"/>
-                        </Jumbotron>
-                    </>
-                )}
-            </AuthContext.Consumer>
-        );
+    switch (header.join(",")) {
+      case studentHeader:
+        console.log("Student header");
+        break;
+      case teacherHeader:
+        console.log("Teacher header");
+        break;
+      case enrollmentHeader:
+        console.log("Enrollment header");
+        break;
+      case scheduleHeader:
+        console.log("Schedule header");
+        break;
+      case coursesHeader:
+        console.log("Course header");
+        break;
+      default:
+        alert("The file does not contains students or the format is wrong!");
+        break;
     }
+      
+  }
 
-}
+  const onChange = (file) => {
+    let fileData = new FileReader();
+    fileData.onload = handleFile;
+    fileData.readAsText(file);
+  }
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    //const formData = new FormData();
+    //formData.append('file', file);
+
+  };
+
+  return (
+    <Jumbotron className="text-center">
+      <h4>Select a file to load data into the system </h4>
+      <p></p>
+      <input type="file" id="students" accept=".csv" onChange={e => onChange(e.target.files[0])} />
+      <Button onClick={onSubmit}>Submit</Button>
+    </Jumbotron>
+  );
+};
 
 export default LoadDataView;
