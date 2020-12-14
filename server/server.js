@@ -9,6 +9,7 @@ const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYx
 const lectureDao = require('./dao/lecture_dao');
 const personDao = require('./dao/person_dao')
 const courseDao = require("./dao/course_dao");
+const contactTracingDao = require("./dao/contact_tracing_dao");
 const enrollmentDao = require("./dao/enrollment_dao");
 const classroomDao = require('./dao/classroom_dao');
 const bookingDao = require('./dao/booking_dao');
@@ -710,6 +711,30 @@ app.get("/api/cancelledLecturesStats", (req, res) => {
   cancelledLectureDao.getCancelledLecturesStats().then((stats) => {
     res.json(stats);
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+
+//-----------------------CONTACT TRACING--------------------------------------
+
+/**
+ * GET API 
+ * Request parameters: string containing the student id to set as the entry point for the contact tracing
+   Request body content: none
+   Response body content: list of booked students for all lectures of the course
+ */
+app.get("/api/contact-tracing", (req, res) => {
+  contactTracingDao.getContactTracingByStudent(req.query.studentId).then((students) => {
+    let empty = [];
+    if (students === undefined) {
+      res.json(empty)
+    }
+    res.json(students);
+  })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ msg: "Error while calculating contact tracing" }],
+      });
+    });
 })
 
 //----------------------COOKIE--------------------------

@@ -35,6 +35,7 @@ const Header = (props) => {
             PULSeBS
           </Navbar.Brand>}
           <Nav className="mr-auto">
+            {(context.authUser != null /*&& context.authUser.role === "Manager"*/) && <Nav.Link as={NavLink} to={`/contact-tracing`}>Contact Tracing</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to={`/student-home/${context.authUser.email}/bookable-lectures`}>Bookable Lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to={`/student-home/${context.authUser.email}/booked-calendar`}>My booked lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/booked-lectures`} >Booked Lectures</Nav.Link>}
