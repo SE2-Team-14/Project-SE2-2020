@@ -118,8 +118,8 @@ async function updateLecture(lecture) {
  * Returns all past lectures of a course, ordered by date of the lecture
  * @param course a string containing the name of the course whose lectures are required
  */
-async function getPastLectures(course) {
-    let url = "/pastLectures?course=" + course;
+async function getPastLectures(course, teacher, role, name, surname) {
+    let url = "/pastLectures?course=" + course + "&teacher=" + teacher + "&role=" + role + "&name=" + name + "&surname=" + surname;
     return await fetchMethod("GET", baseURL + url);
 }
 

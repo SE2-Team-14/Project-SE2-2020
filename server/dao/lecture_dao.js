@@ -99,9 +99,8 @@ exports.getLecturesList = function (id) {
                             newRow.push(rows[i])
                         }
                     }
-                    newRow.sort((a,b) => 
-                    { 
-                        if(moment(a.date + ":" + a.startingTime , "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime , "DD/MM/YYYY:HH:mm")))
+                    newRow.sort((a, b) => {
+                        if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
                             return 1;
                         else
                             return -1;
@@ -135,9 +134,8 @@ exports.getTeacherLectureList = function (id) {
                             newRow.push(rows[i])
                         }
                     }
-                    newRow.sort((a,b) => 
-                    { 
-                        if(moment(a.date + ":" + a.startingTime , "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime , "DD/MM/YYYY:HH:mm")))
+                    newRow.sort((a, b) => {
+                        if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
                             return 1;
                         else
                             return -1;
@@ -199,20 +197,35 @@ exports.getTomorrowsLecturesList = function (teacherId) {
  * Returns an array of all lectures of a course, ordered by the date in which the lecture took place
  * @param course a string containing the name of the courses whose lectures are to be retrieved
  */
-exports.getPastLectures = function (course) {
+exports.getPastLectures = function (course, teacher, role, name, surname) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM LECTURE, COURSE WHERE LECTURE.courseId = COURSE.courseId AND COURSE.name = ? ORDER BY LECTURE.date";
-        db.all(sql, [course], (err, rows) => {
-            if (err)
-                reject(err);
-            else {
-                if (rows) {
-                    resolve(rows);
+        if (role === "Teacher") {
+            const sql = "SELECT LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM LECTURE, COURSE, PERSON WHERE LECTURE.courseId = COURSE.courseId AND COURSE.teacherId = PERSON.id AND COURSE.name = ? AND PERSON.email = ? ORDER BY LECTURE.date";
+            db.all(sql, [course, teacher], (err, rows) => {
+                if (err)
+                    reject(err);
+                else {
+                    if (rows) {
+                        resolve(rows);
+                    }
+                    else
+                        resolve(undefined);
                 }
-                else
-                    resolve(undefined);
-            }
-        })
+            })
+        } else if (role === "Manager") {
+            const sql = "SELECT LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM LECTURE, COURSE, PERSON WHERE LECTURE.courseId = COURSE.courseId AND COURSE.teacherId = PERSON.id AND COURSE.name = ? AND PERSON.name = ? AND PERSON.surname = ? ORDER BY LECTURE.date";
+            db.all(sql, [course, name, surname], (err, rows) => {
+                if (err)
+                    reject(err);
+                else {
+                    if (rows) {
+                        resolve(rows);
+                    }
+                    else
+                        resolve(undefined);
+                }
+            })
+        }
 
     })
 }
