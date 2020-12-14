@@ -282,14 +282,14 @@ class StatsViewer extends React.Component {
                                     (this.state.courses.length > 0 && this.state.selectedCourse !== null) && <h4> Statistics for the course {this.state.selectedCourse}</h4>
                                 }
                             </Row>
-                            {(this.props.role === "Manager") && <Row className="justify-content-md-center">
+                            {(this.props.role === "Manager") && <Row className="justify-content-md-center align-items-center">
                                 {(this.state.noCancelledLectures && this.state.mode === "cancelledLectures") && <Col md="auto">
                                     <h4> There are no statistics about cancelled lectures available yet.</h4>
                                 </Col>}
 
                                 {(!this.state.noCancelledLectures && this.state.mode === "cancelledLectures") &&
                                     <>
-                                        <Col md="auto">
+                                        <Col md="auto" className="align-items-center">
                                             <h4> Cancelled lectures for each course.</h4>
                                         </Col>
                                         <Col md="auto">
