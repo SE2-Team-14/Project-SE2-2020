@@ -216,3 +216,20 @@ exports.getPastLectures = function (course) {
 
     })
 }
+
+exports.getSpecificLecture = function (courseId, teacherId, date, startingTime, endingTime) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM LECTURE WHERE courseId = ? AND teacherId = ? AND date = ? AND startingTime = ? AND endingTime = ?";
+        db.get(sql, [courseId, teacherId, date, startingTime, endingTime], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(createLecture(row));
+                } else {
+                    resolve(undefined);
+                }
+            }
+        });
+    })
+}
