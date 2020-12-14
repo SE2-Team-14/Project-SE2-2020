@@ -261,6 +261,7 @@ describe('Server side unit test', function () {
     });
 
   });
+  /*
   //#9.1
   describe('Test #POST book', function () {
     var host = "http://localhost:3001";
@@ -282,7 +283,7 @@ describe('Server side unit test', function () {
         });
     });
 
-  });
+  });*/
   //#11
   describe('Test #PUT update lecture', function () {
     var host = "http://localhost:3001";
@@ -662,9 +663,9 @@ describe('Server side unit test', function () {
           arrayCourse.push(testCourse);
           let testBooking = new Booking("s29", 29, today, "12:00");
 
-          LectureDao.addLecture(arrayLecture);
-          BookingDao.addBoocking(testBooking);
-          CourseDao.createCourse(arrayCourse);
+          await LectureDao.addLecture(arrayLecture);
+          await BookingDao.addBoocking(testBooking);
+          await CourseDao.createCourse(arrayCourse);
           return await BookingDao.getStatistics(testLecture.date, "lecture", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testBooking.date);
           })

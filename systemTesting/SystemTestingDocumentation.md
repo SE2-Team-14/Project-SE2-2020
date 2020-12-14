@@ -117,6 +117,7 @@ In this document you can find the documentation about our system testing. For ea
 - Now the list of available lectures is update with the booked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
+
 ## Story 5 
 ###### As a student I want to cancel my booking so that I am free.
 ### Test 6 (A student delete a booked lecture)
@@ -143,6 +144,8 @@ In this document you can find the documentation about our system testing. For ea
 - Now the list of available lectures is update with the unbooked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLecture.JPG)
+
+
 ## Story 6 
 ###### As a student I want to access a calendar with all my bookings for the upcoming weeks.
 ### Test 7 (A student access a calendar without booked lessons)
@@ -464,6 +467,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ## Story 11
 ###### As a booking manager I want to monitor usage (booking, cancellations, attendance) of the system.
+<<<<<<< HEAD
 ### Test 23 (A booking manages accesses the system and views the statistics page for all courses, where he can see the total amount of bookings for all courses present)
 
 - Like a booking manager I need to put my credentials in the login form and then press the Login button.
@@ -639,14 +643,20 @@ In this document you can find the documentation about our system testing. For ea
 - If I click on the button "View Attendance of all Lectures" a graph is shown.
 
 ![AttendanceStats](./testImage/ManagerScreen/AttendanceStats.PNG)
+=======
+>>>>>>> 0195955568ed94a4565012e40367307749f791e4
 
 ## Story 12
 ###### As a support officer I want to upload the list of students, courses, teachers, lectures, and classes to setup the system.
+
 ## Story 13
 ###### As a student I want to be put in a waiting list when no seats are available in the required lecture.
+
 ## Story 14 
 ###### As a student in the waiting list I want to be added to the list of students booked when someone cancels their booking so that I can attend the lecture.
+
 ## Story 15
 ###### As a student I want to get notified when I am taken from the waiting list so that I can attend the lecture.
+
 ## Story 16 
 ###### As a booking manager I want to generate a contact tracing report starting with a positive student so that we comply with safety regulations.
