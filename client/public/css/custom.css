@@ -79,7 +79,7 @@ input:focus:invalid {
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.95;  /* for demo purpose  */
+    opacity: 0.90;  /* for demo purpose  */
 }
 .stack-top{
     z-index: 9;

@@ -44,6 +44,9 @@ let Particle = function (position) {
   this.position = position.copy();
   this.lifespan = 255;
   this.size = random(10, 30);
+  this.angle = random(0, 2* PI);
+  this.angularSpeed = random(0, 0.05);
+  this.direction = random(1) > 0.5? 1 : -1;
 };
 
 Particle.prototype.run = function () {
@@ -55,13 +58,19 @@ Particle.prototype.run = function () {
 Particle.prototype.update = function () {
   this.velocity.add(this.acceleration);
   this.position.add(this.velocity);
+  this.angle += this.direction * this.angularSpeed;
   this.lifespan -= 2;
 };
 
 // Method to display
 Particle.prototype.display = function () {
+  imageMode(CENTER);
   tint(200, 100, 0, this.lifespan);
-  image(sprite, this.position.x, this.position.y, this.size, this.size);
+  push();
+  translate(this.position.x, this.position.y);
+  rotate(this.angle);
+  image(sprite, 0, 0, this.size, this.size);
+  pop();
 };
 
 // Is the particle still useful?
