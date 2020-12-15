@@ -90,13 +90,13 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (<HomePage email={email}></HomePage>)
+              return (<HomePage  email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>)
             }}>
             </Route>
 
             <Route exact path="/teacher-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (<HomePage email={email}></HomePage>)
+              return (<HomePage email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>)
             }}>
             </Route>
 
@@ -126,7 +126,7 @@ class App extends React.Component {
 
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               //let email = props.match.params.email;
-              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={this.state.authUser.email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
+              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={this.state.authUser.email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} /> }</>;
             }} />
 
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {

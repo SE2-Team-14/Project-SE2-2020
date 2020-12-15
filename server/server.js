@@ -129,6 +129,22 @@ app.get('/api/student-home/:id/bookable-lectures', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 
+app.get('/api/student-home/:id/week-lectures', (req, res) => {
+  lectureDao.getWeekLecturesList(req.params.id)
+    .then((lectures) => {
+      res.json(lectures);
+    })
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
+app.get('/api/teacher-home/:id/week-teacher-lectures', (req, res) => {
+  lectureDao.getWeekTeacherLectureList(req.params.id)
+    .then((lectures) => {
+      res.json(lectures);
+    })
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
 /**
  * GET API 
  * Request Parameters: string containing the email of the teacher one wants to know the taught courses

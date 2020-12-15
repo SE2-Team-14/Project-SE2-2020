@@ -97,6 +97,20 @@ async function getLecturesList(id) {
 }
 
 /**
+ * Returns a list of Lecture objects containing all future lectures for courses the student is enrolled in
+ * @param email a string containing the email of the student whose future lectures are required
+ */
+async function getWeekLecturesList(id) {
+    const url = baseURL + '/student-home';
+    return await fetchMethod("GET", `${url}/${id}/week-lectures`, (l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
+}
+
+async function getWeekTeacherLectureList(id) {
+    const url = baseURL + '/teacher-home';
+    return await fetchMethod("GET", `${url}/${id}/week-teacher-lectures`, (l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
+}
+
+/**
  * Returns a list of Lecture items containing all future lectures taught by a teacher
  * @param id a string containing the identifier of the teacher whose future lectures are required
  */
@@ -496,6 +510,8 @@ const API = {
     getAllWaitingList,
     getCoursesAndTeachers,
     getCancelledLecturesStats,
+    getWeekLecturesList,
+    getWeekTeacherLectureList,
 };
 
 export default API;
