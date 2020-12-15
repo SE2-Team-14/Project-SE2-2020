@@ -8,6 +8,10 @@ const Enrollment = require('../bean/enrollment');
 const Course = require('../dao/course_dao');
 const Person = require('../dao/person_dao');
 
+function createEnrollment(row) {
+    return new Enrollment(row.courseId, row.id);
+}
+
 /**
  * Inserts information about a new enrollment (student and course) in the database
  * @param enrollment an Enrollment array containing information about the enrollment (course identifier, student id)
@@ -53,3 +57,24 @@ exports.deleteEnrollment = function (courseId, id) {
     });
 }
 
+/**
+ * Returns an Enrollment object containing all information about an enrollment 
+ * @param courseId a string containing the identifier of the course
+ * @param id a string containing the identifier of the student
+ */
+exports.getEnrollmentById = function (courseId, id) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM ENROLLMENT WHERE courseId = ? AND id = ?";
+        db.get(sql, [courseId, id], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(createEnrollment(row));
+                } else {
+                    resolve(undefined);
+                }
+            }
+        });
+    });
+}
