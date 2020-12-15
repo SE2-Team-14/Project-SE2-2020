@@ -10,6 +10,7 @@ import API from './api/API';
 
 import Header from './Components/Header';
 import Login from './Components/Login';
+import ContactTracing from './Components/ContactTracing';
 import HomePage from "./Components/HomePage";
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
@@ -19,6 +20,7 @@ import StatsViewer from "./Components/StatsViewer";
 import LoadDataView from "./Components/LoadDataView";
 
 import { AuthContext } from './auth/AuthContext'
+//import DynamicBackground from './Components/DynamicBackground';
 
 class App extends React.Component {
   constructor(props) {
@@ -105,12 +107,12 @@ class App extends React.Component {
               return <>{this.state.authUser && <BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses={this.state.courses}></BookedLessonsCalendar>} </>
             }}>
             </Route>
+            
             <Route exact path="/manager-home/:email" render={(props) => {
               let email = props.match.params.email;
               return (
                 <>
                   <HomePage email={email}></HomePage>
-                  <StatsViewer role="Manager"></StatsViewer>
                 </>)
             }}>
             </Route>
@@ -120,6 +122,16 @@ class App extends React.Component {
                 <Col sm={4}></Col>
                 <Col sm={4} className="below-nav">
                   <Login loginCallback={this.loginCallback} />
+                </Col>
+              </Row>
+            </Route>
+
+            
+            <Route exact path="/contact-tracing">
+              <Row className="vheight-100">
+                <Col sm={4}></Col>
+                <Col sm={4} className="below-nav">
+                  <ContactTracing/>
                 </Col>
               </Row>
             </Route>

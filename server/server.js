@@ -9,6 +9,7 @@ const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYx
 const lectureDao = require('./dao/lecture_dao');
 const personDao = require('./dao/person_dao')
 const courseDao = require("./dao/course_dao");
+const contactTracingDao = require("./dao/contact_tracing_dao");
 const enrollmentDao = require("./dao/enrollment_dao");
 const classroomDao = require('./dao/classroom_dao');
 const bookingDao = require('./dao/booking_dao');
@@ -22,7 +23,6 @@ const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
 const DataLoader = require('./utils/DataLoader');
-const fileUpload = require('express-fileupload');
 const Lecture = require('./bean/lecture');
 
 // Authorization error
@@ -36,8 +36,6 @@ let app = new express();
 app.use(morgan('tiny'));
 
 app.use(express.json());
-
-app.use(fileUpload());
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -677,6 +675,30 @@ app.get("/api/cancelledLecturesStats", (req, res) => {
   cancelledLectureDao.getCancelledLecturesStats().then((stats) => {
     res.json(stats);
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+
+//-----------------------CONTACT TRACING--------------------------------------
+
+/**
+ * GET API 
+ * Request parameters: string containing the student id to set as the entry point for the contact tracing
+   Request body content: none
+   Response body content: list of booked students for all lectures of the course
+ */
+app.get("/api/contact-tracing", (req, res) => {
+  contactTracingDao.getContactTracingByStudent(req.query.studentId).then((students) => {
+    let empty = [];
+    if (students === undefined) {
+      res.json(empty)
+    }
+    res.json(students);
+  })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ msg: "Error while calculating contact tracing" }],
+      });
+    });
 })
 
 //----------------------COOKIE--------------------------

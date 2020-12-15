@@ -34,7 +34,11 @@ const Header = (props) => {
           {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Navbar.Brand as={NavLink} to={`/support-officer-home/${context.authUser.email}`}>
             PULSeBS
           </Navbar.Brand>}
+          {(context.authUser != null && context.authUser.role === "Manager") && <Navbar.Brand as={NavLink} to={`/contact-tracing`}>
+            PULSeBS
+          </Navbar.Brand>}
           <Nav className="mr-auto">
+            {(context.authUser != null && context.authUser.role === "Manager") && <Nav.Link as={NavLink} to={`/contact-tracing`}>Contact Tracing</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to={`/student-home/${context.authUser.email}/bookable-lectures`}>Bookable Lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Student") && <Nav.Link as={NavLink} to={`/student-home/${context.authUser.email}/booked-calendar`}>My booked lectures</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/booked-lectures`} >Booked Lectures</Nav.Link>}
