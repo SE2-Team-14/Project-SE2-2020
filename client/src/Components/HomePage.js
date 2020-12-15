@@ -5,8 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faParagraph } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom';
 import API from '../api/API';
-import Lecture from '../api/lecture';
-import { months } from 'moment';
 const moment = require("moment");
 
 
@@ -82,7 +80,7 @@ class HomePage extends React.Component {
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                         <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                             <FontAwesomeIcon icon={faParagraph} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
-                            {(this.state.name && this.state.surname) && (!(moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM'))) && <h1> Welcome {this.state.name}{" "}{this.state.surname}</h1>}
+                            {(this.state.name && this.state.surname) && ((moment(this.state.b, "DD/MM/YYYY").format('DD/MM') != moment().format('DD/MM'))) && <h1> Welcome {this.state.name}{" "}{this.state.surname}</h1>}
                             {!(this.state.name && this.state.surname) && <h1> Loading... </h1>}
                             {(this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM')) &&
                             <h1> <strong>Happy birthday {this.state.name}{" "}{this.state.surname}</strong></h1>}
@@ -213,10 +211,10 @@ function LectureItemStudent(props) {
     let teacher = props.findTeacherName(props.lecture.teacherId);
     let today = moment();
     console.log(props.lecture)
-    return (
+    return 
         (
         (
-            (!(moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') == moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))) 
+            ((moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))) 
             &&
         <ListGroup.Item className='border mt-1'>
             <Row className='justify-content-around'>
@@ -266,7 +264,7 @@ function LectureItemStudent(props) {
                 </Col>
             </Row>
         </ListGroup.Item> )
-        )
+        
     );
 
 }
@@ -278,7 +276,7 @@ function LectureItemTeacher(props) {
     return (
         (
             (
-                (!(moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') == moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))) 
+                ((moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))) 
                 &&
             <ListGroup.Item className='border mt-1'>
                 <Row className='justify-content-around'>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Message from './Message';
 import { Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
 
