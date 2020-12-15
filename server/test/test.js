@@ -23,6 +23,7 @@ const CancelledBookingsDao = require('../dao/cancelled_bookings_dao');
 const CancelledLecturesDao = require('../dao/cancelled_lectures_dao');
 const EmailSender = require('../utils/EmailSender');
 const WaitingListDao = require('../dao/waiting_list_dao');
+const ContactTracingDao = require('../dao/contact_tracing_dao');
 
 const moment = require('moment');
 const chai = require('chai');
@@ -947,6 +948,32 @@ describe('Server side unit test', function () {
         return await BookingDao.findEmailByLecture(44).then((email) => assert.strictEqual(email[0].Email, "email44@test.it"));
       });
     });
+  });
+  describe('Test contact_tracing_dao', function () {
+    //#45
+    describe('#Get tracing of a positive student ', function () {
+      it('Get the list of students in contact with the positive student ', async function () {
+        let today= moment().subtract('1', "day").format("DD/MM/YYYY");
+        let prenotation = moment().subtract('2', "days").format("DD/MM/YYYY");
+        let arrayStudent = [];
+        let arrayLecture = [];
+        let positiveStudent = new Person("p45", "positiveName45", "positiveSurname45", "Student", "positive@email.it", "1234", "positive", "18/11/1999", "DERF453");
+        let student = new Person("s45", "studentName45", "studentSurname45", "Student", "student45@email.it", "1234", "studentCity", "18/11/1999", "aAFGDD34");
+        arrayStudent.push(positiveStudent);
+        arrayStudent.push(student);
+        let lecture = new Lecture(45, "c45", "d45", today, "8:30", "11:30", "1", "45", 45);
+        arrayLecture.push(lecture);
+        let booking1 = new Booking("p45", 45, prenotation, "8:30");
+        let booking2 = new Booking("s45", 45, prenotation, "8:30");
+        let contact = "" + student.id + ", " + student.name + ", "+ student.surname + ", " + student.email;
+        await PersonDao.createPerson(arrayStudent);
+        await LectureDao.addLecture(arrayLecture);
+        await BookingDao.addBoocking(booking1);
+        await BookingDao.addBoocking(booking2);
+        return await ContactTracingDao.getContactTracingByStudent("p45").then((s) => assert.strictEqual(s[0], contact));
+            });
+    });
+    
   });
 
   //----------------------------------------- Email sender tests -----------------------------------------//
