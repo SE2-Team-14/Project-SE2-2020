@@ -1,7 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import Message from './Message';
-import { Jumbotron, Button } from 'react-bootstrap';
+import { Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
 
 const Papa = require('papaparse');
@@ -15,10 +14,12 @@ const coursesHeader = "Code,Year,Semester,Course,Teacher";
 class LoadDataView extends React.Component {
 
   state = {
-    // Initially, no file is selected 
     selectedFile: null,
     fileType: "",
     fileData: "",
+    fileName: "", 
+    showUploadSuccess: false,
+    showUpdateError: false,
   };
 
   handleFile = (e) => {
@@ -32,7 +33,7 @@ class LoadDataView extends React.Component {
       }
     })
 
-    this.setState({fileData: content});
+    this.setState({ fileData: content });
 
     switch (header.join(",")) {
       case studentHeader:
@@ -51,7 +52,7 @@ class LoadDataView extends React.Component {
         this.setState({ fileType: "course" });
         break;
       default:
-        alert("The file does not contains students or the format is wrong!");
+        this.setState({ showUpdateError: true });
         break;
     }
   }
@@ -61,14 +62,16 @@ class LoadDataView extends React.Component {
     let fileData = new FileReader();
     fileData.onloadend = this.handleFile;
     fileData.readAsText(file);
-    this.setState({ selectedFile: file });
+    this.setState({ selectedFile: file, fileName: file.name });
+  }
+
+  handleClose = () => {
+    this.setState({ showUploadSuccess: false, showUpdateError: false, fileName: "", selectedFile: null });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.fileData)
-    API.fileLoader(this.state.fileData, this.state.fileType);
-    
+    API.fileLoader(this.state.fileData, this.state.fileType).then(() => this.setState({ showUploadSuccess: true, selectedFile: null }));
   };
 
   fileData = () => {
@@ -91,6 +94,25 @@ class LoadDataView extends React.Component {
         <div>
           <input type="file" accept=".csv" onChange={this.onChange} />
           <Button onClick={this.onSubmit}>Upload!</Button>
+          <Modal controlid='Success' show={this.state.showUploadSuccess} onHide={this.handleClose} animation={false} >
+            <Modal.Header closeButton>
+              <Modal.Title>Upload successfull!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>The file {this.state.fileName} has been successfully uploaded</Modal.Body>
+            <Modal.Footer>
+              <Button variant='primary' onClick={this.handleClose}>OK</Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal controlid='Error' show={this.state.showUpdateError} onHide={this.handleClose} animation={false} >
+            <Modal.Header closeButton>
+              <Modal.Title>Error uploading file</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>There was a problem loading the file or the cvs format is wrong</Modal.Body>
+            <Modal.Footer>
+              <Button variant='primary' onClick={this.handleClose}>OK</Button>
+            </Modal.Footer>
+          </Modal>
+
         </div>
         {this.fileData()}
       </Jumbotron>

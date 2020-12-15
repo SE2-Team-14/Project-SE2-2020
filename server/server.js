@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const jwt = require("express-jwt");
 const jsonwebtoken = require("jsonwebtoken");
 const morgan = require('morgan'); // logging middleware
-const bodyParser = require('body-parser'); 
+const bodyParser = require('body-parser');
 const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
 const lectureDao = require('./dao/lecture_dao');
@@ -38,7 +38,7 @@ app.use(morgan('tiny'));
 
 //app.use(express.json());
 
-app.use(bodyParser.json({limit : "50mb", extended : true}))
+app.use(bodyParser.json({ limit: "50mb", extended: true }))
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -68,7 +68,6 @@ function sendEmailsAtMidnight() {
         for (let lecture of lectures) {
           courseDao.getCourseByID(lecture.courseId).then((courses) => {
             for (let course of courses) {
-              console.log("Sending an email to: " + teacher.email);
               const recipient = teacher.email;
               const subject = "Bookings ended";
               const message = `Dear ${teacher.name},\n` +
@@ -287,30 +286,36 @@ app.post('/api/bookings', (req, res) => {
 app.delete('/api/student-home/delete-book', (req, res) => {
   const lectureId = req.body.lectureId;
   const studentId = req.body.studentId;
+
   bookingDao.deleteBooking(studentId, lectureId)
     .then(() => {
       waitingListDao.getFirstStudentInWaitingList(lectureId)
         .then((result) => {
-          lectureDao.getLectureById(lectureId).then((lecture) => {
-            bookingDao.addBoocking({ studentId: result.studentId, lectureId: lectureId, startingTime: lecture.startingTime }).then(() => {
-              waitingListDao.deleteFromWaitingList(result.studentId, lectureId).then(() => {
-                personDao.getPersonByID(result.studentId).then((person) => {
-                  courseDao.getCourseByID(lecture.courseId).then((course) => {
-                    const subject = "Moved from waiting list";
-                    const message = `Dear ${person.name} ${person.surname},\n` +
-                      `you have been moved from the waiting list of the course ` + course.name +
-                      ` of ${lecture.date} at ${lecture.startingTime} to the the list of students booked as someone has canceled his booking.\n` +
-                      `Don't forget to attend the lecture.`
-                    console.log(message)
-                    emailSender.sendEmail(person.email, subject, message)
-                    res.status(200).end()
+          if(result!==undefined){
+            lectureDao.getLectureById(lectureId).then((lecture) => {
+              bookingDao.addBoocking({ studentId: result.studentId, lectureId: lectureId, startingTime: lecture.startingTime }).then(() => {
+                lecture.numberOfSeats++;
+                lectureDao.updateLecture(lecture);
+                waitingListDao.deleteFromWaitingList(result.studentId, lectureId).then(() => {
+                  personDao.getPersonByID(result.studentId).then((person) => {
+                    
+                    courseDao.getCourseByID(lecture.courseId).then((course) => {
+                      const subject = "Moved from waiting list";
+                      const message = `Dear ${person.name} ${person.surname},\n` +
+                        `you have been moved from the waiting list of the course ` + course.name +
+                        ` of ${lecture.date} at ${lecture.startingTime} to the the list of students booked as someone has canceled his booking.\n` +
+                        `Don't forget to attend the lecture.`
+                        emailSender.sendEmail(person.email, subject, message);
+                    })
                   })
                 })
               })
             })
-          })
+        }
         })
+        res.status(200).end()
     })
+
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 /*
@@ -569,7 +574,7 @@ app.post('/api/data-loader', (req, res) => {
     case "student":
       dataLoader.readStudentsCSV(fileData)
         .then(async (result) => (await res.status(201).json(result.lenght)))
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+        .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "teacher":
       dataLoader.readTeachersCSV(fileData)
@@ -579,7 +584,7 @@ app.post('/api/data-loader', (req, res) => {
     case "enrollment":
       dataLoader.readEnrollmentsCSV(fileData)
         .then(async (result) => (await res.status(201).json(result.lenght)))
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+        .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "schedule":
       dataLoader.readScheduleCSV(fileData)
@@ -606,7 +611,6 @@ app.post('/api/data-loader', (req, res) => {
  * Response Body Content: an array of Booking objects
  */
 app.get('/api/getAllWaitingList', (req, res) => {
-  console.log(waitingListDao.getAllWaitingList())
   waitingListDao.getAllWaitingList().then((waitingList) => res.json(waitingList))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
