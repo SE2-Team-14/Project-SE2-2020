@@ -404,6 +404,16 @@ describe('Server side unit test', function () {
         return await PersonDao.deletePersonById("-1");
       });
     });
+    //#15.3
+    describe("#GetPersonByEmail", function() {
+      it("Get a person by his email", async function() {
+        let person = new Person("s16", "studentName16", "studentSurname16", "Student", "student16@test.it", "1234", "Napoli", "18/11/1999", "ASDFG432");
+        let arrayPerson = [];
+        arrayPerson.push(person);
+        await PersonDao.createPerson(arrayPerson);
+        return await PersonDao.getPersonByEmail(person.email).then((p) => assert.strictEqual(p.name, "studentName16"));
+      })
+    })
 
   });
 
@@ -429,6 +439,21 @@ describe('Server side unit test', function () {
         return await CourseDao.deleteCourseById('c16');
       });
     });
+    //#16.3
+    describe('#Get courses and teachers', function () {
+      it('Get courses and teachers', async function () {
+        let arrayPerson =[];
+        let arrayCourse = [];
+        let teacher = new Person("d16", "teacherName16", "teacherSurname16", "Teacher", "teacher16@test.it", "1234", null, null, "ADFG342");
+        arrayPerson.push(teacher);
+        await PersonDao.createPerson(arrayPerson);
+        let testCourse = new Course('c16', 'd16', 'Softeng II', "year16", "semester16");
+        arrayCourse.push(testCourse);
+        await CourseDao.createCourse(arrayCourse);
+        return await CourseDao.getCoursesAndTeachers().then((c) => assert.strictEqual(c[0].courseName, "Softeng II"));
+      });
+    });
+
 
   });
 
@@ -613,7 +638,14 @@ describe('Server side unit test', function () {
         return await ClassroomDao.deleteClassroom('25');
       });
     });
-
+    //#25.1
+    describe('#Get classroom', function () {
+      it('Get a classroom', async function () {
+        let classroom = new Classroom("25a", 25);
+        await ClassroomDao.addClassroom(classroom);
+        return await ClassroomDao.getClassroom("25a").then((c) => assert.strictEqual(c.maxNumberOfSeats, 25));
+      });
+    });
   });
 
   describe('Test booking_dao', function () {
@@ -833,7 +865,22 @@ describe('Server side unit test', function () {
         return await CancelledLecturesDao.getCancelledLectures().then(cl => CancelledLecturesDao.deleteCancelledLecture(cl[0].cancelledLectureId));
       });
     });
-
+    //#39.2
+    describe('#Get cancelled lecture stats', function () {
+      it('Get cancelled lecture stats', async function () {
+        let arrayPerson = [];
+        let arrayCourse = [];
+        let person = new Person("d39", "teacherName39", "teacherSurname39", "Teacher", "teacher39@email.it", "1234", null, null, "ASDFR432");
+        arrayPerson.push(person);
+        let course = new Course ("c39", "d39", "CourseName39", "39", "39");
+        arrayCourse.push(course);
+        let cancelledLecture = new CancelledLecture(39, "c39", "d39", "09/12/12", "1");
+        await PersonDao.createPerson(arrayPerson);
+        await CourseDao.createCourse(arrayCourse);
+        await CancelledLecturesDao.addCancelledLecture(cancelledLecture);
+        return await CancelledLecturesDao.getCancelledLecturesStats().then((cl) => assert.strictEqual(cl[0].courseName, "CourseName39"));
+      });
+    });
   });
 
   describe('Test waitinglist_dao', function () {
@@ -852,8 +899,8 @@ describe('Server side unit test', function () {
     //#41
     describe('#Get first in waiting list ', function () {
       it('Get first in waiting list ', async function () {
-        WaitingListDao.insertInWaitingList("s41", 41);
-        WaitingListDao.insertInWaitingList("s411", 41);
+        await WaitingListDao.insertInWaitingList("s41", 41);
+        await WaitingListDao.insertInWaitingList("s411", 41);
         return await WaitingListDao.getFirstStudentInWaitingList(41).then((f) => assert.strictEqual(f.studentId, "s41"));
             });
     });
