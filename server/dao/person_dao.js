@@ -22,20 +22,21 @@ function createPerson(row) {
 exports.createPerson = function (people) {
     return new Promise((resolve, reject) => {
         let sql = 'INSERT INTO PERSON(id, name, surname, role, email, password, city, birthday, ssn) VALUES';
-        
-        for(let i=0; i<people.length-1; i++)
+
+        for (let i = 0; i < people.length - 1; i++)
             sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?), ';
         sql += '(?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
         let params = [];
 
-        for(let i=0; i<people.length; i++)
+        for (let i = 0; i < people.length; i++) {
             params.push(people[i].id, people[i].name, people[i].surname, people[i].role, people[i].email, people[i].password, people[i].city, people[i].birthday, people[i].ssn);
+        }
 
         db.run(sql, params, function (err) {
-            if (err) 
+            if (err)
                 reject(err);
-                
+
             else
                 resolve(this.lastID);
         });

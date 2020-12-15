@@ -117,6 +117,7 @@ In this document you can find the documentation about our system testing. For ea
 - Now the list of available lectures is update with the booked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
+
 ## Story 5 
 ###### As a student I want to cancel my booking so that I am free.
 ### Test 6 (A student delete a booked lecture)
@@ -143,6 +144,8 @@ In this document you can find the documentation about our system testing. For ea
 - Now the list of available lectures is update with the unbooked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLecture.JPG)
+
+
 ## Story 6 
 ###### As a student I want to access a calendar with all my bookings for the upcoming weeks.
 ### Test 7 (A student access a calendar without booked lessons)
@@ -464,13 +467,194 @@ In this document you can find the documentation about our system testing. For ea
 
 ## Story 11
 ###### As a booking manager I want to monitor usage (booking, cancellations, attendance) of the system.
+
+### Test 23 (A booking manages accesses the system and views the statistics page for all courses, where he can see the total amount of bookings for all courses present)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I see my homepage with a welcome message, buttons for selecting the way I want to see statistics and a graph.
+
+![ManagerHP](./testImage/ManagerScreen/ManagerHP.PNG)
+
+- Since the button "View Total Bookings of all Courses" is active I can scroll down and see a graph with all bookings made for all courses in the university.
+
+![TotalStats](./testImage/ManagerScreen/TotalBookingsGraph.PNG)
+
+### Test 24 (A booking manager accesses the system and selects a course for which there are no bookings)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Analisi Matematica II" taught by professor Landro Toscano I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectAnalysisII.PNG)
+
+- If I select the option "Bookings by Week" I see a message saying that there are no statistics about bookings available for the course I selected.
+
+![EmptyMessage](./testImage/ManagerScreen/NoBookings.PNG)
+
+### Test 25 (A booking manager accesses the system and views statistics about bookings of a lecture for a given course, looking for both a lecture with statistics available and one without statistics available)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
+
+- After clicking on the button "View Bookings of Single Lecture" a dropdown menu listing all lectures of the course appears.
+
+![LessonMenu](./testImage/ManagerScreen/LessonMenuEeFI.PNG)
+
+- If I select in the menu the lesson "18/12/2020 10:00 - 13:00" a graph is shown.
+
+![LessonModeStats](./testImage/ManagerScreen/LessonModeEeFI.PNG)
+
+- If I select in the menu the lesson "25/12/2020 10:00 - 13:00" a message reporting that no bookings are available for said lecture is shown.
+
+![LessonModeNoStats](./testImage/ManagerScreen/LessonModeEeFINoStats.PNG)
+
+### Test 26 (A booking manager accesses the system and views statistics about a course related to bookings made in separate weeks, separate months and for separate lectures)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
+
+- After clicking on the button "View Bookings by Week" a graph listing all bookings made in different weeks is shown.
+
+![WeekModeStats](./testImage/ManagerScreen/WeekModeEeFI.PNG)
+
+- After clicking on the button "View Bookings by Month" a graph listing all bookings made in different months is shown.
+
+![MonthModeStats](./testImage/ManagerScreen/MonthModeEeFI.PNG)
+
+- After clicking on the button "View Total Bookings" a graph listing all bookings made for different lectures is shown.
+
+![TotalModeStats](./testImage/ManagerScreen/TotalModeEeFI.PNG)
+
+### Test 27 (A booking manager accesses the system and selects a course for which there are no statistics about cancelled bookings)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
+
+- After clicking on the button "View Cancelled Bookings" a message reporting that there are no statistics is shown.
+
+![CancelledModeNoStats](./testImage/ManagerScreen/CancelledModeEeFINoStats.PNG)
+
+### Test 28 (A booking manager accesses the system and selects a course for which he wants to see statistics about cancelled bookings)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
+
+- After clicking on the button "View Cancelled Bookings" a graph is shown.
+
+![CancelledModeStats](./testImage/ManagerScreen/CancelledModeEeFI.PNG)
+
+### Test 29 (A booking manager accesses the system and chooses to see statistics about cancelled lectures, when there are no cancelled lectures)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the "View Cancelled Lectures of all Courses" and a message reporting that there are no statistics is shown.
+
+![NoCancelledLectures](./testImage/ManagerScreen/NoCancelledLectures.PNG)
+
+### Test 30 (A booking manager accesses the system and chooses to see statistics about cancelled lectures)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the "View Cancelled Lectures of all Courses" and a graph is shown.
+
+![CancelledLecturesStats](./testImage/ManagerScreen/CancelledLecturesStats.PNG)
+
+### Test 31 (A booking manager accesses the system to see statistics about in presence attendance for a course that has no attendance registered yet)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Analisi Matematica II" taught by professor Landro Toscano I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectAnalysisII.PNG)
+
+- If I click on the button "View Attendance of all Lectures" a message reporting that there are no statistics available is shown.
+
+![NoAttendance](./testImage/ManagerScreen/NoAttendance.PNG)
+
+### Test 32 (A booking manager accesses the system to see statistics about in presence attendance)
+
+- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+
+![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
+
+- After a successful login I click on the dropdown menu to select the course of which I want to see statistics of.
+
+![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
+
+- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+
+![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
+
+- If I click on the button "View Attendance of all Lectures" a graph is shown.
+
+![AttendanceStats](./testImage/ManagerScreen/AttendanceStats.PNG)
+
 ## Story 12
 ###### As a support officer I want to upload the list of students, courses, teachers, lectures, and classes to setup the system.
+
 ## Story 13
 ###### As a student I want to be put in a waiting list when no seats are available in the required lecture.
+
 ## Story 14 
 ###### As a student in the waiting list I want to be added to the list of students booked when someone cancels their booking so that I can attend the lecture.
+
 ## Story 15
 ###### As a student I want to get notified when I am taken from the waiting list so that I can attend the lecture.
+
 ## Story 16 
 ###### As a booking manager I want to generate a contact tracing report starting with a positive student so that we comply with safety regulations.

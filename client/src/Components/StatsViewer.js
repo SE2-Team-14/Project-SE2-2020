@@ -29,6 +29,8 @@ class StatsViewer extends React.Component {
             maxStat: 0,
             noBookings: true,
             noCancelledLectures: true,
+            teacherName: null,
+            teacherSurname: null,
         }
     }
 
@@ -74,11 +76,18 @@ class StatsViewer extends React.Component {
      */
     onSelectCourse = (course) => {
         let newCourse = null;
+        let teacherName = null;
+        let teacher = null;
+        let teacherSurname = null;
         if (this.props.role === "Manager") {
             let pos = course.indexOf("-");
             newCourse = course.slice(0, pos - 1);
+            teacher = course.slice(pos + 2, course.length);
+            let pos2 = teacher.indexOf(" ");
+            teacherName = teacher.slice(0, pos2);
+            teacherSurname = teacher.slice(pos2 + 1, teacher.length);
         }
-        this.setState({ selectedCourse: course, selectedCourseName: newCourse, lectures: [], mode: null, selectedDate: null, stats: [], cancelledStats: [] })
+        this.setState({ selectedCourse: course, selectedCourseName: newCourse, lectures: [], mode: null, selectedDate: null, stats: [], cancelledStats: [], teacherName: teacherName, teacherSurname: teacherSurname })
     }
 
     /**
@@ -97,7 +106,7 @@ class StatsViewer extends React.Component {
         this.setState({ mode: mode })
         if (this.props.role === "Teacher") {
             if (mode === "lecture" || mode === "attendance") {
-                API.getPastLectures(this.state.selectedCourse).then((lectures) => {
+                API.getPastLectures(this.state.selectedCourse, this.props.email, this.props.role, null, null).then((lectures) => {
                     this.setState({ lectures: lectures, stats: [], cancelledStats: [] })
                 })
             } else if (mode === "month" || mode === "week" || mode === "total") {
@@ -138,8 +147,8 @@ class StatsViewer extends React.Component {
                 })
             }
         } else if (this.props.role === "Manager") {
-            if (mode === "lecture") {
-                API.getPastLectures(this.state.selectedCourseName).then((lectures) => {
+            if (mode === "lecture") {//next
+                API.getPastLectures(this.state.selectedCourseName, null, this.props.role, this.state.teacherName, this.state.teacherSurname).then((lectures) => {
                     this.setState({ lectures: lectures, stats: [], cancelledStats: [] })
                 })
             } else if (mode === "month" || mode === "week" || mode === "total" || mode === "attendance") {
@@ -256,7 +265,7 @@ class StatsViewer extends React.Component {
                                         <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                             Choose the Course you want to view statistics of
                     </Dropdown.Toggle>
-                                        <Dropdown.Menu style={{ overflowY: 'scroll', maxHeight: "200px" }}>
+                                        <Dropdown.Menu className="dropdown-menu pre-scrollable" style={{ overflowY: 'scroll', maxHeight: "200px" }}>
                                             {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.courseId}>{course.name}</Dropdown.Item>))}
                                         </Dropdown.Menu>
                                     </Dropdown>}
@@ -273,14 +282,14 @@ class StatsViewer extends React.Component {
                                     (this.state.courses.length > 0 && this.state.selectedCourse !== null) && <h4> Statistics for the course {this.state.selectedCourse}</h4>
                                 }
                             </Row>
-                            {(this.props.role === "Manager") && <Row className="justify-content-md-center">
+                            {(this.props.role === "Manager") && <Row className="justify-content-md-center align-items-center">
                                 {(this.state.noCancelledLectures && this.state.mode === "cancelledLectures") && <Col md="auto">
                                     <h4> There are no statistics about cancelled lectures available yet.</h4>
                                 </Col>}
 
                                 {(!this.state.noCancelledLectures && this.state.mode === "cancelledLectures") &&
                                     <>
-                                        <Col md="auto">
+                                        <Col md="auto" className="align-items-center">
                                             <h4> Cancelled lectures for each course.</h4>
                                         </Col>
                                         <Col md="auto">
@@ -335,7 +344,7 @@ class StatsViewer extends React.Component {
                                     <Dropdown.Toggle variant="outline-info" id="dropdown-basic" title={this.state.selectedCourse}>
                                         Choose the lecture you want to view statistics of
                     </Dropdown.Toggle>
-                                    <Dropdown.Menu>
+                                    <Dropdown.Menu className="dropdown-menu pre-scrollable" style={{ overflowY: 'scroll', maxHeight: "10px" }}>
                                         {this.state.lectures.map((lecture) => (<Dropdown.Item onClick={() => this.onSelectLecture(lecture)} key={lecture.date}>{lecture.date} {lecture.startingTime} - {lecture.endingTime}</Dropdown.Item>))}
                                     </Dropdown.Menu>
                                 </Dropdown>}
