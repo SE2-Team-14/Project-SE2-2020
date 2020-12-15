@@ -107,7 +107,7 @@ class App extends React.Component {
               return <>{this.state.authUser && <BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses={this.state.courses}></BookedLessonsCalendar>} </>
             }}>
             </Route>
-            
+
             <Route exact path="/manager-home/:email" render={(props) => {
               let email = props.match.params.email;
               return (
@@ -170,7 +170,7 @@ class App extends React.Component {
             </Route>
 
             <Route>
-              <Redirect to='/load' />
+              <Redirect to='/login' />
             </Route>
 
           </Switch>
