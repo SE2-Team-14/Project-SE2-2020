@@ -30,11 +30,9 @@ function associateDay(weekday) {
 
 class DataLoader {
 
-    async readStudentsCSV(filePath) {
-        const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()
+    async readStudentsCSV(fileData) {
         return new Promise(resolve => {
-            Papa.parse(csvData, {
+            Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
                     let students = [];
@@ -65,11 +63,9 @@ class DataLoader {
         });
     }
 
-    async readTeachersCSV(filePath) {
-        const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()
+    async readTeachersCSV(fileData) {
         return new Promise(resolve => {
-            Papa.parse(csvData, {
+            Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
                     let teachers = [];
@@ -100,11 +96,9 @@ class DataLoader {
         });
     }
 
-    async readEnrollmentsCSV(filePath) {
-        const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()
+    async readEnrollmentsCSV(fileData) {
         return new Promise(resolve => {
-            Papa.parse(csvData, {
+            Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
                     let enrollments = [];
@@ -128,11 +122,9 @@ class DataLoader {
         });
     }
 
-    async readCoursesCSV(filePath) {
-        const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()
+    async readCoursesCSV(fileData) {
         return new Promise(resolve => {
-            Papa.parse(csvData, {
+            Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
                     let courses = [];
@@ -160,11 +152,9 @@ class DataLoader {
         });
     }
 
-    async readScheduleCSV(filePath) {
-        const csvFile = fs.readFileSync(filePath)
-        const csvData = csvFile.toString()
+    async readScheduleCSV(fileData) {
         return new Promise(resolve => {
-            Papa.parse(csvData, {
+            Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
                     let lectures = [];

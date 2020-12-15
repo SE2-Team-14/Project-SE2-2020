@@ -40,41 +40,9 @@ async function getPersonName(email) {
 /**
  * Loads into the system the list of all students stored in a CSV file
  */
-async function loadStudents() {
+async function fileLoader(fileData, fileType) {
     const url = baseURL;
-    return fetchMethod("POST", `${url}/load-students`);
-}
-
-/**
- * Loads into the system the list of all teachers stored in a CSV file
- */
-async function loadTeachers() {
-    const url = baseURL;
-    return fetchMethod("POST", `${url}/load-teachers`);
-}
-
-/**
- * Loads into the system the list of all teachers stored in a CSV file
- */
-async function loadEnrollment() {
-    const url = baseURL;
-    return fetchMethod("POST", `${url}/load-enrollments`);
-}
-
-/**
- * Loads into the system the list of all courses stored in a CSV file
- */
-async function loadCourses() {
-    const url = baseURL;
-    return fetchMethod("POST", `${url}/load-courses`);
-}
-
-/**
- * Loads into the system the list of all courses stored in a CSV file
- */
-async function loadSchedule() {
-    const url = baseURL;
-    return fetchMethod("POST", `${url}/load-schedule`);
+    return fetchMethod("POST", `${url}/data-loader`, { fileData: fileData, fileType: fileType });
 }
 
 //--------------------------------------LECTURES-------------------------------------
@@ -494,11 +462,7 @@ const API = {
     getBookings,
     getLectureById,
     addCancelledBooking,
-    loadStudents,
-    loadTeachers,
-    loadEnrollment,
-    loadCourses,
-    loadSchedule,
+    fileLoader,
     getFirstStudentInWaitingList,
     putInWaitingList,
     getTeacherCoursesStatistics,

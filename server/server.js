@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const jwt = require("express-jwt");
 const jsonwebtoken = require("jsonwebtoken");
 const morgan = require('morgan'); // logging middleware
+const bodyParser = require('body-parser'); 
 const expireTime = 1800;
 const jwtSecret = '6xvL4xkAAbG49hcXf5GIYSvkDICiUAR6EdR5dLdwW7hMzUjjMUe9t6M5kSAYxsvX';
 const lectureDao = require('./dao/lecture_dao');
@@ -35,7 +36,9 @@ let app = new express();
 // Set-up logging
 app.use(morgan('tiny'));
 
-app.use(express.json());
+//app.use(express.json());
+
+app.use(bodyParser.json({limit : "50mb", extended : true}))
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -532,50 +535,49 @@ app.get('/api/getLectureById/:lectureId', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
-app.post('/upload/:inputType/', (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
-  }
-  const file = req.files.file;
-  const inputType = req.params.inputType;
+//-----------------------------------DATA LOADER------------------------------------
+
+/**
+ * POST API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: 
+ */
+app.post('/api/data-loader', (req, res) => {
   const dataLoader = new DataLoader();
 
-  file.mv(`${__dirname}/data/${file.name}`, err => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
+  const fileData = req.body.fileData;
+  const fileType = req.body.fileType;
 
-    let filePath = `${__dirname}/data/${file.name}`;
-
-    switch (inputType) {
-      case "student":
-        dataLoader.readStudentsCSV(filePath)
-          .then(async (result) => (await res.status(201).json(result.lenght)))
-          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-        break;
-      case "teacher":
-        dataLoader.readTeachersCSV(filePath)
-          .then(async (result) => (await res.status(201).json(result.lenght)))
-          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-        break;
-      case "enrollment":
-        dataLoader.readEnrollmentsCSV(filePath)
-          .then(async (result) => (await res.status(201).json(result.lenght)))
-          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));    
-        break;
-      case "schedule":
-        dataLoader.readScheduleCSV(filePath)
-          .then(async (result) => (await res.status(201).json(result.lenght)))
-          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-        break;
-      case "course":
-        dataLoader.readCoursesCSV(filePath)
-          .then(async (result) => (await res.status(201).json(result.lenght)))
-          .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-        break;
-    }
-  });
+  switch (fileType) {
+    case "student":
+      dataLoader.readStudentsCSV(fileData)
+        .then(async (result) => (await res.status(201).json(result.lenght)))
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      break;
+    case "teacher":
+      dataLoader.readTeachersCSV(fileData)
+        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      break;
+    case "enrollment":
+      dataLoader.readEnrollmentsCSV(fileData)
+        .then(async (result) => (await res.status(201).json(result.lenght)))
+      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      break;
+    case "schedule":
+      dataLoader.readScheduleCSV(fileData)
+        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      break;
+    case "course":
+      dataLoader.readCoursesCSV(fileData)
+        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+      break;
+    default:
+      break;
+  }
 
 });
 

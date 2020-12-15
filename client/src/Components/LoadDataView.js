@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import Message from './Message';
 import { Jumbotron, Button } from 'react-bootstrap';
+import API from '../api/API';
 
 const Papa = require('papaparse');
 
@@ -15,7 +17,8 @@ class LoadDataView extends React.Component {
   state = {
     // Initially, no file is selected 
     selectedFile: null,
-    fileType: ""
+    fileType: "",
+    fileData: "",
   };
 
   handleFile = (e) => {
@@ -28,6 +31,8 @@ class LoadDataView extends React.Component {
         header = results.data[0]
       }
     })
+
+    this.setState({fileData: content});
 
     switch (header.join(",")) {
       case studentHeader:
@@ -61,30 +66,12 @@ class LoadDataView extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.selectedFile != null) {
-      const formData = new FormData();
-      formData.append('file', this.state.selectedFile);
-
-      try {
-        axios.post(`/upload/${this.state.fileType}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        console.log('File Uploaded');
-      } catch (err) {
-        if (err.response.status === 500) {
-          console.log('There was a problem with the server');
-        } else {
-          console.log(err.response.data.msg);
-        }
-      }
-    }
+    console.log(this.state.fileData)
+    API.fileLoader(this.state.fileData, this.state.fileType);
+    
   };
 
   fileData = () => {
-
     if (this.state.selectedFile) {
       return (
         <div>
@@ -97,7 +84,6 @@ class LoadDataView extends React.Component {
   };
 
   render() {
-
     return (
       <Jumbotron className="text-center">
         <h4>Select a file to load data into the system </h4>
