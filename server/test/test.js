@@ -436,10 +436,12 @@ describe('Server side unit test', function () {
     //#17
     describe('#Create an enrollment', function () {
       it('Creates a new enrollment', async function () {
-        let testEnrollment = new Enrollment('c17', 'basile@cataldo');
+        let testEnrollment = new Enrollment('c17', 's17');
+        let testEnrollment1 = new Enrollment("c171", 's171');
         let student = new Person("s17", "Basile", "Cataldo", "student", "basile@cataldo", "1234", "city17", "bday17", "SSN17");
         let lecture = new Lecture(17, "c17", "d17", "17/12/17", "8:00", "8:10", 1, "17", 17);
         let course = new Course("c17", "d17", "TestCourse17", "year17", "sem17");
+        let course1 = new Course("c171", "d17", "testCourse17", "17", "17");
         let booking = new Booking("s17", 17, "17/12/17", "8:00");
         let arrayPerson = [];
         let arrayCourse = [];
@@ -447,8 +449,10 @@ describe('Server side unit test', function () {
         let arrayEnrollment = [];
         arrayPerson.push(student);
         arrayCourse.push(course);
+        arrayCourse.push(course1);
         arrayLecture.push(lecture);
         arrayEnrollment.push(testEnrollment);
+        arrayEnrollment.push(testEnrollment1);
         return await PersonDao.createPerson(arrayPerson)
           .then(await LectureDao.addLecture(arrayLecture))
           .then(await CourseDao.createCourse(arrayCourse))
@@ -459,7 +463,8 @@ describe('Server side unit test', function () {
     //#17.1
     describe('#Deletes an enrollment', function () {
       it('Deletes an enrollment', async function () {
-        return await EnrollmentDao.deleteEnrollment('c17', 'basile@cataldo')
+        return await EnrollmentDao.deleteEnrollment('c17', 's17')
+          .then(await EnrollmentDao.deleteEnrollment("c171", "s17"))
           .then(await PersonDao.deletePersonById("s17"))
           .then(await CourseDao.deleteCourseById("c17"))
           .then(await BookingDao.deleteBooking("s17", 17))
@@ -477,16 +482,16 @@ describe('Server side unit test', function () {
         let lecture = new Lecture(18, "testCourse18", "testTeacher18", today, "8.30", "13.00", "1", "18", 18);
         let arrayLecture = [];
         arrayLecture.push(lecture);
-        LectureDao.addLecture(arrayLecture);
-        let enrollment = new Enrollment("testCourse18", "test18@testone");
+        await LectureDao.addLecture(arrayLecture);
+        let enrollment = new Enrollment("testCourse18", "s18");
         let arrayEnrollment = [];
         arrayEnrollment.push(enrollment);
-        EnrollmentDao.addEnrollment(arrayEnrollment);
+        await EnrollmentDao.addEnrollment(arrayEnrollment);
         let student = new Person("s18", "testname18", "testsurname18", "student", "test18@testone", "1233", "city18", "bday18", "SSN18");
         let arrayPerson = [];
         arrayPerson.push(student);
-        PersonDao.createPerson(arrayPerson);
-        return await LectureDao.getLecturesList("test18@testone").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"));
+        await PersonDao.createPerson(arrayPerson);
+        return await LectureDao.getLecturesList("s18").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"));
       });
     });
     //#19
@@ -715,13 +720,13 @@ describe('Server side unit test', function () {
           let testLecture = new Lecture(32, "c32", "testTeacher32", "2/12/2025", "12:00", "13:00", "1", "32", 32);
           let arrayLecture = [];
           arrayLecture.push(testLecture);
-          LectureDao.addLecture(arrayLecture);
+          await LectureDao.addLecture(arrayLecture);
           let testCourse = new Course("c32", "testCourse", "courseName32", "year32", "sem32");
           let arrayCourse = [];
           arrayCourse.push(testCourse);
-          CourseDao.createCourse(arrayCourse);
+          await CourseDao.createCourse(arrayCourse);
           let testBooking = new Booking("s32", 32, "27/11/2020", "12:00");
-          BookingDao.addBoocking(testBooking);
+          await BookingDao.addBoocking(testBooking);
           return await BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testLecture.date);
           })
@@ -875,16 +880,20 @@ describe('Server side unit test', function () {
     describe('#Find Email By Lecture', function () {
       it('Find All the Emails By Lecture', async function () {
         let student = new Person("s44", "studentName44", "studentSurname44", "Student", "email44@test.it", "1234", "testCity44", "18/11/1999", "HGF1235");
+        let teacher = new Person("d44", "teacherName44", "teacherSurname44", "Teacher", "teacher44@test.it", "1234", null, null, "ABCD2342");
         let arrayStudent = [];
         arrayStudent.push(student);
+        arrayStudent.push(teacher);
         await PersonDao.createPerson(arrayStudent);
         let course = new Course("c44", "testTeacher44", "teacherName44", "1", "1");
         let arrayCourse = [];
         arrayCourse.push(course);
         await CourseDao.createCourse(arrayCourse);
         let lecture = new Lecture(44, "c44", "d44", "25/12/2025", "8:30", "11:30", "1", "44", 44);
+        let lecture1 = new Lecture(441, "c44", "d44", "25/12/2025", "8:30", "11:30", "1", "44", 44);
         let arrayLecture = [];
         arrayLecture.push(lecture);
+        arrayLecture.push(lecture1);
         await LectureDao.addLecture(arrayLecture);
         let booking= new Booking("s44", 44, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
