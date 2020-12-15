@@ -40,23 +40,25 @@ class DataLoader {
                     let students = [];
                     for (let i = 0; i < results.data.length; i++) {
                         let dataStudent = results.data[i];
-                        let student = new Person(
-                            dataStudent.Id,
-                            dataStudent.Name,
-                            dataStudent.Surname,
-                            "Student",
-                            dataStudent.OfficialEmail,
-                            "team14",
-                            dataStudent.City,
-                            moment(dataStudent.Birthday).format('DD/MM/YYYY'),
-                            dataStudent.SSN
-                        );
-                        students.push(student);
+                        
+                        if(await PersonDao.getPersonByID(dataStudent.Id)==undefined){
+                            let student = new Person(
+                                dataStudent.Id,
+                                dataStudent.Name,
+                                dataStudent.Surname,
+                                "Student",
+                                dataStudent.OfficialEmail,
+                                "team14",
+                                dataStudent.City,
+                                moment(dataStudent.Birthday).format('DD/MM/YYYY'),
+                                dataStudent.SSN
+                            );
+                            students.push(student);
+                        }
                     }
                     const chunk = 100;
                     for (let i = 0, j = students.length; i < j; i += chunk)
                         await PersonDao.createPerson(students.slice(i, i + chunk));
-                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
@@ -73,23 +75,25 @@ class DataLoader {
                     let teachers = [];
                     for (let i = 0; i < results.data.length; i++) {
                         let dataTeacher = results.data[i];
-                        let teacher = new Person(
-                            dataTeacher.Number,
-                            dataTeacher.GivenName,
-                            dataTeacher.Surname,
-                            "Teacher",
-                            dataTeacher.OfficialEmail,
-                            "team14",
-                            null,
-                            null,
-                            dataTeacher.SSN
-                        );
-                        teachers.push(teacher);
+
+                        if(await PersonDao.getPersonByID(dataTeacher.Number)==undefined){
+                            let teacher = new Person(
+                                dataTeacher.Number,
+                                dataTeacher.GivenName,
+                                dataTeacher.Surname,
+                                "Teacher",
+                                dataTeacher.OfficialEmail,
+                                "team14",
+                                null,
+                                null,
+                                dataTeacher.SSN
+                            );
+                            teachers.push(teacher);
+                        }
                     }
                     const chunk = 100;
                     for (let i = 0, j = teachers.length; i < j; i += chunk)
                         await PersonDao.createPerson(teachers.slice(i, i + chunk));
-                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
@@ -106,16 +110,18 @@ class DataLoader {
                     let enrollments = [];
                     for (let i = 0; i < results.data.length; i++) {
                         let dataEnrollment = results.data[i];
-                        let enrollment = new Enrollment(
-                            dataEnrollment.Code,
-                            dataEnrollment.Student
-                        );
-                        enrollments.push(enrollment);
+
+                        if(await EnrollmentDao.getEnrollmentById(dataEnrollment.Code, dataEnrollment.Student)==undefined){
+                            let enrollment = new Enrollment(
+                                dataEnrollment.Code,
+                                dataEnrollment.Student
+                            );
+                            enrollments.push(enrollment);
+                        }
                     }
                     const chunk = 100;
                     for (let i = 0, j = enrollments.length; i < j; i += chunk)
                         await EnrollmentDao.addEnrollment(enrollments.slice(i, i + chunk));
-                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });
@@ -132,14 +138,17 @@ class DataLoader {
                     let courses = [];
                     for (let i = 0; i < results.data.length; i++) {
                         let dataCourse = results.data[i];
-                        let course = new Course(
-                            dataCourse.Code,
-                            dataCourse.Teacher,
-                            dataCourse.Course,
-                            dataCourse.Year,
-                            dataCourse.Semester
-                        );
-                        courses.push(course);
+
+                        if(await CourseDao.getCourseByID(dataCourse.Code)==undefined){
+                            let course = new Course(
+                                dataCourse.Code,
+                                dataCourse.Teacher,
+                                dataCourse.Course,
+                                dataCourse.Year,
+                                dataCourse.Semester
+                            );
+                            courses.push(course);
+                        }
                     }
                     const chunk = 100;
                     for (let i = 0, j = courses.length; i < j; i += chunk)
@@ -182,18 +191,20 @@ class DataLoader {
                             if (date > endOfSemester)
                                 break;
                             else {
-                                let lecture = new Lecture(
-                                    null,
-                                    data.Code,
-                                    teacher.teacherId,
-                                    date.format('DD/MM/YYYY'),
-                                    startingTime,
-                                    endingTime,
-                                    1,
-                                    data.Room,
-                                    0
-                                )
-                                lectures.push(lecture);
+                                if(await LectureDao.getSpecificLecture(data.Code, teacher.teacherId, date.format('DD/MM/YYYY'), startingTime, endingTime)==undefined){
+                                    let lecture = new Lecture(
+                                        null,
+                                        data.Code,
+                                        teacher.teacherId,
+                                        date.format('DD/MM/YYYY'),
+                                        startingTime,
+                                        endingTime,
+                                        1,
+                                        data.Room,
+                                        0
+                                    )
+                                    lectures.push(lecture);
+                                }
                             }
                             date = moment(date).add(1, 'week');
                         }
@@ -202,8 +213,6 @@ class DataLoader {
                     let chunk = 100;
                     for (let i = 0, j = lectures.length; i < j; i += chunk)
                         await LectureDao.addLecture(lectures.slice(i, i + chunk));
-
-                    console.log('Complete', results.data.length, 'records.');
                     resolve(results.data);
                 }
             });

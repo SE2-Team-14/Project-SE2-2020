@@ -116,3 +116,8 @@
   - request parameters: empty
   - request body: the lectureId of the lecture and the studentId of the student that want unbook the lecture with id = lectureId
   - response body: empty
+
+- GET `/api/contacttracing`
+  - request query parameters: studentId, the positive student to be tracked
+  - request body: empty
+  - response body: a list of string containing information about people being in contact with the positive students

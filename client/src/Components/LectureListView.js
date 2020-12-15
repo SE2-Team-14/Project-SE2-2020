@@ -4,9 +4,6 @@ import API from '../api/API';
 import Booking from '../api/booking';
 import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
-import WaitingList from '../api/waiting_list';
-const moment = require("moment");
-
 
 class LectureListView extends React.Component {
 
@@ -29,7 +26,6 @@ class LectureListView extends React.Component {
             showBookWaitingListSuccess: false
         };
     }
-    //.sort((a,b) => moment(a.date, "DD/MM/YYYY").isBefore(moment(b.date, "DD/MM/YYYY")));
 
     /**
      * Retrieves the list of all future lectures for courses of the student, all existing bookings and the name of the person

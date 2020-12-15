@@ -10,15 +10,17 @@ import API from './api/API';
 
 import Header from './Components/Header';
 import Login from './Components/Login';
+import ContactTracing from './Components/ContactTracing';
 import HomePage from "./Components/HomePage";
 import LectureListView from './Components/LectureListView';
 import BookedStudentsList from "./Components/BookedStudentsList";
 import ManageLectureList from './Components/ManageLectureList';
 import BookedLessonsCalendar from './Components/LessonsCalendar';
 import StatsViewer from "./Components/StatsViewer";
-
+import LoadDataView from "./Components/LoadDataView";
 
 import { AuthContext } from './auth/AuthContext'
+//import DynamicBackground from './Components/DynamicBackground';
 
 class App extends React.Component {
   constructor(props) {
@@ -42,7 +44,7 @@ class App extends React.Component {
     //}
     //).catch((err) => {
     //this.setState({ authErr: err.errorObj });
-    this.props.history.push("/login"); // TODO: for debug only, to be changed with the login page
+    this.props.history.push("/login");
     //});
   }
 
@@ -51,7 +53,7 @@ class App extends React.Component {
     if (err) {
       if (err.status && err.status === 401) {
         this.setState({ authErr: err.errorObj });
-        this.props.history.push("/login"); // TODO: to be changed with the login page
+        this.props.history.push("/login");
       }
     }
   }
@@ -82,7 +84,7 @@ class App extends React.Component {
     return (
       <AuthContext.Provider value={value}>
         {
-          !this.state.authUser && <Redirect to="/login"></Redirect> // if there is no user in the system, redirect to the login page
+          // !this.state.authUser && <Redirect to="/login"></Redirect> // if there is no user in the system, redirect to the login page
         }
         <Header logout={this.logout} />
         <Container fluid>
@@ -105,12 +107,13 @@ class App extends React.Component {
               return <>{this.state.authUser && <BookedLessonsCalendar email={email} studentId={this.state.authUser.id} courses={this.state.courses}></BookedLessonsCalendar>} </>
             }}>
             </Route>
+
             <Route exact path="/manager-home/:email" render={(props) => {
               let email = props.match.params.email;
               return (
                 <>
                   <HomePage email={email}></HomePage>
-                  <StatsViewer role="Manager"></StatsViewer>
+                  <StatsViewer email={email} role="Manager"></StatsViewer>
                 </>)
             }}>
             </Route>
@@ -120,6 +123,16 @@ class App extends React.Component {
                 <Col sm={4}></Col>
                 <Col sm={4} className="below-nav">
                   <Login loginCallback={this.loginCallback} />
+                </Col>
+              </Row>
+            </Route>
+
+
+            <Route exact path="/manager-home/:email/contact-tracing">
+              <Row className="vheight-100">
+                <Col sm={4}></Col>
+                <Col sm={4} className="below-nav">
+                  <ContactTracing />
                 </Col>
               </Row>
             </Route>
@@ -145,6 +158,17 @@ class App extends React.Component {
               return <>{this.state.authUser && <ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>}</>
             }}></Route>
 
+            <Route exact path='/support-officer-home/:email/loader' render={(props) => {
+              return <>{this.state.authUser && <LoadDataView></LoadDataView>}</>
+            }}></Route>
+
+            <Route exact path="/load">
+              <Row className="vheight-100">
+                <Col sm={4}></Col>
+                <Col sm={4} className="below-nav">
+                </Col>
+              </Row>
+            </Route>
 
             <Route>
               <Redirect to='/login' />
