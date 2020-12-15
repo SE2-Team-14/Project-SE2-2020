@@ -171,7 +171,7 @@ class App extends React.Component {
             </Route>
 
             <Route>
-              <Redirect to='/load' />
+              <Redirect to='/login' />
             </Route>
 
           </Switch>
