@@ -5,8 +5,6 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faParagraph } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom';
 import tracingImage from "./assets/tracingImage.png"
 import moment from 'moment'
@@ -71,10 +69,10 @@ class ContactTracing extends React.Component {
                             <Row>
                                 <Col>
 
-                                <Form.Group>
-                                    <Form.Label>Student id</Form.Label>
-                                    <Form.Control type="text" name="student-id" placeholder="Student ID" onChange={(ev) => this.onChangeStudentId(ev)} required />
-                                </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Student id</Form.Label>
+                                        <Form.Control type="text" name="student-id" placeholder="Student ID" onChange={(ev) => this.onChangeStudentId(ev)} required />
+                                    </Form.Group>
 
                                     <Form>
 

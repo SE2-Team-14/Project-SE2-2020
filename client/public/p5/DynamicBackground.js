@@ -1,7 +1,7 @@
 let system;
 
 let pageWidth;
-let pagetHeight;
+let pageHeight;
 
 let sprite;
 
@@ -25,9 +25,9 @@ function setup() {
 
 function draw() {
   background(230, 250, 255);
-  system.origin.x = 15 + mouseX - width/2;
-  system.origin.y = 15 + mouseY - height/2;
-  if(frameCount % 4 == 0) // ogni 4 frame
+  system.origin.x = 15 + mouseX - width / 2;
+  system.origin.y = 15 + mouseY - height / 2;
+  if (frameCount % 4 == 0) // ogni 4 frame
     system.addParticle();
   system.run();
 }
@@ -44,9 +44,9 @@ let Particle = function (position) {
   this.position = position.copy();
   this.lifespan = 255;
   this.size = random(10, 30);
-  this.angle = random(0, 2* PI);
+  this.angle = random(0, 2 * PI);
   this.angularSpeed = random(0, 0.05);
-  this.direction = random(1) > 0.5? 1 : -1;
+  this.direction = random(1) > 0.5 ? 1 : -1;
 };
 
 Particle.prototype.run = function () {
