@@ -96,6 +96,6 @@ class LoadDataView extends React.Component {
       </Jumbotron>
     );
   }
-};
+}
 
 export default LoadDataView;

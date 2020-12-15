@@ -69,10 +69,6 @@ input:focus:invalid {
     font-weight: 500;
 }
 
-.comntainer{
-    position: relative;
-}
-
 .box{
     width: 100%;
     height: 100%;            

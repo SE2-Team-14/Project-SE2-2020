@@ -115,6 +115,78 @@ exports.getLecturesList = function (id) {
 }
 
 /**
+ * Returns an array containing all in presence lectures of a student. Only the lectures that are in the future (from the current day included onwards) are kept and returned to the calling function.
+ * @param email a string containing the email of the student whose future in presence lectures are to be retrieved
+ */
+exports.getWeekLecturesList = function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM LECTURE WHERE courseId IN (SELECT courseId FROM ENROLLMENT WHERE id = ?)";
+        db.all(sql, [id], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows) {
+                    let lsunday = moment().subtract(1, 'weeks').endOf('isoWeek')
+                    let tsunday = moment().endOf('isoWeek')
+                    let newRow = [];
+                    for (let i = 0; i < rows.length; i++) {
+                        let date = moment(rows[i]["date"], "DD/MM/YYYY")
+                        if ((lsunday.isBefore(date) && (tsunday.isAfter(date)))) {
+                            newRow.push(rows[i])
+                        }
+                    }
+                    newRow.sort((a, b) => {
+                        if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
+                            return 1;
+                        else
+                            return -1;
+                    });
+                    resolve(newRow);
+                }
+                else
+                    resolve(undefined);
+            }
+        });
+    });
+}
+
+/**
+ * Returns an array containing all future lectures of a teacher
+ * @param id a string containing the identifier of the teacher whose future lectures are to be retrieved
+ */
+exports.getWeekTeacherLectureList = function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM LECTURE WHERE teacherId = ? ORDER BY date, startingTime';
+        db.all(sql, [id], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows) {
+                    let lsunday = moment().subtract(1, 'weeks').endOf('isoWeek')
+                    let tsunday = moment().endOf('isoWeek')
+                    let newRow = [];
+                    for (let i = 0; i < rows.length; i++) {
+                        let date = moment(rows[i]["date"], "DD/MM/YYYY")
+                        if ((lsunday.isBefore(date) && (tsunday.isAfter(date)))) {
+                            newRow.push(rows[i])
+                        }
+                    }
+                    newRow.sort((a, b) => {
+                        if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
+                            return 1;
+                        else
+                            return -1;
+                    });
+                    resolve(newRow);
+                }
+                else
+                    resolve(undefined);
+            }
+        });
+    });
+}
+
+/**
  * Returns an array containing all future lectures of a teacher
  * @param id a string containing the identifier of the teacher whose future lectures are to be retrieved
  */

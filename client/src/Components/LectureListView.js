@@ -347,8 +347,6 @@ function LectureList(props) {
 
                     <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} handleClickBookWaitingList={props.handleClickBookWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} findBookingInWaitingList={props.findwl} />
                 )
-
-
             }
         </ListGroup>
 

@@ -131,6 +131,22 @@ app.get('/api/student-home/:id/bookable-lectures', (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 
+app.get('/api/student-home/:id/week-lectures', (req, res) => {
+  lectureDao.getWeekLecturesList(req.params.id)
+    .then((lectures) => {
+      res.json(lectures);
+    })
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
+app.get('/api/teacher-home/:id/week-teacher-lectures', (req, res) => {
+  lectureDao.getWeekTeacherLectureList(req.params.id)
+    .then((lectures) => {
+      res.json(lectures);
+    })
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
 /**
  * GET API 
  * Request Parameters: string containing the email of the teacher one wants to know the taught courses
@@ -549,6 +565,7 @@ app.post('/api/data-loader', (req, res) => {
   const fileData = req.body.fileData;
   const fileType = req.body.fileType;
 
+<<<<<<< HEAD
   switch (fileType) {
     case "student":
       dataLoader.readStudentsCSV(fileData)
@@ -578,6 +595,38 @@ app.post('/api/data-loader', (req, res) => {
     default:
       break;
   }
+=======
+    let filePath = `${__dirname}/data/${file.name}`;
+
+    switch (inputType) {
+      case "student":
+        dataLoader.readStudentsCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((errSt) => res.status(500).json({ errors: [{ msg: errSt }] }));
+        break;
+      case "teacher":
+        dataLoader.readTeachersCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((errTe) => res.status(500).json({ errors: [{ msg: errTe }] }));
+        break;
+      case "enrollment":
+        dataLoader.readEnrollmentsCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((errEn) => res.status(500).json({ errors: [{ msg: errEn }] }));
+        break;
+      case "schedule":
+        dataLoader.readScheduleCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((errSc) => res.status(500).json({ errors: [{ msg: errSc }] }));
+        break;
+      case "course":
+        dataLoader.readCoursesCSV(filePath)
+          .then(async (result) => (await res.status(201).json(result.lenght)))
+          .catch((errCo) => res.status(500).json({ errors: [{ msg: errCo }] }));
+        break;
+    }
+  });
+>>>>>>> ee29a247987dcae2c88c32b08f337dbf281b9a5f
 
 });
 
