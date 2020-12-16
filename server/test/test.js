@@ -1176,6 +1176,64 @@ describe('Server side unit test', function () {
     });
   });
 
+
+    //----------------------------------------- Data loader tests -----------------------------------------//
+    describe('Data loader, test', function () {
+      const dataLoader = new DataLoader();
+
+      const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN\n";
+      const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN\n";
+      const enrollmentHeader = "Code,Student\n";
+      const scheduleHeader = "Code,Room,Day,Seats,Time\n";
+      const coursesHeader = "Code,Year,Semester,Course,Teacher\n";
+
+      describe('#Load a student into the system', function () {
+        const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
+        dataLoader.readStudentsCSV(student);
+        it('Load a student', async function () {
+          return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it"));
+        });
+      });
+
+      describe('#Load a teacher into the system', function () {
+        const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
+        dataLoader.readTeachersCSV(teacher);
+        it('Load a teacher', async function () {
+          return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it"));
+        });
+      });
+
+      describe('#Load a course into the system', function () {
+        const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
+        dataLoader.readCoursesCSV(course);
+        it('Load a course', async function () {
+          return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi"));
+        });
+      });
+
+      describe('#Load an enrollment into the system', function () {
+        const enrollment = enrollmentHeader + "c8000,s8000";
+        dataLoader.readEnrollmentsCSV(enrollment);
+        it('Load an enrollment', async function () {
+          return await EnrollmentDao.getEnrollmentById("c8000", "s8000")
+            .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi"));
+        });
+      });
+
+      describe('#Load a date schedule into the system', function () {
+        const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20\n" 
+                                        + "c8000,12,Tue,16,10:20-11:30\n" 
+                                        + "c8000,12,Wed,16,10:30-11:40\n" 
+                                        + "c8000,12,Thu,16,10:40-11:50\n" 
+                                        + "c8000,12,Fri,16,10:50-12:00";
+        dataLoader.readScheduleCSV(schedule);
+        it('Load a schedule', async function () {
+          return await LectureDao.getWeekTeacherLectureList("d8000").then((l) => assert.strictEqual(l[0].startingTime, "10:10"));
+        });
+      });
+
+    });
+
   //----------------------------------------- Email sender tests -----------------------------------------//
   describe('Send email, test', function () {
 
@@ -1259,66 +1317,13 @@ describe('Server side unit test', function () {
 
     });
 
-    //----------------------------------------- Data loader tests -----------------------------------------//
-    describe('Data loader, test', function () {
-      const dataLoader = new DataLoader();
-
-      const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN\n";
-      const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN\n";
-      const enrollmentHeader = "Code,Student\n";
-      const scheduleHeader = "Code,Room,Day,Seats,Time\n";
-      const coursesHeader = "Code,Year,Semester,Course,Teacher\n";
-
-      describe('#Load a student into the system', function () {
-        const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
-        dataLoader.readStudentsCSV(student);
-        it('Load a student', async function () {
-          return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it"));
-        });
-      });
-
-      describe('#Load a teacher into the system', function () {
-        const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
-        dataLoader.readTeachersCSV(teacher);
-        it('Load a teacher', async function () {
-          return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it"));
-        });
-      });
-
-      describe('#Load a course into the system', function () {
-        const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
-        dataLoader.readCoursesCSV(course);
-        it('Load a course', async function () {
-          return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi"));
-        });
-      });
-
-      describe('#Load an enrollment into the system', function () {
-        const enrollment = enrollmentHeader + "c8000,s8000";
-        dataLoader.readEnrollmentsCSV(enrollment);
-        it('Load an enrollment', async function () {
-          return await EnrollmentDao.getEnrollmentById("c8000", "s8000")
-            .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi"));
-        });
-      });
-
-      describe('#Load a date schedule into the system', function () {
-        const schedule = scheduleHeader + "c8000,12,Mon,16,10:00-11:30";
-        dataLoader.readScheduleCSV(schedule);
-        it('Load a schedule', async function () {
-          return await LectureDao.getWeekTeacherLectureList("d8000").then((l) => assert.strictEqual(l[0].startingTime, "10:00"));
-        });
-      });
-
-    });
-
   });
 
   /**close the server after the test **/
-  after(done => {
-    server.close(done);
-    db.close();
-    db.deleteFromDisk();
-  });
+ // after(done => {
+   // server.close(done);
+   // db.close();
+   // db.deleteFromDisk();
+  //});
 
 });
