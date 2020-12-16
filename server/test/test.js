@@ -24,6 +24,7 @@ const CancelledLecturesDao = require('../dao/cancelled_lectures_dao');
 const EmailSender = require('../utils/EmailSender');
 const WaitingListDao = require('../dao/waiting_list_dao');
 const ContactTracingDao = require('../dao/contact_tracing_dao');
+const DataLoader = require('../utils/DataLoader');
 
 const moment = require('moment');
 const chai = require('chai');
@@ -264,7 +265,7 @@ describe('Server side unit test', function () {
     });
 
   });
-  
+
   //#9.1
   describe('Test #DELETE book', function () {
     var host = "http://localhost:3001";
@@ -451,7 +452,7 @@ describe('Server side unit test', function () {
         let testCourse = new Course('c16', 'd16', 'Softeng II', "year16", "semester16");
         arrayCourse.push(testCourse);
         await CourseDao.createCourse(arrayCourse);
-        return await CourseDao.getCoursesAndTeachers().then((c) => assert.strictEqual(c[0].courseName, "Softeng II"));
+        return await CourseDao.getCoursesAndTeachers().then((c) => assert.strictEqual(c[1].courseName, "Softeng II"));
       });
     });
 
@@ -545,7 +546,7 @@ describe('Server side unit test', function () {
         let arrayTeacher = [];
         arrayTeacher.push(teacher);
         let lecture = new Lecture(19, "testCourse19", "d19", tomorrow1, "8.30", "13.00", "1", "19", 19);
-        let lecture1 = new Lecture (21, "testCourse19", "d19", tomorrow, "8:30", "11:30", "1", "19", 19);
+        let lecture1 = new Lecture(21, "testCourse19", "d19", tomorrow, "8:30", "11:30", "1", "19", 19);
         let arrayLecture = [];
         arrayLecture.push(lecture);
         arrayLecture.push(lecture1);
@@ -1125,10 +1126,10 @@ describe('Server side unit test', function () {
         let today = moment().add("1", "day").format("DD/MM/YYYY")
         let tomorrow = moment().add("2", "days").format("DD/MM/YYYY")
         let arrayEnrollment = [];
-        let enrollment = new Enrollment ("c52", "s52");
+        let enrollment = new Enrollment("c52", "s52");
         arrayEnrollment.push(enrollment);
-        let lecture = new Lecture (52, "c52", "d52", tomorrow, "8:30", "13:00", "1", "52", 52);
-        let lecture1 = new Lecture (43, "c52", "d52", today, "8:30", "13:00", "1", "52", 52);
+        let lecture = new Lecture(52, "c52", "d52", tomorrow, "8:30", "13:00", "1", "52", 52);
+        let lecture1 = new Lecture(43, "c52", "d52", today, "8:30", "13:00", "1", "52", 52);
         let arrayLecture = [];
         arrayLecture.push(lecture);
         arrayLecture.push(lecture1);
@@ -1147,11 +1148,11 @@ describe('Server side unit test', function () {
     describe('#Get Past Lecture like a Teacher ', function () {
       it('Get the list of past lectures of a teacher ', async function () {
         let yesterday = moment().subtract('1', 'day').format("DD/MM/YYYY");
-        let lecture = new Lecture (53, "c53", "d53", yesterday, "8:30", "13:00", "1", "53", 53);
+        let lecture = new Lecture(53, "c53", "d53", yesterday, "8:30", "13:00", "1", "53", 53);
         let arrayLecture = [];
         arrayLecture.push(lecture);
         await LectureDao.addLecture(arrayLecture);
-        let teacher = new Person ("d53", "teacherName53", "teacherSurname53", "Teacher", "teacher53@email.it", "234", null, null, "ZSEDF2");
+        let teacher = new Person("d53", "teacherName53", "teacherSurname53", "Teacher", "teacher53@email.it", "234", null, null, "ZSEDF2");
         let arrayTeacher = [];
         arrayTeacher.push(teacher);
         await PersonDao.createPerson(arrayTeacher);
@@ -1160,7 +1161,7 @@ describe('Server side unit test', function () {
         arrayCourse.push(course);
         await CourseDao.createCourse(arrayCourse);
         return await LectureDao.getPastLectures(course.name, teacher.email, "Teacher", teacher.name, teacher.surname)
-        .then((l) => assert.strictEqual(l[0].date, lecture.date));
+          .then((l) => assert.strictEqual(l[0].date, lecture.date));
       });
     });
     //#54
@@ -1170,7 +1171,7 @@ describe('Server side unit test', function () {
         let teacher = await PersonDao.getPersonByID("d53")
         let course = await CourseDao.getCourseByID("c53");
         return await LectureDao.getPastLectures(course.name, teacher.email, "Manager", teacher.name, teacher.surname)
-        .then((l) => assert.strictEqual(l[0].date, lecture.date));
+          .then((l) => assert.strictEqual(l[0].date, lecture.date));
       });
     });
   });
@@ -1253,6 +1254,59 @@ describe('Server side unit test', function () {
       describe('#Success in sendEmail to some person', function () {
         it('this should work', function () {
           return emailSender.sendEmail([correctFakeUserEmail, "wrong"], "Success in sendEmail to some person", "Example email body");
+        });
+      });
+
+    });
+
+    //----------------------------------------- Data loader tests -----------------------------------------//
+    describe('Data loader, test', function () {
+      const dataLoader = new DataLoader();
+
+      const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN\n";
+      const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN\n";
+      const enrollmentHeader = "Code,Student\n";
+      const scheduleHeader = "Code,Room,Day,Seats,Time\n";
+      const coursesHeader = "Code,Year,Semester,Course,Teacher\n";
+
+      describe('#Load a student into the system', function () {
+        const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
+        dataLoader.readStudentsCSV(student);
+        it('Load a student', async function () {
+          return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it"));
+        });
+      });
+
+      describe('#Load a teacher into the system', function () {
+        const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
+        dataLoader.readTeachersCSV(teacher);
+        it('Load a teacher', async function () {
+          return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it"));
+        });
+      });
+
+      describe('#Load a course into the system', function () {
+        const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
+        dataLoader.readCoursesCSV(course);
+        it('Load a course', async function () {
+          return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi"));
+        });
+      });
+
+      describe('#Load an enrollment into the system', function () {
+        const enrollment = enrollmentHeader + "c8000,s8000";
+        dataLoader.readEnrollmentsCSV(enrollment);
+        it('Load an enrollment', async function () {
+          return await EnrollmentDao.getEnrollmentById("c8000", "s8000")
+            .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi"));
+        });
+      });
+
+      describe('#Load a date schedule into the system', function () {
+        const schedule = scheduleHeader + "c8000,12,Mon,16,10:00-11:30";
+        dataLoader.readScheduleCSV(schedule);
+        it('Load a schedule', async function () {
+          return await LectureDao.getWeekTeacherLectureList("d8000").then((l) => assert.strictEqual(l[0].startingTime, "10:00"));
         });
       });
 
