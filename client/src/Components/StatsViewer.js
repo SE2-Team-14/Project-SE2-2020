@@ -219,6 +219,7 @@ class StatsViewer extends React.Component {
         let lectureTime = lecture.startingTime + "-" + lecture.endingTime;
         if (this.props.role === "Teacher") {
             API.getStatistics(lecture.date, this.state.mode, this.state.selectedCourse).then((stats) => {
+
                 let max = 0;
                 let num = 0;
                 for (let i = 0; i < stats.length; i++) {
@@ -260,7 +261,7 @@ class StatsViewer extends React.Component {
                         <Jumbotron>
                             <Row className="justify-content-md-center">
                                 <Col md="auto"></Col>
-                                <Col md="auto" className="below-nav">
+                                <Col md="auto">
                                     {(this.state.courses.length > 0 && !this.state.noBookings) && <Dropdown>
                                         <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                             Choose the Course you want to view statistics of
