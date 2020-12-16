@@ -188,13 +188,15 @@ exports.getStatistics = function (date, mode, course) {
                 }
             })
         } else if (mode === "total") {
-            const sql = "SELECT COUNT(*) as bookings, LECTURE.date FROM BOOKING, LECTURE, COURSE WHERE BOOKING.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY LECTURE.date";
+            const sql = "SELECT COUNT(*) as bookings, LECTURE.date, LECTURE.startingTime, LECTURE.endingTime FROM BOOKING, LECTURE, COURSE WHERE BOOKING.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY LECTURE.date";
             db.all(sql, [course], (err, rows) => {
                 if (err)
                     reject(err);
                 else {
                     if (rows.length > 0) {
-                        resolve(rows);
+                        let newRows = [];
+                        rows.map((row) => newRows.push({ bookings: row.bookings, date: row.date + " " + row.startingTime + " - " + row.endingTime, }));
+                        resolve(newRows);
                     }
                     else
                         resolve(undefined);
