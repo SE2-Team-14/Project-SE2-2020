@@ -110,7 +110,7 @@ class Login extends React.Component {
                   <Form method="POST" onSubmit={(event) => this.handleSubmit(event)}>
                     <Form.Group controlId="email">
                       <Form.Label>Email</Form.Label>
-                      <Form.Control type="email" name="email" placeholder="Email" onChange={(ev) => this.onChangeUsername(ev)} required />
+                      <Form.Control type="email" name="email" placeholder="Email" onChange={(ev) => this.onChangeUsername(ev)} required/>
                     </Form.Group>
 
                     <Form.Group controlId="password">
