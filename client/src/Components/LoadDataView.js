@@ -1,5 +1,5 @@
 import React from 'react';
-import { Jumbotron, Button, Modal } from 'react-bootstrap';
+import { Jumbotron, Button, Modal, Spinner } from 'react-bootstrap';
 import API from '../api/API';
 
 const moment = require('moment');
@@ -21,6 +21,7 @@ class LoadDataView extends React.Component {
     fileName: "",
     showUploadSuccess: false,
     showUpdateError: false,
+    loading: false,
   };
 
   handleFile = (e) => {
@@ -72,8 +73,8 @@ class LoadDataView extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    API.fileLoader(this.state.fileData, this.state.fileType).then(() => this.setState({ showUploadSuccess: true, selectedFile: null }));
-    console.log("file uploaded")
+    this.setState({ loading: true });
+    API.fileLoader(this.state.fileData, this.state.fileType).then(() => this.setState({ showUploadSuccess: true, selectedFile: null, loading: false }));
   };
 
   fileData = () => {
@@ -83,7 +84,7 @@ class LoadDataView extends React.Component {
           <p> </p>
           <h4>File Details:</h4>
           <p>File Name: {this.state.selectedFile.name}</p>
-          <p>File Size: {(this.state.selectedFile.size/1024).toFixed(2)}Kb</p>
+          <p>File Size: {(this.state.selectedFile.size / 1024).toFixed(2)}Kb</p>
           <p>Last Modified: {moment(this.state.selectedFile.lastModified).format("YYYY-MM-DD HH:mm")}</p>
         </div>
       );
@@ -97,10 +98,7 @@ class LoadDataView extends React.Component {
         <p></p>
         <div>
           <div className='custom-file mb-4 col-sm-3'>
-            <input
-              type='file'
-              className='custom-file-input'
-              id='customFile'
+            <input type='file' className='custom-file-input' id='customFile'
               accept=".csv"
               onChange={this.onChange}
             />
@@ -110,7 +108,21 @@ class LoadDataView extends React.Component {
             <p></p>
           </div>
         </div>
-        <Button onClick={this.onSubmit}>Upload!</Button>
+
+        {(this.state.loading == false) &&
+          <>
+            <Button onClick={this.onSubmit}>Upload!</Button>
+          </>
+        }
+        {(this.state.loading == true) &&
+          <>
+            <Button disabled>
+            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>
+            {" "}Loading</Button>
+          </>
+
+        }
+
         <Modal controlid='Success' show={this.state.showUploadSuccess} onHide={this.handleClose} animation={false} >
           <Modal.Header closeButton>
             <Modal.Title>Upload successfull!</Modal.Title>
