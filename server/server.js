@@ -303,7 +303,7 @@ app.delete('/api/student-home/delete-book', (req, res) => {
                       const subject = "Moved from waiting list";
                       const message = `Dear ${person.name} ${person.surname},\n` +
                         `you have been moved from the waiting list of the course ` + course.name +
-                        ` of ${lecture.date} at ${lecture.startingTime} to the the list of students booked as someone has canceled his booking.\n` +
+                        `of ${lecture.date} at ${lecture.startingTime} to the the list of students booked as someone has canceled his booking.\n` +
                         `Don't forget to attend the lecture.`
                         emailSender.sendEmail(person.email, subject, message);
                     })
