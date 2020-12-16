@@ -497,7 +497,18 @@ describe('Server side unit test', function () {
           .then(await LectureDao.deleteLecture(17));
       });
     });
-
+    //#17.2
+    describe("#Get an enrollment by id", function() {
+      if('Get an enrollment by courseId and studentId', async function() {
+        let arrayEnrollment = [];
+        let courseId = 'c17';
+        let studentId = 's17';
+        let enrollment = new Enrollment("c17", 's17');
+        arrayEnrollment.push(enrollment);
+        await EnrollmentDao.addEnrollment(arrayEnrollment);
+        return await EnrollmentDao.getEnrollmentById('c17', 's17').then((e) => assert.strictEqual(e.courseId == courseId && e.studentId == studentId));
+      });
+    });
   });
 
   describe('Test lectures', function () {
@@ -948,29 +959,71 @@ describe('Server side unit test', function () {
         return await BookingDao.findEmailByLecture(44).then((email) => assert.strictEqual(email[0].Email, "email44@test.it"));
       });
     });
+    //#45
+    describe('#Get Booked Students By LectureId ', function () {
+      it('Get Booked Students By LectureId ', async function () {
+        let course = new Course("c45", "testTeacher45", "courseName45", "1", "1");
+        let arrayCourse = [];
+        arrayCourse.push(course);
+        await CourseDao.createCourse(arrayCourse);
+        let lecture = new Lecture(45, "c45", "d45", "25/12/2025", "8:30", "11:30", "1", "45", 45);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        await LectureDao.addLecture(arrayLecture);
+        let booking= new Booking("s45", 45, "15/12/2020", "8:30");
+        await BookingDao.addBoocking(booking);
+        return await BookingDao.getBookedStudentsByLectureId(45).then((s) => assert.strictEqual(s[0].studentId, "s45"));
+      });
+    });
+    //#46
+    describe('#Get Teacher Courses Statistics ', function () {
+      it('Get Teacher Courses Statistics ', async function () {
+        let arrayTeacher = [];
+        let teacher = new Person("d46", "teacherName46", "teacherSurname46", "Teacher", "teacher46@test.it", "1234", null, null, "ABCD242");
+        arrayTeacher.push(teacher);
+        await PersonDao.createPerson(arrayTeacher);
+        let course = new Course("c46", "d46", "courseName46", "1", "1");
+        let arrayCourse = [];
+        arrayCourse.push(course);
+        await CourseDao.createCourse(arrayCourse);
+        let lecture = new Lecture(46, "c46", "d46", "25/12/2025", "8:30", "11:30", "1", "46", 46);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        await LectureDao.addLecture(arrayLecture);
+        let booking= new Booking("s46", 46, "15/12/2020", "8:30");
+        await BookingDao.addBoocking(booking);
+        return await BookingDao.getTeacherCoursesStatistics("teacher46@test.it").then((c) => assert.strictEqual(c[0].name, "courseName46"));
+      });
+    });
+    //#46.1
+    describe('#Get Teacher Courses Statistics ', function () {
+      it('Get Teacher Courses Statistics ', async function () {
+        return await BookingDao.getAllCoursesStatistics().then((c) => assert.strictEqual(c[0].courseName, "courseName46"));
+      });
+    });
   });
   describe('Test contact_tracing_dao', function () {
-    //#45
+    //#47
     describe('#Get tracing of a positive student ', function () {
       it('Get the list of students in contact with the positive student ', async function () {
         let today= moment().subtract('1', "day").format("DD/MM/YYYY");
         let prenotation = moment().subtract('2', "days").format("DD/MM/YYYY");
         let arrayStudent = [];
         let arrayLecture = [];
-        let positiveStudent = new Person("p45", "positiveName45", "positiveSurname45", "Student", "positive@email.it", "1234", "positive", "18/11/1999", "DERF453");
-        let student = new Person("s45", "studentName45", "studentSurname45", "Student", "student45@email.it", "1234", "studentCity", "18/11/1999", "aAFGDD34");
+        let positiveStudent = new Person("p47", "positiveName47", "positiveSurname47", "Student", "positive@email.it", "1234", "positive", "18/11/1999", "DERF453");
+        let student = new Person("s47", "studentName47", "studentSurname47", "Student", "student47@email.it", "1234", "studentCity", "18/11/1999", "aAFGDD34");
         arrayStudent.push(positiveStudent);
         arrayStudent.push(student);
-        let lecture = new Lecture(45, "c45", "d45", today, "8:30", "11:30", "1", "45", 45);
+        let lecture = new Lecture(47, "c47", "d47", today, "8:30", "11:30", "1", "47", 47);
         arrayLecture.push(lecture);
-        let booking1 = new Booking("p45", 45, prenotation, "8:30");
-        let booking2 = new Booking("s45", 45, prenotation, "8:30");
+        let booking1 = new Booking("p47", 47, prenotation, "8:30");
+        let booking2 = new Booking("s47", 47, prenotation, "8:30");
         let contact = "" + student.id + ", " + student.name + ", "+ student.surname + ", " + student.email;
         await PersonDao.createPerson(arrayStudent);
         await LectureDao.addLecture(arrayLecture);
         await BookingDao.addBoocking(booking1);
         await BookingDao.addBoocking(booking2);
-        return await ContactTracingDao.getContactTracingByStudent("p45").then((s) => assert.strictEqual(s[0], contact));
+        return await ContactTracingDao.getContactTracingByStudent("p47").then((s) => assert.strictEqual(s[0], contact));
             });
     });
     
