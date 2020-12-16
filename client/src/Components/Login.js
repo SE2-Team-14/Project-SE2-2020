@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../auth/AuthContext'
@@ -70,10 +71,17 @@ class Login extends React.Component {
         this.props.loginCallback(res.user)
         this.setState({ submitted: true });
       } else {
-        alert(res.error_info)
+        this.setState({ alertMessage: res.error_info });
       }
       console.log(res)
     })
+  }
+
+  /**
+ * Closes the modal.
+ */
+  handleClose = () => {
+    this.setState({ alertMessage: null });
   }
 
   /**
@@ -113,11 +121,16 @@ class Login extends React.Component {
                     <Form.Group>
                       <Button variant="primary" type="submit">Login</Button>
                     </Form.Group>
-                    
+
                   </Form>
 
                 </Col>
               </Row>
+              <Modal controlid='Alert' show={this.state.alertMessage && true} onHide={this.handleClose} animation={false}>
+                <Modal.Header closeButton>
+                  <Modal.Title>{this.state.alertMessage}</Modal.Title>
+                </Modal.Header>
+              </Modal>
             </Container>
           </>
         )}
