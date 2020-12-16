@@ -9,7 +9,7 @@ import { Redirect } from 'react-router-dom';
 import tracingImage from "./assets/tracingImage.png"
 import moment from 'moment'
 import P5 from 'p5';
-
+import jsPDF from 'jspdf'
 
 
 import API from '../api/API';
@@ -39,12 +39,9 @@ class ContactTracing extends React.Component {
         API.getContactTracingByStudent(studentId)
             .then((result) => {
                 if (result.length > 0) {
-                    let fileContent = ["ID, Name, Surname, Email"];
                     let fileName = "Contact_Tracing_Report_" + studentId + "_" + moment();
-                    for (let line of result) {
-                        fileContent.push(line);
-                    }
-                    p5.saveStrings(fileContent, fileName, "csv");
+                    this.generateCSVReport(fileName, result);
+                    this.generatePDFReport(fileName, result);
                 } else {
                     alert("No such contact information for that student");
                 }
@@ -52,6 +49,32 @@ class ContactTracing extends React.Component {
             .catch((err) => alert("Cannot generate report file for the selected student"));
     }
 
+
+    generateCSVReport(fileName, result) {
+        let fileContent = ["ID, Name, Surname, Email"];
+        for (let line of result) {
+            fileContent.push(line);
+        }
+        p5.saveStrings(fileContent, fileName, "csv");
+    }
+
+    generatePDFReport(fileName, result) {
+        const LINE_GAP = 10;
+        let y = 70;
+
+        var doc = new jsPDF()
+
+        doc.setFontSize(40);
+        doc.text(30, 25, 'Contact Tracing Report: ');
+        doc.setFontSize(20);
+        doc.text(35, 50, 'List of possible contacts in the last 14 days');
+        doc.setFontSize(12);
+        for (let line of result) {
+            doc.text(10, y, line)
+            y += LINE_GAP;
+        }
+        doc.save(fileName)
+    }
 
     /**
      * Renders a welcome message, showing name and surname of the logged in user with some generic icons on the sides of the page. Very stilish,
