@@ -64,7 +64,7 @@ class BookingTable extends React.Component {
             {(context) => (
             <>
             {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3' style={{background: "none"}}>
                 {this.state.bookings.length === 0 && <ListGroup>
                 <Row className='justify-content-around'>
                     <h4>There are no bookings yet for future lectures for the course {this.props.course}</h4>

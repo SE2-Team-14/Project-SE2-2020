@@ -4,10 +4,13 @@ let pageWidth;
 let pageHeight;
 
 let sprite;
+let cake;
+
+birthday = false;
 
 function updatePageSize() {
   let body = document.body,
-    html = document.documentElement;
+  html = document.documentElement;
 
   pageWidth = windowWidth
 
@@ -21,9 +24,11 @@ function setup() {
   canvas.parent("background");
   system = new ParticleSystem(createVector(width / 2, 50));
   sprite = loadImage("assets/coronaSprite.png");
+  cake = loadImage("assets/cake.png");
 }
 
 function draw() {
+  windowResized();
   background(230, 250, 255);
   system.origin.x = 15 + mouseX - width / 2;
   system.origin.y = 15 + mouseY - height / 2;
@@ -65,11 +70,14 @@ Particle.prototype.update = function () {
 // Method to display
 Particle.prototype.display = function () {
   imageMode(CENTER);
-  tint(200, 100, 0, this.lifespan);
+  if(!birthday)
+    tint(200, 100, 0, this.lifespan);
+  else
+    tint(255, this.lifespan);
   push();
   translate(this.position.x, this.position.y);
   rotate(this.angle);
-  image(sprite, 0, 0, this.size, this.size);
+  image(birthday? cake : sprite, 0, 0, this.size, this.size);
   pop();
 };
 

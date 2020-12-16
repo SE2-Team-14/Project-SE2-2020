@@ -63,6 +63,7 @@ class App extends React.Component {
   logout = () => {
     this.setState({ authUser: null })
     this.props.history.push("/login");
+    window.birthday = false;
   }
 
   loginCallback = (user) => {

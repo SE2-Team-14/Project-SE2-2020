@@ -232,7 +232,7 @@ class LectureListView extends React.Component {
             {(context) => (
             <>
             {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3' style={{background: "none"}}>
                 <Row className='col-12 m-0 p-0'>
                     <Col>
                         <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} handleClickBookWaitingList={this.handleClickBookWaitingList} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} findwl={this.findBookingInWaitingList} />

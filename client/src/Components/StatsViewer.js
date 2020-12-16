@@ -257,10 +257,9 @@ class StatsViewer extends React.Component {
                 {(context) => (
                     <>
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-                        <Jumbotron>
+                        <Jumbotron style={{background: "none"}}>
                             <Row className="justify-content-md-center">
                                 <Col md="auto"></Col>
-                                <Col md="auto" className="below-nav">
                                     {(this.state.courses.length > 0 && !this.state.noBookings) && <Dropdown>
                                         <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                             Choose the Course you want to view statistics of
@@ -270,7 +269,6 @@ class StatsViewer extends React.Component {
                                         </Dropdown.Menu>
                                     </Dropdown>}
                                     {(this.state.mode === "start" && this.state.noBookings) && <h4> There are no statistics about bookings available yet.</h4>}
-                                </Col>
                                 <Col md="auto"> {(!this.state.noBookings) && <Button variant="outline-info" active={this.state.mode == "start"} onClick={() => this.chooseMode("start")} > View Total Bookings of all Courses </Button>}</Col>
                                 {(this.props.role === "Manager") && <Col md="auto">
                                     <Button variant="outline-info" active={this.state.mode == "cancelledLectures"} onClick={() => this.chooseMode("cancelledLectures")} > View Cancelled Lectures of all Courses </Button>

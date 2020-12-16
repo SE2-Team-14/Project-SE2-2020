@@ -95,7 +95,7 @@ class ContactTracing extends React.Component {
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                         <h1>Contact Tracing</h1>
                         <h6>Insert the id of the positive student</h6>
-                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3' style={{background: "none"}}>
                             <img src={tracingImage} width={200} heght={200} />
                             <Row>
                                 <Col>

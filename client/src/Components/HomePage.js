@@ -29,6 +29,9 @@ class HomePage extends React.Component {
     componentDidMount() {
         API.getPersonName(this.props.email).then((person) => {
             this.setState({ name: person.name, surname: person.surname, b: person.birthday, role: person.role });
+            if(moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM')){
+                window.birthday = true;
+            }
         });
         API.getPersonName(this.props.email).then((person) => {
             if (person.role == 'Student') {
@@ -74,7 +77,7 @@ class HomePage extends React.Component {
                 {(context) => (
                     <>
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3' style={{background: "none"}}>
                             {
                                 !((this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM'))) &&
 
@@ -103,6 +106,8 @@ class HomePage extends React.Component {
                                 </Col>
                             </Row>
                         </Jumbotron>
+                        {
+                        this.state.role != "Manager" &&
                         <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                             <Row className='col-12 m-0 p-0'>
                                 <Col>
@@ -112,6 +117,7 @@ class HomePage extends React.Component {
                                 </Col>
                             </Row>
                         </Jumbotron>
+    }
                     </>
                 )}
             </AuthContext.Consumer>
