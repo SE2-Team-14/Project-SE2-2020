@@ -28,7 +28,7 @@ function setup() {
 }
 
 function draw() {
-  windowResized();
+  //windowResized();
   background(230, 250, 255);
   system.origin.x = 15 + mouseX - width / 2;
   system.origin.y = 15 + mouseY - height / 2;
