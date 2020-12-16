@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthContext } from '../auth/AuthContext'
+import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
@@ -43,10 +44,10 @@ class ContactTracing extends React.Component {
                     this.generateCSVReport(fileName, result);
                     this.generatePDFReport(fileName, result);
                 } else {
-                    alert("No such contact information for that student");
+                   this.setState({alertMessage : "No such contact information for that student"});
                 }
             })
-            .catch((err) => alert("Cannot generate report file for the selected student"));
+            .catch((err) => this.setState({alertMessage : "Cannot generate report file for the selected student"}));
     }
 
 
@@ -74,6 +75,13 @@ class ContactTracing extends React.Component {
             y += LINE_GAP;
         }
         doc.save(fileName)
+    }
+
+    /**
+     * Closes the modal.
+     */
+    handleClose = () => {
+        this.setState({alertMessage: null});
     }
 
     /**
@@ -106,6 +114,11 @@ class ContactTracing extends React.Component {
                                     </Form>
                                 </Col>
                             </Row>
+                            <Modal controlid='Alert' show={this.state.alertMessage && true} onHide={this.handleClose} animation={false}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>{this.state.alertMessage}</Modal.Title>
+                                </Modal.Header>
+                            </Modal>
                         </Jumbotron>
                     </>
                 )}
