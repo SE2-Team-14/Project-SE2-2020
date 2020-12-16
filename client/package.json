@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^7.2.1",
     "devextreme": "^20.2.3",
     "devextreme-react": "^20.2.3",
+    "jspdf": "^2.2.0",
     "moment": "^2.25.3",
     "nodemailer": "^6.4.16",
     "p5": "^1.1.9",
