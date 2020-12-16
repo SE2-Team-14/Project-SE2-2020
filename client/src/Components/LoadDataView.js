@@ -73,6 +73,7 @@ class LoadDataView extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     API.fileLoader(this.state.fileData, this.state.fileType).then(() => this.setState({ showUploadSuccess: true, selectedFile: null }));
+    console.log("file uploaded")
   };
 
   fileData = () => {
@@ -100,6 +101,7 @@ class LoadDataView extends React.Component {
               type='file'
               className='custom-file-input'
               id='customFile'
+              accept=".csv"
               onChange={this.onChange}
             />
             <label className='custom-file-label' htmlFor='customFile'>
