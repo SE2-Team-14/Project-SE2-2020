@@ -54,11 +54,11 @@ chai.use(chaiAsPromised);
 
 describe('Server side unit test', function () {
 
-  let server;
+  /*let server;*/
 
   /**start the server before test */
   before(done => {
-    server = runServer(done);
+    /*server =*/runServer(done);
   });
 
   //----------------------------------------- API tests -----------------------------------------//

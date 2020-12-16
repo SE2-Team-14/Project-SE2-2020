@@ -6,7 +6,7 @@ let pageHeight;
 let sprite;
 let cake;
 
-birthday = false;
+window.birthday = false;
 
 function updatePageSize() {
   let body = document.body,
