@@ -29,8 +29,8 @@ In this document you can find the documentation about our system testing. For ea
 
 ## Story 1 
 ##### As a student I want to book a seat for one of my lectures so that I can attend it.
-### Test 1 (A student book an available lecture)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 1 (A student books an available lecture)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -38,33 +38,33 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on Bookable Lectures I can see the list of the bookable lectures. 
+- If I click on `Bookable Lectures` I can see the list of the bookable lectures. 
 
 ![BookableLectures](./testImage/StudentScreen/BookableLecture.JPG)
 
-- For book a lecture I need to press the button Book of the lecture that I'm interest. After the click, a modal is shown with a Confirm.
+- For book a lecture I need to press the button `Book` of the lecture that I'm interested in. After the click, a modal is shown asking for confirmation.
 
 ![ModalConfirmBook](./testImage/StudentScreen/ModalConfirmBook.JPG)
 
-- If I click Yes, another modal is shown with the confirm message. 
+- If I click `Yes`, another modal is shown with the confirmation message. 
 
 ![ModalSuccessBook](./testImage/StudentScreen/ModalSuccessBooking.JPG)
 
-- Now the list of available lectures is update with the booked lectures.
+- Now the list of available lectures is updated with the booked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
 
 ## Story 2 
 ##### As a teacher I want to get notified of the number of students attending my next lecture so that I am informed.
-### Test 2 (A teacher receive a mail )
+### Test 2 (A teacher receives a mail )
 - As a teacher I receive a mail at 23:00 with the number of students booked for my next lecture.
 
 ![MailNumberStudents](./testImage/TeacherScreen/MailNumberStudents.jpg)
 
 ## Story 3 
 ##### As a teacher I want to access the list of students booked for my lectures so that I am informed.
-### Test 3 (A teacher access to list of student booked but no student available)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 3 (A teacher accesses the list of student booked but no students are available)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -72,12 +72,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Booked Lectures I can see the list of the students booked for my next lectures. In this case, there are zero bookings.
+- If I click on `Booked Lectures` I can see the list of the students booked for my next lectures. In this case, there are zero bookings.
 
 ![BookedLectureNoStudents](./testImage/TeacherScreen/BookedLectureWithoutBookings.JPG)
 
-### Test 4 (A teacher access to list of student booked)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 4 (A teacher accesses to list of student booked)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -85,14 +85,14 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Booked Lectures I can see the list of the students booked for my next lectures. In this case, there are some bookings.
+- If I click on `Booked Lectures` I can see the list of the students booked for my next lectures. In this case, there are some bookings.
 
 ![BookedLecture](./testImage/TeacherScreen/BookedLecture.JPG)
 
 ## Story 4 
 ###### As a student I want to get an email confirmation of my booking so that I am informed.
-### Test 5 (A student book an available lecture and receive a mail confirmation)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 5 (A student books an available lecture and receives a mail confirmation)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -100,28 +100,28 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on Bookable Lectures I can see the list of the bookable lectures. 
+- If I click on `Bookable Lectures` I can see the list of the bookable lectures. 
 
 ![BookableLectures](./testImage/StudentScreen/BookableLecture.JPG)
 
-- For book a lecture I need to press the button Book of the lecture that I'm interest. After the click, a modal is shown with a Confirm.
+- For booking a lecture I need to press the button `Book` of the lecture that I'm interested in. After the click, a modal is shown asking for confirmation.
 
 ![ModalConfirmBook](./testImage/StudentScreen/ModalConfirmBook.JPG)
 
-- If I click Yes, another modal is shown with the confirm message and a mail is sent. 
+- If I click `Yes`, another modal is shown with the confirmation message and a mail is sent. 
 
 ![ModalSuccessBook](./testImage/StudentScreen/ModalSuccessBooking.JPG)
 
 ![Email](./testImage/StudentScreen/EmailBookingConfirm.JPG)
 
-- Now the list of available lectures is update with the booked lectures.
+- Now the list of available lectures is updated with the booked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
 
 ## Story 5 
 ###### As a student I want to cancel my booking so that I am free.
-### Test 6 (A student delete a booked lecture)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 6 (A student deletes a booked lecture)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -129,27 +129,27 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on Bookable Lectures I can see the list of the bookable lectures. 
+- If I click on `Bookable Lectures` I can see the list of the bookable lectures. 
 
 ![BookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
 
-- For delete a lecture I need to press the button Delete of the lecture that I'm interest. After the click, a modal is shown with a Confirm.
+- For deleting a lecture I need to press the button `Delete` of the lecture that I'm not interested in anymore. After the click, a modal is shown with asking for confirmation.
 
 ![ModalConfirmDelete](./testImage/StudentScreen/ModalConfirmDelete.JPG)
 
-- If I click Yes, another modal is shown with the confirm message. 
+- If I click `Yes`, another modal is shown with the confirmation message. 
 
 ![ModalSuccessBook](./testImage/StudentScreen/ModalSuccessDelete.JPG)
 
-- Now the list of available lectures is update with the unbooked lectures.
+- Now the list of available lectures is updated with the unbooked lectures.
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLecture.JPG)
 
 
 ## Story 6 
 ###### As a student I want to access a calendar with all my bookings for the upcoming weeks.
-### Test 7 (A student access a calendar without booked lessons)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 7 (A student accesses a calendar without booked lessons)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -157,12 +157,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on My Booked Lecture I can see the calendar with my booked lectures. In this test there are no booked lessons.
+- If I click on `My Booked Lectures` I can see the calendar with my booked lectures. In this test there are no booked lessons.
 
 ![EmptyCalendar](./testImage/StudentScreen/EmptyCalendar.JPG)
 
-### Test 8 (A student access a calendar in week view)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 8 (A student accesses a calendar in week view)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -170,12 +170,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on My Booked Lecture I can see the calendar with my booked lectures. In this test I use the Week view of calendar, the default one.
+- If I click on `My Booked Lectures` I can see the calendar with my booked lectures. In this test I use the `Week` view of calendar, the default one.
 
 ![WeekCalendar](./testImage/StudentScreen/CalendarWeekView.JPG)
 
-### Test 9 (A student access a calendar in day view)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 9 (A student accesses a calendar in day view)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -183,17 +183,17 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on My Booked Lecture I can see the calendar with my booked lectures. The default view is the week view.
+- If I click on `My Booked Lectures` I can see the calendar with my booked lectures. The default view is the week view.
 
 ![WeekCalendar](./testImage/StudentScreen/CalendarWeekView.JPG)
 
-- If I click on the button in the right side of the calendar and I press Day, I can see the day view of my booked lectures.
+- If I click on the button in the right side of the calendar and I press `Day`, I can see the day view of my booked lectures.
 
 ![DayCalendar](./testImage/StudentScreen/CalendarDayView.JPG)
 
 
-### Test 10 (A student access a calendar in month view)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 10 (A student accesses a calendar in month view)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -201,16 +201,16 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on My Booked Lecture I can see the calendar with my booked lectures. The default view is the week view.
+- If I click on `My Booked Lectures` I can see the calendar with my booked lectures. The default view is the week view.
 
 ![WeekCalendar](./testImage/StudentScreen/CalendarWeekView.JPG)
 
-- If I click on the button in the right side of the calendar and I press Month, I can see the month view of my booked lectures.
+- If I click on the button in the right side of the calendar and I press `Month`, I can see the month view of my booked lectures.
 
 ![MonthCalendar](./testImage/StudentScreen/CalendarMonthView.JPG)
 
-### Test 11 (A student access a calendar in week view and click on the lesson)
-- Like a student I need to put my credentials in the login form and then press the button Login. 
+### Test 11 (A student accesses a calendar in week view and click on the lesson)
+- Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
 
@@ -218,11 +218,11 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentHP](./testImage/StudentScreen/StudentHP.JPG)
 
-- If I click on My Booked Lecture I can see the calendar with my booked lectures. The default view is the week view.
+- If I click on `My Booked Lectures` I can see the calendar with my booked lectures. The default view is the week view.
 
 ![WeekCalendar](./testImage/StudentScreen/CalendarWeekView.JPG)
 
-- If I click on the button in the right side of the calendar and I press Month, I can see the month view of my booked lectures.
+- If I click on the button in the right side of the calendar and I press `Month`, I can see the month view of my booked lectures.
 
 ![MonthCalendar](./testImage/StudentScreen/CalendarMonthView.JPG)
 
@@ -232,8 +232,8 @@ In this document you can find the documentation about our system testing. For ea
 
 ## Story 7 
 ###### As a teacher I want to cancel a lecture up to 1h before its scheduled time.
-### Test 12 (A teacher try to cancel a lecture but the time is expired)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 12 (A teacher tries to cancel a lecture but the time is expired)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -241,20 +241,20 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Manage Lectures I can see the list of my lectures. 
+- If I click on `Manage Lectures` I can see the list of my lectures. 
 
 ![ManageLecture](./testImage/TeacherScreen/ManageLecture.JPG)
 
-- If I click on button Delete, I should be able to delete the lecture only if this moment is before 1h the scheduled time. If I click, a modal confirmation in shown.
+- If I click on the button `Delete`, I should be able to delete the lecture only if this moment is before 1h the scheduled time. If I click, a modal asking for confirmation is shown.
 
 ![ModalDeleteConfirm](./testImage/TeacherScreen/ModalConfirmDelete.JPG)
 
-- If I click on button Yes, in this case a modal with the information about the expire time is shown and the delete is blocked.
+- If I click on the button `Yes`, in this case a modal with the information about the expired time is shown and the deletion is blocked.
 
 ![ModaleDeleteError](./testImage/TeacherScreen/ErrorDelete.JPG)
 
-### Test 13 (A teacher try to cancel a lecture and the time is not expired)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 13 (A teacher tries to cancel a lecture and the time is not expired)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -262,29 +262,29 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Manage Lectures I can see the list of my lectures. 
+- If I click on `Manage Lectures` I can see the list of my lectures. 
 
 ![ManageLecture](./testImage/TeacherScreen/ManageLecture.JPG)
 
-- If I click on button Delete, I should be able to delete the lecture only if this moment is before 1h the scheduled time. If I click, a modal confirmation in shown.
+- If I click on the button `Delete`, I should be able to delete the lecture only if this moment is before 1h the scheduled time. If I click, a modal asking for confirmation is shown.
 
 ![ModalDeleteConfirm](./testImage/TeacherScreen/ModalConfirmDelete.JPG)
 
-- If I click on button Yes, in this case a modal with the information about the success is shown.
+- If I click on the button `Yes`, in this case a modal with the information about the success is shown.
 
 ![ModaleDeleteSuccess](./testImage/TeacherScreen/ModalDeleteSuccess.JPG)
 
 ## Story 8 
 ###### As a student I want to get notified when a lecture is cancelled.
-### Test 14 (A student receive an email when the teacher cancel a lecture when he is booked )
-- As a student I receive an email when the teacher cancel one of my booked lectures 
+### Test 14 (A student receives an email when the teacher cancel a lecture when he is booked )
+- As a student I receive an email when the teacher cancels one of my booked lectures 
 
 ![MailCancelLecture](./testImage/StudentScreen/DeleteLectureMail.JPG)
 
 ## Story 9
 ###### As a teacher I want to turn a presence lecture into a distance one up to 30 mins before its scheduled time.
-### Test 15 (A teacher try to turn a presence lecture into a distance one but the time is expired)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 15 (A teacher tries to turn a presence lecture into a distance one but the time is expired)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -292,20 +292,20 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Manage Lectures I can see the list of my lectures. 
+- If I click on `Manage Lectures` I can see the list of my lectures. 
 
 ![ManageLecture](./testImage/TeacherScreen/ManageLecture.JPG)
 
-- If I click on button Switch to Virtual, I should be able to switch the lecture only if this moment is before 30m the scheduled time. If I click, a modal confirmation in shown.
+- If I click on the button `Switch to Virtual`, I should be able to switch the lecture only if this moment is before 30m the scheduled time. If I click, a modal asking for confirmation is shown.
 
 ![ModalChangeConfirm](./testImage/TeacherScreen/ModalConfirmChange.JPG)
 
-- If I click on button Yes, in this case a modal with the information about the expire time is shown and the change is blocked.
+- If I click on the button `Yes`, a modal with the information about the expired time is shown and the change is blocked.
 
 ![ModaleChangeError](./testImage/TeacherScreen/ErrorChangeModal.JPG)
 
-### Test 16 (A teacher try to turn a presence lecture into a distance one and the time is not expired)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 16 (A teacher tries to turn a presence lecture into a distance one and the time is not expired)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -313,15 +313,15 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Manage Lectures I can see the list of my lectures. 
+- If I click on `Manage Lectures` I can see the list of my lectures. 
 
 ![ManageLecture](./testImage/TeacherScreen/ManageLecture.JPG)
 
-- If I click on button Switch to Virtual, I should be able to switch the lecture only if this moment is before 30m the scheduled time. If I click, a modal confirmation in shown.
+- If I click on the button `Switch to Virtual`, I should be able to switch the lecture only if this moment is before 30m the scheduled time. If I click, a modal asking for confirmation is shown.
 
 ![ModalChangeConfirm](./testImage/TeacherScreen/ModalConfirmChange.JPG)
 
-- If I click on button Yes, in this case a modal with the information about the success is shown.
+- If I click on the button `Yes`, a modal with the information about the success is shown.
 
 ![ModaleChangeSuccess](./testImage/TeacherScreen/ModalChangeSuccess.JPG)
 
@@ -331,8 +331,8 @@ In this document you can find the documentation about our system testing. For ea
 
 ## Story 10
 ###### As a teacher I want to access the historical data about bookings so that I can plan better.
-### Test 17 (A teacher access to the statistics page but no data are present in the system)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 17 (A teacher accesses to the statistics page but no data is present in the system)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -340,7 +340,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Statistics I can see the statistics of my lectures. 
+- If I click on `Statistics` I can see the statistics of my lectures. 
 
 ![StatsView](./testImage/TeacherScreen/StatsView.JPG)
 
@@ -348,7 +348,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ButtonStats](./testImage/TeacherScreen/StatsButton.JPG)
 
-- If I click on View Booking of single lecture, a dropdown menù is shown with all my lecture.
+- If I click on `View Booking of single lecture`, a dropdown menu is shown with all my lectures.
 
 ![DropDown](./testImage/TeacherScreen/DropDownStats.JPG)
 
@@ -356,8 +356,8 @@ In this document you can find the documentation about our system testing. For ea
 
 ![EmptyStats](./testImage/TeacherScreen/StatisticsWithNoData.JPG)
 
-### Test 18 (A teacher access to the statistics page and select the single lecture view)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 18 (A teacher accesses to the statistics page and selects the single lecture view)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -365,7 +365,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Statistics I can see the statistics of my lectures. 
+- If I click on `Statistics` I can see the statistics of my lectures. 
 
 ![StatsView](./testImage/TeacherScreen/StatsView.JPG)
 
@@ -373,7 +373,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ButtonStats](./testImage/TeacherScreen/StatsButton.JPG)
 
-- If I click on View Booking of single lecture, a dropdown menù is shown with all my lecture.
+- If I click on `View Bookings of single lecture`, a dropdown menu is shown with all my lectures.
 
 ![DropDown](./testImage/TeacherScreen/DropDownStats.JPG)
 
@@ -381,8 +381,8 @@ In this document you can find the documentation about our system testing. For ea
 
 ![LectureStats](./testImage/TeacherScreen/LectureStats.JPG)
 
-### Test 19 (A teacher access to the statistics page and select the week view)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 19 (A teacher accesses to the statistics page and selects the week view)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -390,7 +390,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Statistics I can see the statistics of my lectures. 
+- If I click on `Statistics` I can see the statistics of my lectures. 
 
 ![StatsView](./testImage/TeacherScreen/StatsView.JPG)
 
@@ -398,12 +398,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ButtonStats](./testImage/TeacherScreen/StatsButton.JPG)
 
-- If I click on View Booking of week, a graph is shown.
+- If I click on `View Bookings by Week`, a graph is shown.
 
 ![WeekStats](./testImage/TeacherScreen/WeekStats.JPG)
 
 ### Test 20 (A teacher access to the statistics page and select the month view)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -411,7 +411,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Statistics I can see the statistics of my lectures. 
+- If I click on `Statistics` I can see the statistics of my lectures. 
 
 ![StatsView](./testImage/TeacherScreen/StatsView.JPG)
 
@@ -419,12 +419,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ButtonStats](./testImage/TeacherScreen/StatsButton.JPG)
 
-- If I click on View Booking of month, a graph is shown.
+- If I click on `View Bookings by Month`, a graph is shown.
 
 ![MonthStats](./testImage/TeacherScreen/MonthStats.JPG)
 
-### Test 21 (A teacher access to the statistics page and select the total bookings view)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 21 (A teacher accesses to the statistics page and selects the total bookings view)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -432,7 +432,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Statistics I can see the statistics of my lectures. 
+- If I click on `Statistics` I can see the statistics of my lectures. 
 
 ![StatsView](./testImage/TeacherScreen/StatsView.JPG)
 
@@ -440,12 +440,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ButtonStats](./testImage/TeacherScreen/StatsButton.JPG)
 
-- If I click on View Total Bookings, a graph is shown.
+- If I click on `View Total Bookings`, a graph is shown.
 
 ![TotalStats](./testImage/TeacherScreen/TotalBookingStats.JPG)
 
-### Test 22 (A teacher access to the statistics page and select the cancelled bookings view)
-- Like a teacher I need to put my credentials in the login form and then press the button Login.
+### Test 22 (A teacher accesses to the statistics page and selects the cancelled bookings view)
+- Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
 
@@ -453,7 +453,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TeacherHP](./testImage/TeacherScreen/TeacherHP.JPG)
 
-- If I click on Statistics I can see the statistics of my lectures. 
+- If I click on `Statistics` I can see the statistics of my lectures. 
 
 ![StatsView](./testImage/TeacherScreen/StatsView.JPG)
 
@@ -461,7 +461,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ButtonStats](./testImage/TeacherScreen/StatsButton.JPG)
 
-- If I click on View Cancelled Bookings, a graph is shown.
+- If I click on `View Cancelled Bookings`, a graph is shown.
 
 ![CancelledStats](./testImage/TeacherScreen/CancelledBookingsStats.JPG)
 
@@ -470,7 +470,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ### Test 23 (A booking manages accesses the system and views the statistics page for all courses, where he can see the total amount of bookings for all courses present)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -478,13 +478,13 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ManagerHP](./testImage/ManagerScreen/ManagerHP.PNG)
 
-- Since the button "View Total Bookings of all Courses" is active I can scroll down and see a graph with all bookings made for all courses in the university.
+- Since the button `View Total Bookings of all Courses` is active I can scroll down and see a graph with all bookings made for all courses in the university.
 
 ![TotalStats](./testImage/ManagerScreen/TotalBookingsGraph.PNG)
 
 ### Test 24 (A booking manager accesses the system and selects a course for which there are no bookings)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -492,17 +492,17 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Analisi Matematica II" taught by professor Landro Toscano I can see the buttons listing all possible options.
+- After selecting the course `Analisi Matematica II` taught by professor Landro Toscano I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectAnalysisII.PNG)
 
-- If I select the option "Bookings by Week" I see a message saying that there are no statistics about bookings available for the course I selected.
+- If I select the option `Bookings by Week` I see a message saying that there are no statistics about bookings available for the course I selected.
 
 ![EmptyMessage](./testImage/ManagerScreen/NoBookings.PNG)
 
 ### Test 25 (A booking manager accesses the system and views statistics about bookings of a lecture for a given course, looking for both a lecture with statistics available and one without statistics available)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -510,25 +510,25 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+- After selecting the course `Economia e finanza d'impresa` taught by professor Ines Beneventi I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
 
-- After clicking on the button "View Bookings of Single Lecture" a dropdown menu listing all lectures of the course appears.
+- After clicking on the button `View Bookings of Single Lecture` a dropdown menu listing all lectures of the course appears.
 
 ![LessonMenu](./testImage/ManagerScreen/LessonMenuEeFI.PNG)
 
-- If I select in the menu the lesson "18/12/2020 10:00 - 13:00" a graph is shown.
+- If I select in the menu the lesson `18/12/2020 10:00 - 13:00` a graph is shown.
 
 ![LessonModeStats](./testImage/ManagerScreen/LessonModeEeFI.PNG)
 
-- If I select in the menu the lesson "25/12/2020 10:00 - 13:00" a message reporting that no bookings are available for said lecture is shown.
+- If I select in the menu the lesson `25/12/2020 10:00 - 13:00` a message reporting that no bookings are available for said lecture is shown.
 
 ![LessonModeNoStats](./testImage/ManagerScreen/LessonModeEeFINoStats.PNG)
 
 ### Test 26 (A booking manager accesses the system and views statistics about a course related to bookings made in separate weeks, separate months and for separate lectures)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -536,25 +536,25 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+- After selecting the course `Economia e finanza d'impresa` taught by professor Ines Beneventi I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
 
-- After clicking on the button "View Bookings by Week" a graph listing all bookings made in different weeks is shown.
+- After clicking on the button `View Bookings by Week` a graph listing all bookings made in different weeks is shown.
 
 ![WeekModeStats](./testImage/ManagerScreen/WeekModeEeFI.PNG)
 
-- After clicking on the button "View Bookings by Month" a graph listing all bookings made in different months is shown.
+- After clicking on the button `View Bookings by Month` a graph listing all bookings made in different months is shown.
 
 ![MonthModeStats](./testImage/ManagerScreen/MonthModeEeFI.PNG)
 
-- After clicking on the button "View Total Bookings" a graph listing all bookings made for different lectures is shown.
+- After clicking on the button `View Total Bookings` a graph listing all bookings made for different lectures is shown.
 
 ![TotalModeStats](./testImage/ManagerScreen/TotalModeEeFI.PNG)
 
 ### Test 27 (A booking manager accesses the system and selects a course for which there are no statistics about cancelled bookings)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -562,17 +562,17 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+- After selecting the course `Economia e finanza d'impresa` taught by professor Ines Beneventi I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
 
-- After clicking on the button "View Cancelled Bookings" a message reporting that there are no statistics is shown.
+- After clicking on the button `View Cancelled Bookings` a message reporting that there are no statistics is shown.
 
 ![CancelledModeNoStats](./testImage/ManagerScreen/CancelledModeEeFINoStats.PNG)
 
 ### Test 28 (A booking manager accesses the system and selects a course for which he wants to see statistics about cancelled bookings)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -580,37 +580,37 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+- After selecting the course `Economia e finanza d'impresa` taught by professor Ines Beneventi I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
 
-- After clicking on the button "View Cancelled Bookings" a graph is shown.
+- After clicking on the button `View Cancelled Bookings` a graph is shown.
 
 ![CancelledModeStats](./testImage/ManagerScreen/CancelledModeEeFI.PNG)
 
 ### Test 29 (A booking manager accesses the system and chooses to see statistics about cancelled lectures, when there are no cancelled lectures)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
-- After a successful login I click on the "View Cancelled Lectures of all Courses" and a message reporting that there are no statistics is shown.
+- After a successful login I click on the `View Cancelled Lectures of all Courses` and a message reporting that there are no statistics is shown.
 
 ![NoCancelledLectures](./testImage/ManagerScreen/NoCancelledLectures.PNG)
 
 ### Test 30 (A booking manager accesses the system and chooses to see statistics about cancelled lectures)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
-- After a successful login I click on the "View Cancelled Lectures of all Courses" and a graph is shown.
+- After a successful login I click on the `View Cancelled Lectures of all Courses` and a graph is shown.
 
 ![CancelledLecturesStats](./testImage/ManagerScreen/CancelledLecturesStats.PNG)
 
 ### Test 31 (A booking manager accesses the system to see statistics about in presence attendance for a course that has no attendance registered yet)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -618,17 +618,17 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Analisi Matematica II" taught by professor Landro Toscano I can see the buttons listing all possible options.
+- After selecting the course `Analisi Matematica II` taught by professor Landro Toscano I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectAnalysisII.PNG)
 
-- If I click on the button "View Attendance of all Lectures" a message reporting that there are no statistics available is shown.
+- If I click on the button `View Attendance of all Lectures` a message reporting that there are no statistics available is shown.
 
 ![NoAttendance](./testImage/ManagerScreen/NoAttendance.PNG)
 
 ### Test 32 (A booking manager accesses the system to see statistics about in presence attendance)
 
-- Like a booking manager I need to put my credentials in the login form and then press the Login button.
+- Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
 ![LoginForm](./testImage/ManagerScreen/ManagerLogin.PNG)
 
@@ -636,11 +636,11 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CourseSelect](./testImage/ManagerScreen/ManagerCourseSelect.PNG)
 
-- After selecting the course "Economia e finanza d'impresa" taught by professor Ines Beneventi I can see the buttons listing all possible options.
+- After selecting the course `Economia e finanza d'impresa` taught by professor Ines Beneventi I can see the buttons listing all possible options.
 
 ![SelectOptions](./testImage/ManagerScreen/ModeSelectEeFI.PNG)
 
-- If I click on the button "View Attendance of all Lectures" a graph is shown.
+- If I click on the button `View Attendance of all Lectures` a graph is shown.
 
 ![AttendanceStats](./testImage/ManagerScreen/AttendanceStats.PNG)
 
@@ -650,11 +650,106 @@ In this document you can find the documentation about our system testing. For ea
 ## Story 13
 ###### As a student I want to be put in a waiting list when no seats are available in the required lecture.
 
+### Test 33 (A student accesses the system to book a seat in a lecture, and gets put in a waiting list since all seats are booked)
+- As a student I put my credentials in the login form to access the system.
+
+![StudentAccess](./testImage/StudentScreen/StudentAccess.PNG)
+
+- Once in the homepage I click on the link `Bookable Lectures` in the header.
+
+![StudentHomepage](./testImage/StudentScreen/StudentHomepage.PNG)
+
+- In this page I want to book a seat for the lesson that takes place on 18/12/2020 for the course `Ingegneria della Qualità` but all 50 seats are booked, so I can only click on the `Add in Waiting List` button.
+
+![AddWaitingList](./testImage/StudentScreen/AddWaitingList.PNG)
+
+- Once I click on the button a pop-up asks me if I want to confirm my insertion in the waiting list.
+
+![AddWaitingListPopup1](./testImage/StudentScreen/AddWaitingListPopup1.PNG)
+
+- If I click on the `Yes` button a new pop-up appears, confirming my insertion in the waiting list.
+
+![AddWaitingListPopup2](./testImage/StudentScreen/AddWaitingListPopup2.PNG)
+
+
 ## Story 14 
 ###### As a student in the waiting list I want to be added to the list of students booked when someone cancels their booking so that I can attend the lecture.
+
+### Test 34 (shared with [Story 15](#story-15))
+
+- As a student that is already booked for a lecture that wants to delete his booking I insert my credentials to access the system.
+
+![StudentAccess2](./testImage/StudentScreen/StudentAccess2.PNG)
+
+- Once in the homepage I click on the `Bookable Lectures` link in the header.
+
+![StudentHomepage2](./testImage/StudentScreen/StudentHomepage2.PNG)
+
+- In this page I want to delete my booking for the lecture taking place on 18/12/2020 for the course `Ingegneria della Qualità`, so I click on the "Delete" button.
+
+![DeleteBooking](./testImage/StudentScreen/DeleteBooking.PNG)
+
+- Clicking on the button opens a pop-up asking me if I want to delete my booking.
+
+![DeleteBookingPopup1](./testImage/StudentScreen/DeleteBookingPopup1.PNG)
+
+- If I click on the `Yes` button a new pop-up confirms the booking cancellation.
+
+![DeleteBookingPopup2](./testImage/StudentScreen/DeleteBookingPopup2.PNG)
+
+- After I close the popup I can see that for the lecture I just cancelled my booking for the button says `Add to Waiting List`. This is because a student was already in the waiting list, as seen in [Test 33](#test-33-a-student-accesses-the-system-to-book-a-seat-in-a-lecture-and-gets-put-in-a-waiting-list-since-all-seats-are-booked)
+
+![DeleteBookingAfter](./testImage/StudentScreen/DeleteBookingAfter.PNG)
+
+- If I access, as the student that was put in the waiting list during [Test 33](#test-33-a-student-accesses-the-system-to-book-a-seat-in-a-lecture-and-gets-put-in-a-waiting-list-since-all-seats-are-booked) to my mail account I can see a notification telling me I was taken from the waiting list and my seat was correctly booked after someone else deleted his booked seat.
+
+![WaitingListEmail](./testImage/StudentScreen/WaitingListEmail.PNG)
+
+- Then, as the same student, I access the system with my credentials.
+
+![StudentAccess1](./testImage/StudentScreen/StudentAccess.PNG)
+
+- Once in the homepage I click on the `Bookable Lectures` link in the header.
+
+![StudentHomepage1](./testImage/StudentScreen/StudentHomepage.PNG)
+
+- In this page I can now see that I am booked for the lesson taking place on 18/12/2020 for the course `Ingegneria della Qualità`, since there's now a `Delete` button in place of the `Add in Waiting List` that was there before.
+
+![WaitingListAfter](./testImage/StudentScreen/WaitingListAfter.PNG)
+
+
 
 ## Story 15
 ###### As a student I want to get notified when I am taken from the waiting list so that I can attend the lecture.
 
+### Test 34 (shared with [Story 14](#story-14))
+
+
 ## Story 16 
 ###### As a booking manager I want to generate a contact tracing report starting with a positive student so that we comply with safety regulations.
+
+### Test 35 (A booking manager accesses the system and generates a contact report starting with a reported positive student)
+
+- As a booking manager I insert my credentials so I can access the system.
+
+![ManagerAccess](./testImage/ManagerScreen/ManagerAccess.PNG)
+
+- Once in the homepage I click on the link `Contact Tracing` in the header.
+
+![ManagerHomepage](./testImage/ManagerScreen/ManagerHomepage.PNG)
+
+- In this page I can insert the identifier of a student that has been reported as positive. Clicking on the `Download Report` button will generate a contact report based on that student.
+
+![ContactTracing](./testImage/ManagerScreen/ContactTracing.PNG)
+
+- After clicking on the button I have downloaded two files containing the contact report (a PDF and a CSF)
+
+![CTDownload](./testImage/ManagerScreen/CTDownload.PNG)
+
+- If I open the CSF file I can see the list of students that took part in a lesson together with the reported positive student.
+
+![CTCSF](./testImage/ManagerScreen/CTCSF.PNG)
+
+- In the same way, if I open the PDF file I can also see the list of contacts.
+
+![CTPDF](./testImage/ManagerScreen/CTPDF.PNG)
