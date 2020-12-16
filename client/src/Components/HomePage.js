@@ -222,7 +222,6 @@ function LectureItemStudent(props) {
     let today = moment();
     console.log(props.lecture)
     return (
-        (
             (
                 (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
                 &&
@@ -274,7 +273,6 @@ function LectureItemStudent(props) {
                         </Col>
                     </Row>
                 </ListGroup.Item>)
-        )
     );
 
 }
@@ -284,7 +282,6 @@ function LectureItemTeacher(props) {
     let today = moment();
     console.log(props.lecture)
     return (
-        (
             (
                 (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
                 &&
@@ -330,7 +327,6 @@ function LectureItemTeacher(props) {
                         </Col>
                     </Row>
                 </ListGroup.Item>)
-        )
     );
 
 }
