@@ -376,7 +376,7 @@ function LectureItem(props) {
                     {courseName}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {teacher.surname}-{teacher.name}
+                    {teacher.surname} {teacher.name}
                 </Col>
                 <Col xs={1} className='text-center'>
                     {props.lecture.date}
