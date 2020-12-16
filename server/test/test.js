@@ -517,10 +517,13 @@ describe('Server side unit test', function () {
     //#18
     describe('#Gets a list of lectures', function () {
       it("Gets a list of lectures", async function () {
+        let tomorrow = moment().add('1', 'day').format("DD/MM/YYYY");
         let today = moment().format("DD/MM/YYYY");
-        let lecture = new Lecture(18, "testCourse18", "testTeacher18", today, "8.30", "13.00", "1", "18", 18);
+        let lecture = new Lecture(18, "testCourse18", "testTeacher18", tomorrow, "8.30", "13.00", "1", "18", 18);
+        let lecture1 = new Lecture(20, "testCourse18", "testTeacher18", today, "8:30", "13:00", "1", "18", 18);
         let arrayLecture = [];
         arrayLecture.push(lecture);
+        arrayLecture.push(lecture1);
         await LectureDao.addLecture(arrayLecture);
         let enrollment = new Enrollment("testCourse18", "s18");
         let arrayEnrollment = [];
@@ -530,22 +533,25 @@ describe('Server side unit test', function () {
         let arrayPerson = [];
         arrayPerson.push(student);
         await PersonDao.createPerson(arrayPerson);
-        return await LectureDao.getLecturesList("s18").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse18"));
+        return await LectureDao.getLecturesList("s18").then(lectures => assert.strictEqual(lectures[0].lectureId, 20));
       });
     });
     //#19
     describe('#Gets the list of lectures of the teacher', function () {
       it("Gets a lecture by teacher's id", async function () {
+        let tomorrow1 = moment().add(2, "days").format("DD/MM/YYYY");
         let tomorrow = moment().add(1, "day").format("DD/MM/YYYY");
         let teacher = new Person("d19", "testTeacherName19", "testTeacherSurname19", "teacher", "teacher19@testone", "1233", "city19", "bday19", "SSN19");
         let arrayTeacher = [];
         arrayTeacher.push(teacher);
-        let lecture = new Lecture(19, "testCourse19", "d19", tomorrow, "8.30", "13.00", "1", "19", 19);
+        let lecture = new Lecture(19, "testCourse19", "d19", tomorrow1, "8.30", "13.00", "1", "19", 19);
+        let lecture1 = new Lecture (21, "testCourse19", "d19", tomorrow, "8:30", "11:30", "1", "19", 19);
         let arrayLecture = [];
         arrayLecture.push(lecture);
+        arrayLecture.push(lecture1);
         PersonDao.createPerson(arrayTeacher);
         LectureDao.addLecture(arrayLecture);
-        return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].courseId, "testCourse19"))
+        return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].lectureId, 21))
       });
     });
     /*
@@ -1111,6 +1117,72 @@ describe('Server side unit test', function () {
       });
     });
 
+  });
+  describe('Test lectureDaoHP', function () {
+    //#52
+    describe('#Get Week Lecture List ', function () {
+      it('Get the list of the week lectures of a student ', async function () {
+        let today = moment().add("1", "day").format("DD/MM/YYYY")
+        let tomorrow = moment().add("2", "days").format("DD/MM/YYYY")
+        let arrayEnrollment = [];
+        let enrollment = new Enrollment ("c52", "s52");
+        arrayEnrollment.push(enrollment);
+        let lecture = new Lecture (52, "c52", "d52", tomorrow, "8:30", "13:00", "1", "52", 52);
+        let lecture1 = new Lecture (43, "c52", "d52", today, "8:30", "13:00", "1", "52", 52);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        arrayLecture.push(lecture1);
+        await EnrollmentDao.addEnrollment(arrayEnrollment);
+        await LectureDao.addLecture(arrayLecture);
+        return await LectureDao.getWeekLecturesList("s52").then((l) => assert.strictEqual(l[0].lectureId, 43));
+      });
+    });
+    //#52
+    describe('#Get Week Teacher Lecture List ', function () {
+      it('Get the list of the week lectures of a teacher ', async function () {
+        return await LectureDao.getWeekTeacherLectureList("d52").then((l) => assert.strictEqual(l[0].lectureId, 43));
+      });
+    });
+    //#53
+    describe('#Get Past Lecture like a Teacher ', function () {
+      it('Get the list of past lectures of a teacher ', async function () {
+        let yesterday = moment().subtract('1', 'day').format("DD/MM/YYYY");
+        let lecture = new Lecture (53, "c53", "d53", yesterday, "8:30", "13:00", "1", "53", 53);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        await LectureDao.addLecture(arrayLecture);
+        let teacher = new Person ("d53", "teacherName53", "teacherSurname53", "Teacher", "teacher53@email.it", "234", null, null, "ZSEDF2");
+        let arrayTeacher = [];
+        arrayTeacher.push(teacher);
+        await PersonDao.createPerson(arrayTeacher);
+        let course = new Course("c53", "d53", "courseName53", "1", "1");
+        let arrayCourse = [];
+        arrayCourse.push(course);
+        await CourseDao.createCourse(arrayCourse);
+        return await LectureDao.getPastLectures(course.name, teacher.email, "Teacher", teacher.name, teacher.surname)
+        .then((l) => assert.strictEqual(l[0].date, lecture.date));
+      });
+    });
+    //#54
+    describe('#Get Past Lecture like a Manager ', function () {
+      it('Get the list of past lectures like a manager ', async function () {
+        let yesterday = moment().subtract('1', 'day').format("DD/MM/YYYY");
+        let lecture = new Lecture (54, "c54", "d54", yesterday, "8:30", "13:00", "1", "54", 54);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        await LectureDao.addLecture(arrayLecture);
+        let teacher = new Person ("d54", "teacherName54", "teacherSurname54", "Teacher", "teacher54@email.it", "234", null, null, "ZS1DF2");
+        let arrayTeacher = [];
+        arrayTeacher.push(teacher);
+        await PersonDao.createPerson(arrayTeacher);
+        let course = new Course("c54", "d54", "courseName54", "1", "1");
+        let arrayCourse = [];
+        arrayCourse.push(course);
+        await CourseDao.createCourse(arrayCourse);
+        return await LectureDao.getPastLectures(course.name, teacher.email, "Manager", teacher.name, teacher.surname)
+        .then((l) => assert.strictEqual(l[0].date, lecture.date));
+      });
+    });
   });
 
   //----------------------------------------- Email sender tests -----------------------------------------//
