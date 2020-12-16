@@ -1,8 +1,8 @@
 import React from 'react';
 import { AuthContext } from '../auth/AuthContext'
-import { ListGroup, Col, Row, Jumbotron} from 'react-bootstrap';
+import { ListGroup, Col, Row, Jumbotron } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faParagraph } from '@fortawesome/free-solid-svg-icons'
+import { faParagraph, faBirthdayCake } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom';
 import API from '../api/API';
 const moment = require("moment");
@@ -18,7 +18,7 @@ class HomePage extends React.Component {
             lectures: [],
             lecture: '',
             student: '',
-            b : '',
+            b: '',
             role: ''
         };
     }
@@ -28,22 +28,18 @@ class HomePage extends React.Component {
      */
     componentDidMount() {
         API.getPersonName(this.props.email).then((person) => {
-            this.setState({ name: person.name, surname: person.surname , b : person.birthday, role : person.role});
-        });   
-        API.getPersonName(this.props.email).then((person) => 
-        {
-            if(person.role == 'Student')
-            {
+            this.setState({ name: person.name, surname: person.surname, b: person.birthday, role: person.role });
+        });
+        API.getPersonName(this.props.email).then((person) => {
+            if (person.role == 'Student') {
                 API.getWeekLecturesList(this.props.id)
-                    .then((lectures) => this.setState({ lectures: lectures}));
+                    .then((lectures) => this.setState({ lectures: lectures }));
                 this.setState({ id: this.props.id });
             }
-            else
-            {
-                if(person.role == 'Teacher') 
-                {
+            else {
+                if (person.role == 'Teacher') {
                     API.getWeekTeacherLectureList(this.props.id)
-                        .then((lectures) => this.setState({ lectures: lectures}));
+                        .then((lectures) => this.setState({ lectures: lectures }));
                     this.setState({ id: this.props.id });
                 }
             }
@@ -79,16 +75,30 @@ class HomePage extends React.Component {
                     <>
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                         <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                            <FontAwesomeIcon icon={faParagraph} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
+                            {
+                                !((this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM'))) &&
+
+                                <FontAwesomeIcon icon={faParagraph} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
+                            }
+                            {
+                                (this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM')) &&
+                                <FontAwesomeIcon icon={faBirthdayCake} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
+                            }
                             {(this.state.name && this.state.surname) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') != moment().format('DD/MM')) && <h1> Welcome {this.state.name}{" "}{this.state.surname}</h1>}
                             {!(this.state.name && this.state.surname) && <h1> Loading... </h1>}
                             {(this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM')) &&
-                            <h1> <strong>Happy birthday {this.state.name}{" "}{this.state.surname}</strong></h1>}
+                                <h1> <strong>Happy birthday {this.state.name}{" "}{this.state.surname}!</strong></h1>}
                             {!(this.state.name && this.state.surname) && <h1> Loading... </h1>}
                             <Row>
                                 <Col>
                                     {
+                                        !((this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM'))) &&
+
                                         <FontAwesomeIcon icon={faParagraph} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
+                                    }
+                                    {
+                                        (this.state.name && this.state.surname && (this.state.role == 'Student')) && (moment(this.state.b, "DD/MM/YYYY").format('DD/MM') == moment().format('DD/MM')) &&
+                                        <FontAwesomeIcon icon={faBirthdayCake} color="blue" flip="horizontal" size="7x"></FontAwesomeIcon>
                                     }
                                 </Col>
                             </Row>
@@ -97,7 +107,7 @@ class HomePage extends React.Component {
                             <Row className='col-12 m-0 p-0'>
                                 <Col>
                                     {
-                                        <LectureList id={this.state.id} lecture={this.state.lectures} role = {this.state.role} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName}/>
+                                        <LectureList id={this.state.id} lecture={this.state.lectures} role={this.state.role} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} />
                                     }
                                 </Col>
                             </Row>
@@ -107,7 +117,7 @@ class HomePage extends React.Component {
             </AuthContext.Consumer>
         );
     }
-    
+
     /** 
      * When we decide to implement particular features in different homepages we can pass a string containing the role of the person when calling this component from App.js
      * (<HomePage email={email} role="Teacher" />), with possible roles being Student or Teacher
@@ -118,82 +128,82 @@ class HomePage extends React.Component {
 
 function LectureList(props) {
 
-    return ( 
+    return (
         ((props.role == 'Student') &&
-        <ListGroup>
-            <Row>
-                <Col>
-                    {
-                        <h3>Agenda</h3>
-                    }
-                </Col>
-            </Row>
-            <ListGroup.Item className='border'>
-                <Row className='justify-content-around'>
-                    <Col xs={1} className='text-center'>
-                        <strong>Day</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Course Name</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Teacher Name</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Starting Time</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Ending Time</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Classroom</strong>
+            <ListGroup>
+                <Row>
+                    <Col>
+                        {
+                            <h3>Agenda</h3>
+                        }
                     </Col>
                 </Row>
-            </ListGroup.Item>
-            {
-                props.lecture.map((l) => (
+                <ListGroup.Item className='border'>
+                    <Row className='justify-content-around'>
+                        <Col xs={1} className='text-center'>
+                            <strong>Day</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Course Name</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Teacher Name</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Starting Time</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Ending Time</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Classroom</strong>
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+                {
+                    props.lecture.map((l) => (
                         <LectureItemStudent id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} />
-                ))
-            }
-        </ListGroup> )
+                    ))
+                }
+            </ListGroup>)
         ||
         (
-        (props.role == 'Teacher') &&
-        <ListGroup>
-            <Row>
-                <Col>
-                    {
-                        <h3>Agenda</h3>
-                    }
-                </Col>
-            </Row>
-            <ListGroup.Item className='border'>
-                <Row className='justify-content-around'>
-                    <Col xs={1} className='text-center'>
-                        <strong>Day</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Course Name</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Starting Time</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Ending Time</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        <strong>Classroom</strong>
+            (props.role == 'Teacher') &&
+            <ListGroup>
+                <Row>
+                    <Col>
+                        {
+                            <h3>Agenda</h3>
+                        }
                     </Col>
                 </Row>
-            </ListGroup.Item>
-            {
-                props.lecture.map((l) => (
+                <ListGroup.Item className='border'>
+                    <Row className='justify-content-around'>
+                        <Col xs={1} className='text-center'>
+                            <strong>Day</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Course Name</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Starting Time</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Ending Time</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            <strong>Classroom</strong>
+                        </Col>
+                    </Row>
+                </ListGroup.Item>
+                {
+                    props.lecture.map((l) => (
                         <LectureItemTeacher id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} />
-                ))
-            }
-        </ListGroup>
+                    ))
+                }
+            </ListGroup>
 
-    ));
+        ));
 
 }
 
@@ -213,57 +223,57 @@ function LectureItemStudent(props) {
     console.log(props.lecture)
     return (
         (
-        (
-            (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY')) 
-            &&
-        <ListGroup.Item className='border mt-1'>
-            <Row className='justify-content-around'>
-                <Col xs={1} className='text-center'>
-                    <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {courseName}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {teacher.surname}-{teacher.name}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {props.lecture.startingTime}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {props.lecture.endingTime}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {props.lecture.classroomId}
-                </Col>
-            </Row>
-        </ListGroup.Item> )
-        ||
-        (
-            (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') == moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
-             &&
-        <ListGroup.Item className='border mt-1' variant="primary">
-            <Row className='justify-content-around'>
-                <Col xs={1} className='text-center'>
-                    <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {courseName}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {teacher.surname}-{teacher.name}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {props.lecture.startingTime}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {props.lecture.endingTime}
-                </Col>
-                <Col xs={1} className='text-center'>
-                    {props.lecture.classroomId}
-                </Col>
-            </Row>
-        </ListGroup.Item> )
+            (
+                (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
+                &&
+                <ListGroup.Item className='border mt-1'>
+                    <Row className='justify-content-around'>
+                        <Col xs={1} className='text-center'>
+                            <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {courseName}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {teacher.surname}-{teacher.name}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.startingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.endingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.classroomId}
+                        </Col>
+                    </Row>
+                </ListGroup.Item>)
+            ||
+            (
+                (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') == moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
+                &&
+                <ListGroup.Item className='border mt-1' variant="primary">
+                    <Row className='justify-content-around'>
+                        <Col xs={1} className='text-center'>
+                            <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {courseName}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {teacher.surname}-{teacher.name}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.startingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.endingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.classroomId}
+                        </Col>
+                    </Row>
+                </ListGroup.Item>)
         )
     );
 
@@ -276,50 +286,50 @@ function LectureItemTeacher(props) {
     return (
         (
             (
-                (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY')) 
+                (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') != moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
                 &&
-            <ListGroup.Item className='border mt-1'>
-                <Row className='justify-content-around'>
-                    <Col xs={1} className='text-center'>
-                        <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {courseName}
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {props.lecture.startingTime}
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {props.lecture.endingTime}
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {props.lecture.classroomId}
-                    </Col>
-                </Row>
-            </ListGroup.Item> )
+                <ListGroup.Item className='border mt-1'>
+                    <Row className='justify-content-around'>
+                        <Col xs={1} className='text-center'>
+                            <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {courseName}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.startingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.endingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.classroomId}
+                        </Col>
+                    </Row>
+                </ListGroup.Item>)
             ||
             (
                 (moment(today, 'DD/MM/YYYY').format('DD/MM/YYYY') == moment(props.lecture.date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
-                 &&
-            <ListGroup.Item className='border mt-1' variant="primary">
-                <Row className='justify-content-around'>
-                    <Col xs={1} className='text-center'>
-                        <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {courseName}
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {props.lecture.startingTime}
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {props.lecture.endingTime}
-                    </Col>
-                    <Col xs={1} className='text-center'>
-                        {props.lecture.classroomId}
-                    </Col>
-                </Row>
-            </ListGroup.Item> )
+                &&
+                <ListGroup.Item className='border mt-1' variant="primary">
+                    <Row className='justify-content-around'>
+                        <Col xs={1} className='text-center'>
+                            <strong>{moment(props.lecture.date, 'DD/MM/YYYY').format('dddd')}</strong>
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {courseName}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.startingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.endingTime}
+                        </Col>
+                        <Col xs={1} className='text-center'>
+                            {props.lecture.classroomId}
+                        </Col>
+                    </Row>
+                </ListGroup.Item>)
         )
     );
 
