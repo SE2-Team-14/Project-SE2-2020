@@ -499,7 +499,7 @@ describe('Server side unit test', function () {
     });
     //#17.2
     describe("#Get an enrollment by id", function() {
-      if('Get an enrollment by courseId and studentId', async function() {
+      it('Get an enrollment by courseId and studentId', async function() {
         let arrayEnrollment = [];
         let courseId = 'c17';
         let studentId = 's17';
