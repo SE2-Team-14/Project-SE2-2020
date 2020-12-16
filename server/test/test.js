@@ -1166,19 +1166,9 @@ describe('Server side unit test', function () {
     //#54
     describe('#Get Past Lecture like a Manager ', function () {
       it('Get the list of past lectures like a manager ', async function () {
-        let yesterday = moment().subtract('1', 'day').format("DD/MM/YYYY");
-        let lecture = new Lecture (54, "c54", "d54", yesterday, "8:30", "13:00", "1", "54", 54);
-        let arrayLecture = [];
-        arrayLecture.push(lecture);
-        await LectureDao.addLecture(arrayLecture);
-        let teacher = new Person ("d54", "teacherName54", "teacherSurname54", "Teacher", "teacher54@email.it", "234", null, null, "ZS1DF2");
-        let arrayTeacher = [];
-        arrayTeacher.push(teacher);
-        await PersonDao.createPerson(arrayTeacher);
-        let course = new Course("c54", "d54", "courseName54", "1", "1");
-        let arrayCourse = [];
-        arrayCourse.push(course);
-        await CourseDao.createCourse(arrayCourse);
+        let lecture = await LectureDao.getLectureById(53);
+        let teacher = await PersonDao.getPersonByID("d53")
+        let course = await CourseDao.getCourseByID("c53");
         return await LectureDao.getPastLectures(course.name, teacher.email, "Manager", teacher.name, teacher.surname)
         .then((l) => assert.strictEqual(l[0].date, lecture.date));
       });
