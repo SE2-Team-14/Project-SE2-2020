@@ -2,6 +2,8 @@ import React from 'react';
 import { Jumbotron, Button, Modal } from 'react-bootstrap';
 import API from '../api/API';
 
+const moment = require('moment');
+
 const Papa = require('papaparse');
 
 const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
@@ -16,7 +18,7 @@ class LoadDataView extends React.Component {
     selectedFile: null,
     fileType: "",
     fileData: "",
-    fileName: "", 
+    fileName: "",
     showUploadSuccess: false,
     showUpdateError: false,
   };
@@ -80,6 +82,8 @@ class LoadDataView extends React.Component {
           <p> </p>
           <h4>File Details:</h4>
           <p>File Name: {this.state.selectedFile.name}</p>
+          <p>File Size: {(this.state.selectedFile.size/1024).toFixed(2)}Kb</p>
+          <p>Last Modified: {moment(this.state.selectedFile.lastModified).format("YYYY-MM-DD HH:mm")}</p>
         </div>
       );
     }
@@ -88,31 +92,41 @@ class LoadDataView extends React.Component {
   render() {
     return (
       <Jumbotron className="text-center">
-        <h4>Select a file to load data into the system </h4>
+        <h3>Select a file to load data into the system </h3>
         <p></p>
         <div>
-          <input type="file" accept=".csv" onChange={this.onChange} />
-          <Button onClick={this.onSubmit}>Upload!</Button>
-          <Modal controlid='Success' show={this.state.showUploadSuccess} onHide={this.handleClose} animation={false} >
-            <Modal.Header closeButton>
-              <Modal.Title>Upload successfull!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>The file {this.state.fileName} has been successfully uploaded</Modal.Body>
-            <Modal.Footer>
-              <Button variant='primary' onClick={this.handleClose}>OK</Button>
-            </Modal.Footer>
-          </Modal>
-          <Modal controlid='Error' show={this.state.showUpdateError} onHide={this.handleClose} animation={false} >
-            <Modal.Header closeButton>
-              <Modal.Title>Error uploading file</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>There was a problem loading the file or the cvs format is wrong</Modal.Body>
-            <Modal.Footer>
-              <Button variant='primary' onClick={this.handleClose}>OK</Button>
-            </Modal.Footer>
-          </Modal>
-
+          <div className='custom-file mb-4 col-sm-3'>
+            <input
+              type='file'
+              className='custom-file-input'
+              id='customFile'
+              onChange={this.onChange}
+            />
+            <label className='custom-file-label' htmlFor='customFile'>
+              {this.state.fileName}
+            </label>
+            <p></p>
+          </div>
         </div>
+        <Button onClick={this.onSubmit}>Upload!</Button>
+        <Modal controlid='Success' show={this.state.showUploadSuccess} onHide={this.handleClose} animation={false} >
+          <Modal.Header closeButton>
+            <Modal.Title>Upload successfull!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>The file {this.state.fileName} has been successfully uploaded</Modal.Body>
+          <Modal.Footer>
+            <Button variant='primary' onClick={this.handleClose}>OK</Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal controlid='Error' show={this.state.showUpdateError} onHide={this.handleClose} animation={false} >
+          <Modal.Header closeButton>
+            <Modal.Title>Error uploading file</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>There was a problem loading the file or the cvs format is wrong</Modal.Body>
+          <Modal.Footer>
+            <Button variant='primary' onClick={this.handleClose}>OK</Button>
+          </Modal.Footer>
+        </Modal>
         {this.fileData()}
       </Jumbotron>
     );
