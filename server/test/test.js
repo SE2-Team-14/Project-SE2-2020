@@ -264,9 +264,9 @@ describe('Server side unit test', function () {
     });
 
   });
-  /*
+  
   //#9.1
-  describe('Test #POST book', function () {
+  describe('Test #DELETE book', function () {
     var host = "http://localhost:3001";
     var path = "/api/student-home/delete-book";
 
@@ -286,7 +286,7 @@ describe('Server side unit test', function () {
         });
     });
 
-  });*/
+  });
   //#11
   describe('Test #PUT update lecture', function () {
     var host = "http://localhost:3001";
