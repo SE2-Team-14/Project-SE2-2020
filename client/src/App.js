@@ -93,13 +93,13 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (<HomePage  email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>)
+              return <>{this.state.authUser && <HomePage  email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>}</>
             }}>
             </Route>
 
             <Route exact path="/teacher-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (<HomePage email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>)
+              return <>{this.state.authUser && <HomePage email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>}</>
             }}>
             </Route>
 
@@ -111,11 +111,12 @@ class App extends React.Component {
 
             <Route exact path="/manager-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return (
+              return <>{this.state.authUser && 
                 <>
                   <HomePage email={email}></HomePage>
                   <StatsViewer email={email} role="Manager"></StatsViewer>
-                </>)
+                </>}
+                </>
             }}>
             </Route>
 
@@ -145,13 +146,13 @@ class App extends React.Component {
 
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;
-              return (<BookedStudentsList email={email}></BookedStudentsList>)
+              return <>{this.state.authUser &&  <BookedStudentsList email={email}></BookedStudentsList>}</>
             }}>
             </Route>
 
             <Route exact path="/teacher-home/:email/statistics" render={(props) => {
               let email = props.match.params.email;
-              return (<StatsViewer email={email} role="Teacher"></StatsViewer>)
+              return <>{this.state.authUser && <StatsViewer email={email} role="Teacher"></StatsViewer>}</>
             }}></Route>
 
             <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
