@@ -406,8 +406,8 @@ describe('Server side unit test', function () {
       });
     });
     //#15.3
-    describe("#GetPersonByEmail", function() {
-      it("Get a person by his email", async function() {
+    describe("#GetPersonByEmail", function () {
+      it("Get a person by his email", async function () {
         let person = new Person("s16", "studentName16", "studentSurname16", "Student", "student16@test.it", "1234", "Napoli", "18/11/1999", "ASDFG432");
         let arrayPerson = [];
         arrayPerson.push(person);
@@ -443,7 +443,7 @@ describe('Server side unit test', function () {
     //#16.3
     describe('#Get courses and teachers', function () {
       it('Get courses and teachers', async function () {
-        let arrayPerson =[];
+        let arrayPerson = [];
         let arrayCourse = [];
         let teacher = new Person("d16", "teacherName16", "teacherSurname16", "Teacher", "teacher16@test.it", "1234", null, null, "ADFG342");
         arrayPerson.push(teacher);
@@ -498,15 +498,17 @@ describe('Server side unit test', function () {
       });
     });
     //#17.2
-    describe("#Get an enrollment by id", function() {
-      it('Get an enrollment by courseId and studentId', async function() {
+    describe("#Get an enrollment by id", function () {
+      it('Get an enrollment by courseId and studentId', async function () {
         let arrayEnrollment = [];
         let courseId = 'c17';
         let studentId = 's17';
         let enrollment = new Enrollment("c17", 's17');
         arrayEnrollment.push(enrollment);
         await EnrollmentDao.addEnrollment(arrayEnrollment);
-        return await EnrollmentDao.getEnrollmentById('c17', 's17').then((e) => assert.strictEqual(e.courseId == courseId && e.studentId == studentId));
+        return await EnrollmentDao.getEnrollmentById('c17', 's17').then((e) => {
+          assert.strictEqual(e.courseId == courseId, e.id == studentId)
+        });
       });
     });
   });
@@ -776,6 +778,24 @@ describe('Server side unit test', function () {
           })
         })
       })
+      //#48, will have to be changed when we implement story about attendance and code changes
+      describe("Test attendance mode", function () {
+        it("Gets the list of all students that attended all lectures", async function () {
+          let testLecture = new Lecture(48, "c48", "testTeacher48", "2/12/2025", "12:00", "13:00", "1", "48", 48);
+          let arrayLecture = [];
+          arrayLecture.push(testLecture);
+          await LectureDao.addLecture(arrayLecture);
+          let testCourse = new Course("c48", "testCourse", "courseName48", "year48", "sem48");
+          let arrayCourse = [];
+          arrayCourse.push(testCourse);
+          await CourseDao.createCourse(arrayCourse);
+          let testBooking = new Booking("s48", 48, "16/12/2020", "12:00");
+          await BookingDao.addBoocking(testBooking);
+          return await BookingDao.getStatistics(null, "attendance", testCourse.name).then((s) => {
+            assert.strictEqual(s[0].date, testLecture.date);
+          })
+        })
+      })
     });
     //#33
     describe("#Test lecture mode empty", function () {
@@ -817,10 +837,30 @@ describe('Server side unit test', function () {
     describe("#Test total mode empty", function () {
       it("Gets an empty list of bookings for the specified lecture", async function () {
         let testLecture = new Lecture(36, "c36", "testTeacher36", "6/12/2025", "12:00", "13:00", "1", "36", 36);
-        let testCourse = new Course("c36", "testCourse36", "courseName36");
-        LectureDao.addLecture(testLecture);
-        CourseDao.createCourse(testCourse);
+        let testCourse = new Course("c36", "testCourse36", "courseName36", "year36", "sem36");
+        let arrayLecture = [];
+        arrayLecture.push(testLecture);
+        await LectureDao.addLecture(arrayLecture);
+        let arrayCourse = [];
+        arrayCourse.push(testCourse)
+        await CourseDao.createCourse(arrayCourse);
         return await BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
+          assert.strictEqual(s, undefined);
+        })
+      })
+    })
+    //#49, will have to be changed when we implement the story about attendance and code changes
+    describe("#Test attendance mode empty", function () {
+      it("Gets an empty list of presences for the specified lecture", async function () {
+        let testLecture = new Lecture(49, "c49", "testTeacher49", "20/12/2025", "12:00", "13:00", "1", "49", 49);
+        let testCourse = new Course("c49", "testCourse49", "courseName49", "year49", "sem49");
+        let arrayCourse = [];
+        let arrayLecture = [];
+        arrayLecture.push(testLecture);
+        await LectureDao.addLecture(arrayLecture);
+        arrayCourse.push(testCourse);
+        await CourseDao.createCourse(arrayCourse);
+        return await BookingDao.getStatistics(null, "attendance", testCourse.courseName).then((s) => {
           assert.strictEqual(s, undefined);
         })
       })
@@ -884,7 +924,7 @@ describe('Server side unit test', function () {
         let arrayCourse = [];
         let person = new Person("d39", "teacherName39", "teacherSurname39", "Teacher", "teacher39@email.it", "1234", null, null, "ASDFR432");
         arrayPerson.push(person);
-        let course = new Course ("c39", "d39", "CourseName39", "39", "39");
+        let course = new Course("c39", "d39", "CourseName39", "39", "39");
         arrayCourse.push(course);
         let cancelledLecture = new CancelledLecture(39, "c39", "d39", "09/12/12", "1");
         await PersonDao.createPerson(arrayPerson);
@@ -900,7 +940,7 @@ describe('Server side unit test', function () {
     describe('#Insert In Waiting List ', function () {
       it('Insert In Waiting List ', async function () {
         return await WaitingListDao.insertInWaitingList("s40", 40);
-            });
+      });
     });
     //#40.1
     describe('#Delete from waiting list', function () {
@@ -914,7 +954,7 @@ describe('Server side unit test', function () {
         await WaitingListDao.insertInWaitingList("s41", 41);
         await WaitingListDao.insertInWaitingList("s411", 41);
         return await WaitingListDao.getFirstStudentInWaitingList(41).then((f) => assert.strictEqual(f.studentId, "s41"));
-            });
+      });
     });
     //#42
     describe('#Get all the waiting list ', function () {
@@ -922,7 +962,7 @@ describe('Server side unit test', function () {
         await WaitingListDao.insertInWaitingList("s42", 42);
         await WaitingListDao.insertInWaitingList("s421", 42);
         return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 4));
-            });
+      });
     });
   });
 
@@ -930,10 +970,10 @@ describe('Server side unit test', function () {
     //#43
     describe('#Get bookingList of a student ', function () {
       it('Get the list of bookings of a student ', async function () {
-        let booking= new Booking("s43", 43, "15/12/2020", "8:30");
+        let booking = new Booking("s43", 43, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
         return await BookingDao.getBookings("s43").then((b) => assert.strictEqual(b[0].lectureId, 43));
-            });
+      });
     });
     //#44
     describe('#Find Email By Lecture', function () {
@@ -954,7 +994,7 @@ describe('Server side unit test', function () {
         arrayLecture.push(lecture);
         arrayLecture.push(lecture1);
         await LectureDao.addLecture(arrayLecture);
-        let booking= new Booking("s44", 44, "15/12/2020", "8:30");
+        let booking = new Booking("s44", 44, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
         return await BookingDao.findEmailByLecture(44).then((email) => assert.strictEqual(email[0].Email, "email44@test.it"));
       });
@@ -970,7 +1010,7 @@ describe('Server side unit test', function () {
         let arrayLecture = [];
         arrayLecture.push(lecture);
         await LectureDao.addLecture(arrayLecture);
-        let booking= new Booking("s45", 45, "15/12/2020", "8:30");
+        let booking = new Booking("s45", 45, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
         return await BookingDao.getBookedStudentsByLectureId(45).then((s) => assert.strictEqual(s[0].studentId, "s45"));
       });
@@ -990,7 +1030,7 @@ describe('Server side unit test', function () {
         let arrayLecture = [];
         arrayLecture.push(lecture);
         await LectureDao.addLecture(arrayLecture);
-        let booking= new Booking("s46", 46, "15/12/2020", "8:30");
+        let booking = new Booking("s46", 46, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
         return await BookingDao.getTeacherCoursesStatistics("teacher46@test.it").then((c) => assert.strictEqual(c[0].name, "courseName46"));
       });
@@ -1001,12 +1041,56 @@ describe('Server side unit test', function () {
         return await BookingDao.getAllCoursesStatistics().then((c) => assert.strictEqual(c[0].courseName, "courseName46"));
       });
     });
+    //#50
+    //getTeacherCoursesStatistics never returns an empty array. If there are no bookings it just returns an array [{name: null, total: 0}].
+    /*describe("#Test getTeacherCoursesStatistics empty", function () {
+      it("Gets an empty list of teacher statistics", async function () {
+        let teacher = new Person("d50", "teacherName50", "teacherSurname50", "Teacher", "teacher50@test.it", "1234", null, null, "ABCD50");
+        let arrayTeacher = [];
+        arrayTeacher.push(teacher);
+        await PersonDao.createPerson(arrayTeacher);
+        let course = new Course("c50", "d50", "courseName50", "year50", "sem50");
+        let arrayCourse = [];
+        arrayCourse.push(course);
+        await CourseDao.createCourse(arrayCourse);
+        let lecture = new Lecture(50, "c50", "d50", "31/12/2025", "8:30", "11:30", "1", "50", 50);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        await LectureDao.addLecture(arrayLecture);
+        return await BookingDao.getTeacherCoursesStatistics("teacher50@test.it").then((s) => {
+          assert.strictEqual(s, undefined);
+        })
+      })
+    })*/
+    //#51
+    describe("#Test getAllCoursesStatistics empty", function () {
+      it("Gets an empty list of teacher statistics", async function () {
+        await PersonDao.deletePersonById("d46");
+        await CourseDao.deleteCourseById("c46");
+        await LectureDao.deleteLecture(46);
+        let teacher = new Person("d50", "teacherName50", "teacherSurname50", "Teacher", "teacher50@test.it", "1234", null, null, "ABCD50");
+        let arrayTeacher = [];
+        arrayTeacher.push(teacher);
+        await PersonDao.createPerson(arrayTeacher);
+        let course = new Course("c50", "d50", "courseName50", "year50", "sem50");
+        let arrayCourse = [];
+        arrayCourse.push(course);
+        await CourseDao.createCourse(arrayCourse);
+        let lecture = new Lecture(50, "c50", "d50", "31/12/2025", "8:30", "11:30", "1", "50", 50);
+        let arrayLecture = [];
+        arrayLecture.push(lecture);
+        await LectureDao.addLecture(arrayLecture);
+        return await BookingDao.getAllCoursesStatistics().then((s) => {
+          assert.strictEqual(s, undefined);
+        })
+      })
+    })
   });
   describe('Test contact_tracing_dao', function () {
     //#47
     describe('#Get tracing of a positive student ', function () {
       it('Get the list of students in contact with the positive student ', async function () {
-        let today= moment().subtract('1', "day").format("DD/MM/YYYY");
+        let today = moment().subtract('1', "day").format("DD/MM/YYYY");
         let prenotation = moment().subtract('2', "days").format("DD/MM/YYYY");
         let arrayStudent = [];
         let arrayLecture = [];
@@ -1018,15 +1102,15 @@ describe('Server side unit test', function () {
         arrayLecture.push(lecture);
         let booking1 = new Booking("p47", 47, prenotation, "8:30");
         let booking2 = new Booking("s47", 47, prenotation, "8:30");
-        let contact = "" + student.id + ", " + student.name + ", "+ student.surname + ", " + student.email;
+        let contact = "" + student.id + ", " + student.name + ", " + student.surname + ", " + student.email;
         await PersonDao.createPerson(arrayStudent);
         await LectureDao.addLecture(arrayLecture);
         await BookingDao.addBoocking(booking1);
         await BookingDao.addBoocking(booking2);
         return await ContactTracingDao.getContactTracingByStudent("p47").then((s) => assert.strictEqual(s[0], contact));
-            });
+      });
     });
-    
+
   });
 
   //----------------------------------------- Email sender tests -----------------------------------------//
