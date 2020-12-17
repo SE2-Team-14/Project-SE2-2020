@@ -308,7 +308,7 @@ describe('Server side unit test', function () {
           }
         });
     });
-
+  });
     //Test that http://localhost:3001/api/bookedStudents returns 200
     describe('#Test /api/bookedStudents', function () {
       var url = "http://localhost:3001/api/bookedStudents";
@@ -653,7 +653,7 @@ describe('Server side unit test', function () {
       });
     });
 
-  });
+  
 
   //----------------------------------------- DAO tests -----------------------------------------//
 
