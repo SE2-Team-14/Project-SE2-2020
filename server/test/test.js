@@ -309,57 +309,95 @@ describe('Server side unit test', function () {
         });
     });
 
-  });
-  /*
-  //#12
-  describe('Test #PUT decrease-seats', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/student-home/decrease-seats";
-    let lecture = new Lecture(12, "c12", "d12", "12/12/12", "8:30", "10:00", 1, "12", 12);
-    it('should send parameters to : /api/student-home/decrease-seats PUT', function (done) {
-      chai
-        .request(host)
-        .put(path)
-        .set('content-type', 'application/json')
-        .send({ lecture: lecture })
-        .end(function (error, response, body) {
-          if (error) {
-            done(error);
-          } else {
-            expect(response.statusCode).to.equal(200);
-            done();
-          }
+    //Test that http://localhost:3001/api/bookedStudents returns 200
+    describe('#Test /api/bookedStudents', function () {
+      var url = "http://localhost:3001/api/bookedStudents";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
         });
-    });
-    
-  });
-  //#13
-  describe('Test #PUT change-type of lecture', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/teacher-home/change-type";
-    let lecture = new Lecture(13, "c13", "d13", "12/12/12", "8:30", "10:00", 1, "13", 13);
-
-    LectureDao.addLecture(lecture);
-
-    it('should send parameters to : /api/teacher-home/change-type PUT', function (done) {
-      chai
-        .request(host)
-        .put(path)
-        .set('content-type', 'application/json')
-        .send({ lecture: lecture })
-        .end(function (error, response, body) {
-          if (error) {
-            done(error);
-          } else {
-            expect(response.statusCode).to.equal(200);
-            done();
-          }
-        });
+      });
     });
 
-    
+    //Test that http://localhost:3001/getBookings/s90000 returns 200
+    describe('#Test /api/getBookings/s90000', function () {
+      var url = "http://localhost:3001/api/getBookings/s9000";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/getTeacherLectures/d80000 returns 200
+    describe('#Test /api/getTeacherLectures/d80000', function () {
+      var url = "http://localhost:3001/api/getTeacherLectures/d80000";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+
+    //Test that http://localhost:3001/api/allCoursesStats returns 200
+    describe('#Test /api/allCoursesStats', function () {
+      var url = "http://localhost:3001/api/allCoursesStats";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/allCoursesStatistics returns 200
+    describe('#Test /api/allCoursesStatistics', function () {
+      var url = "http://localhost:3001/api/allCoursesStatistics";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/getAllCourses returns 200
+    describe('#Test /api/getAllCourses', function () {
+      var url = "http://localhost:3001/api/getAllCourses";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/getCoursesAndTeachers returns 200
+    describe('#Test /api/getCoursesAndTeachers', function () {
+      var url = "http://localhost:3001/api/getCoursesAndTeachers";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/cancelledLecturesStats returns 200
+    describe('#Test /api/cancelledLecturesStats', function () {
+      var url = "http://localhost:3001/api/cancelledLecturesStats";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
   });
-  */
 
   //----------------------------------------- DAO tests -----------------------------------------//
 
@@ -555,28 +593,7 @@ describe('Server side unit test', function () {
         return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].lectureId, 21))
       });
     });
-    /*
-    //#20
-    describe('#Gets the new value of seats(+1)', function () {
-      it("Gets a new value of seats", async function () {
-        let lecture = new Lecture(20, "testCourse20", "d20", "20/11/2020", "8.30", "13.00", "1", "20", 20);
-        LectureDao.addLecture(lecture);
-        LectureDao.increaseBookedSeats(lecture.lectureId);
-        return await LectureDao.getLectureById(20)
-          .then((l) => assert.strictEqual(l.numberOfSeats, 21))
-      });
-    });
-    //#21
-    describe('#Gets the new value of seats (-1)', function () {
-      it("Gets a new value of seats", async function () {
-        let lecture = new Lecture(21, "testCourse21", "d21", "21/11/2021", "8.30", "13.00", "1", "21", 21);
-        LectureDao.addLecture(lecture);
-        LectureDao.decreaseBookedSeats(lecture.lectureId);
-        return await LectureDao.getLectureById(21)
-          .then((l) => assert.strictEqual(l.numberOfSeats, 20))
-      });
-    });
-    */
+
     //#22
     describe('#Gets the list of tomorrow lectures', function () {
       it("Gets the list of tomorrow lectures by teacher's id", async function () {
@@ -593,18 +610,7 @@ describe('Server side unit test', function () {
           .then(lectures => assert.strictEqual(lectures[0].courseId, "testCourseTomorrow22"))
       });
     });
-    /*
-    //#23
-    describe('#Change type of a lecture', function () {
-      it("Change a lecture by lecture's id", async function () {
-        let lecture = new Lecture(23, "testCourse23", "d23", "23/11/2023", "8.30", "13.00", "1", "23", 23);
-        LectureDao.addLecture(lecture);
-        LectureDao.changeLectureType(lecture.lectureId);
-        return await LectureDao.getLectureById(23)
-          .then((l) => assert.strictEqual(l.inPresence, "0"))
-      });
-    });
-    */
+
     //#24
     describe('#Gets a lecture', function () {
       it('Gets a lecture by its id', async function () {
@@ -1048,27 +1054,7 @@ describe('Server side unit test', function () {
         return await BookingDao.getAllCoursesStatistics().then((c) => assert.strictEqual(c[0].courseName, "courseName46"));
       });
     });
-    //#50
-    //getTeacherCoursesStatistics never returns an empty array. If there are no bookings it just returns an array [{name: null, total: 0}].
-    /*describe("#Test getTeacherCoursesStatistics empty", function () {
-      it("Gets an empty list of teacher statistics", async function () {
-        let teacher = new Person("d50", "teacherName50", "teacherSurname50", "Teacher", "teacher50@test.it", "1234", null, null, "ABCD50");
-        let arrayTeacher = [];
-        arrayTeacher.push(teacher);
-        await PersonDao.createPerson(arrayTeacher);
-        let course = new Course("c50", "d50", "courseName50", "year50", "sem50");
-        let arrayCourse = [];
-        arrayCourse.push(course);
-        await CourseDao.createCourse(arrayCourse);
-        let lecture = new Lecture(50, "c50", "d50", "31/12/2025", "8:30", "11:30", "1", "50", 50);
-        let arrayLecture = [];
-        arrayLecture.push(lecture);
-        await LectureDao.addLecture(arrayLecture);
-        return await BookingDao.getTeacherCoursesStatistics("teacher50@test.it").then((s) => {
-          assert.strictEqual(s, undefined);
-        })
-      })
-    })*/
+
     //#51
     describe("#Test getAllCoursesStatistics empty", function () {
       it("Gets an empty list of teacher statistics", async function () {
@@ -1177,62 +1163,62 @@ describe('Server side unit test', function () {
   });
 
 
-    //----------------------------------------- Data loader tests -----------------------------------------//
-    describe('Data loader, test', function () {
-      const dataLoader = new DataLoader();
+  //----------------------------------------- Data loader tests -----------------------------------------//
+  describe('Data loader, test', function () {
+    const dataLoader = new DataLoader();
 
-      const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN\n";
-      const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN\n";
-      const enrollmentHeader = "Code,Student\n";
-      const scheduleHeader = "Code,Room,Day,Seats,Time\n";
-      const coursesHeader = "Code,Year,Semester,Course,Teacher\n";
+    const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN\n";
+    const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN\n";
+    const enrollmentHeader = "Code,Student\n";
+    const scheduleHeader = "Code,Room,Day,Seats,Time\n";
+    const coursesHeader = "Code,Year,Semester,Course,Teacher\n";
 
-      describe('#Load a student into the system', function () {
-        const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
-        dataLoader.readStudentsCSV(student);
-        it('Load a student', async function () {
-          return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it"));
-        });
+    describe('#Load a student into the system', function () {
+      const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
+      dataLoader.readStudentsCSV(student);
+      it('Load a student', async function () {
+        return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it"));
       });
-
-      describe('#Load a teacher into the system', function () {
-        const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
-        dataLoader.readTeachersCSV(teacher);
-        it('Load a teacher', async function () {
-          return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it"));
-        });
-      });
-
-      describe('#Load a course into the system', function () {
-        const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
-        dataLoader.readCoursesCSV(course);
-        it('Load a course', async function () {
-          return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi"));
-        });
-      });
-
-      describe('#Load an enrollment into the system', function () {
-        const enrollment = enrollmentHeader + "c8000,s8000";
-        dataLoader.readEnrollmentsCSV(enrollment);
-        it('Load an enrollment', async function () {
-          return await EnrollmentDao.getEnrollmentById("c8000", "s8000")
-            .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi"));
-        });
-      });
-
-      describe('#Load a date schedule into the system', function () {
-        const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20\n" 
-                                        + "c8000,12,Tue,16,10:20-11:30\n" 
-                                        + "c8000,12,Wed,16,10:30-11:40\n" 
-                                        + "c8000,12,Thu,16,10:40-11:50\n" 
-                                        + "c8000,12,Fri,16,10:50-12:00";
-        dataLoader.readScheduleCSV(schedule);
-        it('Load a schedule', async function () {
-          return await LectureDao.getWeekTeacherLectureList("d8000").then((l) => assert.strictEqual(l[0].startingTime, "10:10"));
-        });
-      });
-
     });
+
+    describe('#Load a teacher into the system', function () {
+      const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
+      dataLoader.readTeachersCSV(teacher);
+      it('Load a teacher', async function () {
+        return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it"));
+      });
+    });
+
+    describe('#Load a course into the system', function () {
+      const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
+      dataLoader.readCoursesCSV(course);
+      it('Load a course', async function () {
+        return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi"));
+      });
+    });
+
+    describe('#Load an enrollment into the system', function () {
+      const enrollment = enrollmentHeader + "c8000,s8000";
+      dataLoader.readEnrollmentsCSV(enrollment);
+      it('Load an enrollment', async function () {
+        return await EnrollmentDao.getEnrollmentById("c8000", "s8000")
+          .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi"));
+      });
+    });
+
+    describe('#Load a date schedule into the system', function () {
+      const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20\n"
+        + "c8000,12,Tue,16,10:20-11:30\n"
+        + "c8000,12,Wed,16,10:30-11:40\n"
+        + "c8000,12,Thu,16,10:40-11:50\n"
+        + "c8000,12,Fri,16,10:50-12:00";
+      dataLoader.readScheduleCSV(schedule);
+      it('Load a schedule', async function () {
+        return await LectureDao.getWeekTeacherLectureList("d8000").then((l) => assert.strictEqual(l[0].startingTime, "10:10"));
+      });
+    });
+
+  });
 
   //----------------------------------------- Email sender tests -----------------------------------------//
   describe('Send email, test', function () {
@@ -1321,9 +1307,9 @@ describe('Server side unit test', function () {
 
   /**close the server after the test **/
   //after(done => {
-    //server.close(done);
-    //db.close();
-    //db.deleteFromDisk();
+  //server.close(done);
+  //db.close();
+  //db.deleteFromDisk();
   //});
 
 });

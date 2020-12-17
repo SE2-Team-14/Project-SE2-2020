@@ -291,29 +291,29 @@ app.delete('/api/student-home/delete-book', (req, res) => {
     .then(() => {
       waitingListDao.getFirstStudentInWaitingList(lectureId)
         .then((result) => {
-          if(result!==undefined){
+          if (result !== undefined) {
             lectureDao.getLectureById(lectureId).then((lecture) => {
               bookingDao.addBoocking({ studentId: result.studentId, lectureId: lectureId, startingTime: lecture.startingTime }).then(() => {
                 lecture.numberOfSeats++;
                 lectureDao.updateLecture(lecture);
                 waitingListDao.deleteFromWaitingList(result.studentId, lectureId).then(() => {
                   personDao.getPersonByID(result.studentId).then((person) => {
-                    
+
                     courseDao.getCourseByID(lecture.courseId).then((course) => {
                       const subject = "Moved from waiting list";
                       const message = `Dear ${person.name} ${person.surname},\n` +
                         `you have been moved from the waiting list of the course ` + course.name +
                         `of ${lecture.date} at ${lecture.startingTime} to the the list of students booked as someone has canceled his booking.\n` +
                         `Don't forget to attend the lecture.`
-                        emailSender.sendEmail(person.email, subject, message);
+                      emailSender.sendEmail(person.email, subject, message);
                     })
                   })
                 })
               })
             })
-        }
+          }
         })
-        res.status(200).end()
+      res.status(200).end()
     })
 
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
@@ -356,13 +356,10 @@ app.put('/api/student-home/decrease-seats', (req, res) => {
 app.put('/api/lectures', (req, res) => {
   const lecture = req.body;
 
-  if (!lecture) {
-    res.status(400).end();
-  } else {
-    lectureDao.updateLecture(lecture)
-      .then(() => res.status(200).end())
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-  }
+  lectureDao.updateLecture(lecture)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
 });
 
 /**
