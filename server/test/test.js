@@ -632,6 +632,27 @@ describe('Server side unit test', function () {
       });
     });
 
+    describe('Test #POST put-in-queue', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/student-home/put-in-queue";
+
+      it('should send parameters to : put-in-queue POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ studentId: "s80000", lectureId: 12 })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(200);
+              done();
+            }
+          });
+      });
+    });
+
   });
 
   //----------------------------------------- DAO tests -----------------------------------------//
@@ -1209,7 +1230,7 @@ describe('Server side unit test', function () {
       it('Get all the waiting list ', async function () {
         await WaitingListDao.insertInWaitingList("s42", 42);
         await WaitingListDao.insertInWaitingList("s421", 42);
-        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 4));
+        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 5));
       });
     });
   });
