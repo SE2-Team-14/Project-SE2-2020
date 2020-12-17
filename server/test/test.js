@@ -64,7 +64,7 @@ describe('Server side unit test', function () {
   //----------------------------------------- API tests -----------------------------------------//
 
   describe('Server #GET methods tests', function () {
-    //Test that http://localhost:3001/api/student-home/9000000/bookable-lectures returns 200
+    //Test that http://localhost:3001/api/student-home/900000/bookable-lectures returns 200
     describe('#Test /api/student-home/:id/bookable-lectures', function () {
       var url = "http://localhost:3001/api/student-home/900000/bookable-lectures";
       it("returns status 200", function (done) {
@@ -781,7 +781,7 @@ describe('Server side unit test', function () {
           let testBooking = new Booking("s32", 32, "27/11/2020", "12:00");
           await BookingDao.addBoocking(testBooking);
           return await BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
-            assert.strictEqual(s[0].date, testLecture.date);
+            assert.strictEqual(s[0].date, testLecture.date + ' ' + testLecture.startingTime + ' - ' + testLecture.endingTime);
           })
         })
       })
@@ -1320,10 +1320,10 @@ describe('Server side unit test', function () {
   });
 
   /**close the server after the test **/
- // after(done => {
-   // server.close(done);
-   // db.close();
-   // db.deleteFromDisk();
+  //after(done => {
+    //server.close(done);
+    //db.close();
+    //db.deleteFromDisk();
   //});
 
 });
