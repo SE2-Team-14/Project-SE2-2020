@@ -465,8 +465,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST cancelled-booking', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/teacher-home/add-cancelled-booking";
+      let host = "http://localhost:3001";
+      let path = "/api/teacher-home/add-cancelled-booking";
 
       it('should send parameters to : /api/teacher-home/add-cancelled-booking POST', function (done) {
         chai
@@ -486,8 +486,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST cancelled-lecture', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/teacher-home/add-cancelled-lecture";
+      let host = "http://localhost:3001";
+      let path = "/api/teacher-home/add-cancelled-lecture";
       let lecture = new Lecture(12, "c8000", "d8000", "12/12/2020", "8:30", "11:00", 1, "12", 2)
       
       it('should send parameters to : /api/teacher-home/add-cancelled-lecture POST', function (done) {
@@ -508,8 +508,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST data-loader #1', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/data-loader";
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
       
       const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
       const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
@@ -533,8 +533,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST data-loader #2', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/data-loader";
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
     
       const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN";
       const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
@@ -558,8 +558,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST data-loader #3', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/data-loader";
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
       
       const enrollmentHeader = "Code,Student";
       const enrollment = enrollmentHeader + "c8000,s8000";
@@ -583,8 +583,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST data-loader #4', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/data-loader";
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
 
       const scheduleHeader = "Code,Room,Day,Seats,Time";
       const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20";
@@ -608,8 +608,8 @@ describe('Server side unit test', function () {
     });
 
     describe('Test #POST data-loader #5', function () {
-      var host = "http://localhost:3001";
-      var path = "/api/data-loader";
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
 
       const coursesHeader = "Code,Year,Semester,Course,Teacher";
       const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
