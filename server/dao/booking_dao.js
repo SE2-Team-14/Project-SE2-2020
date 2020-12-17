@@ -285,7 +285,7 @@ exports.getBookedStudentsByLectureId = function (lectureId) {
  */
 exports.getTeacherCoursesStatistics = function (email) {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT COUNT(*) AS total, COURSE.name FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId AND PERSON.id = COURSE.teacherId AND PERSON.email = ?";
+        const sql = "SELECT COUNT(*) AS total, COURSE.name FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId AND PERSON.id = COURSE.teacherId AND PERSON.email = ? GROUP BY COURSE.courseId";
         db.all(sql, [email], (err, rows) => {
             if (err)
                 reject(err);
@@ -305,7 +305,7 @@ exports.getTeacherCoursesStatistics = function (email) {
  */
 exports.getAllCoursesStatistics = function () {
     return new Promise((resolve, reject) => {
-        const sql = "SELECT COUNT(*) AS total, COURSE.name as courseName, PERSON.name, PERSON.surname FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId  AND COURSE.teacherId = PERSON.id GROUP BY PERSON.id";
+        const sql = "SELECT COUNT(*) AS total, COURSE.name as courseName, PERSON.name, PERSON.surname FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId  AND COURSE.teacherId = PERSON.id GROUP BY COURSE.courseId";
         db.all(sql, [], (err, rows) => {
             if (err)
                 reject(err);

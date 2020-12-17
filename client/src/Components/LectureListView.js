@@ -111,7 +111,7 @@ class LectureListView extends React.Component {
      * @param lectureId an integer corresponding to the lecture associated to the booking 
      */
     deleteBooking = (studentId, lectureId) => {
-        API.deleteBooking(studentId, lectureId).then(() => API.getAllBookings().then((bookings) => this.setState({ bookings: bookings })));
+        API.deleteBooking(studentId, lectureId).then(() => API.getAllBookings().then((bookings) => this.setState({ bookings: bookings }, () => API.getAllBookings().then( () => API.getLecturesList(this.props.id).then((lectures) => this.setState({ lectures: lectures}))))));
     }
 
     /**

@@ -5,7 +5,7 @@ const dbsettings = require('./dbsettings');
 const sqlite = require('sqlite3');
 
 const testdb = 'tmpdb.db';
-const productiondb = 'testdb.db';
+const productiondb = 'Peppe.db';
 const path = './db/'+(dbsettings.test ? testdb : productiondb);
 
 
