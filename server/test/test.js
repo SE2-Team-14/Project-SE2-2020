@@ -268,8 +268,8 @@ describe('Server side unit test', function () {
 
   //#9.1
   describe('Test #DELETE book', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/student-home/delete-book";
+    let host = "http://localhost:3001";
+    let path = "/api/student-home/delete-book";
 
     it('should send a request to delete a booking: /api/student-home/delete-book DELETE', function (done) {
       chai
@@ -290,8 +290,8 @@ describe('Server side unit test', function () {
   });
   //#11
   describe('Test #PUT update lecture', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/lectures";
+    let host = "http://localhost:3001";
+    let path = "/api/lectures";
     let lecture = new Lecture(11, "c11", "d11", "12/12/12", "8:30", "10:00", 1, "11", 11);
     it('should send parameters to : /api/lectures PUT', function (done) {
       chai
