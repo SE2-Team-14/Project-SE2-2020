@@ -647,10 +647,56 @@ In this document you can find the documentation about our system testing. For ea
 ## Story 12
 ###### As a support officer I want to upload the list of students, courses, teachers, lectures, and classes to setup the system.
 
+### Test 33 (A support officer accesses the system to upload a file)
+- As a support officer I put my credentials in the login form to access the system.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLoging.PNG)
+
+- After the login success, I can see my the load page.
+
+![LoadPage](./testImage/OfficerScreen/LoadPage.PNG)
+
+- If I click the Browse Button, a folder is open with the list of files.
+
+![DataFile](./testImage/OfficerScreen/DataFile.PNG)
+
+- After the selection of a file, all the information is shown
+
+![FileInfo](./testImage/OfficerScreen/FileSelect.PNG)
+
+- If I click the Upload Button, a spinner is shown
+
+![Loading](./testImage/OfficerScreen/LoadingFile.PNG)
+
+- At the end, a modal with the success information is shown
+
+![ModalSuccess](./testImage/OfficerScreen/ModalSuccess.PNG)
+
+### Test 34 (A support officer accesses the system to upload a file, but the file has some error)
+- As a support officer I put my credentials in the login form to access the system.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLoging.PNG)
+
+- After the login success, I can see my the load page.
+
+![LoadPage](./testImage/OfficerScreen/LoadPage.PNG)
+
+- If I click the Browse Button, a folder is open with the list of files.
+
+![DataFile](./testImage/OfficerScreen/DataFile.PNG)
+
+- After the selection of a file, all the information is shown.
+
+![FileInfo](./testImage/OfficerScreen/FileSelect.PNG)
+
+- If the file is corrupted, a modal is shown.
+
+![ErrorModal](./testImage/OfficerScreen/ErrorModal.PNG)
+
 ## Story 13
 ###### As a student I want to be put in a waiting list when no seats are available in the required lecture.
 
-### Test 33 (A student accesses the system to book a seat in a lecture, and gets put in a waiting list since all seats are booked)
+### Test 35 (A student accesses the system to book a seat in a lecture, and gets put in a waiting list since all seats are booked)
 - As a student I put my credentials in the login form to access the system.
 
 ![StudentAccess](./testImage/StudentScreen/StudentAccess.PNG)
@@ -675,7 +721,7 @@ In this document you can find the documentation about our system testing. For ea
 ## Story 14 
 ###### As a student in the waiting list I want to be added to the list of students booked when someone cancels their booking so that I can attend the lecture.
 
-### Test 34 (shared with [Story 15](#story-15))
+### Test 36 (shared with [Story 15](#story-15))
 
 - As a student that is already booked for a lecture that wants to delete his booking I insert my credentials to access the system.
 
@@ -722,13 +768,13 @@ In this document you can find the documentation about our system testing. For ea
 ## Story 15
 ###### As a student I want to get notified when I am taken from the waiting list so that I can attend the lecture.
 
-### Test 34 (shared with [Story 14](#story-14))
+### Test 36 (shared with [Story 14](#story-14))
 
 
 ## Story 16 
 ###### As a booking manager I want to generate a contact tracing report starting with a positive student so that we comply with safety regulations.
 
-### Test 35 (A booking manager accesses the system and generates a contact report starting with a reported positive student)
+### Test 37 (A booking manager accesses the system and generates a contact report starting with a reported positive student)
 
 - As a booking manager I insert my credentials so I can access the system.
 
