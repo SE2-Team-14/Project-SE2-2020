@@ -267,14 +267,12 @@ app.post('/api/bookings', (req, res) => {
     `of ${req.body.date} at ${req.body.startingTime} has been confirmed.\n` +
     `Please if you cannot be present for the lecture remeber to cancel your booking.\n` +
     `Have a nice lesson and remember to wear the mask. Togheter we can defeat Covid.`;
-  if (!booking) {
-    res.status(400).end();
-  } else {
-    bookingDao.addBoocking(booking)
-      .then(() => res.status(200).end())
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }))
-      .then(emailSender.sendEmail(recipient, subject, message));
-  }
+
+  bookingDao.addBoocking(booking)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }))
+    .then(emailSender.sendEmail(recipient, subject, message));
+
 });
 
 /**
@@ -638,7 +636,7 @@ app.post('/api/student-home/put-in-queue', (req, res) => {
  * Response Body Content: 
  */
 app.get('/api/studentInWaitinglist', (req, res) => {
-  waitingListDao.getFirstStudentInWaitingList(req.query.courseId, req.query.lectureId)
+  waitingListDao.getFirstStudentInWaitingList(req.query.lectureId)
     .then((result) => res.json(result.studentId))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })

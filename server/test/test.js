@@ -397,6 +397,52 @@ describe('Server side unit test', function () {
         });
       });
     });
+
+    //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
+    describe('#Test /api/student-home/s8000/week-lectures', function () {
+      var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/getLectureById/12 returns 200
+    describe('#Test /api/getLectureById/12', function () {
+      var url = "http://localhost:3001/api/getLectureById/12";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/cancelledBookings returns 200
+    describe('#Test /api/cancelledBookings', function () {
+      var url = "http://localhost:3001/api/cancelledBookings";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    //Test that http://localhost:3001/api/getAllWaitingList returns 200
+    describe('#Test /api/getAllWaitingList', function () {
+      var url = "http://localhost:3001/api/getAllWaitingList";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+
   });
 
   //----------------------------------------- DAO tests -----------------------------------------//
