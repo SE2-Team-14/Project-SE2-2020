@@ -442,6 +442,27 @@ describe('Server side unit test', function () {
       });
     });
 
+    //Test that http://localhost:3001/api/teacher-home/d8000/week-teacher-lectures returns 200
+    describe('#Test /api/teacher-home/d8000/week-teacher-lectures', function () {
+      var url = "http://localhost:3001/api/teacher-home/d8000/week-teacher-lectures";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+        //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
+        describe('#Test /api/student-home/s8000/week-lectures', function () {
+          var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
+          it("returns status 200", function (done) {
+            request(url, function (error, response, body) {
+              expect(response.statusCode).to.equal(200);
+              done();
+            });
+          });
+        });
 
   });
 
