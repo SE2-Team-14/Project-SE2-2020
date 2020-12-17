@@ -591,8 +591,6 @@ app.post('/api/data-loader', (req, res) => {
         .then(async (result) => (await res.status(201).json(result.lenght)))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
-    default:
-      break;
   }
 
 });

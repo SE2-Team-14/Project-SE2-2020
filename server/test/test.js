@@ -244,8 +244,8 @@ describe('Server side unit test', function () {
   });
   //#9
   describe('Test #POST book', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/bookings";
+    let host = "http://localhost:3001";
+    let path = "/api/bookings";
     let b = new Booking("s9", 9, "18/11/2020", "8.30");
 
     it('should send parameters to : /api/bookings POST', function (done) {
@@ -268,8 +268,8 @@ describe('Server side unit test', function () {
 
   //#9.1
   describe('Test #DELETE book', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/student-home/delete-book";
+    let host = "http://localhost:3001";
+    let path = "/api/student-home/delete-book";
 
     it('should send a request to delete a booking: /api/student-home/delete-book DELETE', function (done) {
       chai
@@ -290,8 +290,8 @@ describe('Server side unit test', function () {
   });
   //#11
   describe('Test #PUT update lecture', function () {
-    var host = "http://localhost:3001";
-    var path = "/api/lectures";
+    let host = "http://localhost:3001";
+    let path = "/api/lectures";
     let lecture = new Lecture(11, "c11", "d11", "12/12/12", "8:30", "10:00", 1, "11", 11);
     it('should send parameters to : /api/lectures PUT', function (done) {
       chai
@@ -453,16 +453,205 @@ describe('Server side unit test', function () {
       });
     });
 
-        //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
-        describe('#Test /api/student-home/s8000/week-lectures', function () {
-          var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
-          it("returns status 200", function (done) {
-            request(url, function (error, response, body) {
+    //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
+    describe('#Test /api/student-home/s8000/week-lectures', function () {
+      var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        });
+      });
+    });
+
+    describe('Test #POST cancelled-booking', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/teacher-home/add-cancelled-booking";
+
+      it('should send parameters to : /api/teacher-home/add-cancelled-booking POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ studentId: "s9000", lectureId: 12 })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST cancelled-lecture', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/teacher-home/add-cancelled-lecture";
+      let lecture = new Lecture(12, "c8000", "d8000", "12/12/2020", "8:30", "11:00", 1, "12", 2)
+      
+      it('should send parameters to : /api/teacher-home/add-cancelled-lecture POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ lecture: lecture })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST data-loader #1', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
+      
+      const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
+      const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
+      const fileType = "student";
+
+      it('should send parameters to : /api/data-loader POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ fileData: student, fileType: fileType })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST data-loader #2', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
+    
+      const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN";
+      const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
+      const fileType = "teacher";
+
+      it('should send parameters to : /api/data-loader POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({  fileData: teacher, fileType: fileType })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST data-loader #3', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
+      
+      const enrollmentHeader = "Code,Student";
+      const enrollment = enrollmentHeader + "c8000,s8000";
+      const fileType = "enrollment";
+
+      it('should send parameters to : /api/data-loader POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ fileData: enrollment, fileType: fileType })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST data-loader #4', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
+
+      const scheduleHeader = "Code,Room,Day,Seats,Time";
+      const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20";
+      const fileType = "schedule";
+
+      it('should send parameters to : /api/data-loader POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ fileData: schedule, fileType: fileType })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST data-loader #5', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/data-loader";
+
+      const coursesHeader = "Code,Year,Semester,Course,Teacher";
+      const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
+      const fileType = "course";
+
+      it('should send parameters to : /api/data-loader POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ fileData: course, fileType: fileType })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
+              expect(response.statusCode).to.equal(201);
+              done();
+            }
+          });
+      });
+    });
+
+    describe('Test #POST put-in-queue', function () {
+      let host = "http://localhost:3001";
+      let path = "/api/student-home/put-in-queue";
+
+      it('should send parameters to : put-in-queue POST', function (done) {
+        chai
+          .request(host)
+          .post(path)
+          .set('content-type', 'application/json')
+          .send({ studentId: "s80000", lectureId: 12 })
+          .end(function (error, response, body) {
+            if (error) {
+              done(error);
+            } else {
               expect(response.statusCode).to.equal(200);
               done();
-            });
+            }
           });
-        });
+      });
+    });
 
   });
 
@@ -1041,7 +1230,7 @@ describe('Server side unit test', function () {
       it('Get all the waiting list ', async function () {
         await WaitingListDao.insertInWaitingList("s42", 42);
         await WaitingListDao.insertInWaitingList("s421", 42);
-        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 4));
+        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 5));
       });
     });
   });
