@@ -74,13 +74,13 @@ RETROSPECTIVE SPRINT 3 (Team 14)
 ## ASSESSMENT
 
 - What caused your errors in estimation?
-
+We estimated 10h in code review but at this point of the developement process we found a way to program which is good for everyone so 7h of code review were necessary.
 
 - What lessons did you learn (both positive and negative) in this sprint?
 
 
 - Which improvement goals set in the previous retrospective were you able to achieve?
-
+We improved the estimation of tasks but we overestimated olny the code review time.
   
 - Which ones you were not able to achieve? Why?
 
