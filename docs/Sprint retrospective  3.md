@@ -77,7 +77,8 @@ RETROSPECTIVE SPRINT 3 (Team 14)
 We estimated 10h in code review but at this point of the developement process we found a way to program which is good for everyone so 7h of code review were necessary.
 
 - What lessons did you learn (both positive and negative) in this sprint?
-
+We have improved our capability to estimate works.
+We maybe gave too much importance to the conflicting stakeholders feedback, and that caused unnecassary extra work trying to satisfy everything.
 
 - Which improvement goals set in the previous retrospective were you able to achieve?
 We improved the estimation of tasks but we overestimated olny the code review time.
@@ -86,7 +87,7 @@ We improved the estimation of tasks but we overestimated olny the code review ti
 
 
 - Improvement goals for the next sprint and how to achieve them: (technical tasks, team coordination, etc.)
-
+We can improve our stakeholders feedback management, according to what we said above
 
 - One thing you are proud of as a Team:
-
+We are proud of having reached all our improvement goals as a team
