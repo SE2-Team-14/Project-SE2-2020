@@ -21,12 +21,12 @@ function createBooking(row) {
  */
 exports.addBoocking = function (booking) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO BOOKING(studentId, lectureId, date, startingTime, month, week) VALUES(?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO BOOKING(studentId, lectureId, date, startingTime, month, week, present) VALUES(?, ?, ?, ?, ?, ?, ?)';
         let date = moment(new Date()).format("DD/MM/YYYY")
         let month = moment(new Date()).format("MMMM")
         let week = moment().startOf("isoWeek").format("DD/MM/YYYY") + "-" + moment().endOf("isoWeek").format("DD/MM/YYYY");
         let params = [];
-        params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week);
+        params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week, 0);
 
         if (booking)
             db.run(sql, params, function (err) {

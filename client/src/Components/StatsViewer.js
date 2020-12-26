@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Jumbotron from "react-bootstrap/Jumbotron";
 import {
-    BarChart, Bar, /*Cell,*/ XAxis, YAxis, CartesianGrid, Tooltip, /*Label,*/
+    BarChart, Bar, /*Cell,*/ XAxis, YAxis, /*CartesianGrid*/ Tooltip, /*Label,*/
 } from 'recharts';
 import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
@@ -258,18 +258,18 @@ class StatsViewer extends React.Component {
                 {(context) => (
                     <>
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
-                        <Jumbotron style={{background: "none"}}>
+                        <Jumbotron style={{ background: "none" }}>
                             <Row className="justify-content-md-center">
                                 <Col md="auto"></Col>
-                                    {(this.state.courses.length > 0 && !this.state.noBookings) && <Dropdown>
-                                        <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
-                                            Choose the Course you want to view statistics of
+                                {(this.state.courses.length > 0 && !this.state.noBookings) && <Dropdown>
+                                    <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
+                                        Choose the Course you want to view statistics of
                     </Dropdown.Toggle>
-                                        <Dropdown.Menu className="dropdown-menu pre-scrollable" style={{ overflowY: 'scroll', maxHeight: "200px" }}>
-                                            {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.courseId}>{course.name}</Dropdown.Item>))}
-                                        </Dropdown.Menu>
-                                    </Dropdown>}
-                                    {(this.state.mode === "start" && this.state.noBookings) && <h4> There are no statistics about bookings available yet.</h4>}
+                                    <Dropdown.Menu className="dropdown-menu pre-scrollable" style={{ overflowY: 'scroll', maxHeight: "200px" }}>
+                                        {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.courseId}>{course.name}</Dropdown.Item>))}
+                                    </Dropdown.Menu>
+                                </Dropdown>}
+                                {(this.state.mode === "start" && this.state.noBookings) && <h4> There are no statistics about bookings available yet.</h4>}
                                 <Col md="auto"> {(!this.state.noBookings) && <Button variant="outline-info" active={this.state.mode == "start"} onClick={() => this.chooseMode("start")} > View Total Bookings of all Courses </Button>}</Col>
                                 {(this.props.role === "Manager") && <Col md="auto">
                                     <Button variant="outline-info" active={this.state.mode == "cancelledLectures"} onClick={() => this.chooseMode("cancelledLectures")} > View Cancelled Lectures of all Courses </Button>
@@ -300,7 +300,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="name" height={50}>
                                                 </XAxis>
@@ -365,7 +364,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
@@ -390,7 +388,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="month" height={50}>
                                                 </XAxis>
@@ -414,7 +411,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="week" height={50}>
                                                 </XAxis>
@@ -438,7 +434,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
@@ -462,7 +457,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
@@ -486,7 +480,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="name" height={50}>
                                                 </XAxis>
@@ -510,7 +503,6 @@ class StatsViewer extends React.Component {
                                                     top: 5, right: 30, left: 20, bottom: 5,
                                                 }}
                                             >
-                                                <CartesianGrid strokeDasharray="3 3" />
 
                                                 <XAxis dataKey="date" height={50}>
                                                 </XAxis>
