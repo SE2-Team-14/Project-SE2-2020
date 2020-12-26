@@ -114,7 +114,14 @@ async function deleteLecture(lecture) {
     return fetchMethod("DELETE", `${url}/delete-lecture`, { lecture: lecture });
 }
 
-
+/**
+ * Returns a Lecture object corresponding to the lecture taking place at the current time
+ * @param teacherId an Integer corresponding to the identifier of the teacher that wants to get the lecture taking place at the current time
+ */
+async function getCurrentLecture(teacherId) {
+    const url = "/currentLecture?teacherId=" + teacherId;
+    return await fetchMethod("GET", baseURL + url);
+}
 
 //------------------CANCELLED LECTURES------------------
 
@@ -188,6 +195,14 @@ async function getBookings(studentId) {
     return await fetchMethod("GET", `${url}/${studentId}`, (b) => new Booking(b.studentId, b.lectureId, b.date, b.startingTime, b.month, b.week));
 }
 
+/**
+ * Returns a list of bookings made for a lecture taking place at the current time
+ * @param lectureId an Integer containing the identifier of the lecture a teacher wants to have booked students of 
+ */
+async function getBookingsOfLecture(lectureId) {
+    const url = "/bookingsOfLecture?id=" + lectureId;
+    return await fetchMethod("GET", baseURL + url);
+}
 
 //---------------------------CANCELLED BOOKING----------------------------
 
@@ -487,7 +502,9 @@ const API = {
     getCancelledLecturesStats,
     getWeekLecturesList,
     getWeekTeacherLectureList,
-    getContactTracingByStudent
+    getContactTracingByStudent,
+    getCurrentLecture,
+    getBookingsOfLecture,
 };
 
 export default API;

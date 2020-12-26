@@ -319,3 +319,20 @@ exports.getAllCoursesStatistics = function () {
         })
     })
 }
+
+exports.getBookingsOfLecture = function (lectureId) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM BOOKING WHERE lectureId = ?";
+        db.all(sql, [lectureId], (err, rows) => {
+            if (err) {
+                reject(err)
+            } else {
+                if (rows) {
+                    resolve(rows)
+                } else {
+                    resolve(undefined)
+                }
+            }
+        })
+    })
+} 

@@ -692,6 +692,29 @@ app.get("/api/cancelledLecturesStats", (req, res) => {
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * GET API
+ * Request Parameters: an integer corresponding to the identifier of the teacher that wants to know his current lecture
+ * Request Body Content: none
+ * Response Body Content: a Lecture object containing information about the current lecture
+ */
+app.get("/api/currentLecture", (req, res) => {
+  lectureDao.getCurrentLecture(req.query.teacherId).then((lecture) => {
+    res.json(lecture);
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+/**
+ * Request Parameters: an integer corresponding to the identifier of a lecture taking place at the current time
+ * Request Body Content: none
+ * Response Body Content: an array of Bookings containing all bookings made for the lecture taking place at the current time
+ */
+app.get("/api/bookingsOfLecture", (req, res) => {
+  bookingDao.getBookingsOfLecture(req.query.id).then((bookings) => {
+    res.json(bookings);
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
 
 //-----------------------CONTACT TRACING--------------------------------------
 

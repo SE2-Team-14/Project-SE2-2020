@@ -18,6 +18,7 @@ import ManageLectureList from './Components/ManageLectureList';
 import BookedLessonsCalendar from './Components/LessonsCalendar';
 import StatsViewer from "./Components/StatsViewer";
 import LoadDataView from "./Components/LoadDataView";
+import RecordAttendance from "./Components/RecordAttendance";
 
 import { AuthContext } from './auth/AuthContext'
 //import DynamicBackground from './Components/DynamicBackground';
@@ -93,7 +94,7 @@ class App extends React.Component {
 
             <Route exact path="/student-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return <>{this.state.authUser && <HomePage  email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>}</>
+              return <>{this.state.authUser && <HomePage email={email} id={this.state.authUser.id} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms}></HomePage>}</>
             }}>
             </Route>
 
@@ -111,12 +112,12 @@ class App extends React.Component {
 
             <Route exact path="/manager-home/:email" render={(props) => {
               let email = props.match.params.email;
-              return <>{this.state.authUser && 
+              return <>{this.state.authUser &&
                 <>
                   <HomePage email={email}></HomePage>
                   <StatsViewer email={email} role="Manager"></StatsViewer>
                 </>}
-                </>
+              </>
             }}>
             </Route>
 
@@ -141,12 +142,12 @@ class App extends React.Component {
 
             <Route exact path='/student-home/:email/bookable-lectures' render={(props) => {
               //let email = props.match.params.email;
-              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={this.state.authUser.email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} /> }</>;
+              return <>{this.state.authUser && <LectureListView id={this.state.authUser.id} email={this.state.authUser.email} courses={this.state.courses} teachers={this.state.teachers} classrooms={this.state.classrooms} />}</>;
             }} />
 
             <Route exact path="/teacher-home/:email/booked-lectures" render={(props) => {
               let email = props.match.params.email;
-              return <>{this.state.authUser &&  <BookedStudentsList email={email}></BookedStudentsList>}</>
+              return <>{this.state.authUser && <BookedStudentsList email={email}></BookedStudentsList>}</>
             }}>
             </Route>
 
@@ -158,6 +159,11 @@ class App extends React.Component {
             <Route exact path='/teacher-home/:email/manage-lectures' render={(props) => {
               let email = props.match.params.email;
               return <>{this.state.authUser && <ManageLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ManageLectureList>}</>
+            }}></Route>
+
+            <Route exact path="/teacher-home/:email/attendance" render={(props) => {
+              let email = props.match.params.email;
+              return <>{this.state.authUser && <RecordAttendance email={email} id={this.state.authUser.id}></RecordAttendance>}</>
             }}></Route>
 
             <Route exact path='/support-officer-home/:email/loader' render={(props) => {
