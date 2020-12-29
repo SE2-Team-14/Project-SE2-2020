@@ -19,6 +19,7 @@ import BookedLessonsCalendar from './Components/LessonsCalendar';
 import StatsViewer from "./Components/StatsViewer";
 import LoadDataView from "./Components/LoadDataView";
 import RecordAttendance from "./Components/RecordAttendance";
+import UpdateBookableLecture from './Components/UpdateBookableLecture';
 
 import { AuthContext } from './auth/AuthContext'
 //import DynamicBackground from './Components/DynamicBackground';
@@ -170,6 +171,9 @@ class App extends React.Component {
               return <>{this.state.authUser && <LoadDataView></LoadDataView>}</>
             }}></Route>
 
+            <Route exact path='/support-officer-home/:email/updateLectures' render ={(props) => {
+                return <>{this.state.authUser && <UpdateBookableLecture></UpdateBookableLecture>}</>
+            }}></Route>
             <Route exact path="/load">
               <Row className="vheight-100">
                 <Col sm={4}></Col>
