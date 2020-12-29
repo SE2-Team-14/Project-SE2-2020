@@ -1474,6 +1474,66 @@ describe('Server side unit test', function () {
       });
     });
 
+    describe('#Test getCoursesByYear', async function () {
+      it('Get courses of 3 and 5 year', async function () {
+        let course1 = new Course('XYAAA', 'd000', 'Software Engineering III', 3, 1);
+        let course2 = new Course('XYAAB', 'd000', 'Software Engineering IV', 4, 1);
+        let course3 = new Course('XYAAC', 'd000', 'Software Engineering V', 5, 1);
+        let course4 = new Course('XYAAD', 'd000', 'Software Engineering VI', 5, 1);
+
+        let array = [course1, course2, course3, course4];
+
+        await CourseDao.createCourse(array);
+
+        let years = [3, 5];
+        let courses = await CourseDao.getCoursesByYear(years);
+        let pass = false;
+        let courseIds = courses.map(c => c.courseId);
+
+        if(courseIds.includes('XYAAA') && courseIds.includes('XYAAC') && courseIds.includes('XYAAD'))
+          pass = true;
+
+        return assert.strictEqual(pass, true);
+      });
+    });
+
+    describe('#Test getCoursesByYearAndSemester', function () {
+      it('Get courses of 2 semester', async function () {
+        let course1 = new Course('XYAAE', 'd000', 'Software Engineering VII', 2, 1);
+        let course2 = new Course('XYAAF', 'd000', 'Software Engineering VIII', 3, 1);
+        let course3 = new Course('XYAAG', 'd000', 'Software Engineering IX', 3, 2);
+
+        let array = [course1, course2, course3];
+
+        await CourseDao.createCourse(array);
+
+        let semesters = [1, 2];
+        let courses = await CourseDao.getCoursesByYearAndSemester(3, semesters);
+        let pass = false;
+        let courseIds = courses.map(c => c.courseId);
+
+        if(courseIds.includes('XYAAF') && courseIds.includes('XYAAG') && !courseIds.includes('XYAAE'))
+          pass = true;
+
+        return assert.strictEqual(pass, true);
+      });
+    });
+
+    describe('#Test modifyLectures', function () {
+      it('Switch to online', async function () {
+        let lecture1 = new Lecture(121, 'c000', 'd000', '12/12/2020', '8:30', '17:00', 1, '9a', 0);
+        let lecture2 = new Lecture(122, 'c001', 'd000', '12/12/2020', '9:30', '11:00', 1, '9a', 0);
+
+        let array = [lecture1, lecture2];
+        let courses = ['c000', 'c001'];
+
+        await LectureDao.addLecture(array);
+        await LectureDao.modifyLectures(courses);
+
+        return await LectureDao.getLectureById(121).then((l) => assert.strictEqual(l.inPresence, '0'));
+      });
+    });
+
   });
 
   //----------------------------------------- Email sender tests -----------------------------------------//
