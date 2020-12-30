@@ -136,22 +136,15 @@ function SemesterList() {
             </ToggleButtonGroup>
             </Row>
             <p></p>
-            <Row>
-                <Col xs={0.1} className='text-center'>
-                    <Form.Check type={"checkbox"} id={semesters[0]} />
+            <Form.Group>
+                <Col xs={2} className='text-center'>
+                    <Form.Check type={"radio"} name="radio" id={semesters[0]} label = "Semester 1" />
                 </Col>
-                <Col xs={1.5} className='text-center'>
-                    Semester 1
+                
+                <Col xs={2} className='text-center'>
+                    <Form.Check type={"radio"} name="radio" id={semesters[1]} label ="Semester 2" />
                 </Col>
-            </Row>
-            <Row>
-                <Col xs={0.1} className='text-center'>
-                    <Form.Check type={"checkbox"} id={semesters[1]} />
-                </Col>
-                <Col xs={1.5} className='text-center'>
-                    Semester 2
-                </Col>
-            </Row>
+            </Form.Group>
             <p></p>
             <Row>
                 <Button>Confirm selection</Button>
