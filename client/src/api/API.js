@@ -123,6 +123,15 @@ async function getCurrentLecture(teacherId) {
     return await fetchMethod("GET", baseURL + url);
 }
 
+/**
+ * Changes the lessons for the courses contained in an array from in presence to virtual
+ * @param courses is an array containing course ids 
+ */
+async function updateLecture(courses) {
+    const url = baseURL;
+    return fetchMethod("PUT", `${url}/modifyLectures`, courses);
+}
+
 //------------------CANCELLED LECTURES------------------
 
 /**
@@ -276,6 +285,24 @@ async function getCoursesAndTeachers() {
     let url = "/getCoursesAndTeachers";
     return fetchMethod("GET", baseURL + url);
 }
+
+/**
+ * Returns a list of all courses per year
+ */
+async function getCoursesByYear() {
+    let url = "/getCoursesByYear";
+    return fetchMethod("GET", baseURL + url);
+}
+
+/**
+ * Returns a list of all courses per year and semester
+ */
+async function getCoursesByYearAndSemester() {
+    let url = "/getCoursesByYearAndSemester";
+    return fetchMethod("GET", baseURL + url);
+}
+
+
 //-------------------------STUDENTS----------------------------
 
 /**
@@ -505,6 +532,8 @@ const API = {
     getContactTracingByStudent,
     getCurrentLecture,
     getBookingsOfLecture,
+    getCoursesByYear,
+    getCoursesByYearAndSemester,
 };
 
 export default API;

@@ -199,6 +199,32 @@ app.get("/api/getCourses", (req, res) => {
  * GET API
  * Request Parameters: none
  * Request Body Content: none
+ * Response Body Content: an array of Course objects
+ */
+app.get("/api/getCoursesByYear", (req, res) => {
+  let year = req.params.year;
+  courseDao.getCoursesByYear(year).then((courses) => res.json(courses))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
+ * Response Body Content: an array of Course objects
+ */
+app.get("/api/getCoursesByYearAndSemester", (req, res) => {
+  let year = req.params.year;
+  let semesters = req.param.semesters;
+  courseDao.getCoursesByYearAndSemester(year, semesters).then((courses) => res.json(courses))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+
+/**
+ * GET API
+ * Request Parameters: none
+ * Request Body Content: none
  * Response Body Content: an array of Person objects where all objects have the role of a Teacher
  */
 app.get("/api/getTeachers", (req, res) => {
@@ -355,6 +381,21 @@ app.put('/api/lectures', (req, res) => {
   const lecture = req.body;
 
   lectureDao.updateLecture(lecture)
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+
+});
+
+/**
+ * PUT API
+ * Request Parameters: none
+ * Request Body Content: 
+ * Response Body Content: none
+ */
+app.put('/api/modifyLectures', (req, res) => {
+  const courses = req.body.courses;
+
+  lectureDao.modifyLectures(courses)
     .then(() => res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 
