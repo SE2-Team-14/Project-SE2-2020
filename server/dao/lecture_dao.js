@@ -323,8 +323,7 @@ exports.getCurrentLecture = function (teacherId) {
     return new Promise((resolve, reject) => {
         let today = moment().format("DD/MM/YYYY");
         let hour = moment().format("HH:mm");
-        let lecture = 0;
-        let found = false;
+
         const sql = "SELECT * FROM LECTURE WHERE teacherId = ? AND date = ? AND startingTime < ? AND endingTime > ?";
         db.get(sql, [teacherId, today, hour, hour], (err, row) => {
             if (err) {

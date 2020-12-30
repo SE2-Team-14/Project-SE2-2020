@@ -21,6 +21,8 @@ class RecordAttendance extends React.Component {
             lectureToday: false,
             today: null,
             bookedStudents: [],
+            studentIds: [],
+            presentStudentIds: [],
         }
     }
 
@@ -28,12 +30,26 @@ class RecordAttendance extends React.Component {
         API.getCurrentLecture(this.props.id).then((lecture) => {
             let lectureToday = true;
             let today = moment().format("DD/MM/YYYY");
-
+            let studentIds = [];
+            let presentStudentIds = [...this.state.presentStudentIds]
             if (lecture === 0) {
                 lectureToday = false;
             } else {
                 API.getBookingsOfLecture(lecture.lectureId).then((bookings) => {
-                    this.setState({ currentLecture: lecture, lectureToday: lectureToday, today: today, bookedStudents: bookings })
+                    bookings.map((book) => studentIds.push(book.studentId))
+                    bookings.map((book) => {
+                        if (book.present) {
+                            presentStudentIds.push(book.studentId);
+                        }
+                    })
+                    this.setState({
+                        currentLecture: lecture,
+                        lectureToday: lectureToday,
+                        today: today,
+                        bookedStudents: bookings,
+                        studentIds: studentIds,
+                        presentStudentIds: presentStudentIds
+                    })
 
                 })
             }
@@ -41,9 +57,25 @@ class RecordAttendance extends React.Component {
         });
     }
 
-    recordPresence = (studentId) => {
-        console.log(studentId)
-        console.log(this.state.currentLecture.lectureId)
+    recordPresence = (booking) => {
+        let presentStudentIds = [...this.state.presentStudentIds];
+        presentStudentIds.push(booking.studentId);
+        booking.present = 1;
+        API.recordAttendance(booking).then(() => {
+            this.setState({ presentStudentIds: presentStudentIds })
+        }).then((API.getBookingsOfLecture(this.state.currentLecture.lectureId).then((bookings) => {
+            this.setState({
+
+                bookedStudents: bookings,
+            })
+        })))
+
+    }
+
+    isAbsent = (studentId) => {
+        let presentStudentIds = [...this.state.presentStudentIds];
+        let index = presentStudentIds.indexOf(studentId);
+        return (index === -1);
     }
 
     TableItem = (booking) => {
@@ -54,7 +86,8 @@ class RecordAttendance extends React.Component {
                         {booking.studentId}
                     </Col>
                     <Col className="text-center">
-                        <Button variant="success" onClick={() => this.recordPresence(booking.studentId)}> Record as Present</Button>
+                        {(this.isAbsent(booking.studentId)) && <Button variant="success" onClick={() => this.recordPresence(booking)} /*disabled={() => this.isPresent(booking.studentId)}*/ > Record as Present</Button>}
+                        {(!this.isAbsent(booking.studentId)) && <h4> Present</h4>}
                     </Col>
                 </Row>
             </ListGroup.Item>

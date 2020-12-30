@@ -204,6 +204,14 @@ async function getBookingsOfLecture(lectureId) {
     return await fetchMethod("GET", baseURL + url);
 }
 
+/**
+ * Records the presence of a student that booked for a specific lecture
+ * @param booking a Booking object containing identifier of booked lecture and student, updated with presence recorded
+ */
+async function recordAttendance(booking) {
+    return await fetchMethod("PUT", `${baseURL}/recordAttendance`, booking)
+}
+
 //---------------------------CANCELLED BOOKING----------------------------
 
 /**
@@ -505,6 +513,7 @@ const API = {
     getContactTracingByStudent,
     getCurrentLecture,
     getBookingsOfLecture,
+    recordAttendance,
 };
 
 export default API;

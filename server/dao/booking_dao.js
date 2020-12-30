@@ -335,4 +335,21 @@ exports.getBookingsOfLecture = function (lectureId) {
             }
         })
     })
-} 
+}
+
+/**
+ * Updates information about a booking to record the presence of the student that made it at the lecture
+ * @param booking a Booking object containing information about a booking made by a student for a lecture in which the student has been recorded as present
+ */
+exports.recordAttendance = function (booking) {
+    return new Promise((resolve, reject) => {
+        const sql = "UPDATE BOOKING SET present = ? WHERE studentId = ? AND lectureId = ?";
+        db.run(sql, [booking.present, booking.studentId, booking.lectureId], function (err) {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(null)
+            }
+        })
+    })
+}

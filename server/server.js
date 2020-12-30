@@ -715,6 +715,16 @@ app.get("/api/bookingsOfLecture", (req, res) => {
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+/**
+ * Request Parameters: none
+ * Request Body Content: a Booking object updated to record presence of a student at the booked lecture
+ * Response Body Content: none
+ */
+app.put("/api/recordAttendance", (req, res) => {
+  bookingDao.recordAttendance(req.body).then(() => res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
 
 //-----------------------CONTACT TRACING--------------------------------------
 
