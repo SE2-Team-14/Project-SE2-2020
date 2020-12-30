@@ -2,7 +2,7 @@ import React from 'react';
 import API from '../api/API';
 import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
-import { Jumbotron, Modal, Col, Row, Button, Form, Container } from 'react-bootstrap';
+import { Jumbotron, Modal, Col, Row, Button, Form, Container, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 class UpdateBookableLecture extends React.Component {
 
@@ -34,7 +34,7 @@ class UpdateBookableLecture extends React.Component {
                                 <Col xs={5}> <h3>Do you want update for year or for semester?</h3> </Col>
                                 <Col xs={1}> <Button class="btn btn-secondary btn-sm" onClick={() => this.modeYear()}> Year </Button> </Col>
                                 <Col xs={1}> <Button class="btn btn-secondary btn-sm" onClick={() => this.modeSemester()}> Semester </Button> </Col>
-                            </Row>                
+                            </Row>
                             <Modal>
                                 <Modal.Header>
                                     <Modal.Title></Modal.Title>
@@ -47,16 +47,16 @@ class UpdateBookableLecture extends React.Component {
                             </Modal>
                         </Jumbotron>
                         {this.state.showYear &&
-                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                                 <YearList></YearList>
-                         </Jumbotron>
+                            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+                                <YearList></YearList>
+                            </Jumbotron>
                         }
                         {this.state.showSemester &&
-                        <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                            <SemesterList></SemesterList>
-                        </Jumbotron>
-                }
-                        
+                            <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
+                                <SemesterList></SemesterList>
+                            </Jumbotron>
+                        }
+
                     </>
                 )}
             </AuthContext.Consumer>
@@ -69,7 +69,7 @@ function YearList() {
     return (
         <Container>
             <Row><h4>Select in the following list, the year or the year that you want to update!</h4></Row>
-            <Row className = 'text-center'>
+            <Row className='text-center'>
                 <Col xs={0.1} className='text-center'>
                     <Form.Check type={"checkbox"} id={years[0]} />
                 </Col>
@@ -111,9 +111,9 @@ function YearList() {
             </Row>
             <Row>
                 <h4>     </h4>
-            <Button> Confirm selection </Button>
+                <Button> Confirm selection </Button>
             </Row>
-            
+
         </Container>
     );
 }
@@ -125,11 +125,13 @@ function SemesterList() {
         <Container>
             <Row><h4>Select first the year and after the semester/semesters that you want to update</h4></Row>
             <Row>
-                <Button class="btn btn-secondary btn-sm"> Year 1 </Button>
-                <Button class="btn btn-secondary btn-sm"> Year 2 </Button>
-                <Button class="btn btn-secondary btn-sm"> Year 3 </Button>
-                <Button class="btn btn-secondary btn-sm"> Year 4 </Button>
-                <Button class="btn btn-secondary btn-sm"> Year 5 </Button>
+            <ToggleButtonGroup type="radio" name="options" >
+                <ToggleButton variant="outline-primary" value={1}> Year 1</ToggleButton>
+                <ToggleButton variant="outline-primary" value={2}> Year 2</ToggleButton>
+                <ToggleButton variant="outline-primary" value={3}> Year 3</ToggleButton>
+                <ToggleButton variant="outline-primary" value={4}> Year 4</ToggleButton>
+                <ToggleButton variant="outline-primary" value={5}> Year 5</ToggleButton>
+            </ToggleButtonGroup>
             </Row>
             <Row>
                 <Col xs={0.1} className='text-center'>
