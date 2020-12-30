@@ -69,6 +69,7 @@ function YearList() {
     return (
         <Container>
             <Row><h4>Select in the following list, the year or the year that you want to update!</h4></Row>
+            <p></p>
             <Row className='text-center'>
                 <Col xs={0.1} className='text-center'>
                     <Form.Check type={"checkbox"} id={years[0]} />
@@ -110,7 +111,7 @@ function YearList() {
                 </Col>
             </Row>
             <Row>
-                <h4>     </h4>
+                <p></p>
                 <Button> Confirm selection </Button>
             </Row>
 
@@ -126,7 +127,7 @@ function SemesterList() {
             <Row><h4>Select first the year and after the semester/semesters that you want to update</h4></Row>
             <p></p>
             <Row>
-            <ToggleButtonGroup type="radio" name="options" >
+            <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
                 <ToggleButton variant="outline-primary" value={1}> Year 1</ToggleButton>
                 <ToggleButton variant="outline-primary" value={2}> Year 2</ToggleButton>
                 <ToggleButton variant="outline-primary" value={3}> Year 3</ToggleButton>
