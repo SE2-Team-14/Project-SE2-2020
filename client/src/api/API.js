@@ -127,7 +127,7 @@ async function getCurrentLecture(teacherId) {
  * Changes the lessons for the courses contained in an array from in presence to virtual
  * @param courses is an array containing course ids 
  */
-async function updateLecture(courses) {
+async function updateBookableLecture(courses) {
     const url = baseURL;
     return fetchMethod("PUT", `${url}/modifyLectures`, courses);
 }
@@ -534,6 +534,7 @@ const API = {
     getBookingsOfLecture,
     getCoursesByYear,
     getCoursesByYearAndSemester,
+    updateBookableLecture,
 };
 
 export default API;
