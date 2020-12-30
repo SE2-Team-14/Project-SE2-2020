@@ -124,6 +124,7 @@ function SemesterList() {
     return (
         <Container>
             <Row><h4>Select first the year and after the semester/semesters that you want to update</h4></Row>
+            <p></p>
             <Row>
             <ToggleButtonGroup type="radio" name="options" >
                 <ToggleButton variant="outline-primary" value={1}> Year 1</ToggleButton>
@@ -133,6 +134,7 @@ function SemesterList() {
                 <ToggleButton variant="outline-primary" value={5}> Year 5</ToggleButton>
             </ToggleButtonGroup>
             </Row>
+            <p></p>
             <Row>
                 <Col xs={0.1} className='text-center'>
                     <Form.Check type={"checkbox"} id={semesters[0]} />
@@ -149,6 +151,7 @@ function SemesterList() {
                     Semester 2
                 </Col>
             </Row>
+            <p></p>
             <Row>
                 <Button>Confirm selection</Button>
             </Row>
