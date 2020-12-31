@@ -202,7 +202,8 @@ app.get("/api/getCourses", (req, res) => {
  * Response Body Content: an array of Course objects
  */
 app.get("/api/getCoursesByYear", (req, res) => {
-  let year = req.params.year;
+
+  let year = req.query.years;
   courseDao.getCoursesByYear(year).then((courses) => res.json(courses))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
@@ -214,9 +215,9 @@ app.get("/api/getCoursesByYear", (req, res) => {
  * Response Body Content: an array of Course objects
  */
 app.get("/api/getCoursesByYearAndSemester", (req, res) => {
-  let year = req.params.year;
-  let semesters = req.param.semesters;
-  courseDao.getCoursesByYearAndSemester(year, semesters).then((courses) => res.json(courses))
+  let years = req.query.years;
+  let semester = req.query.semester;
+  courseDao.getCoursesByYearAndSemester(years, semester).then((courses) => res.json(courses))
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
@@ -394,7 +395,6 @@ app.put('/api/lectures', (req, res) => {
  */
 app.put('/api/modifyLectures', (req, res) => {
   const courses = req.body.courses;
-
   lectureDao.modifyLectures(courses)
     .then(() => res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
@@ -455,19 +455,6 @@ app.get("/api/statistics", (req, res) => {
   });
 })
 
-/*
-app.put('/api/teacher-home/change-type', (req, res) => {
-  const lecture = req.body;
-  //console.log(lecture);
-  if (!lecture) {
-    res.status(400).end();
-  } else {
-    lectureDao.changeLectureType(lecture.lectureId)
-      .then(() => res.status(200).end())
-      .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-  }
-});
-*/
 
 /**
  * DELETE API

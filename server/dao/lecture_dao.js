@@ -354,7 +354,7 @@ exports.modifyLectures = function (courses) {
     let params = [];
 
     for (let i = 0; i < courses.length; i++)
-        params.push(courses[i]);
+        params.push(courses[i].courseId);
 
     return new Promise((resolve, reject) => {
         db.run(sql, params, function (err) {

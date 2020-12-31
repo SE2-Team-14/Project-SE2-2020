@@ -129,7 +129,7 @@ async function getCurrentLecture(teacherId) {
  */
 async function updateBookableLecture(courses) {
     const url = baseURL;
-    return fetchMethod("PUT", `${url}/modifyLectures`, courses);
+    return fetchMethod("PUT", `${url}/modifyLectures`, {courses : courses});
 }
 
 //------------------CANCELLED LECTURES------------------
@@ -297,16 +297,17 @@ async function getCoursesAndTeachers() {
 /**
  * Returns a list of all courses per year
  */
-async function getCoursesByYear() {
-    let url = "/getCoursesByYear";
+async function getCoursesByYear(years) {
+
+    let url = "/getCoursesByYear?years=" + years;
     return fetchMethod("GET", baseURL + url);
 }
 
 /**
  * Returns a list of all courses per year and semester
  */
-async function getCoursesByYearAndSemester() {
-    let url = "/getCoursesByYearAndSemester";
+async function getCoursesByYearAndSemester(years, semester) {
+    let url = "/getCoursesByYearAndSemester?years=" + years + "&semester=" + semester;
     return fetchMethod("GET", baseURL + url);
 }
 
@@ -544,6 +545,7 @@ const API = {
     getCoursesByYear,
     getCoursesByYearAndSemester,
     updateBookableLecture,
+    deleteFromWaitingList,
 };
 
 export default API;

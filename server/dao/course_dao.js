@@ -166,18 +166,18 @@ exports.getCoursesByYear = function (years) {
     });
 }
 
-exports.getCoursesByYearAndSemester = function (year, semesters) {
+exports.getCoursesByYearAndSemester = function (years, semester) {
     return new Promise((resolve, reject) => {
         let sql = 'SELECT courseId FROM COURSE WHERE ';
 
-        for (let i = 0; i < semesters.length - 1; i++)
+        for (let i = 0; i < years.length - 1; i++)
             sql += '(year = ? AND semester = ?) OR ';
         sql += '(year = ? AND semester = ?);';
 
         let params = [];
 
-        for (let i = 0; i < semesters.length; i++)
-            params.push(year, semesters[i]);
+        for (let i = 0; i < years.length; i++)
+            params.push(years[i], semester);
 
         db.all(sql, params, (err, row) => {
             if (err) {

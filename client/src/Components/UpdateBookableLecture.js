@@ -4,16 +4,15 @@ import { AuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
 import { Jumbotron, Modal, Col, Row, Button, Form, Container, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
+
 class UpdateBookableLecture extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedYears: [1], selectedSemester: 1, showYear: false, showSemester: false
+            selectedYears: [1], selectedSemester: 1, showYear: false, showSemester: false, showmodalConfirm: false, showModalSuccess: false, showModalError: false,
+            courses: [],
         };
-    }
-
-    componentDidMount() {
     }
 
     onChangeYear = (year) => {
@@ -44,11 +43,34 @@ class UpdateBookableLecture extends React.Component {
         this.setState({ showYear: false, showSemester: true, selectedYears: [1], selectedSemester: 1 });
     }
 
-    print = () => {
-        console.log(this.state.selectedYears);
-        console.log(this.state.selectedYear)
-        console.log(this.state.selectedSemester)
+    handleClose = () => {
+        this.setState({showModalSuccess: false, showModalSemester: false, showmodalConfirm: false, showModalError: false});
     }
+
+    handleClickYear = () => {
+        if(this.state.selectedYears.length == 0)
+            this.setState({showModalError : true});
+        else
+                API.getCoursesByYear(this.state.selectedYears).then((courses) => this.setState({courses: courses}, () => this.setState({showmodalConfirm: true})));
+
+    }
+
+    handleClickSemester = () => {
+        if(this.state.selectedYears.length == 0)
+            this.setState({showModalError : true});
+        else
+        API.getCoursesByYearAndSemester(this.state.selectedYears, this.state.selectedSemester).then((courses) => this.setState({courses: courses}, () => this.setState({showmodalConfirm: true})));
+    }
+
+    confirmSelection = () => {
+        API.updateBookableLecture(this.state.courses).then(() => this.setState({showmodalConfirm: false, showModalSuccess: true}));
+    }
+
+    handleSuccess = () => {
+        this.setState({showModalError: true});
+    }
+
+
     render() {
         return (
             <AuthContext.Consumer>
@@ -61,45 +83,42 @@ class UpdateBookableLecture extends React.Component {
                                 <Col xs={1}> <Button variant = "secondary" onClick={() => this.modeYear()}> Year </Button> </Col>
                                 <Col xs={1}> <Button variant = "secondary" onClick={() => this.modeSemester()}> Semester </Button> </Col>
                             </Row>
-                            <Modal>
+                            <Modal controlid='ConfirmYearSelection' show={this.state.showmodalConfirm} onHide={this.handleClose} animation={false} >
                                 <Modal.Header>
                                     <Modal.Title></Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body></Modal.Body>
+                                <Modal.Body>{this.state.courses.length} courses gonna be changed to virtual! Do you want confirm your selection?</Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant='primary'>Yes</Button>
-                                    <Button variant='secondary'>No</Button>
+                                    <Button variant='primary' onClick = {() => this.confirmSelection()}>Yes</Button>
+                                    <Button variant='secondary' onClick={() => this.handleClose()}>No</Button>
                                 </Modal.Footer>
                             </Modal>
-                            <Modal>
+                            <Modal controlid='UpdateSuccess' show={this.state.showModalSuccess} onHide={this.handleClose} animation={false} >
                                 <Modal.Header>
                                     <Modal.Title></Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body></Modal.Body>
+                                <Modal.Body> Your changes are saved!</Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant='primary'>Yes</Button>
-                                    <Button variant='secondary'>No</Button>
+                                    <Button variant='secondary' onClick = {() => this.handleClose()}>Ok</Button>
                                 </Modal.Footer>
                             </Modal>
-                            <Modal>
+                            <Modal controlid='Error' show={this.state.showModalError} onHide={this.handleClose} animation={false} >
                                 <Modal.Header>
-                                    <Modal.Title></Modal.Title>
+                                    <Modal.Title> Cannot update courses if you don't select at least one year.</Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body></Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant='primary'>Yes</Button>
-                                    <Button variant='secondary'>No</Button>
+                                    <Button variant='secondary' onClick={() => this.handleClose()}>Ok</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Jumbotron>
                         {this.state.showYear &&
                             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                                <YearList onChangeYear = {this.onChangeYear}></YearList>
+                                <YearList onChangeYear = {this.onChangeYear} handleClickYear = {this.handleClickYear}></YearList>
                             </Jumbotron>
                         }
                         {this.state.showSemester &&
                             <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
-                                <SemesterList selectSemester={this.selectSemester} onChangeYear={this.onChangeYear}></SemesterList>
+                                <SemesterList selectSemester={this.selectSemester} onChangeYear={this.onChangeYear} handleClickSemester = {this.handleClickSemester}></SemesterList>
                             </Jumbotron>
                         }
 
@@ -143,7 +162,7 @@ function YearList(props) {
             </Row>
             <p></p>
             <Row>
-                <Button> Confirm selection </Button>
+                <Button onClick = {() => props.handleClickYear()}> Confirm selection </Button>
             </Row>
 
         </Container>
@@ -158,7 +177,7 @@ function SemesterList(props) {
             <Row><h4>Select first the year or the years and after the semester that you want to make virtual!</h4></Row>
             <p></p>
             <Row>
-            <ToggleButtonGroup type="checkbox" name="options" defaultValue={1}>
+            <ToggleButtonGroup type="checkbox" name="options" defaultValue={1} >
                 <ToggleButton variant="outline-primary" value={1} onChange={() => props.onChangeYear(1)}> Year 1</ToggleButton>
                 <ToggleButton variant="outline-primary" value={2} onChange={() => props.onChangeYear(2)}> Year 2</ToggleButton>
                 <ToggleButton variant="outline-primary" value={3} onChange={() => props.onChangeYear(3)}> Year 3</ToggleButton>
@@ -178,7 +197,7 @@ function SemesterList(props) {
             </Form.Group>
             <p></p>
             <Row>
-                <Button>Confirm selection</Button>
+                <Button onClick = {() => props.handleClickSemester()}>Confirm selection</Button>
             </Row>
         </Container>
     );
