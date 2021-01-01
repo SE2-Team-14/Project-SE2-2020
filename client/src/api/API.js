@@ -129,7 +129,7 @@ async function getCurrentLecture(teacherId) {
  */
 async function updateBookableLecture(courses) {
     const url = baseURL;
-    return fetchMethod("PUT", `${url}/modifyLectures`, {courses : courses});
+    return fetchMethod("PUT", `${url}/modifyLectures`, { courses: courses });
 }
 
 //------------------CANCELLED LECTURES------------------
@@ -219,6 +219,23 @@ async function getBookingsOfLecture(lectureId) {
  */
 async function recordAttendance(booking) {
     return await fetchMethod("PUT", `${baseURL}/recordAttendance`, booking)
+}
+
+/**
+ * Returns an array containing all courses of a teacher and the total amount of registered presences for each course
+ * @param email a string containing the email of the teacher that wants to have statistics about attendance at all his courses 
+ */
+async function getTeacherTotalAttendance(email) {
+    const url = "/totalAttendance?email=" + email;
+    return await fetchMethod("GET", baseURL + url);
+}
+
+/**
+ * Returns an array containing all courses and the total amount of registered presences for each course
+ */
+async function getTotalAttendance() {
+    const url = "/allAttendance";
+    return await fetchMethod("GET", baseURL + url);
 }
 
 //---------------------------CANCELLED BOOKING----------------------------
@@ -542,6 +559,8 @@ const API = {
     getCurrentLecture,
     getBookingsOfLecture,
     recordAttendance,
+    getTeacherTotalAttendance,
+    getTotalAttendance,
     getCoursesByYear,
     getCoursesByYearAndSemester,
     updateBookableLecture,

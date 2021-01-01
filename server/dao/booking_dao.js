@@ -203,7 +203,7 @@ exports.getStatistics = function (date, mode, course) {
                 }
             })
         } else if (mode === "attendance") {
-            const sql = "SELECT COUNT(*) as presences, LECTURE.date FROM BOOKING, LECTURE, COURSE WHERE BOOKING.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? GROUP BY LECTURE.date";
+            const sql = "SELECT COUNT(*) as presences, LECTURE.date FROM BOOKING, LECTURE, COURSE WHERE BOOKING.lectureId = LECTURE.lectureId AND COURSE.courseId = LECTURE.courseId AND COURSE.name = ? AND BOOKING.present = 1 GROUP BY LECTURE.date";
             db.all(sql, [course], (err, rows) => {
                 if (err)
                     reject(err);
@@ -349,6 +349,40 @@ exports.recordAttendance = function (booking) {
                 reject(err)
             } else {
                 resolve(null)
+            }
+        })
+    })
+}
+
+exports.getTeacherTotalAttendance = function (email) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) AS presences, COURSE.name FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId AND PERSON.id = COURSE.teacherId AND PERSON.email = ? AND BOOKING.present = 1 GROUP BY COURSE.courseId";
+        db.all(sql, [email], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows) {
+                    resolve(rows);
+                }
+                else
+                    resolve(undefined);
+            }
+        })
+    })
+}
+
+exports.getTotalAttendance = function () {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT COUNT(*) AS presences, COURSE.name as courseName, PERSON.name, PERSON.surname FROM BOOKING, COURSE, LECTURE, PERSON WHERE BOOKING.lectureId = LECTURE.lectureId AND LECTURE.courseId = COURSE.courseId  AND COURSE.teacherId = PERSON.id AND BOOKING.present = 1 GROUP BY COURSE.courseId";
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows.length > 0) {
+                    resolve(rows);
+                }
+                else
+                    resolve(undefined);
             }
         })
     })

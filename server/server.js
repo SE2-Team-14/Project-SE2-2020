@@ -753,6 +753,17 @@ app.put("/api/recordAttendance", (req, res) => {
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
+app.get("/api/totalAttendance", (req, res) => {
+  bookingDao.getTeacherTotalAttendance(req.query.email).then((stats) => {
+    res.json(stats);
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+app.get("/api/allAttendance", (req, res) => {
+  bookingDao.getTotalAttendance().then((stats) => {
+    res.json(stats);
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
 
 //-----------------------CONTACT TRACING--------------------------------------
 

@@ -34,6 +34,7 @@ class RecordAttendance extends React.Component {
             let presentStudentIds = [...this.state.presentStudentIds]
             if (lecture === 0) {
                 lectureToday = false;
+                this.setState({ today: today })
             } else {
                 API.getBookingsOfLecture(lecture.lectureId).then((bookings) => {
                     bookings.map((book) => studentIds.push(book.studentId))

@@ -31,13 +31,9 @@ class StatsViewer extends React.Component {
             noCancelledLectures: true,
             teacherName: null,
             teacherSurname: null,
+            noAttendance: true,
         }
     }
-
-    /**
-     * TODO
-     * Dropdown corsi scorribile internamente perchè così com'è non si può vedere
-     */
 
     /**
      * Retrieves the list of all courses taught by the teacher with the associated email.
@@ -50,6 +46,11 @@ class StatsViewer extends React.Component {
                 API.getTeacherCoursesStatistics(this.props.email).then((stats) => {
                     let noBookings = stats[0].name === null;
                     this.setState({ stats: stats, noBookings: noBookings })
+                }).then(() => {
+                    API.getTeacherTotalAttendance(this.props.email).then((stats) => {
+                        let noAttendance = stats.length === 0;
+                        this.setState({ noAttendance: noAttendance })
+                    })
                 })
             })
         } else if (this.props.role === "Manager") {
@@ -65,6 +66,9 @@ class StatsViewer extends React.Component {
             })).then(() => API.getCancelledLecturesStats().then((stats) => {
                 let noCancelledLectures = stats.length === 0;
                 this.setState({ noCancelledLectures: noCancelledLectures })
+            })).then(() => API.getTotalAttendance().then((stats) => {
+                let noAttendance = stats.length === 0;
+                this.setState({ noAttendance: noAttendance })
             }))
         }
     }
@@ -98,18 +102,18 @@ class StatsViewer extends React.Component {
      *  - total mode: calls the API that retrieves the statistics for the specified mode(amount of total bookings made for each separate lecture) and saves them, resets already registered information about lectures chosen before
      *  - cancelled mode: calls the API that retrieves the statistics about cancelled lectures(amount of cancelled bookings for each separate lecture) and saves them, resets already registered information about lectures chosen before
      *  - start mode: calls the API that retrieves the statistics about total bookings made for all courses of the teacher (all courses if called by the manager)
-     *  - attendance mode: works the same as lecture mode
+     *  - attendance mode: calls the API that retrieves statistics about registered attendance for all lectures of a course (number of students marked as Present by a teacher during a lecture)
      * All modes except the lecture one also calculate the maximum value for each statistic and save it in the state, to put it as the maximum value that can be shown in the graph
      * @param mode a string containing the mode chosen by the teacher
      */
     chooseMode = (mode) => {
         this.setState({ mode: mode })
         if (this.props.role === "Teacher") {
-            if (mode === "lecture" || mode === "attendance") {
+            if (mode === "lecture") {
                 API.getPastLectures(this.state.selectedCourse, this.props.email, this.props.role, null, null).then((lectures) => {
                     this.setState({ lectures: lectures, stats: [], cancelledStats: [] })
                 })
-            } else if (mode === "month" || mode === "week" || mode === "total") {
+            } else if (mode === "month" || mode === "week" || mode === "total" || mode === "attendance") {
                 API.getStatistics(null, mode, this.state.selectedCourse).then((stats) => {
                     let max = 0;
                     let num = 0;
@@ -144,6 +148,18 @@ class StatsViewer extends React.Component {
                         }
                     }
                     this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null, })
+                })
+            } else if (mode === "totalAttendance") {
+                API.getTeacherTotalAttendance(this.props.email).then((stats) => {
+                    let max = 0;
+                    let num = 0;
+                    for (let i = 0; i < stats.length; i++) {
+                        num = stats[i].total;
+                        if (num > max) {
+                            max = num;
+                        }
+                    }
+                    this.setState({ stats: stats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null })
                 })
             }
         } else if (this.props.role === "Manager") {
@@ -203,6 +219,21 @@ class StatsViewer extends React.Component {
                     let newStats = [];
                     stats.map((stat) => newStats.push({ cancellations: stat.cancellations, name: stat.courseName + " - " + stat.name + " " + stat.surname }))
                     this.setState({ stats: newStats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null })
+                })
+            } else if (mode === "totalAttendance") {
+                API.getTotalAttendance().then((stats) => {
+                    let max = 0;
+                    let num = 0;
+                    for (let i = 0; i < stats.length; i++) {
+                        num = stats[i].cancellations;
+                        if (num > max) {
+                            max = num;
+                        }
+                    }
+                    let newStats = [];
+                    stats.map((stat) => newStats.push({ presences: stat.presences, name: stat.courseName + " - " + stat.name + " " + stat.surname }))
+                    this.setState({ stats: newStats, selectedDate: null, lectureTime: null, cancelledStats: [], maxStat: max, selectedCourse: null })
+
                 })
             }
         }
@@ -264,7 +295,7 @@ class StatsViewer extends React.Component {
                                 {(this.state.courses.length > 0 && !this.state.noBookings) && <Dropdown>
                                     <Dropdown.Toggle variant="outline-success" id="dropdown-basic" title={this.state.selectedCourse}>
                                         Choose the Course you want to view statistics of
-                    </Dropdown.Toggle>
+                                    </Dropdown.Toggle>
                                     <Dropdown.Menu className="dropdown-menu pre-scrollable" style={{ overflowY: 'scroll', maxHeight: "200px" }}>
                                         {this.state.courses.map((course) => (<Dropdown.Item onClick={() => this.onSelectCourse(course.name)} key={course.courseId}>{course.name}</Dropdown.Item>))}
                                     </Dropdown.Menu>
@@ -272,7 +303,10 @@ class StatsViewer extends React.Component {
                                 {(this.state.mode === "start" && this.state.noBookings) && <h4> There are no statistics about bookings available yet.</h4>}
                                 <Col md="auto"> {(!this.state.noBookings) && <Button variant="outline-info" active={this.state.mode == "start"} onClick={() => this.chooseMode("start")} > View Total Bookings of all Courses </Button>}</Col>
                                 {(this.props.role === "Manager") && <Col md="auto">
-                                    <Button variant="outline-info" active={this.state.mode == "cancelledLectures"} onClick={() => this.chooseMode("cancelledLectures")} > View Cancelled Lectures of all Courses </Button>
+                                    <Button variant="outline-info" active={this.state.mode === "cancelledLectures"} onClick={() => this.chooseMode("cancelledLectures")} > View Cancelled Lectures of all Courses </Button>
+                                </Col>}
+                                {(!this.state.noBookings) && <Col md="auto">
+                                    <Button variant="outline-info" active={this.state.mode === "totalAttendance"} onClick={() => this.chooseMode("totalAttendance")}> View Total Attendance of All Courses</Button>
                                 </Col>}
                             </Row>
                             <Row className="h-75 d-inline-block">{""}</Row>
@@ -309,6 +343,7 @@ class StatsViewer extends React.Component {
                                             </BarChart>
                                         </Col>
                                     </>}
+
                             </Row>}
                             <Row className="h-75 d-inline-block">{""}</Row>
                             <Row className="justify-content-md-center">
@@ -332,7 +367,7 @@ class StatsViewer extends React.Component {
                             <Row className="h-75 d-inline-block">{""}</Row>
                             <Row className="justify-content-md-center">
                                 <Col md="auto">
-                                    {(this.state.selectedCourse != null && this.props.role === "Manager") && <Button variant="outline-info" active={this.state.mode == "attendance"} onClick={() => this.chooseMode("attendance")}> View Attendance of All Lectures </Button>}
+                                    {(this.state.selectedCourse != null) && <Button variant="outline-info" active={this.state.mode == "attendance"} onClick={() => this.chooseMode("attendance")}> View Attendance of All Lectures </Button>}
                                 </Col>
                             </Row>
                             <Row className="h-75 d-inline-block">{""}</Row>
@@ -513,10 +548,34 @@ class StatsViewer extends React.Component {
                                         </Col>
                                     </>
                                 }
+                                {(this.state.mode === "totalAttendance" && !this.state.noAttendance) &&
+                                    <>
+                                        <Col md="auto" className="align-items-center">
+                                            <h4> Total attendance for all lectures of each course</h4>
+                                        </Col>
+                                        <Col md="auto">
+                                            <BarChart
+                                                width={500}
+                                                height={400}
+                                                data={this.state.stats}
+                                                margin={{
+                                                    top: 5, right: 30, left: 20, bottom: 5,
+                                                }}
+                                            >
+
+                                                <XAxis dataKey="name" height={50}>
+                                                </XAxis>
+                                                <YAxis allowDecimals={false} domain={[0, this.state.maxStat]} />
+                                                <Tooltip itemStyle={{ color: "black" }} />
+                                                <Bar dataKey="presences" fill="#89A2E5" />
+                                            </BarChart>
+                                        </Col>
+                                    </>}
                                 {((this.state.mode === "week" || this.state.mode === "month" || this.state.mode === "total") && this.state.stats.length == 0) && <h4> There are no statistics available for the course {this.state.selectedCourse}</h4>}
                                 {((this.state.mode === "lecture") && this.state.lectures.length == 0) && <h4> There are no in-presence lectures registered for the course {this.state.selectedCourse}</h4>}
                                 {(this.state.mode === "cancelled" && this.state.cancelledStats == 0) && <h4> There are no cancelled bookings registered. </h4>}
                                 {(this.state.mode === "attendance" && this.state.stats.length === 0) && <h4> There are no statistics available about attendance for the course {this.state.selectedCourse}</h4>}
+                                {(this.state.mode === "totalAttendance" && this.state.noAttendance) && <h4> There are no statistics about attendance available.</h4>}
 
                             </Row>
 
