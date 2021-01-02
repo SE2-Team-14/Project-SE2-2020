@@ -401,29 +401,6 @@ app.put('/api/modifyLectures', (req, res) => {
 
 });
 
-app.put('/api/support-officer-home/lectures', (req, res) => {
-  const lecture = req.body;
-
-  lectureDao.modifyLecture(lecture)
-    .then(() => {
-      bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then((list) => {
-        for (let item of list) {
-          personDao.getPersonByID(item.studentId).then(student => {
-            const subject = 'Lecture modified';
-            const recipient = student.email;
-            const message = `Dear ${student.name},\n` +
-              `the lecture for the course ${item.name} of ${item.date} at ${item.startingTime} has been modified.`;
-  
-            emailSender.sendEmail(recipient, subject, message);
-          })
-        }
-      })
-      res.status(200).end()
-    })
-    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-
-})
-
 /**
  * GET API
  * Request Parameters: email, a string containing the email corresponding to the person one wants to have the name and surname of
@@ -705,12 +682,6 @@ app.get("/api/getAllCourses", (req, res) => {
   courseDao.getCourses().then((courses) => {
     res.json(courses)
   }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
-})
-
-app.get("/api/getAllLectures", (req, res) => {
-  lectureDao.getAllLecturesList().then((lectures) => {
-    res.json(lectures)
-  }).catch((err) => res.status(500).json({ errors: [{ msg: err }]}));
 })
 
 /**

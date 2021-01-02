@@ -79,38 +79,6 @@ exports.getLectureById = function (lectureId) {
     });
 }
 
-exports.getAllLecturesList = function () {
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM LECTURE";
-        db.all(sql, (err, rows) => {
-            if (err)
-            reject(err);
-            else {
-                if (rows) {
-                let today = moment().subtract(1, 'days');
-                let newRow = [];
-                for (let i = 0; i < rows.length; i++) {
-                    let date = moment(rows[i]["date"], "DD/MM/YYYY")
-                    if (today.isBefore(date)) {
-                        newRow.push(rows[i])
-                    }
-                }
-                newRow.sort((a, b) => {
-                    if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
-                        return 1;
-                    else
-                        return -1;
-                });
-                resolve(newRow);
-            }
-            else
-                resolve(undefined);
-        }
-        })
-    })
-}
-
-
 /**
  * Returns an array containing all in presence lectures of a student. Only the lectures that are in the future (from the current day included onwards) are kept and returned to the calling function.
  * @param email a string containing the email of the student whose future in presence lectures are to be retrieved
@@ -265,19 +233,6 @@ exports.updateLecture = function (lecture) {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET numberOfSeats = ?, inPresence = ? WHERE lectureId = ?';
         db.run(sql, [lecture.numberOfSeats, lecture.inPresence, lecture.lectureId], function (err) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(null);
-            }
-        });
-    });
-}
-
-exports.modifyLecture = function (lecture) {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE LECTURE SET startingTime = ?, endingTime = ?, classroomId = ?, numberOfSeats = ? WHERE lectureId = ?';
-        db.run(sql, [lecture.startingTime, lecture.endingTime, lecture.classroomId, lecture.numberOfSeats, lecture.lectureId], function (err) {
             if (err) {
                 reject(err);
             } else {

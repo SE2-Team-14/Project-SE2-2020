@@ -20,7 +20,6 @@ import StatsViewer from "./Components/StatsViewer";
 import LoadDataView from "./Components/LoadDataView";
 import RecordAttendance from "./Components/RecordAttendance";
 import UpdateBookableLecture from './Components/UpdateBookableLecture';
-import ModifyLectureList from './Components/ModifyLectureList';
 
 import { AuthContext } from './auth/AuthContext'
 //import DynamicBackground from './Components/DynamicBackground';
@@ -174,11 +173,6 @@ class App extends React.Component {
 
             <Route exact path='/support-officer-home/:email/updateLectures' render ={(props) => {
                 return <>{this.state.authUser && <UpdateBookableLecture></UpdateBookableLecture>}</>
-            }}></Route>
-			
-			<Route exact path='/support-officer-home/:email/modify' render={(props) => {
-              let email = props.match.params.email;
-              return <>{this.state.authUser && <ModifyLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ModifyLectureList>}</>
             }}></Route>
             <Route exact path="/load">
               <Row className="vheight-100">
