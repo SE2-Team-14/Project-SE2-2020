@@ -21,6 +21,7 @@ const moment = require('moment');
 const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
+const ScheduleDao = require("./dao/schedule_dao");
 const DataLoader = require('./utils/DataLoader');
 
 // Authorization error
@@ -663,7 +664,19 @@ app.post('/api/modifySchedule', (req, res) => {
       dataLoader.modifySchedule(schedule);      
     })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
+/**
+ * GET API
+ * Request Parameters: 
+ * Request Body Content: none
+ * Response Body Content:
+ */
+app.get('/api/getSchedule', (req, res) => {
+  ScheduleDao.getSchedule().then((schedule) => res.json(schedule))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
+
 
 //-----------------------------------WAITING LIST------------------------------------
 

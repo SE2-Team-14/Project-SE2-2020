@@ -47,3 +47,21 @@ exports.getScheduleByCourseId = function (courseId) {
         });
     });
 }
+
+exports.getSchedule = function () {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM SCHEDULE";
+        db.get(sql, [], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (row) {
+                    resolve(createSchedule(row));
+                } else {
+                    resolve(undefined);
+                }
+            }
+        });
+    });
+}
+
