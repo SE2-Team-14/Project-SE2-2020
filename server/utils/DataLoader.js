@@ -30,10 +30,10 @@ function associateDay(weekday) {
     }
 }
 
-function loadLectures(schedule) {
+async function loadLectures(schedule) {
     let teacher = await CourseDao.getCourseByID(schedule.courseId);
     const endOfSemester = moment('2021-01-16');
-    let day = associateDay(scheudle.dayOfWeek.toLowerCase());
+    let day = associateDay(schedule.dayOfWeek.toLowerCase());
     let date = moment().day(day);
     let lectures = [];
 
@@ -41,7 +41,7 @@ function loadLectures(schedule) {
         if (date > endOfSemester)
             break;
         else {
-            if(await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), startingTime, endingTime)==undefined){
+            if(await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime)==undefined){
                 let lecture = new Lecture(
                     null,
                     schedule.courseId,
@@ -62,7 +62,7 @@ function loadLectures(schedule) {
     let chunk = 100;
     for (let i = 0, j = lectures.length; i < j; i += chunk)
         await LectureDao.addLecture(lectures.slice(i, i + chunk));
-    resolve(results.data);
+
 }
 
 class DataLoader {
@@ -195,6 +195,7 @@ class DataLoader {
                 header: true,
                 complete: async results => {
                     let schedule = [];
+                    
                     for (let i = 0; i < results.data.length; i++) {
                         let data = results.data[i];
 
@@ -204,9 +205,18 @@ class DataLoader {
                             await ClassroomDao.addClassroom(classroom);
                         }
 
-                        let time = data.Time.toString().split('-');
-                        let startingTime = time[0];
-                        let endingTime = time[1];
+                        let startingTime;
+                        let endingTime;
+
+                        if(data.Time.includes('-')){
+                            let time = data.Time.toString().split('-');
+                            startingTime = time[0];
+                            endingTime = time[1];
+                        } else {
+                            let time = data.Time.toString().split(':');
+                            startingTime = time[0] + ":" + time[1];
+                            endingTime = time[2] + ":" + time[3];
+                        }
 
                         let dayOfWeek = data.Day.toLowerCase();
                         let courseId = data.Code;
@@ -223,7 +233,7 @@ class DataLoader {
                                 endingTime
                             );
                             schedule.push(s);
-                            loadLectures(s);
+                            await loadLectures(s);
                         }
 
                     }
