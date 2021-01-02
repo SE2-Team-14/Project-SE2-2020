@@ -64,6 +64,10 @@ async function getLecturesList(id) {
     return await fetchMethod("GET", `${url}/${id}/bookable-lectures`, (l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
 }
 
+async function getAllLecturesList() {
+    const url = baseURL + '/getAllLectures';
+    return await fetchMethod("GET", `${url}`, (l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
+}
 /**
  * Returns a list of Lecture objects containing all future lectures for courses the student is enrolled in
  * @param email a string containing the email of the student whose future lectures are required
@@ -94,6 +98,11 @@ async function getTeacherLecturesList(id) {
 async function updateLecture(lecture) {
     const url = baseURL;
     return fetchMethod("PUT", `${url}/lectures`, lecture);
+}
+
+async function modifyLecture(lecture) {
+    const url = baseURL;
+    return fetchMethod("PUT", `${url}/support-officer-home/lectures`, lecture);
 }
 
 /**
