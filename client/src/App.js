@@ -172,11 +172,11 @@ class App extends React.Component {
               return <>{this.state.authUser && <LoadDataView></LoadDataView>}</>
             }}></Route>
 
-            <Route exact path='/support-officer-home/:email/updateLectures' render ={(props) => {
-                return <>{this.state.authUser && <UpdateBookableLecture></UpdateBookableLecture>}</>
+            <Route exact path='/support-officer-home/:email/updateLectures' render={(props) => {
+              return <>{this.state.authUser && <UpdateBookableLecture></UpdateBookableLecture>}</>
             }}></Route>
-			
-			<Route exact path='/support-officer-home/:email/modify' render={(props) => {
+
+            <Route exact path='/support-officer-home/:email/modify' render={(props) => {
               let email = props.match.params.email;
               return <>{this.state.authUser && <ModifyLectureList email={email} id={this.state.authUser.id} courses={this.state.courses} classrooms={this.state.classrooms}></ModifyLectureList>}</>
             }}></Route>
