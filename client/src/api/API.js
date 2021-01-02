@@ -4,6 +4,8 @@ import Person from './Person';
 import Classroom from './classroom';
 import Booking from './booking';
 import WaitingList from './waiting_list';
+import Schedule from './schedule_update';
+
 const baseURL = "http://localhost:3001/api";
 
 
@@ -43,6 +45,16 @@ async function getPersonName(email) {
 async function fileLoader(fileData, fileType) {
     const url = baseURL;
     return fetchMethod("POST", `${url}/data-loader`, { fileData: fileData, fileType: fileType });
+}
+
+async function modifySchedule(courseId, dayOfWeek, schedule) {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/modifySchedule`, { courseId: courseId, dayOfWeek: dayOfWeek, schedule: schedule });
+}
+
+async function getSchedule(id) {
+    const url = baseURL + '/getSchedule';
+    return await fetchMethod("GET", url, (s) => new Schedule(s.courseId, s.classroom, s.dayOfWeek, s.numberOfSeats, s.startingTime, s.endingTime));
 }
 
 //--------------------------------------LECTURES-------------------------------------
@@ -574,6 +586,7 @@ const API = {
     getCoursesByYearAndSemester,
     updateBookableLecture,
     deleteFromWaitingList,
+    modifySchedule,
 };
 
 export default API;

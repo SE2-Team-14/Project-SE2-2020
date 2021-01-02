@@ -7,11 +7,13 @@ const Enrollment = require('../bean/enrollment');
 const Course = require('../bean/course');
 const Classroom = require('../bean/classroom');
 const Lecture = require('../bean/lecture');
+const Schedule = require('../bean/schedule');
 const PersonDao = require('../dao/person_dao');
 const EnrollmentDao = require('../dao/enrollment_dao');
 const CourseDao = require('../dao/course_dao');
 const ClassroomDao = require('../dao/classroom_dao');
 const LectureDao = require('../dao/lecture_dao');
+const ScheduleDao = require('../dao/schedule_dao');
 
 function associateDay(weekday) {
     switch (weekday) {
@@ -26,6 +28,41 @@ function associateDay(weekday) {
         case 'fri':
             return 5;
     }
+}
+
+async function loadLectures(schedule) {
+    let teacher = await CourseDao.getCourseByID(schedule.courseId);
+    const endOfSemester = moment('2021-01-16');
+    let day = associateDay(schedule.dayOfWeek.toLowerCase());
+    let date = moment().day(day);
+    let lectures = [];
+
+    while (1) {
+        if (date > endOfSemester)
+            break;
+        else {
+            if(await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime)==undefined){
+                let lecture = new Lecture(
+                    null,
+                    schedule.courseId,
+                    teacher.teacherId,
+                    date.format('DD/MM/YYYY'),
+                    schedule.startingTime,
+                    schedule.endingTime,
+                    1,
+                    schedule.classroom,
+                    0
+                )
+                lectures.push(lecture);
+            }
+        }
+        date = moment(date).add(1, 'week');
+    }
+
+    let chunk = 100;
+    for (let i = 0, j = lectures.length; i < j; i += chunk)
+        await LectureDao.addLecture(lectures.slice(i, i + chunk));
+
 }
 
 class DataLoader {
@@ -151,13 +188,14 @@ class DataLoader {
             });
         });
     }
-
+    
     async readScheduleCSV(fileData) {
         return new Promise(resolve => {
             Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
-                    let lectures = [];
+                    let schedule = [];
+                    
                     for (let i = 0; i < results.data.length; i++) {
                         let data = results.data[i];
 
@@ -167,48 +205,54 @@ class DataLoader {
                             await ClassroomDao.addClassroom(classroom);
                         }
 
-                        let time = data.Time.toString().split('-');
-                        let startingTime = time[0];
-                        let endingTime = time[1];
+                        let startingTime;
+                        let endingTime;
 
-                        let day = associateDay(data.Day.toLowerCase());
-                        const endOfSemester = moment('2021-01-16');
-                        let date = moment().day(day);
-
-                        let teacher = await CourseDao.getCourseByID(data.Code);
-
-                        while (1) {
-                            if (date > endOfSemester)
-                                break;
-                            else {
-                                if(await LectureDao.getSpecificLecture(data.Code, teacher.teacherId, date.format('DD/MM/YYYY'), startingTime, endingTime)==undefined){
-                                    let lecture = new Lecture(
-                                        null,
-                                        data.Code,
-                                        teacher.teacherId,
-                                        date.format('DD/MM/YYYY'),
-                                        startingTime,
-                                        endingTime,
-                                        1,
-                                        data.Room,
-                                        0
-                                    )
-                                    lectures.push(lecture);
-                                }
-                            }
-                            date = moment(date).add(1, 'week');
+                        if(data.Time.includes('-')){
+                            let time = data.Time.toString().split('-');
+                            startingTime = time[0];
+                            endingTime = time[1];
+                        } else {
+                            let time = data.Time.toString().split(':');
+                            startingTime = time[0] + ":" + time[1];
+                            endingTime = time[2] + ":" + time[3];
                         }
+
+                        let dayOfWeek = data.Day.toLowerCase();
+                        let courseId = data.Code;
+                        let classroom = data.Room;
+                        let numberOfSeats = data.Seats;
+
+                        if(await ScheduleDao.getScheduleByCourseId(courseId)==undefined){
+                            let s = new Schedule(
+                                courseId, 
+                                classroom, 
+                                dayOfWeek,
+                                numberOfSeats,
+                                startingTime,
+                                endingTime
+                            );
+                            schedule.push(s);
+                            await loadLectures(s);
+                        }
+
                     }
 
                     let chunk = 100;
-                    for (let i = 0, j = lectures.length; i < j; i += chunk)
-                        await LectureDao.addLecture(lectures.slice(i, i + chunk));
+                    for (let i = 0, j = schedule.length; i < j; i += chunk)
+                        await ScheduleDao.addSchedule(schedule.slice(i, i + chunk));
+
                     resolve(results.data);
                 }
             });
         });
     }
 
+    async modifySchedule(schedule){
+        await this.loadLectures(schedule);
+    }
+
 }
+
 
 module.exports = DataLoader;
