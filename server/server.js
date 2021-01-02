@@ -658,9 +658,10 @@ app.post('/api/modifySchedule', (req, res) => {
 
   lectureDao.getLectureByCourseId(courseId, dayOfWeek)
     .then((lectures) => {
-      for(let lecture in lectures)
+      for(let lecture in lectures){
         lectureDao.deleteLecture(lecture.lectureId);
-
+        bookingDao.deleteBookingByTeacher(lecture.lectureId);
+      }
       dataLoader.modifySchedule(schedule);      
     })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
