@@ -52,9 +52,14 @@ async function modifySchedule(courseId, dayOfWeek, schedule) {
     return fetchMethod("POST", `${url}/modifySchedule`, { courseId: courseId, dayOfWeek: dayOfWeek, schedule: schedule });
 }
 
-async function getSchedule(id) {
+async function getSchedule() {
     const url = baseURL + '/getSchedule';
     return await fetchMethod("GET", url, (s) => new Schedule(s.courseId, s.classroom, s.dayOfWeek, s.numberOfSeats, s.startingTime, s.endingTime));
+}
+
+async function getScheduleByCourseId(id) {
+    const url = baseURL + "/getScheduleByCourseId?id=" + id;
+    return await fetchMethod("GET", url);
 }
 
 //--------------------------------------LECTURES-------------------------------------
@@ -587,6 +592,8 @@ const API = {
     updateBookableLecture,
     deleteFromWaitingList,
     modifySchedule,
+    getSchedule,
+    getScheduleByCourseId,
 };
 
 export default API;

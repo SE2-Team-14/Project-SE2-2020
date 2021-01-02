@@ -111,14 +111,14 @@ class LoadDataView extends React.Component {
 
         {(this.state.loading == false) &&
           <>
-            <Button onClick={this.onSubmit}>Upload!</Button>
+            <Button onClick={this.onSubmit} disabled={(this.state.selectedFile === null)}>Upload!</Button>
           </>
         }
         {(this.state.loading == true) &&
           <>
             <Button disabled>
-            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>
-            {" "}Loading</Button>
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              {" "}Loading</Button>
           </>
 
         }

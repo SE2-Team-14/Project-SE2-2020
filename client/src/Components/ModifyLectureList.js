@@ -34,6 +34,7 @@ class ModifyLectureList extends React.Component {
             newClass: null,
             oldSchedule: null,
             showError: false,
+            classrooms: [],
         }
     }
 
@@ -41,22 +42,22 @@ class ModifyLectureList extends React.Component {
         API.getCoursesAndTeachers().then((courses) => {
             let newCourses = [];
             courses.map((course) => newCourses.push({ courseName: course.courseName + " - " + course.name + " " + course.surname, courseId: course.courseId }))
-            this.setState({ courses: courses, coursesNames: newCourses })
+            API.getClassrooms().then((classes) => {
+                this.setState({ courses: courses, coursesNames: newCourses, classrooms: classes })
+            })
+
         })
     }
 
     onSelectCourse = (courseId, courseName) => {
-        //API.getSchedule(courseId)
-        let schedule = [
-            {
-                courseId: courseId,
-                day: "Monday",
-                startingTime: "8:30",
-                endingTime: "11:30",
-                classroomId: 7,
-            },
-        ];
-        this.setState({ schedule: schedule, selectedCourse: courseName, courseId: courseId })
+
+        API.getScheduleByCourseId(courseId).then((schedule) => {
+            console.log(schedule);
+            this.setState({ schedule: schedule, selectedCourse: courseName, courseId: courseId })
+        })
+
+
+
     }
 
     createItem = (schedule) => {
@@ -64,7 +65,7 @@ class ModifyLectureList extends React.Component {
             <ListGroup.Item className="border mt-1">
                 <Row className="justify-content-around">
                     <Col className="text-center">
-                        {schedule.day}
+                        {schedule.dayOfWeek}
                     </Col>
                     <Col className="text-center">
                         {schedule.startingTime}
@@ -73,7 +74,7 @@ class ModifyLectureList extends React.Component {
                         {schedule.endingTime}
                     </Col>
                     <Col className="text-center">
-                        {schedule.classroomId}
+                        {schedule.classroom}
                     </Col>
                     <Col className="text-center">
                         <Button variant="success" onClick={() => this.onClickModify(schedule)}> Modify Schedule </Button>
@@ -216,11 +217,11 @@ class ModifyLectureList extends React.Component {
                                         <Form.Group controlId="formNewDate">
                                             <Form.Label> Choose New Day of Lecture</Form.Label>
                                             <Form.Control as="select" required onChange={(event) => this.onChangeDay(event)} defaultValue={this.state.newDay}>
-                                                <option>Monday</option>
-                                                <option>Tuesday</option>
-                                                <option>Wednesday</option>
-                                                <option>Thursday</option>
-                                                <option>Friday</option>
+                                                <option>Mon</option>
+                                                <option>Tue</option>
+                                                <option>Wed</option>
+                                                <option>Thu</option>
+                                                <option>Fri</option>
                                             </Form.Control>
                                         </Form.Group>
                                         <Form.Group controlId="formNewStart">

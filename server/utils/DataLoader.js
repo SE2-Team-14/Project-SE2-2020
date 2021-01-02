@@ -41,7 +41,7 @@ async function loadLectures(schedule) {
         if (date > endOfSemester)
             break;
         else {
-            if(await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime)==undefined){
+            if (await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime) == undefined) {
                 let lecture = new Lecture(
                     null,
                     schedule.courseId,
@@ -75,8 +75,8 @@ class DataLoader {
                     let students = [];
                     for (let i = 0; i < results.data.length; i++) {
                         let dataStudent = results.data[i];
-                        
-                        if(await PersonDao.getPersonByID(dataStudent.Id)==undefined){
+
+                        if (await PersonDao.getPersonByID(dataStudent.Id) == undefined) {
                             let student = new Person(
                                 dataStudent.Id,
                                 dataStudent.Name,
@@ -109,7 +109,7 @@ class DataLoader {
                     for (let i = 0; i < results.data.length; i++) {
                         let dataTeacher = results.data[i];
 
-                        if(await PersonDao.getPersonByID(dataTeacher.Number)==undefined){
+                        if (await PersonDao.getPersonByID(dataTeacher.Number) == undefined) {
                             let teacher = new Person(
                                 dataTeacher.Number,
                                 dataTeacher.GivenName,
@@ -142,7 +142,7 @@ class DataLoader {
                     for (let i = 0; i < results.data.length; i++) {
                         let dataEnrollment = results.data[i];
 
-                        if(await EnrollmentDao.getEnrollmentById(dataEnrollment.Code, dataEnrollment.Student)==undefined){
+                        if (await EnrollmentDao.getEnrollmentById(dataEnrollment.Code, dataEnrollment.Student) == undefined) {
                             let enrollment = new Enrollment(
                                 dataEnrollment.Code,
                                 dataEnrollment.Student
@@ -168,7 +168,7 @@ class DataLoader {
                     for (let i = 0; i < results.data.length; i++) {
                         let dataCourse = results.data[i];
 
-                        if(await CourseDao.getCourseByID(dataCourse.Code)==undefined){
+                        if (await CourseDao.getCourseByID(dataCourse.Code) == undefined) {
                             let course = new Course(
                                 dataCourse.Code,
                                 dataCourse.Teacher,
@@ -188,14 +188,13 @@ class DataLoader {
             });
         });
     }
-    
+
     async readScheduleCSV(fileData) {
         return new Promise(resolve => {
             Papa.parse(fileData, {
                 header: true,
                 complete: async results => {
                     let schedule = [];
-                    
                     for (let i = 0; i < results.data.length; i++) {
                         let data = results.data[i];
 
@@ -208,7 +207,7 @@ class DataLoader {
                         let startingTime;
                         let endingTime;
 
-                        if(data.Time.includes('-')){
+                        if (data.Time.includes('-')) {
                             let time = data.Time.toString().split('-');
                             startingTime = time[0];
                             endingTime = time[1];
@@ -223,15 +222,17 @@ class DataLoader {
                         let classroom = data.Room;
                         let numberOfSeats = data.Seats;
 
-                        if(await ScheduleDao.getScheduleByCourseId(courseId)==undefined){
+                        let v = await ScheduleDao.getScheduleByCourseId(courseId);
+                        if (v.length == 0) {
                             let s = new Schedule(
-                                courseId, 
-                                classroom, 
+                                courseId,
+                                classroom,
                                 dayOfWeek,
                                 numberOfSeats,
                                 startingTime,
                                 endingTime
                             );
+
                             schedule.push(s);
                             await loadLectures(s);
                         }
@@ -248,9 +249,9 @@ class DataLoader {
         });
     }
 
-    async modifySchedule(schedule){
+    /*async modifySchedule(schedule){
         await this.loadLectures(schedule);
-    }
+    }*/
 
 }
 

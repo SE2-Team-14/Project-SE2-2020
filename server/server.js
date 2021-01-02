@@ -411,7 +411,7 @@ app.put('/api/support-officer-home/lectures', (req, res) => {
             const recipient = student.email;
             const message = `Dear ${student.name},\n` +
               `the lecture for the course ${item.name} of ${item.date} at ${item.startingTime} has been modified.`;
-  
+
             emailSender.sendEmail(recipient, subject, message);
           })
         }
@@ -658,11 +658,11 @@ app.post('/api/modifySchedule', (req, res) => {
 
   lectureDao.getLectureByCourseId(courseId, dayOfWeek)
     .then((lectures) => {
-      for(let lecture in lectures){
+      for (let lecture in lectures) {
         lectureDao.deleteLecture(lecture.lectureId);
         bookingDao.deleteBookingByTeacher(lecture.lectureId);
       }
-      dataLoader.modifySchedule(schedule);      
+      dataLoader.modifySchedule(schedule);
     })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
@@ -674,8 +674,24 @@ app.post('/api/modifySchedule', (req, res) => {
  * Response Body Content:
  */
 app.get('/api/getSchedule', (req, res) => {
-  ScheduleDao.getSchedule().then((schedule) => res.json(schedule))
+  ScheduleDao.getSchedule().then((schedule) => {
+    if (schedule !== undefined) {
+      res.json(schedule)
+    } else {
+      res.json([])
+    }
+  })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+app.get("/api/getScheduleByCourseId", (req, res) => {
+  ScheduleDao.getScheduleByCourseId(req.query.id).then((schedule) => {
+    if (schedule !== undefined) {
+      res.json(schedule)
+    } else {
+      res.json([]);
+    }
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
 
@@ -743,7 +759,7 @@ app.get("/api/getAllCourses", (req, res) => {
 app.get("/api/getAllLectures", (req, res) => {
   lectureDao.getAllLecturesList().then((lectures) => {
     res.json(lectures)
-  }).catch((err) => res.status(500).json({ errors: [{ msg: err }]}));
+  }).catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 })
 
 /**
