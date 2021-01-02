@@ -59,7 +59,7 @@ class UpdateBookableLecture extends React.Component {
         if(this.state.selectedYears.length == 0)
             this.setState({showModalError : true});
         else
-        API.getCoursesByYearAndSemester(this.state.selectedYears, this.state.selectedSemester).then((courses) => this.setState({courses: courses}, () => this.setState({showmodalConfirm: true})));
+            API.getCoursesByYearAndSemester(this.state.selectedYears, this.state.selectedSemester).then((courses) => this.setState({courses: courses}, () => this.setState({showmodalConfirm: true})));
     }
 
     confirmSelection = () => {

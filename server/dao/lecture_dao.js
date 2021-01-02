@@ -84,7 +84,7 @@ exports.getAllLecturesList = function () {
         const sql = "SELECT * FROM LECTURE";
         db.all(sql, (err, rows) => {
             if (err)
-            reject(err);
+                reject(err);
             else {
                 if (rows) {
                 let today = moment().subtract(1, 'days');
