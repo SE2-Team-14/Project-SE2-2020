@@ -31,7 +31,7 @@ const Header = (props) => {
           {(context.authUser != null && context.authUser.role === "Teacher") && <Navbar.Brand as={NavLink} to={`/teacher-home/${context.authUser.email}`}>
             PULSeBS
           </Navbar.Brand>}
-          {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Navbar.Brand as={NavLink} to={`/support-officer-home/${context.authUser.email}`}>
+          {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Navbar.Brand as={NavLink} to={`/support-officer-home/${context.authUser.email}/loader`}>
             PULSeBS
           </Navbar.Brand>}
           {(context.authUser != null && context.authUser.role === "Manager") && <Navbar.Brand as={NavLink} to={`/manager-home/${context.authUser.email}`}>

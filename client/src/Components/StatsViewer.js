@@ -305,7 +305,7 @@ class StatsViewer extends React.Component {
                                 {(this.props.role === "Manager") && <Col md="auto">
                                     <Button variant="outline-info" active={this.state.mode === "cancelledLectures"} onClick={() => this.chooseMode("cancelledLectures")} > View Cancelled Lectures of all Courses </Button>
                                 </Col>}
-                                {(!this.state.noBookings) && <Col md="auto">
+                                {(!this.state.noAttendance) && <Col md="auto">
                                     <Button variant="outline-info" active={this.state.mode === "totalAttendance"} onClick={() => this.chooseMode("totalAttendance")}> View Total Attendance of All Courses</Button>
                                 </Col>}
                             </Row>
