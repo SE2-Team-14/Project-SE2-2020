@@ -378,7 +378,7 @@ exports.getTotalAttendance = function () {
             if (err)
                 reject(err);
             else {
-                if (rows.length > 0) {
+                if (rows) {
                     resolve(rows);
                 }
                 else
