@@ -248,6 +248,11 @@ class DataLoader {
         });
     }
 
+    async modifySchedule(schedule){
+        await this.loadLectures(schedule);
+    }
+
 }
+
 
 module.exports = DataLoader;

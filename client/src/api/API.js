@@ -45,6 +45,11 @@ async function fileLoader(fileData, fileType) {
     return fetchMethod("POST", `${url}/data-loader`, { fileData: fileData, fileType: fileType });
 }
 
+async function modifySchedule(courseId, dayOfWeek, schedule) {
+    const url = baseURL;
+    return fetchMethod("POST", `${url}/modifySchedule`, { courseId: courseId, dayOfWeek: dayOfWeek, schedule: schedule });
+}
+
 //--------------------------------------LECTURES-------------------------------------
 /**
  * Returns a Lecture object with the identifier equal to the one in input
@@ -574,6 +579,7 @@ const API = {
     getCoursesByYearAndSemester,
     updateBookableLecture,
     deleteFromWaitingList,
+    modifySchedule,
 };
 
 export default API;

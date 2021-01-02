@@ -79,6 +79,28 @@ exports.getLectureById = function (lectureId) {
     });
 }
 
+/**
+ * Returns a Lecture object
+ * @param courseId an integer corresponding to the identifier of the course to be retrieved
+ */
+exports.getLectureByCourseId = function (courseId, dayOfWeek) {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM LECTURE WHERE courseId = ?";
+        db.get(sql, [courseId], (err, row) => {
+            if (err)
+                reject(err);
+            else {
+                if(row){
+                    let lecture = createLecture(row);
+                    if(moment(lecture.date).format('ddd')==dayOfWeek)
+                        resolve(lecture);
+                } else
+                    resolve(undefined);
+            }
+        });
+    });
+}
+
 exports.getAllLecturesList = function () {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM LECTURE";

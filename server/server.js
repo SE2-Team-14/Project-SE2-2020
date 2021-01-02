@@ -11,12 +11,10 @@ const lectureDao = require('./dao/lecture_dao');
 const personDao = require('./dao/person_dao')
 const courseDao = require("./dao/course_dao");
 const contactTracingDao = require("./dao/contact_tracing_dao");
-const enrollmentDao = require("./dao/enrollment_dao");
 const classroomDao = require('./dao/classroom_dao');
 const bookingDao = require('./dao/booking_dao');
 const cancelledLectureDao = require('./dao/cancelled_lectures_dao');
 const waitingListDao = require('./dao/waiting_list_dao');
-const Booking = require('./bean/booking');
 const EmailSender = require('./utils/EmailSender');
 const setMidnightTimer = require("./utils/midnightTimer");
 const moment = require('moment');
@@ -24,7 +22,6 @@ const CancelledLectures = require('./bean/cancelled_lectures');
 const CancelledBooking = require('./bean/cancelled_bookings');
 const cancelledBookingsDao = require("./dao/cancelled_bookings_dao");
 const DataLoader = require('./utils/DataLoader');
-const Lecture = require('./bean/lecture');
 
 // Authorization error
 const authErrorObj = { errors: [{ 'param': 'Server', 'msg': 'Authorization error' }] };
@@ -645,6 +642,28 @@ app.post('/api/data-loader', (req, res) => {
   }
 
 });
+
+/**
+ * GET POST
+ * Request Parameters: 
+ * Request Body Content: none
+ * Response Body Content: 
+ */
+app.post('/api/modifySchedule', (req, res) => {
+  let courseId = req.query.courseId;
+  let dayOfWeek = req.query.dayOfWeek;
+  let schedule = req.query.schedule;
+  const dataLoader = new DataLoader();
+
+  lectureDao.getLectureByCourseId(courseId, dayOfWeek)
+    .then((lectures) => {
+      for(let lecture in lectures)
+        lectureDao.deleteLecture(lecture.lectureId);
+
+      dataLoader.modifySchedule(schedule);      
+    })
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
 
 //-----------------------------------WAITING LIST------------------------------------
 
