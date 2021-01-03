@@ -73,9 +73,9 @@ exports.modifySchedule = function (schedule, courseId, dayOfWeek, oldStart) {
                 reject(err)
             } else {
                 let sqlIns = "INSERT INTO SCHEDULE (courseId, classroom, dayOfWeek, numberOfSeats, startingTime, endingTime) VALUES (?, ?, ?, ?, ?, ?)";
-                db.run(sqlIns, [schedule.courseId, schedule.classroom, schedule.dayOfWeek, schedule.numberOfSeats, schedule.startingTime, schedule.endingTime], (err, row) => {
-                    if (err) {
-                        reject(err)
+                db.run(sqlIns, [schedule.courseId, schedule.classroom, schedule.dayOfWeek, schedule.numberOfSeats, schedule.startingTime, schedule.endingTime], (errIns, rowIns) => {
+                    if (errIns) {
+                        reject(errIns)
                     } else {
                         resolve(1);
                     }

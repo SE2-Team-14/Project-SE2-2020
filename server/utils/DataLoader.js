@@ -200,8 +200,8 @@ class DataLoader {
 
                         let c = await ClassroomDao.getClassroom(data.Room);
                         if (c === undefined) {
-                            let classroom = new Classroom(data.Room, data.Seats);
-                            await ClassroomDao.addClassroom(classroom);
+                            let newClassroom = new Classroom(data.Room, data.Seats);
+                            await ClassroomDao.addClassroom(newClassroom);
                         }
 
                         let startingTime;
