@@ -80,20 +80,27 @@ exports.getLectureById = function (lectureId) {
 }
 
 /**
- * Returns a Lecture object
- * @param courseId an integer corresponding to the identifier of the course to be retrieved
+ * Returns an array of Lecture objects, each object being a future lecture taking place in the specified day
+ * @param courseId a string containing the identifier of the course to be retrieved
+ * @param dayOfWeek a string containing the day where future lectures to get will take place
  */
 exports.getLectureByCourseId = function (courseId, dayOfWeek) {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM LECTURE WHERE courseId = ?";
-        db.get(sql, [courseId], (err, row) => {
+        db.all(sql, [courseId], (err, rows) => {
             if (err)
                 reject(err);
             else {
-                if(row){
-                    let lecture = createLecture(row);
-                    if(moment(lecture.date).format('ddd')==dayOfWeek)
-                        resolve(lecture);
+                if (rows) {
+                    let lectures = [];
+                    let res = [];
+                    rows.map((row) => lectures.push(createLecture(row)));
+                    for (let l of lectures) {
+                        if (moment(l.date, "DD/MM/YYYY").format('ddd').toLowerCase() == dayOfWeek && moment(l.date, "DD/MM/YYYY").isAfter(moment())) {
+                            res.push(l);
+                        }
+                    }
+                    resolve(res)
                 } else
                     resolve(undefined);
             }
@@ -109,25 +116,25 @@ exports.getAllLecturesList = function () {
                 reject(err);
             else {
                 if (rows) {
-                let today = moment().subtract(1, 'days');
-                let newRow = [];
-                for (let i = 0; i < rows.length; i++) {
-                    let date = moment(rows[i]["date"], "DD/MM/YYYY")
-                    if (today.isBefore(date)) {
-                        newRow.push(rows[i])
+                    let today = moment().subtract(1, 'days');
+                    let newRow = [];
+                    for (let i = 0; i < rows.length; i++) {
+                        let date = moment(rows[i]["date"], "DD/MM/YYYY")
+                        if (today.isBefore(date)) {
+                            newRow.push(rows[i])
+                        }
                     }
+                    newRow.sort((a, b) => {
+                        if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
+                            return 1;
+                        else
+                            return -1;
+                    });
+                    resolve(newRow);
                 }
-                newRow.sort((a, b) => {
-                    if (moment(a.date + ":" + a.startingTime, "DD/MM/YYYY:HH:mm").isAfter(moment(b.date + ":" + b.startingTime, "DD/MM/YYYY:HH:mm")))
-                        return 1;
-                    else
-                        return -1;
-                });
-                resolve(newRow);
+                else
+                    resolve(undefined);
             }
-            else
-                resolve(undefined);
-        }
         })
     })
 }

@@ -65,3 +65,22 @@ exports.getSchedule = function () {
     });
 }
 
+exports.modifySchedule = function (schedule, courseId, dayOfWeek, oldStart) {
+    return new Promise((resolve, reject) => {
+        let sqlDel = "DELETE FROM SCHEDULE WHERE courseId = ? AND dayOfWeek = ? AND startingTime = ?";
+        db.run(sqlDel, [courseId, dayOfWeek, oldStart], (err, row) => {
+            if (err) {
+                reject(err)
+            } else {
+                let sqlIns = "INSERT INTO SCHEDULE (courseId, classroom, dayOfWeek, numberOfSeats, startingTime, endingTime) VALUES (?, ?, ?, ?, ?, ?)";
+                db.run(sqlIns, [schedule.courseId, schedule.classroom, schedule.dayOfWeek, schedule.numberOfSeats, schedule.startingTime, schedule.endingTime], (err, row) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(1);
+                    }
+                })
+            }
+        })
+    })
+}

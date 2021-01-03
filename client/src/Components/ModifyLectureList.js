@@ -23,7 +23,8 @@ class ModifyLectureList extends React.Component {
         this.state = {
             courses: [],
             coursesNames: [],
-            schedule: [],
+            schedules: [],
+            tempSchedules: [],
             selectedCourse: null,
             courseId: null,
             showModal: false,
@@ -51,9 +52,8 @@ class ModifyLectureList extends React.Component {
 
     onSelectCourse = (courseId, courseName) => {
 
-        API.getScheduleByCourseId(courseId).then((schedule) => {
-            console.log(schedule);
-            this.setState({ schedule: schedule, selectedCourse: courseName, courseId: courseId })
+        API.getScheduleByCourseId(courseId).then((schedules) => {
+            this.setState({ schedules: schedules, selectedCourse: courseName, courseId: courseId })
         })
 
 
@@ -85,9 +85,14 @@ class ModifyLectureList extends React.Component {
     }
 
     onClickModify = (schedule) => {
-        let schedules = this.state.schedule;
-        schedules.filter((sch) => sch !== schedule);
-        this.setState({ showModal: true, newDay: schedule.day, newClass: schedule.classroomId, oldSchedule: schedule, schedule: schedules })
+        let schedules = this.state.schedules;
+        let sch = [];
+        for (let i = 0; i < schedules.length; i++) {
+            if (schedules[i] !== schedule) {
+                sch.push(schedules[i]);
+            }
+        }
+        this.setState({ showModal: true, newDay: schedule.dayOfWeek, newClass: schedule.classroom, oldSchedule: schedule, tempSchedules: sch })
     }
 
     onClickClose = () => {
@@ -103,11 +108,11 @@ class ModifyLectureList extends React.Component {
             let newLength = this.state.newLength === "1.5 hours" ? 90 : 180;
             let newClass = this.state.newClass;
             let error = false;
-            for (let s of this.state.schedule) {
-                if (s.day === newDay) {
-                    if (s.startingTime === newStart) {
-                        error = true;
-                    } else if (moment(newStart, "HH:mm").add(newLength, "minutes").format("HH:mm") > s.startingTime) {
+            let newSeats = 0;
+            for (let s of this.state.tempSchedules) {
+
+                if (s.dayOfWeek === newDay) {
+                    if ((s.startingTime === newStart) || (moment(newStart, "HH:mm").add(newLength, "minutes").format("HH:mm") > s.startingTime)) {
                         error = true;
                     }
                 }
@@ -115,19 +120,26 @@ class ModifyLectureList extends React.Component {
             if (error) {
                 this.setState({ showError: true })
             } else {
+                for (let i = 0; i < this.state.classrooms.length; i++) {
+                    if (this.state.classrooms[i].classroom === newClass) {
+                        newSeats = this.state.classrooms[i].maxNumberOfSeats;
+                    }
+                }
                 let newSchedule = {
                     courseId: this.state.courseId,
-                    day: newDay,
+                    dayOfWeek: newDay,
                     startingTime: newStart,
                     endingTime: moment(newStart, "HH:mm").add(newLength, "minutes").format("HH:mm"),
-                    classroomId: newClass,
+                    classroom: newClass,
+                    numberOfSeats: newSeats,
                 };
-                let schedules = this.state.schedule;
-                //API.updateSchedules(schedules)
-
+                let schedules = this.state.tempSchedules;
+                schedules.push(newSchedule);
+                API.modifySchedule(newSchedule.courseId, this.state.oldSchedule.dayOfWeek, newSchedule, this.state.oldSchedule.startingTime).then(() => {
+                    this.setState({ schedules: schedules, showModal: false })
+                })
             }
         } else {
-
             form.reportValidity();
         }
     }
@@ -182,8 +194,8 @@ class ModifyLectureList extends React.Component {
                             <Row className="h-75 d-inline-block">{""}</Row>
                             <Row className="justify-content-md-center">
                                 <Col md="auto">
-                                    {(this.state.selectedCourse !== null && this.state.schedule.length === 0) && <h4> There isn't a schedule available for the course {this.state.selectedCourse}</h4>}
-                                    {(this.state.selectedCourse !== null && this.state.schedule.length > 0) && <ListGroup>
+                                    {(this.state.selectedCourse !== null && this.state.schedules.length === 0) && <h4> There isn't a schedule available for the course {this.state.selectedCourse}</h4>}
+                                    {(this.state.selectedCourse !== null && this.state.schedules.length > 0) && <ListGroup>
                                         <Row className="justify-content-around">
                                             <h4> Schedule defined for the course {this.state.selectedCourse}</h4>
                                         </Row>
@@ -204,7 +216,7 @@ class ModifyLectureList extends React.Component {
                                                 <Col className="text-center"></Col>
                                             </Row>
                                         </ListGroup.Item>
-                                        {this.state.schedule.map((sch) => this.createItem(sch))}
+                                        {this.state.schedules.map((sch) => this.createItem(sch))}
                                     </ListGroup>}
                                 </Col>
                             </Row>
@@ -217,11 +229,11 @@ class ModifyLectureList extends React.Component {
                                         <Form.Group controlId="formNewDate">
                                             <Form.Label> Choose New Day of Lecture</Form.Label>
                                             <Form.Control as="select" required onChange={(event) => this.onChangeDay(event)} defaultValue={this.state.newDay}>
-                                                <option>Mon</option>
-                                                <option>Tue</option>
-                                                <option>Wed</option>
-                                                <option>Thu</option>
-                                                <option>Fri</option>
+                                                <option>mon</option>
+                                                <option>tue</option>
+                                                <option>wed</option>
+                                                <option>thu</option>
+                                                <option>fri</option>
                                             </Form.Control>
                                         </Form.Group>
                                         <Form.Group controlId="formNewStart">
@@ -238,7 +250,7 @@ class ModifyLectureList extends React.Component {
                                         <Form.Group controlId="formNewClassroom">
                                             <Form.Label> Choose New Classroom of Lecture</Form.Label>
                                             <Form.Control as="select" required defaultValue={this.state.newClass} onChange={(event) => this.onChangeClass(event)}>
-                                                {[1, 2, 3, 4, 5, 6, 7].map((i) => <option>{i}</option>)}
+                                                {this.state.classrooms.map((i) => <option>{i.classroom}</option>)}
                                             </Form.Control>
                                         </Form.Group>
                                         <Button variant="success" type="submit"> Submit Modifications</Button>

@@ -649,21 +649,27 @@ app.post('/api/data-loader', (req, res) => {
  * Request Parameters: 
  * Request Body Content: none
  * Response Body Content: 
+ * 
+ * INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats)
+VALUES(5, 'XY1211', 'd9000', '04/11/2021', '8:30', '11:30', 1, 1, 0)
+INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats)
+VALUES(6, 'XY1211', 'd9000', '11/11/2021', '8:30', '11:30', 1, 1, 0)
  */
 app.post('/api/modifySchedule', (req, res) => {
-  let courseId = req.query.courseId;
-  let dayOfWeek = req.query.dayOfWeek;
-  let schedule = req.query.schedule;
+  let courseId = req.body.courseId;
+  let dayOfWeek = req.body.dayOfWeek;
+  let schedule = req.body.schedule;
+  let oldStart = req.body.oldStart;
   const dataLoader = new DataLoader();
 
   lectureDao.getLectureByCourseId(courseId, dayOfWeek)
     .then((lectures) => {
-      for (let lecture in lectures) {
+      for (let lecture of lectures) {
         lectureDao.deleteLecture(lecture.lectureId);
         bookingDao.deleteBookingByTeacher(lecture.lectureId);
       }
-      dataLoader.modifySchedule(schedule);
-    })
+      dataLoader.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
+    }).then(res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 

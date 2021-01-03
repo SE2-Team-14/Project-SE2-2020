@@ -249,9 +249,13 @@ class DataLoader {
         });
     }
 
-    /*async modifySchedule(schedule){
-        await this.loadLectures(schedule);
-    }*/
+    async modifySchedule(schedule, courseId, dayOfWeek, oldStart) {
+        await loadLectures(schedule);
+
+        await ScheduleDao.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
+
+        return (schedule)
+    }
 
 }
 

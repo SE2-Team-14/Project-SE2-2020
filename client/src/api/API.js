@@ -47,9 +47,9 @@ async function fileLoader(fileData, fileType) {
     return fetchMethod("POST", `${url}/data-loader`, { fileData: fileData, fileType: fileType });
 }
 
-async function modifySchedule(courseId, dayOfWeek, schedule) {
+async function modifySchedule(courseId, dayOfWeek, schedule, oldStart) {
     const url = baseURL;
-    return fetchMethod("POST", `${url}/modifySchedule`, { courseId: courseId, dayOfWeek: dayOfWeek, schedule: schedule });
+    return fetchMethod("POST", `${url}/modifySchedule`, { courseId: courseId, dayOfWeek: dayOfWeek, schedule: schedule, oldStart: oldStart });
 }
 
 async function getSchedule() {
