@@ -398,13 +398,13 @@ exports.getCurrentLecture = function (teacherId) {
         let today = moment().format("DD/MM/YYYY");
         let hour = moment().format("HH:mm");
 
-        const sql = "SELECT * FROM LECTURE WHERE teacherId = ? AND date = ? AND startingTime < ? AND endingTime > ?";
-        db.get(sql, [teacherId, today, hour, hour], (err, row) => {
+        const sql = "SELECT * FROM LECTURE WHERE teacherId = ? AND date = ? AND startingTime < ?";
+        db.all(sql, [teacherId, today, hour], (err, rows) => {
             if (err) {
                 reject(err)
             } else {
-                if (row) {
-                    resolve(row)
+                if (rows) {
+                    resolve(rows.map((row) => createLecture(row)))
                 }
                 else {
                     resolve(0)
