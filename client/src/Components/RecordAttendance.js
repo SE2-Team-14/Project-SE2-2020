@@ -30,11 +30,9 @@ class RecordAttendance extends React.Component {
         API.getCurrentLecture(this.props.id).then((lecture) => {
             let lectureToday = true;
             let today = moment().format("DD/MM/YYYY");
-            if (lecture === 0) {
-                lectureToday = false;
+            if (lecture.length === 0) {
                 this.setState({ today: today })
             } else {
-                console.log(lecture)
                 let lectureComps = [];
                 for (let l of lecture) {
                     lectureComps.push(<LectureAttendance lecture={l}></LectureAttendance>)

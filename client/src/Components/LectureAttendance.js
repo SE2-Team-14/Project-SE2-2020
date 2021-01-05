@@ -106,11 +106,19 @@ class LectureAttendance extends React.Component {
                         this.state.bookedStudents.map((b) => this.TableItem(b))
                     }
                 </ListGroup>}
-                {(this.state.bookedStudents.length === 0) && <Row className="justify-content-md-center">
-                    <Col md="auto">
-                        <h4> There are no booked students for the lesson taking place now, so it's not possible to record attendance.</h4>
-                    </Col>
-                </Row>}
+                {(this.state.bookedStudents.length === 0) &&
+                    <>
+                        <Row className="justify-content-md-center">
+                            <Col md="auto">
+                                <h4> There are no booked students for the lesson taking place today at {this.props.lecture.startingTime} - {this.props.lecture.endingTime} for the course:</h4>
+                            </Col>
+                        </Row>
+                        <Row className="justify-content-md-center">
+                            <Col md="auto">
+                                <h4> {this.state.courseName}, so it's not possible to record attendance.</h4>
+                            </Col>
+                        </Row>
+                    </>}
             </>
         );
     }
