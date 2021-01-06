@@ -13,6 +13,7 @@ const Booking = require('../bean/booking');
 const CancelledBooking = require('../bean/cancelled_bookings');
 const CancelledLecture = require('../bean/cancelled_lectures');
 const WaitingList = require('../bean/waiting_list');
+const Schedule = require('../bean/schedule');
 const PersonDao = require('../dao/person_dao');
 const CourseDao = require('../dao/course_dao');
 const LectureDao = require('../dao/lecture_dao');
@@ -960,13 +961,13 @@ describe('Server side unit test', function () {
         let testLecture = new Lecture(28, "c28", "testTeacher28", "28/11/2028", "12:00", "13:00", "1", "28", 28);
         let arrayLecture = [];
         arrayLecture.push(testLecture);
-        LectureDao.addLecture(arrayLecture);
+        await LectureDao.addLecture(arrayLecture);
         let testCourse = new Course("c28", "testCourse28", "courseName28", "year28", "sem28");
         let arrayCourse = [];
         arrayCourse.push(testCourse);
-        CourseDao.createCourse(arrayCourse);
+        await CourseDao.createCourse(arrayCourse);
         let testBooking = new Booking("s28", 28, "27/11/2020", "12:00", "November", "23/11/2020-29/11/2020");
-        BookingDao.addBoocking(testBooking);
+        await BookingDao.addBoocking(testBooking);
         return await BookingDao.getBookedStudentsByCourseName("courseName28").then((b) => {
           assert.strictEqual(b[0].studentId, testBooking.studentId)
         });
@@ -1420,6 +1421,26 @@ describe('Server side unit test', function () {
     });
   });
 
+  describe('Test scheduleDao', function () {
+    describe('#Get all the schedules ', function () {
+      it('Add a new schedule and get all schedules', async function () {
+        let arraySchedule = [];
+        let testSchedule1 = new Schedule("c1", "10", "mon", 14, "12:00", "13:00");
+        let testSchedule2 = new Schedule("c1", "10", "tue", 14, "12:00", "13:00");
+        arraySchedule.push(testSchedule1);
+        arraySchedule.push(testSchedule2);
+        await ScheduleDao.addSchedule(arraySchedule);
+        return await ScheduleDao.getSchedule().then((s) => assert.strictEqual(s[0].dayOfWeek, testSchedule1.dayOfWeek));
+      });
+    });
+
+    describe('#Get the schedule of a course ', function () {
+      it('Get the scheduel of a course', async function () {
+        return await ScheduleDao.getScheduleByCourseId("c1").then((s) => assert.strictEqual(s[0].dayOfWeek, "mon"));
+      });
+    });
+  });
+
 
   //----------------------------------------- Data loader tests -----------------------------------------//
   describe('Data loader, test', function () {
@@ -1467,7 +1488,7 @@ describe('Server side unit test', function () {
     describe('#Load schedule into the system', async function () {
       const schedule = scheduleHeader + 
         'XYNNN,112,Mon,1,8:30-11:00' +
-        'XYNNM,113,Tue,1,8:30-11:00' +
+        'XYNNM,113,Tue,1,8:30:11:00' +
         'XYNNO,114,Wed,1,8:30-11:00' +
         'XYNNP,115,Thu,1,8:30-11:00' +
         'XYNNQ,116,Fri,1,8:30-11:00';
@@ -1498,6 +1519,15 @@ describe('Server side unit test', function () {
           pass = true;
 
         return assert.strictEqual(pass, true);
+      });
+    });
+
+    describe('#Modify a schedule', async function () {
+      let schedule = new Schedule('XYNNN', '112', 'Mon', 12, '8:30', '11:00');
+
+      await dataLoader.modifySchedule(schedule,'XYNNN', 'Fri', '8:30');
+      it('Modify a schedule', async function () {
+        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'fri'));
       });
     });
 

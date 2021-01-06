@@ -26,7 +26,7 @@ exports.addSchedule = function (schedule) {
                 reject(err);
 
             else
-                resolve(this.lastID);
+                resolve(undefined);
         });
     });
 }
@@ -51,12 +51,12 @@ exports.getScheduleByCourseId = function (courseId) {
 exports.getSchedule = function () {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM SCHEDULE";
-        db.all(sql, [], (err, row) => {
+        db.all(sql, [], (err, rows) => {
             if (err) {
                 reject(err);
             } else {
-                if (row) {
-                    resolve(createSchedule(row));
+                if (rows) {
+                    resolve(rows.map((row) => createSchedule(row)));
                 } else {
                     resolve(undefined);
                 }
