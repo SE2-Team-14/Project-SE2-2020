@@ -25,6 +25,7 @@ const EmailSender = require('../utils/EmailSender');
 const WaitingListDao = require('../dao/waiting_list_dao');
 const ContactTracingDao = require('../dao/contact_tracing_dao');
 const DataLoader = require('../utils/DataLoader');
+const ScheduleDao = require('../dao/schedule_dao');
 
 const moment = require('moment');
 const chai = require('chai');
@@ -1463,7 +1464,19 @@ describe('Server side unit test', function () {
       });
     });
 
-   
+    describe('#Load schedule into the system', async function () {
+      const schedule = scheduleHeader + 
+        'XYNNN,112,Mon,1,8:30-11:00' +
+        'XYNNM,113,Tue,1,8:30-11:00' +
+        'XYNNO,114,Wed,1,8:30-11:00' +
+        'XYNNP,115,Thu,1,8:30-11:00' +
+        'XYNNQ,116,Fri,1,8:30-11:00';
+
+      await dataLoader.readScheduleCSV(schedule);
+      it('Load a schedule', async function () {
+        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'mon'));
+      });
+    });
 
     describe('#Test getCoursesByYear', async function () {
       it('Get courses of 3 and 5 year', async function () {
