@@ -12,7 +12,7 @@ const moment = require("moment")
  * @param row an Object corresponding to one tuple obtained from a query on the BOOKING table
  */
 function createBooking(row) {
-    return new Booking(row.studentId, row.lectureId, row.date, row.startingTime);
+    return new Booking(row.studentId, row.lectureId, row.date, row.startingTime, row.present);
 }
 
 /** Saves the booking made by a student for a given lecture. Calculates the date in which the booking is made and saves it in the database with the received information, together with also the month in which the booking is made and the week, expressed as an interval of two dates with format DD/MM/YYYY, Monday to Sunday 

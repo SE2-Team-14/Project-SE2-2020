@@ -9,14 +9,14 @@
  * @param week a string containing the week in which the booking has been made, expressed as an interval of two dates in format DD/MM/YYYY, Monday to Sunday
  */
 class Booking {
-    constructor(studentId, lectureId, date, startingTime, month, week) {
+    constructor(studentId, lectureId, date, startingTime, month, week, present) {
         this.studentId = studentId;
         this.lectureId = lectureId;
         this.date = date;
         this.startingTime = startingTime;
         this.month = month;
         this.week = week;
-
+        this.present = present;
     }
 }
 

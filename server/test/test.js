@@ -844,8 +844,8 @@ describe('Server side unit test', function () {
         let arrayLecture = [];
         arrayLecture.push(lecture);
         arrayLecture.push(lecture1);
-        PersonDao.createPerson(arrayTeacher);
-        LectureDao.addLecture(arrayLecture);
+        await PersonDao.createPerson(arrayTeacher);
+        await LectureDao.addLecture(arrayLecture);
         return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].lectureId, 21))
       });
     });
@@ -1058,8 +1058,9 @@ describe('Server side unit test', function () {
           let arrayCourse = [];
           arrayCourse.push(testCourse);
           await CourseDao.createCourse(arrayCourse);
-          let testBooking = new Booking("s48", 48, "16/12/2020", "12:00");
+          let testBooking = new Booking("s48", 48, "16/12/2020", "12:00", 1);
           await BookingDao.addBoocking(testBooking);
+          await BookingDao.recordAttendance(testBooking);
           return await BookingDao.getStatistics(null, "attendance", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testLecture.date);
           })
@@ -1462,17 +1463,7 @@ describe('Server side unit test', function () {
       });
     });
 
-    describe('#Load a date schedule into the system', function () {
-      const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20\n"
-        + "c8000,12,Tue,16,10:20-11:30\n"
-        + "c8000,12,Wed,16,10:30-11:40\n"
-        + "c8000,12,Thu,16,10:40-11:50\n"
-        + "c8000,12,Fri,16,10:50-12:00";
-      dataLoader.readScheduleCSV(schedule);
-      it('Load a schedule', async function () {
-        return await LectureDao.getWeekTeacherLectureList("d8000").then((l) => assert.strictEqual(l[0].startingTime, "10:10"));
-      });
-    });
+   
 
     describe('#Test getCoursesByYear', async function () {
       it('Get courses of 3 and 5 year', async function () {
@@ -1497,42 +1488,6 @@ describe('Server side unit test', function () {
       });
     });
 
-    describe('#Test getCoursesByYearAndSemester', function () {
-      it('Get courses of 2 semester', async function () {
-        let course1 = new Course('XYAAE', 'd000', 'Software Engineering VII', 2, 1);
-        let course2 = new Course('XYAAF', 'd000', 'Software Engineering VIII', 3, 1);
-        let course3 = new Course('XYAAG', 'd000', 'Software Engineering IX', 3, 2);
-
-        let array = [course1, course2, course3];
-
-        await CourseDao.createCourse(array);
-
-        let semesters = [1, 2];
-        let courses = await CourseDao.getCoursesByYearAndSemester(3, semesters);
-        let pass = false;
-        let courseIds = courses.map(c => c.courseId);
-
-        if(courseIds.includes('XYAAF') && courseIds.includes('XYAAG') && !courseIds.includes('XYAAE'))
-          pass = true;
-
-        return assert.strictEqual(pass, true);
-      });
-    });
-
-    describe('#Test modifyLectures', function () {
-      it('Switch to online', async function () {
-        let lecture1 = new Lecture(121, 'c000', 'd000', '12/12/2020', '8:30', '17:00', 1, '9a', 0);
-        let lecture2 = new Lecture(122, 'c001', 'd000', '12/12/2020', '9:30', '11:00', 1, '9a', 0);
-
-        let array = [lecture1, lecture2];
-        let courses = ['c000', 'c001'];
-
-        await LectureDao.addLecture(array);
-        await LectureDao.modifyLectures(courses);
-
-        return await LectureDao.getLectureById(121).then((l) => assert.strictEqual(l.inPresence, '0'));
-      });
-    });
 
   });
 

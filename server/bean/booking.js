@@ -4,13 +4,15 @@
  * @param lectureId an integer corresponding to the id of the booked lecture
  * @param date a string containing the date in which the booking was made, in format DD/MM/YYYY
  * @param startingTime a string containing the starting time of the booked lecture
+ * @param present an integer 
  */
 class Booking {
-    constructor(studentId, lectureId, date, startingTime) {
+    constructor(studentId, lectureId, date, startingTime, present) {
         this.studentId = studentId;
         this.lectureId = lectureId;
         this.date = date;
         this.startingTime = startingTime;
+        this.present = present;
     }
 }
 
