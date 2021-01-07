@@ -229,7 +229,7 @@ describe('Server side unit test', function () {
         })
       })
     })
-    //Test that http://localhost:3001/api/getCoursesByYear returns 200
+    //Test that http://localhost:3001/api/getCoursesByYear returns 500
     describe("#Test /api/getCoursesByYear", function () {
       var url = "http://localhost:3001/api/getCoursesByYear";
       it("returns status 500", function (done) {
@@ -239,7 +239,7 @@ describe('Server side unit test', function () {
         })
       })
     })
-    //Test that http://localhost:3001/api/getCoursesByYearAndSemester returns 200
+    //Test that http://localhost:3001/api/getCoursesByYearAndSemester returns 500
     describe("#Test /api/getCoursesByYearAndSemester", function () {
       var url = "http://localhost:3001/api/getCoursesByYearAndSemester";
       it("returns status 500", function (done) {
@@ -269,7 +269,7 @@ describe('Server side unit test', function () {
         })
       })
     })
-    //Test that http://localhost:3001/api/studentInWaitinglist returns 200
+    //Test that http://localhost:3001/api/studentInWaitinglist returns 500
     describe("#Test /api/studentInWaitinglist", function () {
       var url = "http://localhost:3001/api/studentInWaitinglist";
       it("returns status 500", function (done) {
@@ -531,6 +531,151 @@ describe('Server side unit test', function () {
             done(error);
           } else {
             expect(response.statusCode).to.equal(201);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #DELETE 1 lecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/teacher-home/delete-lecture";
+
+    it('should send parameters to : /api/teacher-home/delete-lecture DELETE', function (done) {
+      chai
+        .request(host)
+        .delete(path)
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(400);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #DELETE 2 lecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/teacher-home/delete-lecture";
+
+    it('should send parameters to : /api/teacher-home/delete-lecture DELETE', function (done) {
+      let lecture = new Lecture(99, 'C99', 'd99', '29/12/2112', '11:11', '12:00', 1, '23', 3);
+      LectureDao.addLecture([lecture]);
+      chai
+        .request(host)
+        .delete(path)
+        .set('content-type', 'application/json')
+        .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #DELETE 1 booking', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/teacher-home/deleteBookingByTeacher";
+
+    it('should send parameters to : /api/teacher-home/deleteBookingByTeacher DELETE', function (done) {
+      chai
+        .request(host)
+        .delete(path)
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(400);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #DELETE 2 lecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/teacher-home/deleteBookingByTeacher";
+
+    it('should send parameters to : /api/teacher-home/deleteBookingByTeacher DELETE', function (done) {
+      chai
+        .request(host)
+        .delete(path)
+        .set('content-type', 'application/json')
+        .send({ lectureId: '66' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #GET currentLecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/currentLecture";
+
+    it('should send parameters to : /api/currentLecture GET', function (done) {
+      chai
+        .request(host)
+        .get(path)
+        .set('content-type', 'application/json')
+        .send({ teacherId: '66' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #GET bookingsOfLecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/bookingsOfLecture";
+
+    it('should send parameters to : /api/bookingsOfLecture GET', function (done) {
+      chai
+        .request(host)
+        .get(path)
+        .set('content-type', 'application/json')
+        .send({ id: '54' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #GET totalAttendance', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/totalAttendance";
+
+    it('should send parameters to : /api/totalAttendance GET', function (done) {
+      chai
+        .request(host)
+        .get(path)
+        .set('content-type', 'application/json')
+        .send({ email: 'd@d' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
             done();
           }
         });
