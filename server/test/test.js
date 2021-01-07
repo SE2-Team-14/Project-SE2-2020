@@ -1877,7 +1877,7 @@ describe('Server side unit test', function () {
 
     describe('#Load schedule into the system', async function () {
       const schedule = scheduleHeader +
-        '\nXYNNN,112,Mon,1,8:30-11:00' +
+        'XYNNN,112,Mon,1,8:30-11:00' +
         '\nXYNNM,113,Tue,1,8:30:11:00' +
         '\nXYNNO,114,Wed,1,8:30-11:00' +
         '\nXYNNP,115,Thu,1,8:30-11:00' +
