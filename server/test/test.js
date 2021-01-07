@@ -318,6 +318,73 @@ describe('Server side unit test', function () {
 
   });
 
+  describe('Test #POST modifySchedule', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/modifySchedule";
+    let schedule = new Schedule('12222', '12', 'Mon', 12, '9:10', '9:40');
+
+    it('should send parameters to : /api/modifySchedule POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ courseId: '12222', dayOfWeek: 'Mon', schedule: schedule, oldStart: '9:10' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+
+  });
+
+  describe('Test #POST 1 put-in-queue', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/student-home/put-in-queue";
+
+    it('should send parameters to : /api/student-home/put-in-queue POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ studentId: undefined, lectureId: '12' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(400);
+            done();
+          }
+        });
+    });
+
+  });
+
+  describe('Test #POST 2 put-in-queue', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/student-home/put-in-queue";
+
+    it('should send parameters to : /api/student-home/put-in-queue POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ studentId: '12', lectureId: undefined })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(400);
+            done();
+          }
+        });
+    });
+
+  });
+
   //#9.1
   describe('Test #DELETE book', function () {
     let host = "http://localhost:3001";
@@ -351,6 +418,40 @@ describe('Server side unit test', function () {
         .put(path)
         .set('content-type', 'application/json')
         .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+  describe('Test #PUT modify lecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/modifyLectures";
+    it('should send parameters to : /api/modifyLectures PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(500);
+            done();
+          }
+        });
+    });
+  });
+  describe('Test #PUT recordAttendance', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/recordAttendance";
+    it('should send parameters to : /api/recordAttendance PUT', function (done) {
+      chai
+        .request(host)
+        .put(path)
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -682,6 +783,48 @@ describe('Server side unit test', function () {
     });
   });
 
+  describe('Test #GET contact-tracing', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/contact-tracing";
+
+    it('should send parameters to : /api/contact-tracing GET', function (done) {
+      chai
+        .request(host)
+        .get(path)
+        .set('content-type', 'application/json')
+        .send({ studentId: '84' })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
+  describe('Test #GET allAttendance', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/allAttendance";
+
+    it('should send parameters to : /api/allAttendance GET', function (done) {
+      chai
+        .request(host)
+        .get(path)
+        .set('content-type', 'application/json')
+        .send({  })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
+
   describe('Test #POST cancelled-lecture', function () {
     let host = "http://localhost:3001";
     let path = "/api/teacher-home/add-cancelled-lecture";
@@ -850,7 +993,24 @@ describe('Server side unit test', function () {
     });
   });
 
+  describe('Test #POST login', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/login";
 
+    it('should send parameters to : login POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
+        });
+    });
+  });
 
   //----------------------------------------- DAO tests -----------------------------------------//
 
