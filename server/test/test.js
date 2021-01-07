@@ -1431,7 +1431,7 @@ describe('Server side unit test', function () {
         arraySchedule.push(testSchedule1);
         arraySchedule.push(testSchedule2);
         await ScheduleDao.addSchedule(arraySchedule);
-        return await ScheduleDao.getSchedule().then((s) => assert.strictEqual(s[0].dayOfWeek, testSchedule1.dayOfWeek));
+        return await ScheduleDao.getSchedule().then((s) => assert.strictEqual(s[1].dayOfWeek, testSchedule1.dayOfWeek));
       });
     });
 
@@ -1557,6 +1557,23 @@ describe('Server side unit test', function () {
       });
     });
 
+    describe('#Test getCoursesByYearAndSemester', async function () {
+      it('Get courses of 3 and 5 year', async function () {
+        await CourseDao.createCourse([new Course('XYAAE', 'd000', 'Software Engineering VIII', 3, 2)]);
+
+        let years = [3, 5];
+        let semester = 2;
+        let courses = await CourseDao.getCoursesByYearAndSemester(years, semester);
+        let pass = false;
+        let courseIds = courses.map(c => c.courseId);
+
+        if(courseIds.includes('XYAAE'))
+          pass = true;
+
+        return assert.strictEqual(pass, true);
+      });
+    });
+
     describe('#Modify a schedule', async function () {
       let schedule = new Schedule('XYNNN', '112', 'Mon', 12, '8:30', '11:00');
 
@@ -1566,6 +1583,21 @@ describe('Server side unit test', function () {
       });
     });
 
+    describe('#Modify schedule', async function () {
+      await ScheduleDao.addSchedule([new Schedule('XYMNN', '114', 'mon', 12, '8:30', '11:00')]);
+      let newSchedule = new Schedule('XYMNN', '114', 'tue', 12, '8:30', '11:00');
+      await ScheduleDao.modifySchedule(newSchedule, 'XYMNN', 'mon', '8:30');
+      it('Modify schedule', async function () {
+        return await ScheduleDao.getScheduleByCourseId('XYMNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'tue'));
+      });
+    });
+
+    describe('#Test getBookingsOfLecture', async function () {
+      it('Get bookings of a lecture', async function () {
+        await BookingDao.addBoocking(new Booking('sOOO', 63, '25/11/2020', '8:30', 1));
+        return await BookingDao.getBookingsOfLecture(63).then((b) => assert.strictEqual(b[0].studentId, 'sOOO'));
+      });
+    });
 
   });
 
