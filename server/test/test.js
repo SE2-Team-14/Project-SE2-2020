@@ -1419,6 +1419,7 @@ describe('Server side unit test', function () {
           .then((l) => assert.strictEqual(l[0].date, lecture.date));
       });
     });
+
   });
 
   describe('Test scheduleDao', function () {
@@ -1439,6 +1440,40 @@ describe('Server side unit test', function () {
         return await ScheduleDao.getScheduleByCourseId("c1").then((s) => assert.strictEqual(s[0].dayOfWeek, "mon"));
       });
     });
+
+    describe('#Test getLectureByCourseId', function () {
+      it('Get the list of lectures by courseId', async function () {
+        await CourseDao.createCourse([new Course('XYPPP', 'dPPP', 'coursePPP', 1, 1)]);
+        await LectureDao.addLecture([new Lecture(56, 'XYPPP', 'dPPP', '18/01/2021', '9:30', '11:00', 1, '12', 12)]);
+        return await LectureDao.getLectureByCourseId('XYPPP', 'mon').then((l) => assert.strictEqual(l[0].lectureId, 56));
+      });
+    });
+
+    describe('#Test getAllLectureList', function () {
+      it('Get the list of lectures by courseId', async function () {
+        return await LectureDao.getAllLecturesList().then((l) => assert.strictEqual(l[7].courseId, 'XYPPP'));
+      });
+    });
+
+    describe('#Test getSpecificLecture', function () {
+      it('Get a specific lecture', async function () {
+        let lecture = new Lecture(60, 'XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00', '1', '26', 24);
+        let arrayLecture = [lecture];
+        await LectureDao.addLecture(arrayLecture);
+        return await LectureDao.getSpecificLecture('XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00').then((l) =>  assert.strictEqual(l.lectureId, 60));
+      });
+    });
+
+    describe('#Test modifyLecture', function () {
+      it('Modify a specific lecture', async function () {
+        let lecture = new Lecture(62, 'XYOML', 'dOOO', '25/12/2020', '8:30', '11:00', '1', '26', 24);
+        await LectureDao.addLecture([lecture]);
+        await LectureDao.modifyLectures([lecture]);
+        return await LectureDao.getLectureById(62).then((l) => assert.strictEqual(l.inPresence, '0'));
+      });
+    });
+
+
   });
 
 

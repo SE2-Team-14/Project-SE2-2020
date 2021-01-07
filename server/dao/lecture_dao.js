@@ -303,7 +303,7 @@ exports.updateLecture = function (lecture) {
     });
 }
 
-exports.modifyLecture = function (lecture) {
+/*exports.modifyLecture = function (lecture) {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE LECTURE SET startingTime = ?, endingTime = ?, classroomId = ?, numberOfSeats = ? WHERE lectureId = ?';
         db.run(sql, [lecture.startingTime, lecture.endingTime, lecture.classroomId, lecture.numberOfSeats, lecture.lectureId], function (err) {
@@ -314,7 +314,7 @@ exports.modifyLecture = function (lecture) {
             }
         });
     });
-}
+}*/
 
 /**
  * Returns an array containing all lectures of a teacher that will take place in the following day. The function is called at midnight to the send in an email the retrieved information about the incoming day.

@@ -399,7 +399,7 @@ app.put('/api/modifyLectures', (req, res) => {
 
 });
 
-app.put('/api/support-officer-home/lectures', (req, res) => {
+/*app.put('/api/support-officer-home/lectures', (req, res) => {
   const lecture = req.body;
 
   lectureDao.modifyLecture(lecture)
@@ -420,7 +420,7 @@ app.put('/api/support-officer-home/lectures', (req, res) => {
     })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 
-})
+})*/
 
 /**
  * GET API
