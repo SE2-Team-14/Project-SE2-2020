@@ -229,6 +229,56 @@ describe('Server side unit test', function () {
         })
       })
     })
+    //Test that http://localhost:3001/api/getCoursesByYear returns 200
+    describe("#Test /api/getCoursesByYear", function () {
+      var url = "http://localhost:3001/api/getCoursesByYear";
+      it("returns status 500", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(500);
+          done();
+        })
+      })
+    })
+    //Test that http://localhost:3001/api/getCoursesByYearAndSemester returns 200
+    describe("#Test /api/getCoursesByYearAndSemester", function () {
+      var url = "http://localhost:3001/api/getCoursesByYearAndSemester";
+      it("returns status 500", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(500);
+          done();
+        })
+      })
+    })
+    //Test that http://localhost:3001/api/getSchedule returns 200
+    describe("#Test /api/getSchedule", function () {
+      var url = "http://localhost:3001/api/getSchedule";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        })
+      })
+    })
+    //Test that http://localhost:3001/api/getScheduleByCourseId returns 200
+    describe("#Test /api/getScheduleByCourseId", function () {
+      var url = "http://localhost:3001/api/getScheduleByCourseId";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
+          done();
+        })
+      })
+    })
+    //Test that http://localhost:3001/api/studentInWaitinglist returns 200
+    describe("#Test /api/studentInWaitinglist", function () {
+      var url = "http://localhost:3001/api/studentInWaitinglist";
+      it("returns status 500", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(500);
+          done();
+        })
+      })
+    })
     //#8 Test that http://localhost:3001/api/getPersonName returns the right teacheName
     describe("#Test /api/getPersonName/body", function () {
       let person = new Person("d8", "TestName8", "TestSurname8", "Teacher8", "email8@test.com", "Testing");
@@ -311,351 +361,351 @@ describe('Server side unit test', function () {
         });
     });
   });
-    //Test that http://localhost:3001/api/bookedStudents returns 200
-    describe('#Test /api/bookedStudents', function () {
-      var url = "http://localhost:3001/api/bookedStudents";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  //Test that http://localhost:3001/api/bookedStudents returns 200
+  describe('#Test /api/bookedStudents', function () {
+    var url = "http://localhost:3001/api/bookedStudents";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/getBookings/s90000 returns 200
+  describe('#Test /api/getBookings/s90000', function () {
+    var url = "http://localhost:3001/api/getBookings/s9000";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/getTeacherLectures/d80000 returns 200
+  describe('#Test /api/getTeacherLectures/d80000', function () {
+    var url = "http://localhost:3001/api/getTeacherLectures/d80000";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+
+  //Test that http://localhost:3001/api/allCoursesStats returns 200
+  describe('#Test /api/allCoursesStats', function () {
+    var url = "http://localhost:3001/api/allCoursesStats";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/allCoursesStatistics returns 200
+  describe('#Test /api/allCoursesStatistics', function () {
+    var url = "http://localhost:3001/api/allCoursesStatistics";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/getAllCourses returns 200
+  describe('#Test /api/getAllCourses', function () {
+    var url = "http://localhost:3001/api/getAllCourses";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/getCoursesAndTeachers returns 200
+  describe('#Test /api/getCoursesAndTeachers', function () {
+    var url = "http://localhost:3001/api/getCoursesAndTeachers";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/cancelledLecturesStats returns 200
+  describe('#Test /api/cancelledLecturesStats', function () {
+    var url = "http://localhost:3001/api/cancelledLecturesStats";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
+  describe('#Test /api/student-home/s8000/week-lectures', function () {
+    var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/getLectureById/12 returns 200
+  describe('#Test /api/getLectureById/12', function () {
+    var url = "http://localhost:3001/api/getLectureById/12";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/cancelledBookings returns 200
+  describe('#Test /api/cancelledBookings', function () {
+    var url = "http://localhost:3001/api/cancelledBookings";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/getAllWaitingList returns 200
+  describe('#Test /api/getAllWaitingList', function () {
+    var url = "http://localhost:3001/api/getAllWaitingList";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/teacher-home/d8000/week-teacher-lectures returns 200
+  describe('#Test /api/teacher-home/d8000/week-teacher-lectures', function () {
+    var url = "http://localhost:3001/api/teacher-home/d8000/week-teacher-lectures";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
+  describe('#Test /api/student-home/s8000/week-lectures', function () {
+    var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
+    it("returns status 200", function (done) {
+      request(url, function (error, response, body) {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+  });
+
+  describe('Test #POST cancelled-booking', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/teacher-home/add-cancelled-booking";
+
+    it('should send parameters to : /api/teacher-home/add-cancelled-booking POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ studentId: "s9000", lectureId: 12 })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/getBookings/s90000 returns 200
-    describe('#Test /api/getBookings/s90000', function () {
-      var url = "http://localhost:3001/api/getBookings/s9000";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  describe('Test #POST cancelled-lecture', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/teacher-home/add-cancelled-lecture";
+    let lecture = new Lecture(12, "c8000", "d8000", "12/12/2020", "8:30", "11:00", 1, "12", 2)
+
+    it('should send parameters to : /api/teacher-home/add-cancelled-lecture POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ lecture: lecture })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/api/getTeacherLectures/d80000 returns 200
-    describe('#Test /api/getTeacherLectures/d80000', function () {
-      var url = "http://localhost:3001/api/getTeacherLectures/d80000";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  describe('Test #POST data-loader #1', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/data-loader";
+
+    const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
+    const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
+    const fileType = "student";
+
+    it('should send parameters to : /api/data-loader POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ fileData: student, fileType: fileType })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
+  describe('Test #POST data-loader #2', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/data-loader";
 
-    //Test that http://localhost:3001/api/allCoursesStats returns 200
-    describe('#Test /api/allCoursesStats', function () {
-      var url = "http://localhost:3001/api/allCoursesStats";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+    const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN";
+    const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
+    const fileType = "teacher";
+
+    it('should send parameters to : /api/data-loader POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ fileData: teacher, fileType: fileType })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/api/allCoursesStatistics returns 200
-    describe('#Test /api/allCoursesStatistics', function () {
-      var url = "http://localhost:3001/api/allCoursesStatistics";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  describe('Test #POST data-loader #3', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/data-loader";
+
+    const enrollmentHeader = "Code,Student";
+    const enrollment = enrollmentHeader + "c8000,s8000";
+    const fileType = "enrollment";
+
+    it('should send parameters to : /api/data-loader POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ fileData: enrollment, fileType: fileType })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/api/getAllCourses returns 200
-    describe('#Test /api/getAllCourses', function () {
-      var url = "http://localhost:3001/api/getAllCourses";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  describe('Test #POST data-loader #4', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/data-loader";
+
+    const scheduleHeader = "Code,Room,Day,Seats,Time";
+    const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20";
+    const fileType = "schedule";
+
+    it('should send parameters to : /api/data-loader POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ fileData: schedule, fileType: fileType })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/api/getCoursesAndTeachers returns 200
-    describe('#Test /api/getCoursesAndTeachers', function () {
-      var url = "http://localhost:3001/api/getCoursesAndTeachers";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  describe('Test #POST data-loader #5', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/data-loader";
+
+    const coursesHeader = "Code,Year,Semester,Course,Teacher";
+    const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
+    const fileType = "course";
+
+    it('should send parameters to : /api/data-loader POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ fileData: course, fileType: fileType })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(201);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/api/cancelledLecturesStats returns 200
-    describe('#Test /api/cancelledLecturesStats', function () {
-      var url = "http://localhost:3001/api/cancelledLecturesStats";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
+  describe('Test #POST put-in-queue', function () {
+    let host = "http://localhost:3001";
+    let path = "/api/student-home/put-in-queue";
+
+    it('should send parameters to : put-in-queue POST', function (done) {
+      chai
+        .request(host)
+        .post(path)
+        .set('content-type', 'application/json')
+        .send({ studentId: "s80000", lectureId: 12 })
+        .end(function (error, response, body) {
+          if (error) {
+            done(error);
+          } else {
+            expect(response.statusCode).to.equal(200);
+            done();
+          }
         });
-      });
     });
+  });
 
-    //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
-    describe('#Test /api/student-home/s8000/week-lectures', function () {
-      var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
 
-    //Test that http://localhost:3001/api/getLectureById/12 returns 200
-    describe('#Test /api/getLectureById/12', function () {
-      var url = "http://localhost:3001/api/getLectureById/12";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
-
-    //Test that http://localhost:3001/api/cancelledBookings returns 200
-    describe('#Test /api/cancelledBookings', function () {
-      var url = "http://localhost:3001/api/cancelledBookings";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
-
-    //Test that http://localhost:3001/api/getAllWaitingList returns 200
-    describe('#Test /api/getAllWaitingList', function () {
-      var url = "http://localhost:3001/api/getAllWaitingList";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
-
-    //Test that http://localhost:3001/api/teacher-home/d8000/week-teacher-lectures returns 200
-    describe('#Test /api/teacher-home/d8000/week-teacher-lectures', function () {
-      var url = "http://localhost:3001/api/teacher-home/d8000/week-teacher-lectures";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
-
-    //Test that http://localhost:3001/api/student-home/s8000/week-lectures returns 200
-    describe('#Test /api/student-home/s8000/week-lectures', function () {
-      var url = "http://localhost:3001/api/student-home/s8000/week-lectures";
-      it("returns status 200", function (done) {
-        request(url, function (error, response, body) {
-          expect(response.statusCode).to.equal(200);
-          done();
-        });
-      });
-    });
-
-    describe('Test #POST cancelled-booking', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/teacher-home/add-cancelled-booking";
-
-      it('should send parameters to : /api/teacher-home/add-cancelled-booking POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ studentId: "s9000", lectureId: 12 })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST cancelled-lecture', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/teacher-home/add-cancelled-lecture";
-      let lecture = new Lecture(12, "c8000", "d8000", "12/12/2020", "8:30", "11:00", 1, "12", 2)
-      
-      it('should send parameters to : /api/teacher-home/add-cancelled-lecture POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ lecture: lecture })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST data-loader #1', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/data-loader";
-      
-      const studentHeader = "Id,Name,Surname,City,OfficialEmail,Birthday,SSN";
-      const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
-      const fileType = "student";
-
-      it('should send parameters to : /api/data-loader POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ fileData: student, fileType: fileType })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST data-loader #2', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/data-loader";
-    
-      const teacherHeader = "Number,GivenName,Surname,OfficialEmail,SSN";
-      const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
-      const fileType = "teacher";
-
-      it('should send parameters to : /api/data-loader POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({  fileData: teacher, fileType: fileType })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST data-loader #3', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/data-loader";
-      
-      const enrollmentHeader = "Code,Student";
-      const enrollment = enrollmentHeader + "c8000,s8000";
-      const fileType = "enrollment";
-
-      it('should send parameters to : /api/data-loader POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ fileData: enrollment, fileType: fileType })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST data-loader #4', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/data-loader";
-
-      const scheduleHeader = "Code,Room,Day,Seats,Time";
-      const schedule = scheduleHeader + "c8000,12,Mon,16,10:10-11:20";
-      const fileType = "schedule";
-
-      it('should send parameters to : /api/data-loader POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ fileData: schedule, fileType: fileType })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST data-loader #5', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/data-loader";
-
-      const coursesHeader = "Code,Year,Semester,Course,Teacher";
-      const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
-      const fileType = "course";
-
-      it('should send parameters to : /api/data-loader POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ fileData: course, fileType: fileType })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(201);
-              done();
-            }
-          });
-      });
-    });
-
-    describe('Test #POST put-in-queue', function () {
-      let host = "http://localhost:3001";
-      let path = "/api/student-home/put-in-queue";
-
-      it('should send parameters to : put-in-queue POST', function (done) {
-        chai
-          .request(host)
-          .post(path)
-          .set('content-type', 'application/json')
-          .send({ studentId: "s80000", lectureId: 12 })
-          .end(function (error, response, body) {
-            if (error) {
-              done(error);
-            } else {
-              expect(response.statusCode).to.equal(200);
-              done();
-            }
-          });
-      });
-    });
-
-  
 
   //----------------------------------------- DAO tests -----------------------------------------//
 
@@ -1460,7 +1510,7 @@ describe('Server side unit test', function () {
         let lecture = new Lecture(60, 'XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00', '1', '26', 24);
         let arrayLecture = [lecture];
         await LectureDao.addLecture(arrayLecture);
-        return await LectureDao.getSpecificLecture('XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00').then((l) =>  assert.strictEqual(l.lectureId, 60));
+        return await LectureDao.getSpecificLecture('XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00').then((l) => assert.strictEqual(l.lectureId, 60));
       });
     });
 
@@ -1521,12 +1571,12 @@ describe('Server side unit test', function () {
     });
 
     describe('#Load schedule into the system', async function () {
-      const schedule = scheduleHeader + 
-        'XYNNN,112,Mon,1,8:30-11:00' +
-        'XYNNM,113,Tue,1,8:30:11:00' +
-        'XYNNO,114,Wed,1,8:30-11:00' +
-        'XYNNP,115,Thu,1,8:30-11:00' +
-        'XYNNQ,116,Fri,1,8:30-11:00';
+      const schedule = scheduleHeader +
+        '\nXYNNN,112,Mon,1,8:30-11:00' +
+        '\nXYNNM,113,Tue,1,8:30:11:00' +
+        '\nXYNNO,114,Wed,1,8:30-11:00' +
+        '\nXYNNP,115,Thu,1,8:30-11:00' +
+        '\nXYNNQ,116,Fri,1,8:30-11:00';
 
       await dataLoader.readScheduleCSV(schedule);
       it('Load a schedule', async function () {
@@ -1550,7 +1600,7 @@ describe('Server side unit test', function () {
         let pass = false;
         let courseIds = courses.map(c => c.courseId);
 
-        if(courseIds.includes('XYAAA') && courseIds.includes('XYAAC') && courseIds.includes('XYAAD'))
+        if (courseIds.includes('XYAAA') && courseIds.includes('XYAAC') && courseIds.includes('XYAAD'))
           pass = true;
 
         return assert.strictEqual(pass, true);
@@ -1567,7 +1617,7 @@ describe('Server side unit test', function () {
         let pass = false;
         let courseIds = courses.map(c => c.courseId);
 
-        if(courseIds.includes('XYAAE'))
+        if (courseIds.includes('XYAAE'))
           pass = true;
 
         return assert.strictEqual(pass, true);
@@ -1577,7 +1627,7 @@ describe('Server side unit test', function () {
     describe('#Modify a schedule', async function () {
       let schedule = new Schedule('XYNNN', '112', 'Mon', 12, '8:30', '11:00');
 
-      await dataLoader.modifySchedule(schedule,'XYNNN', 'Fri', '8:30');
+      await dataLoader.modifySchedule(schedule, 'XYNNN', 'Fri', '8:30');
       it('Modify a schedule', async function () {
         return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'fri'));
       });
@@ -1592,10 +1642,28 @@ describe('Server side unit test', function () {
       });
     });
 
-    describe('#Test getBookingsOfLecture', async function () {
+    describe('#Test getBookingsOfLecture', function () {
       it('Get bookings of a lecture', async function () {
         await BookingDao.addBoocking(new Booking('sOOO', 63, '25/11/2020', '8:30', 1));
         return await BookingDao.getBookingsOfLecture(63).then((b) => assert.strictEqual(b[0].studentId, 'sOOO'));
+      });
+    });
+
+    describe('#Test getTotalAttendance', function () {
+      it('Get bookings of a lecture', async function () {
+        let booking = new Booking('sOOO', 64, '25/11/2020', '8:30', 1)
+        await PersonDao.createPerson([new Person('dCXX', 't', 't', 'teacher', 'sf@d', '13', null, null, 'skfd')]);
+        await BookingDao.addBoocking(booking);
+        await CourseDao.createCourse([new Course('XYCXX', 'dCXX', 'courseCXX', 2, 1)]);
+        await LectureDao.addLecture([new Lecture(64, 'XYCXX', 'dCXX', '23/12/2020', '11:00', '11:30', 1, '25', 12)]);
+        await BookingDao.recordAttendance(booking);
+        return await BookingDao.getTotalAttendance().then((b) => assert.strictEqual(b.length, 1));
+      });
+    });
+
+    describe('#Test getTeacherTotalAttendance', function () {
+      it('Get total attendances for a teacher', async function () {
+        return await BookingDao.getTeacherTotalAttendance('sf@d').then((b) => assert.strictEqual(b.length, 1));
       });
     });
 
