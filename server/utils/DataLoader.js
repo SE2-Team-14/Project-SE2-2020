@@ -30,8 +30,8 @@ function associateDay(weekday) {
     }
 }
 
-async function loadLectures(schedule) {
-    let teacher = await CourseDao.getCourseByID(schedule.courseId);
+function loadLectures(schedule) {
+    let teacher = CourseDao.getCourseByID(schedule.courseId);
     const endOfSemester = moment('2021-01-16');
     let day = associateDay(schedule.dayOfWeek.toLowerCase());
     let date = moment().day(day);
@@ -41,7 +41,7 @@ async function loadLectures(schedule) {
         if (date > endOfSemester)
             break;
         else {
-            if (await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime) == undefined) {
+            if (LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime) == undefined) {
                 let lecture = new Lecture(
                     null,
                     schedule.courseId,
@@ -61,7 +61,7 @@ async function loadLectures(schedule) {
 
     let chunk = 100;
     for (let i = 0, j = lectures.length; i < j; i += chunk)
-        await LectureDao.addLecture(lectures.slice(i, i + chunk));
+        LectureDao.addLecture(lectures.slice(i, i + chunk));
 
 }
 
@@ -234,7 +234,7 @@ class DataLoader {
                             );
 
                             schedule.push(s);
-                            await loadLectures(s);
+                            loadLectures(s);
                         }
 
                     }

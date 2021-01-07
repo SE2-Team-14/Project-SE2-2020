@@ -428,23 +428,6 @@ describe('Server side unit test', function () {
         });
     });
   });
-  describe('Test #PUT modify lecture', function () {
-    let host = "http://localhost:3001";
-    let path = "/api/modifyLectures";
-    it('should send parameters to : /api/modifyLectures PUT', function (done) {
-      chai
-        .request(host)
-        .put(path)
-        .end(function (error, response, body) {
-          if (error) {
-            done(error);
-          } else {
-            expect(response.statusCode).to.equal(500);
-            done();
-          }
-        });
-    });
-  });
   describe('Test #PUT recordAttendance', function () {
     let host = "http://localhost:3001";
     let path = "/api/recordAttendance";
@@ -1786,7 +1769,7 @@ describe('Server side unit test', function () {
         arraySchedule.push(testSchedule1);
         arraySchedule.push(testSchedule2);
         await ScheduleDao.addSchedule(arraySchedule);
-        return await ScheduleDao.getSchedule().then((s) => assert.strictEqual(s[1].dayOfWeek, testSchedule1.dayOfWeek));
+        return await ScheduleDao.getSchedule().then((s) => assert.strictEqual(s[0].dayOfWeek, 'Mon'));
       });
     });
 
@@ -1875,17 +1858,17 @@ describe('Server side unit test', function () {
       });
     });
 
-    describe('#Load schedule into the system', async function () {
-      const schedule = scheduleHeader +
-        'XYNNN,112,Mon,1,8:30-11:00' +
-        '\nXYNNM,113,Tue,1,8:30:11:00' +
-        '\nXYNNO,114,Wed,1,8:30-11:00' +
-        '\nXYNNP,115,Thu,1,8:30-11:00' +
-        '\nXYNNQ,116,Fri,1,8:30-11:00';
-
-      await dataLoader.readScheduleCSV(schedule);
+    describe('#Load schedule into the system', function () {
       it('Load a schedule', async function () {
-        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'mon'));
+        const schedule = scheduleHeader + 'XYNNN,112,Mon,1,8:30-11:00' +
+                                          '\nXYNNM,113,Tue,1,8:30:11:00' +
+                                          '\nXYNNO,114,Wed,1,8:30-11:00' +
+                                          '\nXYNNP,115,Thu,1,8:30-11:00' +
+                                          '\nXYNNQ,116,Fri,1,8:30-11:00';
+
+
+        await dataLoader.readScheduleCSV(schedule);
+        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'Mon'));
       });
     });
 
