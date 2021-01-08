@@ -28,14 +28,13 @@ exports.addBoocking = function (booking) {
         let params = [];
         params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week, 0);
 
-        if (booking)
-            db.run(sql, params, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else
-                    resolve(null);
-            });
+        db.run(sql, params, function (err) {
+            if (err) {
+                reject(err);
+            }
+            else
+                resolve(null);
+        });
     });
 }
 /**
