@@ -327,7 +327,7 @@ describe('Server side unit test', function () {
         .request(host)
         .post(path)
         .set('content-type', 'application/json')
-        .send({ booking : undefined })
+        .send({ booking: undefined })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -2131,6 +2131,170 @@ describe('Server side unit test', function () {
               })
             })
 
+            //Test that http://localhost:3001/api/student-home/:id/bookable-lectures returns 500
+            describe("#Test /api/student-home/:id/bookable-lectures", function () {
+              var url = "http://localhost:3001/api/student-home/12/bookable-lectures";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/student-home/:id/week-lectures returns 500
+            describe("#Test /api/student-home/:id/week-lectures", function () {
+              var url = "http://localhost:3001/api/student-home/12/week-lectures";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/teacher-home/:id/week-teacher-lectures returns 500
+            describe("#Test /api/teacher-home/:id/week-teacher-lectures", function () {
+              var url = "http://localhost:3001/api/teacher-home/12/week-teacher-lectures";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/courses returns 500
+            describe("#Test /api/courses", function () {
+              var url = "http://localhost:3001/api/courses";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/bookedStudents returns 500
+            describe("#Test /api/bookedStudents", function () {
+              var url = "http://localhost:3001/api/bookedStudents";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/getCourses returns 500
+            describe("#Test /api/getCourses", function () {
+              var url = "http://localhost:3001/api/getCourses";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/name returns 500
+            describe("#Test /api/name", function () {
+              var url = "http://localhost:3001/api/name";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/contact-tracing returns 500
+            describe("#Test /api/contact-tracing", function () {
+              var url = "http://localhost:3001/api/contact-tracing";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/allAttendance returns 500
+            describe("#Test /api/allAttendance", function () {
+              var url = "http://localhost:3001/api/allAttendance";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/totalAttendance returns 500
+            describe("#Test /api/totalAttendance", function () {
+              var url = "http://localhost:3001/api/totalAttendance";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/bookingsOfLecture returns 500
+            describe("#Test /api/bookingsOfLecture", function () {
+              var url = "http://localhost:3001/api/bookingsOfLecture";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/currentLecture returns 500
+            describe("#Test /api/currentLecture", function () {
+              var url = "http://localhost:3001/api/currentLecture";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/cancelledLecturesStats returns 500
+            describe("#Test /api/cancelledLecturesStats", function () {
+              var url = "http://localhost:3001/api/cancelledLecturesStats";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/getCoursesAndTeachers returns 500
+            describe("#Test /api/getCoursesAndTeachers", function () {
+              var url = "http://localhost:3001/api/getCoursesAndTeachers";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
+
+            //Test that http://localhost:3001/api/allCoursesStats returns 500
+            describe("#Test /api/allCoursesStats", function () {
+              var url = "http://localhost:3001/api/allCoursesStats";
+              it("returns status 500", function (done) {
+                request(url, function (error, response, body) {
+                  expect(response.statusCode).to.equal(500);
+                  done();
+                })
+              })
+            })
 
             return assert.strictEqual(finito, true);
           }
