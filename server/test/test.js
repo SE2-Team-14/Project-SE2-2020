@@ -796,7 +796,7 @@ describe('Server side unit test', function () {
         .request(host)
         .get(path)
         .set('content-type', 'application/json')
-        .send({ studentId: '84' })
+        .send({ personId: '84' })
         .end(function (error, response, body) {
           if (error) {
             done(error);
@@ -1720,7 +1720,7 @@ describe('Server side unit test', function () {
         await LectureDao.addLecture(arrayLecture);
         await BookingDao.addBoocking(booking1);
         await BookingDao.addBoocking(booking2);
-        return await ContactTracingDao.getContactTracingByStudent("p47").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
+        return await ContactTracingDao.getContactTracingByPersonID("p47").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
       });
     });
 
