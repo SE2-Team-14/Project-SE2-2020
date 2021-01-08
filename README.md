@@ -118,6 +118,6 @@
   - response body: empty
 
 - GET `/api/contacttracing`
-  - request query parameters: studentId, the positive student to be tracked
+  - request query parameters: personId, the positive student to be tracked
   - request body: empty
-  - response body: a list of string containing information about people being in contact with the positive students
+  - response body: a list of string containing information about people being in contact with the positive person

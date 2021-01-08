@@ -465,11 +465,11 @@ async function deleteFromWaitingList(studentId, lectureId) {
 
 //--------------------CONTACT TRACING-----------------------
 /**
- * Returns list of stundents being in contact with te positive students since 14 days
- * @param studentId id of the positive student
+ * Returns list of stundents being in contact with te positive person since 14 days
+ * @param perdsonId id of the positive person
  */
-async function getContactTracingByStudent(studentId) {
-    let url = "/contact-tracing?studentId=" + studentId;
+async function getContactTracingByPerson(personId) {
+    let url = "/contact-tracing?personId=" + personId;
     return await fetchMethod("GET", baseURL + url);
 }
 
@@ -581,7 +581,7 @@ const API = {
     getCancelledLecturesStats,
     getWeekLecturesList,
     getWeekTeacherLectureList,
-    getContactTracingByStudent,
+    getContactTracingByPerson,
     getCurrentLecture,
     getBookingsOfLecture,
     recordAttendance,

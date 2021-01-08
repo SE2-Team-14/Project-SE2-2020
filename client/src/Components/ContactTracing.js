@@ -25,8 +25,8 @@ class ContactTracing extends React.Component {
     }
 
 
-    onChangeStudentId(event) {
-        this.setState({ studentId: event.target.value });
+    onChangePersonId(event) {
+        this.setState({ personId: event.target.value });
         console.log(this.state);
     }
 
@@ -36,18 +36,18 @@ class ContactTracing extends React.Component {
     }
 
     generateReportFile() {
-        let studentId = this.state.studentId;
-        API.getContactTracingByStudent(studentId)
+        let personId = this.state.personId;
+        API.getContactTracingByPerson(personId)
             .then((result) => {
                 if (result.length > 0) {
-                    let fileName = "Contact_Tracing_Report_" + studentId + "_" + moment();
+                    let fileName = "Contact_Tracing_Report_" + personId + "_" + moment();
                     this.generateCSVReport(fileName, result);
                     this.generatePDFReport(fileName, result);
                 } else {
-                   this.setState({alertMessage : "No such contact information for that student"});
+                   this.setState({alertMessage : "No such contact information for that person"});
                 }
             })
-            .catch((err) => this.setState({alertMessage : "Cannot generate report file for the selected student"}));
+            .catch((err) => this.setState({alertMessage : "Cannot generate report file for the selected person"}));
     }
 
 
@@ -94,15 +94,15 @@ class ContactTracing extends React.Component {
                     <>
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                         <h1>Contact Tracing</h1>
-                        <h6>Insert the id of the positive student</h6>
+                        <h6>Insert the id of the positive person (Student or Teacher)</h6>
                         <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3' style={{background: "none"}}>
                             <img src={tracingImage} width={200} heght={200} />
                             <Row>
                                 <Col>
 
                                     <Form.Group>
-                                        <Form.Label>Student id</Form.Label>
-                                        <Form.Control type="text" name="student-id" placeholder="Student ID" onChange={(ev) => this.onChangeStudentId(ev)} required />
+                                        <Form.Label>Person id</Form.Label>
+                                        <Form.Control type="text" name="person-id" placeholder="Person ID" onChange={(ev) => this.onChangePersonId(ev)} required />
                                     </Form.Group>
 
                                     <Form>
