@@ -853,12 +853,12 @@ app.get("/api/allAttendance", (req, res) => {
 
 /**
  * GET API 
- * Request parameters: string containing the student id to set as the entry point for the contact tracing
+ * Request parameters: string containing the person id to set as the entry point for the contact tracing
    Request body content: none
-   Response body content: list of booked students for all lectures of the course
+   Response body content: list of attending students for all lectures of the course
  */
 app.get("/api/contact-tracing", (req, res) => {
-  contactTracingDao.getContactTracingByStudent(req.query.studentId).then((students) => {
+  contactTracingDao.getContactTracingByPersonId(req.query.personId).then((students) => {
     let empty = [];
     if (students === undefined) {
       res.json(empty)

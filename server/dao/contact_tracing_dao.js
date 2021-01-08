@@ -4,7 +4,7 @@
  * Contains methods that access the PERSON table in the database
  */
 const db = require('../db/db');
-const Person = require('../bean/person');
+// const Person = require('../bean/person');
 const moment = require("moment");
 
 /**
@@ -17,7 +17,16 @@ function createString(row) {
 }
 
 
-/* ORIGINAL QUERY:
+
+exports.getContactTracingByPersonId = function(personId) {
+    if(personId != null && personId.length > 1 && (personId[0] == 's' || personId[0] == 'S')){ // controllo se l'id appartiene ad uno studente
+    return getContactTracingByStudent(personId);
+    }else{
+        return getContactTracingByTeacher(personId);
+    }
+}
+
+/* ORIGINAL QUERY FOR STUDENT:
 SELECT DISTINCT p.id, p.name, p.surname, p.email
 FROM PERSON  p, BOOKING  b, LECTURE  l
 WHERE p.id = b.studentId and b.lectureId = l.lectureId and 
@@ -35,7 +44,7 @@ WHERE p.id = b.studentId and b.lectureId = l.lectureId and
  * @param studentId a string containing the identifier of the person whose information is to be retrieved
  */
 
-exports.getContactTracingByStudent = function (studentId) {
+ let getContactTracingByStudent = function (studentId) {
     let today = moment().format("YYYYMMDD");
     let minDate = moment().subtract(14, 'days').format("YYYYMMDD");
     
@@ -66,3 +75,56 @@ exports.getContactTracingByStudent = function (studentId) {
         });
     });
 }
+
+
+/* ORIGINAL QUERY FOR TEACHER:
+SELECT DISTINCT p.id, p.name, p.surname, p.email
+FROM PERSON  p, BOOKING  b
+WHERE p.id = b.studentId  and 
+	  b.lectureId IN (
+		SELECT l.lectureId 
+		FROM LECTURE l
+		WHERE l.teacherId = 'd9000'  and
+			substr(l.date, 7) || substr(l.date, 4, 2) || substr(l.date, 1, 2) 
+			between '20201202' and '20201225'
+		);
+ */
+
+/**
+ * Returns a list of strings containing information about contact tracing
+ * @param teacherId a string containing the identifier of the person whose information is to be retrieved
+ */
+
+let getContactTracingByTeacher = function (teacherId) {
+    let today = moment().format("YYYYMMDD");
+    let minDate = moment().subtract(14, 'days').format("YYYYMMDD");
+    
+    return new Promise((resolve, reject) => {
+
+        const sql = ` 
+        SELECT DISTINCT p.id, p.name, p.surname, p.email
+        FROM PERSON  p, BOOKING  b
+        WHERE p.id = b.studentId and 
+              b.lectureId IN (
+                SELECT l.lectureId 
+                FROM LECTURE l
+                WHERE l.teacherId = ? and
+                    substr(l.date, 7) || substr(l.date, 4, 2) || substr(l.date, 1, 2) 
+                    between ? and ?
+                )`;
+                
+        db.all(sql, [teacherId, minDate, today], (err, rows) => {
+            if (err) {
+                console.log("ECCO L'ERRORE", err);
+                reject(err);
+            } else {
+                if (rows) {
+                    resolve(rows.map((row)=> createString(row)));
+                } else {
+                    resolve(undefined);
+                }
+            }
+        });
+    });
+}
+
