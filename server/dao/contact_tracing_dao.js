@@ -4,7 +4,7 @@
  * Contains methods that access the PERSON table in the database
  */
 const db = require('../db/db');
-const Person = require('../bean/person');
+// const Person = require('../bean/person');
 const moment = require("moment");
 
 /**
@@ -20,7 +20,7 @@ function createString(row) {
 
 exports.getContactTracingByPersonId = function(personId) {
     if(personId != null && personId.length > 1 && (personId[0] == 's' || personId[0] == 'S')){ // controllo se l'id appartiene ad uno studente
-        return getContactTracingByStudent(personId);
+    return getContactTracingByStudent(personId);
     }else{
         return getContactTracingByTeacher(personId);
     }
@@ -106,7 +106,7 @@ let getContactTracingByTeacher = function (teacherId) {
         FROM PERSON  p, BOOKING  b
         WHERE p.id = b.studentId and 
               b.lectureId IN (
-                SELECT l1.lectureId 
+                SELECT l.lectureId 
                 FROM LECTURE l
                 WHERE l.teacherId = ? and
                     substr(l.date, 7) || substr(l.date, 4, 2) || substr(l.date, 1, 2) 
@@ -115,6 +115,7 @@ let getContactTracingByTeacher = function (teacherId) {
                 
         db.all(sql, [teacherId, minDate, today], (err, rows) => {
             if (err) {
+                console.log("ECCO L'ERRORE", err);
                 reject(err);
             } else {
                 if (rows) {
