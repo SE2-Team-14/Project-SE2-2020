@@ -419,17 +419,31 @@ exports.getCurrentLecture = function (teacherId) {
  * @param courses is an array containind the courseId for all courses to be switched in online mode
  */
 exports.modifyLectures = function (courses) {
-    let sql = 'UPDATE LECTURE SET inPresence = 0 WHERE ';
+    let today = moment().add("1", "day").format("DD/MM/YYYY");
+    let sql = 'UPDATE LECTURE SET inPresence = 0 WHERE date > ? AND ';
 
     for (let i = 0; i < courses.length - 1; i++)
         sql += 'courseId = ? OR ';
     sql += 'courseId = ?';
 
-    let params = [];
-
+    let params = [today];    
     for (let i = 0; i < courses.length; i++)
         params.push(courses[i].courseId);
 
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, function (err) {
+            if (err)
+                reject(err);
+            else {
+                resolve(this.lastID);
+            }
+        });
+    });
+}
+
+exports.modifyLecturesByDate = function (startingDate, endingDate) {
+    let sql = 'UPDATE LECTURE SET inPresence = 0 WHERE date >= ? AND date <= ?';
+    let params = [startingDate, endingDate];    
     return new Promise((resolve, reject) => {
         db.run(sql, params, function (err) {
             if (err)
