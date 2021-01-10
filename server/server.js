@@ -617,27 +617,27 @@ app.post('/api/data-loader', (req, res) => {
   switch (fileType) {
     case "student":
       dataLoader.readStudentsCSV(fileData)
-        .then(async (result) => (await res.status(201).json({result})))
+        .then(async (result) => (await res.status(201).json({ result })))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "teacher":
       dataLoader.readTeachersCSV(fileData)
-        .then(async (result) => (await res.status(201).json({result})))
+        .then(async (result) => (await res.status(201).json({ result })))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "enrollment":
       dataLoader.readEnrollmentsCSV(fileData)
-        .then(async (result) => (await res.status(201).json({result})))
+        .then(async (result) => (await res.status(201).json({ result })))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "schedule":
       dataLoader.readScheduleCSV(fileData)
-        .then(async (result) => (await res.status(201).json({result})))
+        .then(async (result) => (await res.status(201).json({ result })))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "course":
       dataLoader.readCoursesCSV(fileData)
-        .then(async (result) => (await res.status(201).json({result})))
+        .then(async (result) => (await res.status(201).json({ result })))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
   }
@@ -660,10 +660,30 @@ app.post('/api/modifySchedule', (req, res) => {
   lectureDao.getLectureByCourseId(courseId, dayOfWeek)
     .then((lectures) => {
       for (let lecture of lectures) {
-        lectureDao.deleteLecture(lecture.lectureId);
-        bookingDao.deleteBookingByTeacher(lecture.lectureId);
+        //lectureDao.deleteLecture(lecture.lectureId);
+        //bookingDao.deleteBookingByTeacher(lecture.lectureId);
       }
-      dataLoader.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
+      //dataLoader.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
+      bookingDao.getFutureBookingsOfDay(dayOfWeek, courseId, oldStart).then((items) => {
+        for (let item of items) {
+          personDao.getPersonByID(item.studentId).then((student) => {
+            const subject = "Schedule changed";
+            const recipient = student.email;
+            let newDate = null;
+            let diff = moment(item.lectureDate, "DD/MM/YYYY").day() - moment(schedule.dayOfWeek, "ddd").day();
+            if (diff > 0) {
+              newDate = moment(item.lectureDate, "DD/MM/YYYY").subtract(diff, "days").format("DD/MM/YYYY");
+            } else {
+              newDate = moment(item.lectureDate, "DD/MM/YYYY").add(-diff, "days").format("DD/MM/YYYY");
+            }
+            const message = `Dear ${student.name} ${student.surname}\n` +
+              `the lecture for the course ${item.name} of ${item.lectureDate} at ${item.start} has changed schedule.\n` +
+              `It will now take place on ${newDate} at ${schedule.startingTime} in class ${schedule.classroom}.\n` +
+              `Kind regards.`;
+            emailSender.sendEmail(recipient, subject, message);
+          })
+        }
+      })
     }).then(res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
