@@ -244,6 +244,17 @@ app.get("/api/getClassrooms", (req, res) => {
 
 /**
  * GET API
+ * Request Parameters: day in which classrooms are being searched for, starting time and ending time of the interval classes are being searched for
+ * Request Body Content: none
+ * Response Body Content: an array of Classroom objects
+ */
+app.get("/api/getFullClassrooms", (req, res) => {
+  classroomDao.getFullClassrooms(req.query.day, req.query.start, req.query.end).then((classrooms) => res.json(classrooms))
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+})
+
+/**
+ * GET API
  * Request Parameters: none
  * Request Body Content: none
  * Response Body Content: an array of Booking objects

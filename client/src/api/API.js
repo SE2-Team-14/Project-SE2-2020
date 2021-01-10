@@ -101,7 +101,7 @@ async function getWeekTeacherLectureList(id) {
 
 async function modifyByDate(startingDate, endingDate) {
     const url = baseURL + '/modifySchedule-by-date';
-    return await fetchMethod("POST", `${url}`, {startingDate: startingDate, endingDate: endingDate});
+    return await fetchMethod("POST", `${url}`, { startingDate: startingDate, endingDate: endingDate });
 }
 
 /**
@@ -313,7 +313,16 @@ async function getClassrooms() {
 
 }
 
-
+/**
+ * Returns a list of classrooms that already have a lecture in the day and interval specified
+ * @param dayOfWeek a string containing the day in which used classrooms are being searched for 
+ * @param startingTime a string containing the starting hour of the interval in which to look for used classrooms
+ * @param endingTime a string containing the ending hour of the interval in which to look for used classrooms
+ */
+async function getFullClassrooms(dayOfWeek, startingTime, endingTime) {
+    const url = "/getFullClassrooms?day=" + dayOfWeek + "&start=" + startingTime + "&end=" + endingTime;
+    return await fetchMethod("GET", baseURL + url);
+}
 
 //--------------------------COURSES------------------------------
 
@@ -600,6 +609,7 @@ const API = {
     getSchedule,
     getScheduleByCourseId,
     modifyByDate,
+    getFullClassrooms,
 };
 
 export default API;

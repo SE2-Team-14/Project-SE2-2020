@@ -36,6 +36,7 @@ class ModifyLectureList extends React.Component {
             oldSchedule: null,
             showError: false,
             classrooms: [],
+            wrongClass: false,
         }
     }
 
@@ -107,6 +108,7 @@ class ModifyLectureList extends React.Component {
             let newStart = this.state.newStart;
             let newLength = this.state.newLength === "1.5 hours" ? 90 : 180;
             let newClass = this.state.newClass;
+
             let error = false;
             let newSeats = 0;
             for (let s of this.state.tempSchedules) {
@@ -120,23 +122,29 @@ class ModifyLectureList extends React.Component {
             if (error) {
                 this.setState({ showError: true })
             } else {
-                for (let i = 0; i < this.state.classrooms.length; i++) {
-                    if (this.state.classrooms[i].classroom === newClass) {
-                        newSeats = this.state.classrooms[i].maxNumberOfSeats;
+                API.getFullClassrooms(newDay, newStart, moment(newStart, "HH:mm").add(newLength, "minutes").format("HH:mm")).then((classrooms) => {
+                    if (classrooms.indexOf(newClass) === -1) {
+                        for (let i = 0; i < this.state.classrooms.length; i++) {
+                            if (this.state.classrooms[i].classroom === newClass) {
+                                newSeats = this.state.classrooms[i].maxNumberOfSeats;
+                            }
+                        }
+                        let newSchedule = {
+                            courseId: this.state.courseId,
+                            dayOfWeek: newDay,
+                            startingTime: newStart,
+                            endingTime: moment(newStart, "HH:mm").add(newLength, "minutes").format("HH:mm"),
+                            classroom: newClass,
+                            numberOfSeats: newSeats,
+                        };
+                        let schedules = this.state.tempSchedules;
+                        schedules.push(newSchedule);
+                        // API.modifySchedule(newSchedule.courseId, this.state.oldSchedule.dayOfWeek, newSchedule, this.state.oldSchedule.startingTime).then(() => {
+                        //   this.setState({ schedules: schedules, showModal: false })
+                        //})
+                    } else {
+                        this.setState({ wrongClass: true })
                     }
-                }
-                let newSchedule = {
-                    courseId: this.state.courseId,
-                    dayOfWeek: newDay,
-                    startingTime: newStart,
-                    endingTime: moment(newStart, "HH:mm").add(newLength, "minutes").format("HH:mm"),
-                    classroom: newClass,
-                    numberOfSeats: newSeats,
-                };
-                let schedules = this.state.tempSchedules;
-                schedules.push(newSchedule);
-                API.modifySchedule(newSchedule.courseId, this.state.oldSchedule.dayOfWeek, newSchedule, this.state.oldSchedule.startingTime).then(() => {
-                    this.setState({ schedules: schedules, showModal: false })
                 })
             }
         } else {
@@ -256,6 +264,7 @@ class ModifyLectureList extends React.Component {
                                         <Button variant="success" type="submit"> Submit Modifications</Button>
                                     </Form>
                                     {this.state.showError && <Alert variant="danger"> Error! Schedule invalid!</Alert>}
+                                    {this.state.wrongClass && <Alert variant="danger"> Error! You selected a classroom that already has a lecture for the specified date and time!</Alert>}
                                 </Modal.Body>
                             </Modal>
 
