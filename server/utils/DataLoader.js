@@ -30,8 +30,8 @@ function associateDay(weekday) {
     }
 }
 
-function loadLectures(schedule) {
-    let teacher = CourseDao.getCourseByID(schedule.courseId);
+async function loadLectures(schedule) {
+    let teacher = await CourseDao.getCourseByID(schedule.courseId);
     const endOfSemester = moment('2021-01-16');
     let day = associateDay(schedule.dayOfWeek.toLowerCase());
     let date = moment().day(day);
@@ -41,7 +41,7 @@ function loadLectures(schedule) {
         if (date > endOfSemester)
             break;
         else {
-            if (LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime) == undefined) {
+            if (await LectureDao.getSpecificLecture(schedule.courseId, teacher.teacherId, date.format('DD/MM/YYYY'), schedule.startingTime, schedule.endingTime) == undefined) {
                 let lecture = new Lecture(
                     null,
                     schedule.courseId,
@@ -61,7 +61,7 @@ function loadLectures(schedule) {
 
     let chunk = 100;
     for (let i = 0, j = lectures.length; i < j; i += chunk)
-        LectureDao.addLecture(lectures.slice(i, i + chunk));
+        await LectureDao.addLecture(lectures.slice(i, i + chunk));
 
 }
 
@@ -94,7 +94,7 @@ class DataLoader {
                     const chunk = 100;
                     for (let i = 0, j = students.length; i < j; i += chunk)
                         await PersonDao.createPerson(students.slice(i, i + chunk));
-                    resolve(results.data);
+                    resolve(students.length);
                 }
             });
         });
@@ -127,7 +127,7 @@ class DataLoader {
                     const chunk = 100;
                     for (let i = 0, j = teachers.length; i < j; i += chunk)
                         await PersonDao.createPerson(teachers.slice(i, i + chunk));
-                    resolve(results.data);
+                    resolve(teachers.length);
                 }
             });
         });
@@ -153,7 +153,7 @@ class DataLoader {
                     const chunk = 100;
                     for (let i = 0, j = enrollments.length; i < j; i += chunk)
                         await EnrollmentDao.addEnrollment(enrollments.slice(i, i + chunk));
-                    resolve(results.data);
+                    resolve(enrollments.length);
                 }
             });
         });
@@ -183,7 +183,7 @@ class DataLoader {
                     for (let i = 0, j = courses.length; i < j; i += chunk)
                         await CourseDao.createCourse(courses.slice(i, i + chunk));
                     console.log('Complete', results.data.length, 'records.');
-                    resolve(results.data);
+                    resolve(courses.length);
                 }
             });
         });
@@ -243,7 +243,7 @@ class DataLoader {
                     for (let i = 0, j = schedule.length; i < j; i += chunk)
                         await ScheduleDao.addSchedule(schedule.slice(i, i + chunk));
 
-                    resolve(results.data);
+                    resolve(schedule.length);
                 }
             });
         });

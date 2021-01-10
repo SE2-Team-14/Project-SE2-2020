@@ -22,6 +22,7 @@ class LoadDataView extends React.Component {
     showUploadSuccess: false,
     showUpdateError: false,
     loading: false,
+    records: ""
   };
 
   handleFile = (e) => {
@@ -68,13 +69,14 @@ class LoadDataView extends React.Component {
   }
 
   handleClose = () => {
-    this.setState({ showUploadSuccess: false, showUpdateError: false, fileName: "", selectedFile: null });
+    this.setState({ showUploadSuccess: false, showUpdateError: false, fileName: "", selectedFile: null, records: "" });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-    API.fileLoader(this.state.fileData, this.state.fileType).then(() => this.setState({ showUploadSuccess: true, selectedFile: null, loading: false }));
+    API.fileLoader(this.state.fileData, this.state.fileType)
+      .then((res) => this.setState({ showUploadSuccess: true, selectedFile: null, loading: false, records: res.records }));
   };
 
   fileData = () => {
@@ -127,7 +129,7 @@ class LoadDataView extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Upload successfull!</Modal.Title>
           </Modal.Header>
-          <Modal.Body>The file {this.state.fileName} has been successfully uploaded</Modal.Body>
+          <Modal.Body>The file {this.state.fileName} has been successfully uploaded. {this.state.records} new records have been saved into the system</Modal.Body>
           <Modal.Footer>
             <Button variant='primary' onClick={this.handleClose}>OK</Button>
           </Modal.Footer>

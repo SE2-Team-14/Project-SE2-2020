@@ -617,27 +617,27 @@ app.post('/api/data-loader', (req, res) => {
   switch (fileType) {
     case "student":
       dataLoader.readStudentsCSV(fileData)
-        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .then(async (result) => (await res.status(201).json({result})))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "teacher":
       dataLoader.readTeachersCSV(fileData)
-        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .then(async (result) => (await res.status(201).json({result})))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "enrollment":
       dataLoader.readEnrollmentsCSV(fileData)
-        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .then(async (result) => (await res.status(201).json({result})))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "schedule":
       dataLoader.readScheduleCSV(fileData)
-        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .then(async (result) => (await res.status(201).json({result})))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
     case "course":
       dataLoader.readCoursesCSV(fileData)
-        .then(async (result) => (await res.status(201).json(result.lenght)))
+        .then(async (result) => (await res.status(201).json({result})))
         .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
       break;
   }

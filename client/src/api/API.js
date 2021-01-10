@@ -44,7 +44,7 @@ async function getPersonName(email) {
  */
 async function fileLoader(fileData, fileType) {
     const url = baseURL;
-    return fetchMethod("POST", `${url}/data-loader`, { fileData: fileData, fileType: fileType });
+    return fetchMethodAndResolveResponse("POST", `${url}/data-loader`, { fileData: fileData, fileType: fileType });
 }
 
 async function modifySchedule(courseId, dayOfWeek, schedule, oldStart) {
