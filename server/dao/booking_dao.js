@@ -386,3 +386,27 @@ exports.getTotalAttendance = function () {
         })
     })
 }
+
+exports.getFutureBookingsOfDay = function (dayOfWeek, courseId, startingTime) {
+    return new Promise((resolve, reject) => {
+        let today = moment();
+        let res = [];
+        const sql = "SELECT BOOKING.studentId, lecture.date as lectureDate, lecture.startingTime AS start, COURSE.name, lecture.classroomId FROM BOOKING, LECTURE, COURSE WHERE LECTURE.lectureId = BOOKING.lectureId AND COURSE.courseId = LECTURE.courseId AND LECTURE.courseId = ? AND LECTURE.startingTime = ?";
+        db.all(sql, [courseId, startingTime], (err, rows) => {
+            if (err) {
+                reject(err)
+            } else {
+                if (rows) {
+                    for (let row of rows) {
+                        if (moment(row.lectureDate, "DD/MM/YYYY").isAfter(today) && moment(row.lectureDate, "DD/MM/YYYY").format("ddd").toLowerCase() === dayOfWeek) {
+                            res.push(row)
+                        }
+                    }
+                    resolve(res)
+                } else {
+                    resolve(undefined)
+                }
+            }
+        })
+    })
+}
