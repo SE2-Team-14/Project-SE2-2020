@@ -99,6 +99,11 @@ async function getWeekTeacherLectureList(id) {
     return await fetchMethod("GET", `${url}/${id}/week-teacher-lectures`, (l) => new Lecture(l.lectureId, l.courseId, l.teacherId, l.date, l.startingTime, l.endingTime, l.inPresence, l.classroomId, l.numberOfSeats));
 }
 
+async function modifyByDate(startingDate, endingDate) {
+    const url = baseURL + '/modifySchedule-by-date';
+    return await fetchMethod("POST", `${url}`, {startingDate: startingDate, endingDate: endingDate});
+}
+
 /**
  * Returns a list of Lecture items containing all future lectures taught by a teacher
  * @param id a string containing the identifier of the teacher whose future lectures are required
@@ -594,6 +599,7 @@ const API = {
     modifySchedule,
     getSchedule,
     getScheduleByCourseId,
+    modifyByDate,
 };
 
 export default API;

@@ -649,11 +649,6 @@ app.post('/api/data-loader', (req, res) => {
  * Request Parameters: 
  * Request Body Content: none
  * Response Body Content: 
- * 
- * INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats)
-VALUES(5, 'XY1211', 'd9000', '04/11/2021', '8:30', '11:30', 1, 1, 0)
-INSERT INTO LECTURE(lectureId, courseId, teacherId, date, startingTime, endingTime, inPresence, classroomId, numberOfSeats)
-VALUES(6, 'XY1211', 'd9000', '11/11/2021', '8:30', '11:30', 1, 1, 0)
  */
 app.post('/api/modifySchedule', (req, res) => {
   let courseId = req.body.courseId;
@@ -669,6 +664,24 @@ app.post('/api/modifySchedule', (req, res) => {
         bookingDao.deleteBookingByTeacher(lecture.lectureId);
       }
       dataLoader.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
+    }).then(res.status(200).end())
+    .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
+});
+
+/**
+ * GET POST
+ * Request Parameters: 
+ * Request Body Content: none
+ * Response Body Content: 
+ */
+app.post('/api/modifySchedule-by-date', (req, res) => {
+  let startingDate = req.body.startingDate;
+  let endingDate = req.body.endingDate;
+
+  lectureDao.getLecturesToModify(startingDate, endingDate).then((lectures) => {
+      lectureDao.modifyLecturesByDate(startingDate, endingDate)
+      for(let lecture of lectures)
+        bookingDao.deleteBookingByTeacher(lecture.lectureId)
     }).then(res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });

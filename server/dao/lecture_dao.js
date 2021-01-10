@@ -441,6 +441,24 @@ exports.modifyLectures = function (courses) {
     });
 }
 
+exports.getLecturesToModify = function (startingDate, endingDate) {
+    let sql = 'SELECT lectureId FROM LECTURE WHERE inPresence = 1 AND date >= ? AND date <= ?';
+    let params = [startingDate, endingDate];    
+    return new Promise((resolve, reject) => {
+        db.all(sql, params, (err, rows) => {
+            if (err)
+                reject(err);
+            else {
+                if (rows) {
+                    resolve(rows);
+                }
+                else
+                    resolve(undefined);
+            }
+        });
+    });
+}
+
 exports.modifyLecturesByDate = function (startingDate, endingDate) {
     let sql = 'UPDATE LECTURE SET inPresence = 0 WHERE date >= ? AND date <= ?';
     let params = [startingDate, endingDate];    

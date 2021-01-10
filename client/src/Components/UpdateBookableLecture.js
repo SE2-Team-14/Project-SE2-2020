@@ -90,8 +90,7 @@ class UpdateBookableLecture extends React.Component {
     }
 
     confirmCustom = () => {
-        console.log(this.state.startingDate);
-        console.log(this.state.endingDate);
+        API.modifyByDate(this.state.startingDate, this.state.endingDate);
     }
 
     onChangeHandler = (name, value) => {
@@ -137,7 +136,7 @@ class UpdateBookableLecture extends React.Component {
                                 <Modal.Header>
                                     <Modal.Title></Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body> Your changes are saved!</Modal.Body>
+                                <Modal.Body> Your changes have been saved!</Modal.Body>
                                 <Modal.Footer>
                                     <Button variant='secondary' onClick={() => this.handleClose()}>Ok</Button>
                                 </Modal.Footer>
