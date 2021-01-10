@@ -76,7 +76,7 @@ class LoadDataView extends React.Component {
     e.preventDefault();
     this.setState({ loading: true });
     API.fileLoader(this.state.fileData, this.state.fileType)
-      .then((res) => this.setState({ showUploadSuccess: true, selectedFile: null, loading: false, records: res.records }));
+      .then((res) => this.setState({ showUploadSuccess: true, selectedFile: null, loading: false, records: res.result }));
   };
 
   fileData = () => {
