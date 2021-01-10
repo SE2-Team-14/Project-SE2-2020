@@ -646,9 +646,9 @@ app.post('/api/data-loader', (req, res) => {
 
 /**
  * GET POST
- * Request Parameters: 
- * Request Body Content: none
- * Response Body Content: 
+ * Request Parameters: none
+ * Request Body Content: identifier of the course whose schedule is being changed, day of the week of the old schedule, schedule object containing the new schedule, starting time of the old schedule
+ * Response Body Content: none
  */
 app.post('/api/modifySchedule', (req, res) => {
   let courseId = req.body.courseId;
@@ -659,11 +659,7 @@ app.post('/api/modifySchedule', (req, res) => {
 
   lectureDao.getLectureByCourseId(courseId, dayOfWeek)
     .then((lectures) => {
-      for (let lecture of lectures) {
-        //lectureDao.deleteLecture(lecture.lectureId);
-        //bookingDao.deleteBookingByTeacher(lecture.lectureId);
-      }
-      //dataLoader.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
+
       bookingDao.getFutureBookingsOfDay(dayOfWeek, courseId, oldStart).then((items) => {
         for (let item of items) {
           personDao.getPersonByID(item.studentId).then((student) => {
@@ -679,11 +675,17 @@ app.post('/api/modifySchedule', (req, res) => {
             const message = `Dear ${student.name} ${student.surname}\n` +
               `the lecture for the course ${item.name} of ${item.lectureDate} at ${item.start} has changed schedule.\n` +
               `It will now take place on ${newDate} at ${schedule.startingTime} in class ${schedule.classroom}.\n` +
+              `Remember to book a seat again if you still want to follow the lecture!\n` +
               `Kind regards.`;
             emailSender.sendEmail(recipient, subject, message);
           })
         }
       })
+      for (let lecture of lectures) {
+        lectureDao.deleteLecture(lecture.lectureId);
+        bookingDao.deleteBookingByTeacher(lecture.lectureId);
+      }
+      dataLoader.modifySchedule(schedule, courseId, dayOfWeek, oldStart);
     }).then(res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
@@ -699,10 +701,10 @@ app.post('/api/modifySchedule-by-date', (req, res) => {
   let endingDate = req.body.endingDate;
 
   lectureDao.getLecturesToModify(startingDate, endingDate).then((lectures) => {
-      lectureDao.modifyLecturesByDate(startingDate, endingDate)
-      for(let lecture of lectures)
-        bookingDao.deleteBookingByTeacher(lecture.lectureId)
-    }).then(res.status(200).end())
+    lectureDao.modifyLecturesByDate(startingDate, endingDate)
+    for (let lecture of lectures)
+      bookingDao.deleteBookingByTeacher(lecture.lectureId)
+  }).then(res.status(200).end())
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 });
 
