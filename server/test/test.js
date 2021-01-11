@@ -1925,7 +1925,9 @@ describe('Server side unit test', function () {
           '\nXYNNO,114,Wed,1,8:30-11:00' +
           '\nXYNNP,115,Thu,1,8:30-11:00' +
           '\nXYNNQ,116,Fri,1,8:30-11:00';
-
+        await CourseDao.createCourse([new Course('XYNNN', 'dFFFF', 'Software Engineering X', 5, 2)]);
+        await PersonDao.createPerson([new Person('dFFFF', 'FFFF', 'FFF', 'teacher', 'f@d', '12', null, null, 'abcsesf')])
+        this.timeout(10000);
         await dataLoader.readScheduleCSV(schedule);
         return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'mon'));
       });
