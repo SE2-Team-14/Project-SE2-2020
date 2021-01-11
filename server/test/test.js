@@ -1871,7 +1871,22 @@ describe('Server side unit test', function () {
       });
     });
 
+    describe('#Test getLecturesToModify', function () {
+      it('Get lectures to modify', async function () {
+        let lecture = new Lecture(63, 'XYAOML', 'dOOO', '25/12/2020', '8:30', '11:00', '1', '26', 24);
+        await LectureDao.addLecture([lecture]);
+        return await LectureDao.getLecturesToModify('25/12/2020', '25/12/2020').then((l) => assert.strictEqual(l[0].lectureId, 63));
+      });
+    });
 
+    describe('#Test modifyLecturesByDate', function () {
+      it('Modify lectures by date', async function () {
+        let lecture = new Lecture(80, 'XYBOML', 'dOOO', '10/12/2020', '8:30', '11:00', '1', '26', 24);
+        await LectureDao.addLecture([lecture]);
+        await LectureDao.modifyLecturesByDate('10/12/2020', '10/12/2020')
+        return await LectureDao.getLectureById(80).then((l) => assert.strictEqual(l.inPresence, '0'));
+      });
+    });
   });
 
 
@@ -1920,8 +1935,8 @@ describe('Server side unit test', function () {
 
     describe('#Load schedule into the system', function () {
       it('Load a schedule', async function () {
-        const schedule = scheduleHeader + 'XYNNN,112,Mon,1,8:30-11:00'
-        '\nXYNNM,113,Tue,1,8:30:11:00' +
+        const schedule = scheduleHeader + 'XYNNN,112,Mon,1,8:30-11:00' +
+          '\nXYNNM,113,Tue,1,8:30:11:00' +
           '\nXYNNO,114,Wed,1,8:30-11:00' +
           '\nXYNNP,115,Thu,1,8:30-11:00' +
           '\nXYNNQ,116,Fri,1,8:30-11:00';
