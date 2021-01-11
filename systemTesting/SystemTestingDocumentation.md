@@ -23,6 +23,14 @@ In this document you can find the documentation about our system testing. For ea
 	- [Story 14](#story-14)
 	- [Story 15](#story-15)
 	- [Story 16](#story-16)
+	- [Story 17](#story-17)
+	- [Story 18](#story-18)
+	- [Story 19](#story-19)
+	- [Story 20](#story-20)
+	- [Story 21](#story-21)
+	- [Story 22](#story-22)
+	- [Story 23](#story-23)
+	- [Story 24](#story-24)
 
 
 # List of stories
@@ -908,17 +916,115 @@ In this document you can find the documentation about our system testing. For ea
 ## Story 20
 ###### As a support officer I want to modify the schedule of courses so that data is up-to-date
 
-### Test 20.1
+### Test 20.1 (A support officer accesses the system and changes the schedule of a course)
+
+- As a support officer I need to put my credentials in the login form and then press the button `Login`.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLogin.PNG)
+
+- Once in the homepage I click on the `Modify Data` link in the header.
+
+![OfficerHome](./testImage/OfficerScreen/OfficerHome.PNG)
+
+- In the new page I click on the dropdown menu and look for the course `Economia e finanza d'impresa - Ines Beneventi`
+
+![ScheduleDropdown](./testImage/OfficerScreen/ScheduleDropdown.PNG)
+
+- In the new list I click on the `Modify Schedule` button in the line corresponding to the schedule related to Friday (`fri`)
+
+![ScheduleList](./testImage/OfficerScreen/ScheduleList.PNG)
+
+- In the pop-up I select `mon` as new day for the scheduled lecture, `8:30` as the starting time for the lecture, `3 hours` as the length of the lecture and `2` as the new classroom, then I click on the `Submit Modifications` button to confirm my changes.
+
+![ScheduleChanges](./testImage/OfficerScreen/ScheduleChanges.PNG)
+
+- After the pop-up closes I see in the list the changes I made to the schedule.
+
+![ScheduleUpdated](./testImage/OfficerScreen/ScheduleUpdated.PNG)
+
+### Test 20.2 (A support officer accesses the system to change the schedule of a course, choosing a time when the teacher already has another lecture scheduled)
+
+- As a support officer I need to put my credentials in the login form and then press the button `Login`.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLogin.PNG)
+
+- Once in the homepage I click on the `Modify Data` link in the header.
+
+![OfficerHome](./testImage/OfficerScreen/OfficerHome.PNG)
+
+- In the new page I click on the dropdown menu and look for the course `Metodi di finanziamento delle imprese - Ines Beneventi`
+
+![ScheduleDropdown](./testImage/OfficerScreen/ScheduleDropdown2.PNG)
+
+- In the new list I click on the `Modify Schedule` button in the line corresponding to the schedule related to Monday (`mon`)
+
+![ScheduleList](./testImage/OfficerScreen/ScheduleList2.PNG)
+
+- In the pop-up I select `tue` as new day for the scheduled lecture, `16:00` as the starting time for the lecture, `1.5 hours` as the length of the lecture and `1` as the new classroom, then, after I click on the `Submit Modifications` button to confirm my changes, an error message appears telling me the inserted schedule is invalid.
+
+![InvalidError](./testImage/OfficerScreen/InvalidError.PNG)
+
+### Test 20.3 (A support officer accesses the system to change the schedule of a course, choosing as new classroom one that is already occupied)
+
+- As a support officer I need to put my credentials in the login form and then press the button `Login`.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLogin.PNG)
+
+- Once in the homepage I click on the `Modify Data` link in the header.
+
+![OfficerHome](./testImage/OfficerScreen/OfficerHome.PNG)
+
+- In the new page I click on the dropdown menu and look for the course `Economia e finanza d'impresa - Ines Beneventi`
+
+![ScheduleDropdown](./testImage/OfficerScreen/ScheduleDropdown.PNG)
+
+- In the new list I click on the `Modify Schedule` button in the line corresponding to the schedule related to Friday (`fri`)
+
+![ScheduleList](./testImage/OfficerScreen/ScheduleList.PNG)
+
+- In the pop-up I select `thu` as new day for the scheduled lecture, `10:00` as the starting time for the lecture, `3 hours` as the length of the lecture and `5` as the new classroom, then, after I click on the `Submit Modifications` button to confirm my changes, an error message appears telling me the selected classroom is already occupied.
+
+![ClassroomError](./testImage/OfficerScreen/ClassroomError.PNG)
 
 ## Story 21
 ###### As a student I want to get a notification when the schedule for a lecture I booked for is changed so that I am informed 
 
-### Test 21.1
+### Test 21.1 (A student receives an email after the schedule related to a lesson he is booked for is changed) (following from [test 20.1](#test-201-a-support-officer-accesses-the-system-and-changes-the-schedule-of-a-course))
+
+- As a student I access to my mail account and see an e-mail telling me that the schedule has changed
+
+![ScheduleChanged](./testImage/StudentScreen/ScheduleChanged.PNG)
 
 ## Story 21-BIS
 ###### As a student I want to get a notification when the schedule for a lecture I booked for is turned from presence into a remote
 
-### Test 21.2
+### Test 21.2 (A teacher changes a lecture to virtual and a student booked at that lecture receives an email for information)
+
+- As a teacher I need to put my credentials in the login form and then press the button `Login`.
+
+![TeacherLogin](./testImage/TeacherScreen/TeacherLogin.PNG)
+
+- In the homepage I click on the `Manage Lectures` link in the header.
+
+![TeacherHome](./testImage/TeacherScreen/TeacherHome.PNG)
+
+- In the list in the new page I click on the `Switch to virtual` button in the line corresponding to the lesson of the course `Economia e finanza d'impresa` for the day 15/01/2021.
+
+![ManageLectures](./testImage/TeacherScreen/ManageLectures.PNG)
+
+- After clicking I click `Yes` in the pop-up that has just appeared, so that I can see a message confirming the change.
+
+![VirtualPopup](./testImage/TeacherScreen/VirtualPopup.PNG)
+
+![ConfirmVirtual](./testImage/TeacherScreen/ConfirmVirtual.PNG)
+
+- After closing the pop-up I see in the list that the `Switch to virtual` button in greyed out in the corresponding row of the list and the classroom is marked as `Virtual Classroom`.
+
+![VirtualAfter](./testImage/TeacherScreen/VirtualAfter.PNG)
+
+- Then, as a student, I access my mailing account and see an e-mail informing me that the lesson I was booked for has switched to virtual.
+
+![VirtualLectureEmail](./testImage/StudentScreen/VirtualLectureEmail.PNG)
 
 ## Story 22
 ###### As a student I want to access a tutorial for using the system so that I can use it properly
