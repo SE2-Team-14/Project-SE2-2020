@@ -1681,15 +1681,15 @@ describe('Server side unit test', function () {
         await PersonDao.deletePersonById("d46");
         await CourseDao.deleteCourseById("c46");
         await LectureDao.deleteLecture(46);
-        let teacher = new Person("d50", "teacherName50", "teacherSurname50", "Teacher", "teacher50@test.it", "1234", null, null, "ABCD50");
+        let teacher = new Person("d51", "teacherName51", "teacherSurname51", "Teacher", "teacher51@test.it", "1234", null, null, "ABCD51");
         let arrayTeacher = [];
         arrayTeacher.push(teacher);
         await PersonDao.createPerson(arrayTeacher);
-        let course = new Course("c50", "d50", "courseName50", "year50", "sem50");
+        let course = new Course("c51", "d51", "courseName51", "year51", "sem51");
         let arrayCourse = [];
         arrayCourse.push(course);
         await CourseDao.createCourse(arrayCourse);
-        let lecture = new Lecture(50, "c50", "d50", "31/12/2025", "8:30", "11:30", "1", "50", 50);
+        let lecture = new Lecture(51, "c51", "d51", "31/12/2025", "8:30", "11:30", "1", "51", 51);
         let arrayLecture = [];
         arrayLecture.push(lecture);
         await LectureDao.addLecture(arrayLecture);
@@ -1708,19 +1708,42 @@ describe('Server side unit test', function () {
         let arrayStudent = [];
         let arrayLecture = [];
         let positiveStudent = new Person("p47", "positiveName47", "positiveSurname47", "Student", "positive@email.it", "1234", "positive", "18/11/1999", "DERF453");
-        let student = new Person("s47", "studentName47", "studentSurname47", "Student", "student47@email.it", "1234", "studentCity", "18/11/1999", "aAFGDD34");
+        let student = new Person("s147", "studentName47", "studentSurname47", "Student", "student47@email.it", "1234", "studentCity", "18/11/1999", "aAFGDD34");
         arrayStudent.push(positiveStudent);
         arrayStudent.push(student);
         let lecture = new Lecture(47, "c47", "d47", today, "8:30", "11:30", "1", "47", 47);
         arrayLecture.push(lecture);
-        let booking1 = new Booking("p47", 47, prenotation, "8:30");
-        let booking2 = new Booking("s47", 47, prenotation, "8:30");
+        let booking1 = new Booking("s47", 47, prenotation, "8:30", 1);
+        let booking2 = new Booking("s147", 47, prenotation, "8:30", 1);
         let contact = "" + student.id + ", " + student.name + ", " + student.surname + ", " + student.email;
         await PersonDao.createPerson(arrayStudent);
         await LectureDao.addLecture(arrayLecture);
         await BookingDao.addBoocking(booking1);
         await BookingDao.addBoocking(booking2);
-        return await ContactTracingDao.getContactTracingByPersonID("p47").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
+        return await ContactTracingDao.getContactTracingByPersonId("s47").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
+      });
+    });
+
+    //#50
+    describe('#Get tracing of a positive teacher ', function () {
+      it('Get the list of students in contact with the positive teacher ', async function () {
+        let today = moment().subtract('1', "day").format("DD/MM/YYYY");
+        let prenotation = moment().subtract('2', "days").format("DD/MM/YYYY");
+        let arrayPerson = [];
+        let arrayLecture = [];
+        let positiveTeacher = new Person("d50", "positiveName50", "positiveSurname50", "Teacher", "positiveTeacher@email.it", "1234", "positive", "04/08/1971", "EERF453");
+        let student = new Person("s50", "studentName50", "studentSurname50", "Student", "student50@email.it", "1234", "studentCity", "18/11/1999", "bAFGDD34");
+        arrayPerson.push(positiveTeacher);
+        arrayPerson.push(student);
+        let lecture = new Lecture(50, "c50", "d50" /*set the created positive teacher*/, today, "8:30", "11:30", "1", "50", 50);
+        arrayLecture.push(lecture);
+        //let booking1 = new Booking("p47", 47, prenotation, "8:30");
+        let booking1 = new Booking("s50", 50, prenotation, "8:30", 1);
+        let contact = "" + student.id + ", " + student.name + ", " + student.surname + ", " + student.email;
+        await PersonDao.createPerson(arrayPerson);
+        await LectureDao.addLecture(arrayLecture);
+        await BookingDao.addBoocking(booking1);
+        return await ContactTracingDao.getContactTracingByPersonId("d50").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
       });
     });
 
@@ -1792,7 +1815,7 @@ describe('Server side unit test', function () {
         arraySchedule.push(testSchedule1);
         arraySchedule.push(testSchedule2);
         await ScheduleDao.addSchedule(arraySchedule);
-        return await ScheduleDao.getSchedule().then((s) => assert.strictEqual(s[0].dayOfWeek, 'Mon')).then(() => completed++);
+        return await ScheduleDao.getSchedule().then((s) => { assert.strictEqual(s.length > 1, true) }).then(() => completed++);
       });
     });
 
@@ -1891,7 +1914,7 @@ describe('Server side unit test', function () {
 
 
         await dataLoader.readScheduleCSV(schedule);
-        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'Mon')).then(() => completed++);
+        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'mon')).then(() => completed++);
       });
     });
 
@@ -2066,252 +2089,294 @@ describe('Server side unit test', function () {
     });
 
 
-    describe('#Aspetta', function () {
-      it('Aspetta', function () {
-        let finito = false;
-        while (1) {
-          if (completed == 75) {
-            finito = true;
+    describe('#500 error code', function () {
 
-            db.close();
+      // We use setTimeout in order to put those test into the event loop, so they are executed after other tests
 
-            //Test that http://localhost:3001/api/getTeachers returns 500
-            describe("#Test /api/getTeachers", function () {
-              var url = "http://localhost:3001/api/getTeachers";
-              it("returns status 500", function (done) {
+      const wait = 0.01; // seconds
+
+      it('500 error code', function () {
+
+
+
+          //Test that http://localhost:3001/api/getTeachers returns 500
+          describe("#Test /api/getTeachers", function () {
+            var url = "http://localhost:3001/api/getTeachers";
+            it("returns status 500", function (done) {
+              setTimeout(() => {
+                db.close(); // THE FIRST TEST CLOSE THE DATABASE
                 request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
-              })
+                expect(response.statusCode).to.equal(500);
+                done();
+              });
+              }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/getClassrooms returns 500
-            describe("#Test /api/getClassrooms", function () {
-              var url = "http://localhost:3001/api/getClassrooms";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/getClassrooms returns 500
+          describe("#Test /api/getClassrooms", function () {
+            var url = "http://localhost:3001/api/getClassrooms";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/getAllBookings returns 500
-            describe("#Test /api/getAllBookings", function () {
-              var url = "http://localhost:3001/api/getAllBookings";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/getAllBookings returns 500
+          describe("#Test /api/getAllBookings", function () {
+            var url = "http://localhost:3001/api/getAllBookings";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
 
-            //Test that http://localhost:3001/api/getBookings/:studentId returns 500
-            describe("#Test /api/getBookings/:studentId", function () {
-              var url = "http://localhost:3001/api/getBookings/12";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/getBookings/:studentId returns 500
+          describe("#Test /api/getBookings/:studentId", function () {
+            var url = "http://localhost:3001/api/getBookings/12";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/getTeacherLectures/:id returns 500
-            describe("#Test /api/getTeacherLectures/:id", function () {
-              var url = "http://localhost:3001/api/getTeacherLectures/12";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/getTeacherLectures/:id returns 500
+          describe("#Test /api/getTeacherLectures/:id", function () {
+            var url = "http://localhost:3001/api/getTeacherLectures/12";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/student-home/:id/bookable-lectures returns 500
-            describe("#Test /api/student-home/:id/bookable-lectures", function () {
-              var url = "http://localhost:3001/api/student-home/12/bookable-lectures";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/student-home/:id/bookable-lectures returns 500
+          describe("#Test /api/student-home/:id/bookable-lectures", function () {
+            var url = "http://localhost:3001/api/student-home/12/bookable-lectures";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/student-home/:id/week-lectures returns 500
-            describe("#Test /api/student-home/:id/week-lectures", function () {
-              var url = "http://localhost:3001/api/student-home/12/week-lectures";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/student-home/:id/week-lectures returns 500
+          describe("#Test /api/student-home/:id/week-lectures", function () {
+            var url = "http://localhost:3001/api/student-home/12/week-lectures";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) { 
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/teacher-home/:id/week-teacher-lectures returns 500
-            describe("#Test /api/teacher-home/:id/week-teacher-lectures", function () {
-              var url = "http://localhost:3001/api/teacher-home/12/week-teacher-lectures";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/teacher-home/:id/week-teacher-lectures returns 500
+          describe("#Test /api/teacher-home/:id/week-teacher-lectures", function () {
+            var url = "http://localhost:3001/api/teacher-home/12/week-teacher-lectures";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/courses returns 500
-            describe("#Test /api/courses", function () {
-              var url = "http://localhost:3001/api/courses";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/courses returns 500
+          describe("#Test /api/courses", function () {
+            var url = "http://localhost:3001/api/courses";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/bookedStudents returns 500
-            describe("#Test /api/bookedStudents", function () {
-              var url = "http://localhost:3001/api/bookedStudents";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/bookedStudents returns 500
+          describe("#Test /api/bookedStudents", function () {
+            var url = "http://localhost:3001/api/bookedStudents";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/getCourses returns 500
-            describe("#Test /api/getCourses", function () {
-              var url = "http://localhost:3001/api/getCourses";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/getCourses returns 500
+          describe("#Test /api/getCourses", function () {
+            var url = "http://localhost:3001/api/getCourses";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/name returns 500
-            describe("#Test /api/name", function () {
-              var url = "http://localhost:3001/api/name";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/name returns 500
+          describe("#Test /api/name", function () {
+            var url = "http://localhost:3001/api/name";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/contact-tracing returns 500
-            describe("#Test /api/contact-tracing", function () {
-              var url = "http://localhost:3001/api/contact-tracing";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/contact-tracing returns 500
+          describe("#Test /api/contact-tracing", function () {
+            var url = "http://localhost:3001/api/contact-tracing";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/allAttendance returns 500
-            describe("#Test /api/allAttendance", function () {
-              var url = "http://localhost:3001/api/allAttendance";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/allAttendance returns 500
+          describe("#Test /api/allAttendance", function () {
+            var url = "http://localhost:3001/api/allAttendance";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/totalAttendance returns 500
-            describe("#Test /api/totalAttendance", function () {
-              var url = "http://localhost:3001/api/totalAttendance";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/totalAttendance returns 500
+          describe("#Test /api/totalAttendance", function () {
+            var url = "http://localhost:3001/api/totalAttendance";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/bookingsOfLecture returns 500
-            describe("#Test /api/bookingsOfLecture", function () {
-              var url = "http://localhost:3001/api/bookingsOfLecture";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/bookingsOfLecture returns 500
+          describe("#Test /api/bookingsOfLecture", function () {
+            var url = "http://localhost:3001/api/bookingsOfLecture";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/currentLecture returns 500
-            describe("#Test /api/currentLecture", function () {
-              var url = "http://localhost:3001/api/currentLecture";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/currentLecture returns 500
+          describe("#Test /api/currentLecture", function () {
+            var url = "http://localhost:3001/api/currentLecture";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/cancelledLecturesStats returns 500
-            describe("#Test /api/cancelledLecturesStats", function () {
-              var url = "http://localhost:3001/api/cancelledLecturesStats";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/cancelledLecturesStats returns 500
+          describe("#Test /api/cancelledLecturesStats", function () {
+            var url = "http://localhost:3001/api/cancelledLecturesStats";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/getCoursesAndTeachers returns 500
-            describe("#Test /api/getCoursesAndTeachers", function () {
-              var url = "http://localhost:3001/api/getCoursesAndTeachers";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/getCoursesAndTeachers returns 500
+          describe("#Test /api/getCoursesAndTeachers", function () {
+            var url = "http://localhost:3001/api/getCoursesAndTeachers";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
+          })
 
-            //Test that http://localhost:3001/api/allCoursesStats returns 500
-            describe("#Test /api/allCoursesStats", function () {
-              var url = "http://localhost:3001/api/allCoursesStats";
-              it("returns status 500", function (done) {
-                request(url, function (error, response, body) {
-                  expect(response.statusCode).to.equal(500);
-                  done();
-                })
+          //Test that http://localhost:3001/api/allCoursesStats returns 500
+          describe("#Test /api/allCoursesStats", function () {
+            var url = "http://localhost:3001/api/allCoursesStats";
+            it("returns status 500", function (done) {
+              setTimeout( () => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
               })
+            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
             })
-
-            return assert.strictEqual(finito, true);
-          }
-        }
+          })
+          //return assert.strictEqual(finito, true);
+          //}
+          //}
       });
     });
-
   });
 
 
   /**close the server after the test **/
-  //after(done => {
-  //server.close(done);
-  //db.close();
-  //db.deleteFromDisk();
-  //});
-
-
+  /*
+  this.afterAll(done => {
+    setTimeout(() => {
+      server.close(done);
+      db.close();
+      db.deleteFromDisk();
+    }, 1000 * 20); // wait few seconds before closing the server, in order to let test finish
+  });
+*/
 
 });

@@ -26,7 +26,7 @@ exports.addBoocking = function (booking) {
         let month = moment(new Date()).format("MMMM")
         let week = moment().startOf("isoWeek").format("DD/MM/YYYY") + "-" + moment().endOf("isoWeek").format("DD/MM/YYYY");
         let params = [];
-        params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week, 0);
+        params.push(booking.studentId, booking.lectureId, date, booking.startingTime, month, week, booking.present ? booking.present : 0);
 
         db.run(sql, params, function (err) {
             if (err) {

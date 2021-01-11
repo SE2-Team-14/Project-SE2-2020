@@ -29,7 +29,7 @@ exports.getContactTracingByPersonId = function(personId) {
 /* ORIGINAL QUERY FOR STUDENT:
 SELECT DISTINCT p.id, p.name, p.surname, p.email
 FROM PERSON  p, BOOKING  b, LECTURE  l
-WHERE p.id = b.studentId and b.lectureId = l.lectureId and 
+WHERE p.id = b.studentId and b.lectureId = l.lectureId and b.present = 1 and
 	  l.lectureId IN (
 		SELECT l1.lectureId 
 		FROM LECTURE l1, BOOKING b1 
@@ -53,7 +53,7 @@ WHERE p.id = b.studentId and b.lectureId = l.lectureId and
         const sql = ` 
         SELECT DISTINCT p.id, p.name, p.surname, p.email
         FROM PERSON  p, BOOKING  b, LECTURE  l
-        WHERE p.id = b.studentId and b.lectureId = l.lectureId and 
+        WHERE p.id = b.studentId and b.lectureId = l.lectureId and b.present = 1 and
               l.lectureId IN (
                 SELECT l1.lectureId 
                 FROM LECTURE l1, BOOKING b1 
@@ -80,7 +80,7 @@ WHERE p.id = b.studentId and b.lectureId = l.lectureId and
 /* ORIGINAL QUERY FOR TEACHER:
 SELECT DISTINCT p.id, p.name, p.surname, p.email
 FROM PERSON  p, BOOKING  b
-WHERE p.id = b.studentId  and 
+WHERE p.id = b.studentId and b.present = 1 and 
 	  b.lectureId IN (
 		SELECT l.lectureId 
 		FROM LECTURE l
@@ -104,7 +104,7 @@ let getContactTracingByTeacher = function (teacherId) {
         const sql = ` 
         SELECT DISTINCT p.id, p.name, p.surname, p.email
         FROM PERSON  p, BOOKING  b
-        WHERE p.id = b.studentId and 
+        WHERE p.id = b.studentId and b.present = 1 and
               b.lectureId IN (
                 SELECT l.lectureId 
                 FROM LECTURE l
@@ -115,7 +115,6 @@ let getContactTracingByTeacher = function (teacherId) {
                 
         db.all(sql, [teacherId, minDate, today], (err, rows) => {
             if (err) {
-                console.log("ECCO L'ERRORE", err);
                 reject(err);
             } else {
                 if (rows) {
