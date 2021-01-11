@@ -72,7 +72,7 @@ class UpdateBookableLecture extends React.Component {
     }
 
     handleSuccess = () => {
-        this.setState({ showModalError: true });
+        this.setState({ showModalError: false, showModalSuccess: true, showModalCustom: false });
     }
 
     handleClickCustom = (event) => {
@@ -90,7 +90,7 @@ class UpdateBookableLecture extends React.Component {
     }
 
     confirmCustom = () => {
-        API.modifyByDate(this.state.startingDate, this.state.endingDate);
+        API.modifyByDate(this.state.startingDate, this.state.endingDate).then(() => this.handleSuccess());
     }
 
     onChangeHandler = (name, value) => {
