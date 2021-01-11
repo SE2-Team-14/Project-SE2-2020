@@ -390,8 +390,25 @@ app.put('/api/student-home/decrease-seats', (req, res) => {
 app.put('/api/lectures', (req, res) => {
   const lecture = req.body;
 
+  if (lecture.inPresence === "0") {
+    bookingDao.getBookedStudentsByLectureId(lecture.lectureId).then((bookings) => {
+      for (let book of bookings) {
+        personDao.getPersonByID(book.studentId).then((student) => {
+          const subject = "Lecture switched to virtual";
+          const recipient = student.email;
+          const message = `Dear ${student.name} ${student.surname},\n` +
+            `the lecture for the course ${book.name} of ${book.date} at ${book.startingTime} has been turned into a remote lecture.\n` +
+            `Kind regards.`;
+          emailSender.sendEmail(recipient, subject, message);
+        })
+      }
+    })
+  }
   lectureDao.updateLecture(lecture)
-    .then(() => res.status(200).end())
+    .then(() => {
+
+      res.status(200).end()
+    })
     .catch((err) => res.status(500).json({ errors: [{ msg: err }] }));
 
 });
