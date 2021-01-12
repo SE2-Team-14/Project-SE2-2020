@@ -2137,7 +2137,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               });
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2150,7 +2150,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2163,7 +2163,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2177,7 +2177,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2190,7 +2190,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2203,7 +2203,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2216,7 +2216,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2229,7 +2229,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2242,7 +2242,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2255,7 +2255,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2268,7 +2268,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2281,7 +2281,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2294,7 +2294,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2307,7 +2307,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2320,7 +2320,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2333,7 +2333,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2346,7 +2346,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2359,7 +2359,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2372,7 +2372,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2385,7 +2385,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2398,7 +2398,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2411,7 +2411,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2424,7 +2424,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
 
@@ -2437,7 +2437,7 @@ describe('Server side unit test', function () {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
         })
       });
