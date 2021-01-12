@@ -107,10 +107,10 @@ class UpdateBookableLecture extends React.Component {
                         {(context.authErr || !context.authUser) && <Redirect to="/login"></Redirect>}
                         <Jumbotron className='d-flex justify-content-around col-12 m-0 p-3'>
                             <Row className='col-12 m-0 p-0'>
-                                <Col xs={5}> <h3>Do you want update for year or for semester?</h3> </Col>
-                                <Col xs={1}> <Button variant="secondary" onClick={() => this.modeYear()}> Year </Button> </Col>
-                                <Col xs={1}> <Button variant="secondary" onClick={() => this.modeSemester()}> Semester </Button> </Col>
-                                <Col xs={2}> <Button variant="secondary" onClick={() => this.customDate()}> Custom Date</Button></Col>
+                                <Col xs={5}> <h3>Do you want update the bookability for year or for semester?</h3> </Col>
+                                <Col xs={1}> <Button variant="info" onClick={() => this.modeYear()}> Year </Button> </Col>
+                                <Col xs={2}> <Button variant="info" onClick={() => this.modeSemester()}> Semester </Button> </Col>
+                                <Col xs={2}> <Button variant="primary" onClick={() => this.customDate()}> Custom Date</Button> </Col>
                             </Row>
                             <Modal controlid='ConfirmYearSelection' show={this.state.showmodalConfirm} onHide={this.handleClose} animation={false} >
                                 <Modal.Header>
