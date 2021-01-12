@@ -19,10 +19,11 @@ function createString(row) {
 
 
 exports.getContactTracingByPersonId = function(personId) {
-    if(personId != null && personId.length > 1 && (personId[0] == 's' || personId[0] == 'S')){ // controllo se l'id appartiene ad uno studente
-    return getContactTracingByStudent(personId);
-    }else{
+    if(personId != null && personId.length > 1 && (personId[0] == 'd' || personId[0] == 'D')){ // controllo se l'id appartiene ad un docente
         return getContactTracingByTeacher(personId);
+    }else{
+        return getContactTracingByStudent(personId);
+
     }
 }
 
