@@ -40,7 +40,6 @@ const db = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
-let completed = 0;
 
 //---------------------------------------!!! IMPORTANT !!!---------------------------------------//
 /**
@@ -275,6 +274,16 @@ describe('Server side unit test', function () {
       it("returns status 500", function (done) {
         request(url, function (error, response, body) {
           expect(response.statusCode).to.equal(500);
+          done();
+        })
+      })
+    })
+    //Test that http://localhost:3001/api/getAllLectures returns 200
+    describe("#Test /api/getAllLectures", function () {
+      var url = "http://localhost:3001/api/getAllLectures";
+      it("returns status 200", function (done) {
+        request(url, function (error, response, body) {
+          expect(response.statusCode).to.equal(200);
           done();
         })
       })
@@ -1025,7 +1034,7 @@ describe('Server side unit test', function () {
         let testStudent = new Person('s14', 'Andrea', 'Rossi', 'student', 'andrea@rossi', '1234', "city14", "bday14", "SSN14");
         let testArray = [];
         testArray.push(testStudent);
-        return await PersonDao.createPerson(testArray).then(() => completed++);
+        return await PersonDao.createPerson(testArray);
       });
     });
     //#15
@@ -1034,31 +1043,31 @@ describe('Server side unit test', function () {
         let testTeacher = new Person('d15', 'Cataldo', 'Basile', 'teacher', 'cataldo@basile', '1234', "city15", "bday15", "SSN15");
         let testArray = [];
         testArray.push(testTeacher);
-        return await PersonDao.createPerson(testArray).then(() => completed++);
+        return await PersonDao.createPerson(testArray);
       });
     });
     //#15.1
     describe('Get person name', function () {
       it('Get name', async function () {
-        return await PersonDao.getPersonByID('d15').then(person => assert.strictEqual('Cataldo', person.name)).then(() => completed++);
+        return await PersonDao.getPersonByID('d15').then(person => assert.strictEqual('Cataldo', person.name));
       });
     });
     //#14.1
     describe('#Delete a student', function () {
       it('Deletes a student', async function () {
-        return await PersonDao.deletePersonById('s14').then(() => completed++);
+        return await PersonDao.deletePersonById('s14');
       });
     });
     //#15.2
     describe('#Delete a teacher', function () {
       it('Deletes a teacher', async function () {
-        return await PersonDao.deletePersonById('d15').then(() => completed++);
+        return await PersonDao.deletePersonById('d15');
       });
     });
 
     describe("#Delete someone doesn't exist", function () {
       it('Deletes nobody', async function () {
-        return await PersonDao.deletePersonById("-1").then(() => completed++);
+        return await PersonDao.deletePersonById("-1");
       });
     });
     //#15.3
@@ -1068,7 +1077,7 @@ describe('Server side unit test', function () {
         let arrayPerson = [];
         arrayPerson.push(person);
         await PersonDao.createPerson(arrayPerson);
-        return await PersonDao.getPersonByEmail(person.email).then((p) => assert.strictEqual(p.name, "studentName16")).then(() => completed++);
+        return await PersonDao.getPersonByEmail(person.email).then((p) => assert.strictEqual(p.name, "studentName16"));
       })
     })
 
@@ -1081,19 +1090,19 @@ describe('Server side unit test', function () {
         let testCourse = new Course('c16', 'd16', 'Softeng II', "year16", "semester16");
         let testArray = [];
         testArray.push(testCourse)
-        return await CourseDao.createCourse(testArray).then(() => completed++);
+        return await CourseDao.createCourse(testArray);
       });
     });
     //#16.1
     describe('#Gets a course by its id', function () {
       it('Test course name', async function () {
-        return await CourseDao.getCourseByID('c16').then(course => assert.strictEqual('Softeng II', course.name)).then(() => completed++);
+        return await CourseDao.getCourseByID('c16').then(course => assert.strictEqual('Softeng II', course.name));
       });
     });
     //#16.2
     describe('#Delete a course', function () {
       it('Deletes a course', async function () {
-        return await CourseDao.deleteCourseById('c16').then(() => completed++);
+        return await CourseDao.deleteCourseById('c16');
       });
     });
     //#16.3
@@ -1107,7 +1116,7 @@ describe('Server side unit test', function () {
         let testCourse = new Course('c16', 'd16', 'Softeng II', "year16", "semester16");
         arrayCourse.push(testCourse);
         await CourseDao.createCourse(arrayCourse);
-        return await CourseDao.getCoursesAndTeachers().then((c) => assert.strictEqual(c[1].courseName, "Softeng II")).then(() => completed++);
+        return await CourseDao.getCoursesAndTeachers().then((c) => assert.strictEqual(c[1].courseName, "Softeng II"));
       });
     });
 
@@ -1140,7 +1149,6 @@ describe('Server side unit test', function () {
           .then(await CourseDao.createCourse(arrayCourse))
           .then(await BookingDao.addBoocking(booking))
           .then(await EnrollmentDao.addEnrollment(arrayEnrollment))
-          .then(() => completed++);
       });
     });
     //#17.1
@@ -1152,7 +1160,6 @@ describe('Server side unit test', function () {
           .then(await CourseDao.deleteCourseById("c17"))
           .then(await BookingDao.deleteBooking("s17", 17))
           .then(await LectureDao.deleteLecture(17))
-          .then(() => completed++);
       });
     });
     //#17.2
@@ -1166,7 +1173,7 @@ describe('Server side unit test', function () {
         await EnrollmentDao.addEnrollment(arrayEnrollment);
         return await EnrollmentDao.getEnrollmentById('c17', 's17').then((e) => {
           assert.strictEqual(e.courseId == courseId, e.id == studentId)
-        }).then(() => completed++);
+        })
       });
     });
   });
@@ -1191,7 +1198,7 @@ describe('Server side unit test', function () {
         let arrayPerson = [];
         arrayPerson.push(student);
         await PersonDao.createPerson(arrayPerson);
-        return await LectureDao.getLecturesList("s18").then(lectures => assert.strictEqual(lectures[0].lectureId, 20)).then(() => completed++);
+        return await LectureDao.getLecturesList("s18").then(lectures => assert.strictEqual(lectures[0].lectureId, 20));
       });
     });
     //#19
@@ -1209,7 +1216,7 @@ describe('Server side unit test', function () {
         arrayLecture.push(lecture1);
         await PersonDao.createPerson(arrayTeacher);
         await LectureDao.addLecture(arrayLecture);
-        return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].lectureId, 21)).then(() => completed++)
+        return await LectureDao.getTeacherLectureList("d19").then(lectures => assert.strictEqual(lectures[0].lectureId, 21))
       });
     });
 
@@ -1226,7 +1233,7 @@ describe('Server side unit test', function () {
         await PersonDao.createPerson(arrayTeacher);
         await LectureDao.addLecture(arrayLecture);
         return await LectureDao.getTomorrowsLecturesList("d22")
-          .then(lectures => assert.strictEqual(lectures[0].courseId, "testCourseTomorrow22")).then(() => completed++)
+          .then(lectures => assert.strictEqual(lectures[0].courseId, "testCourseTomorrow22"))
       });
     });
 
@@ -1246,25 +1253,25 @@ describe('Server side unit test', function () {
         PersonDao.createPerson(arrayStudent);
         LectureDao.addLecture(arrayLecture);
         EnrollmentDao.addEnrollment(arrayEnrollment);
-        return await LectureDao.getLectureById(24).then((l => assert.strictEqual(l.courseId, "testCourse24"))).then(() => completed++);
+        return await LectureDao.getLectureById(24).then((l => assert.strictEqual(l.courseId, "testCourse24")))
       });
     });
     //#24.1
     describe('#Deletes a lecture', function () {
       it('Deletes a lecture', async function () {
-        return await LectureDao.getLecturesList("student24@test").then(lectures => LectureDao.getLectureById(lectures[0].lectureId).then((lecture => LectureDao.deleteLecture(lecture.lectureId)))).then(() => completed++);
+        return await LectureDao.getLecturesList("student24@test").then(lectures => LectureDao.getLectureById(lectures[0].lectureId).then((lecture => LectureDao.deleteLecture(lecture.lectureId))));
       });
     });
     //#24.2
     describe('#Deletes the enrollment', function () {
       it("Deletes the previous enrollment", async function () {
-        return await EnrollmentDao.deleteEnrollment("testCourse24", "student24@test").then(() => completed++);
+        return await EnrollmentDao.deleteEnrollment("testCourse24", "student24@test");
       });
     });
     //#24.3
     describe('#Deletes the student', function () {
       it("Deletes the previous student", async function () {
-        return await PersonDao.deletePersonById("s24").then(() => completed++);
+        return await PersonDao.deletePersonById("s24");
       });
     });
 
@@ -1275,13 +1282,13 @@ describe('Server side unit test', function () {
     describe('#Create a classroom', function () {
       it('Creates a new classroom', async function () {
         let testClassroom = new Classroom('25', 25);
-        return await ClassroomDao.addClassroom(testClassroom).then(() => completed++);
+        return await ClassroomDao.addClassroom(testClassroom);
       });
     });
     //#25
     describe('#Delete a classroom', function () {
       it('Deletes a classroom', async function () {
-        return await ClassroomDao.deleteClassroom('25').then(() => completed++);
+        return await ClassroomDao.deleteClassroom('25');
       });
     });
     //#25.1
@@ -1289,7 +1296,14 @@ describe('Server side unit test', function () {
       it('Get a classroom', async function () {
         let classroom = new Classroom("25a", 25);
         await ClassroomDao.addClassroom(classroom);
-        return await ClassroomDao.getClassroom("25a").then((c) => assert.strictEqual(c.maxNumberOfSeats, 25)).then(() => completed++);
+        return await ClassroomDao.getClassroom("25a").then((c) => assert.strictEqual(c.maxNumberOfSeats, 25));
+      });
+    });
+    describe('#Get full classrooms', function () {
+      it('Get classrooms', async function () {
+        await ScheduleDao.addSchedule([new Schedule("XYCCC", "34", "mon", 10, "9:00", "11:00")]);
+        await ClassroomDao.addClassroom(new Classroom("34", 10))
+        return await ClassroomDao.getFullClassrooms('mon', "8:50", "12:00").then((c) => assert.strictEqual(c[0], '34'))
       });
     });
   });
@@ -1299,13 +1313,13 @@ describe('Server side unit test', function () {
     describe('#Add a booking', function () {
       it('Creates a new booking', async function () {
         let testBooking = new Booking('s26', 26, 'today', '12.00');
-        return await BookingDao.addBoocking(testBooking).then(() => completed++);
+        return await BookingDao.addBoocking(testBooking);
       });
     });
     //#26.1
     describe('#Delete booking', function () {
       it('Deletes a booking', async function () {
-        return await BookingDao.deleteBooking('s26', 26).then(() => completed++);
+        return await BookingDao.deleteBooking('s26', 26);
       });
     });
     //#27
@@ -1313,7 +1327,7 @@ describe('Server side unit test', function () {
       it('Delete a booking when a teacher delete or change a lecture', async function () {
         let testBooking = new Booking('s27', 27, 'tomorrow', '15:00');
         BookingDao.addBoocking(testBooking);
-        return await BookingDao.deleteBookingByTeacher(27).then(() => completed++);
+        return await BookingDao.deleteBookingByTeacher(27);
       });
     });
     //#28
@@ -1331,7 +1345,7 @@ describe('Server side unit test', function () {
         await BookingDao.addBoocking(testBooking);
         return await BookingDao.getBookedStudentsByCourseName("courseName28").then((b) => {
           assert.strictEqual(b[0].studentId, testBooking.studentId)
-        }).then(() => completed++);
+        })
       })
     })
 
@@ -1353,7 +1367,7 @@ describe('Server side unit test', function () {
           await CourseDao.createCourse(arrayCourse);
           return await BookingDao.getStatistics(testLecture.date, "lecture", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testBooking.date);
-          }).then(() => completed++)
+          })
         })
       })
       //#30
@@ -1371,7 +1385,7 @@ describe('Server side unit test', function () {
           await CourseDao.createCourse(arrayCourse);
           return await BookingDao.getStatistics(null, "week", testCourse.name).then((s) => {
             assert.strictEqual(s[0].bookings, 1);
-          }).then(() => completed++)
+          })
         })
       })
       //#31
@@ -1389,7 +1403,7 @@ describe('Server side unit test', function () {
           await BookingDao.addBoocking(testBooking);
           return await BookingDao.getStatistics(null, "month", testCourse.name).then((s) => {
             assert.strictEqual(s[0].bookings, 1);
-          }).then(() => completed++)
+          })
         })
       })
       //#32
@@ -1407,7 +1421,7 @@ describe('Server side unit test', function () {
           await BookingDao.addBoocking(testBooking);
           return await BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testLecture.date + ' ' + testLecture.startingTime + ' - ' + testLecture.endingTime);
-          }).then(() => completed++)
+          })
         })
       })
       //#48, will have to be changed when we implement story about attendance and code changes
@@ -1426,7 +1440,7 @@ describe('Server side unit test', function () {
           await BookingDao.recordAttendance(testBooking);
           return await BookingDao.getStatistics(null, "attendance", testCourse.name).then((s) => {
             assert.strictEqual(s[0].date, testLecture.date);
-          }).then(() => completed++)
+          })
         })
       })
     });
@@ -1439,7 +1453,7 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return await BookingDao.getStatistics(testLecture.date, "lecture", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-        }).then(() => completed++)
+        })
       })
     })
     //#34
@@ -1451,7 +1465,7 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return await BookingDao.getStatistics(null, "week", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-        }).then(() => completed++)
+        })
       })
     })
     //#35
@@ -1463,7 +1477,7 @@ describe('Server side unit test', function () {
         CourseDao.createCourse(testCourse);
         return await BookingDao.getStatistics(null, "month", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-        }).then(() => completed++)
+        })
       })
     })
     //#36
@@ -1479,7 +1493,7 @@ describe('Server side unit test', function () {
         await CourseDao.createCourse(arrayCourse);
         return await BookingDao.getStatistics(null, "total", testCourse.name).then((s) => {
           assert.strictEqual(s, undefined);
-        }).then(() => completed++)
+        })
       })
     })
     //#49, will have to be changed when we implement the story about attendance and code changes
@@ -1495,7 +1509,7 @@ describe('Server side unit test', function () {
         await CourseDao.createCourse(arrayCourse);
         return await BookingDao.getStatistics(null, "attendance", testCourse.courseName).then((s) => {
           assert.strictEqual(s, undefined);
-        }).then(() => completed++)
+        })
       })
     })
 
@@ -1506,13 +1520,13 @@ describe('Server side unit test', function () {
     describe('#Adds a deleted booking', function () {
       it('Creates and adds a new deleted booking', async function () {
         let cancelledBooking = new CancelledBooking(37, "s37", 37, "07/12/12");
-        return await CancelledBookingsDao.addCancelledBooking(cancelledBooking).then(() => completed++);
+        return await CancelledBookingsDao.addCancelledBooking(cancelledBooking);
       });
     });
     //#37.1
     describe('#Delete a cancelled booking', function () {
       it('Deletes the cancelled booking added before', async function () {
-        return await CancelledBookingsDao.getCancelledBookings().then(cb => CancelledBookingsDao.deleteCancelledBooking(cb[0].cancelledBookingId)).then(() => completed++);
+        return await CancelledBookingsDao.getCancelledBookings().then(cb => CancelledBookingsDao.deleteCancelledBooking(cb[0].cancelledBookingId));
       });
     });
     //#38
@@ -1530,7 +1544,7 @@ describe('Server side unit test', function () {
         await CancelledBookingsDao.addCancelledBooking(testCancBooking);
         return await CancelledBookingsDao.getCancelledBookingsStats(testCourse.name).then((s) => {
           assert.strictEqual(s[0].date, testLecture.date);
-        }).then(() => completed++)
+        })
       })
     })
 
@@ -1541,13 +1555,13 @@ describe('Server side unit test', function () {
     describe('#Adds a deleted lecture', function () {
       it('Creates and adds a new deleted lecture', async function () {
         let cancelledLecture = new CancelledLecture(39, "testCourse39", "testTeacher39", "09/12/12", "1");
-        return await CancelledLecturesDao.addCancelledLecture(cancelledLecture).then(() => completed++);
+        return await CancelledLecturesDao.addCancelledLecture(cancelledLecture);
       });
     });
     //#39.1
     describe('#Delete a cancelled lecture', function () {
       it('Deletes the cancelled lecture added before', async function () {
-        return await CancelledLecturesDao.getCancelledLectures().then(cl => CancelledLecturesDao.deleteCancelledLecture(cl[0].cancelledLectureId)).then(() => completed++);
+        return await CancelledLecturesDao.getCancelledLectures().then(cl => CancelledLecturesDao.deleteCancelledLecture(cl[0].cancelledLectureId));
       });
     });
     //#39.2
@@ -1563,7 +1577,7 @@ describe('Server side unit test', function () {
         await PersonDao.createPerson(arrayPerson);
         await CourseDao.createCourse(arrayCourse);
         await CancelledLecturesDao.addCancelledLecture(cancelledLecture);
-        return await CancelledLecturesDao.getCancelledLecturesStats().then((cl) => assert.strictEqual(cl[0].courseName, "CourseName39")).then(() => completed++);
+        return await CancelledLecturesDao.getCancelledLecturesStats().then((cl) => assert.strictEqual(cl[0].courseName, "CourseName39"));
       });
     });
   });
@@ -1572,13 +1586,13 @@ describe('Server side unit test', function () {
     //#40
     describe('#Insert In Waiting List ', function () {
       it('Insert In Waiting List ', async function () {
-        return await WaitingListDao.insertInWaitingList("s40", 40).then(() => completed++);
+        return await WaitingListDao.insertInWaitingList("s40", 40);
       });
     });
     //#40.1
     describe('#Delete from waiting list', function () {
       it('Deletes from waiting list', async function () {
-        return await WaitingListDao.deleteFromWaitingList('s40', 40).then(() => completed++);
+        return await WaitingListDao.deleteFromWaitingList('s40', 40);
       });
     });
     //#41
@@ -1586,7 +1600,7 @@ describe('Server side unit test', function () {
       it('Get first in waiting list ', async function () {
         await WaitingListDao.insertInWaitingList("s41", 41);
         await WaitingListDao.insertInWaitingList("s411", 41);
-        return await WaitingListDao.getFirstStudentInWaitingList(41).then((f) => assert.strictEqual(f.studentId, "s41")).then(() => completed++);
+        return await WaitingListDao.getFirstStudentInWaitingList(41).then((f) => assert.strictEqual(f.studentId, "s41"));
       });
     });
     //#42
@@ -1594,7 +1608,7 @@ describe('Server side unit test', function () {
       it('Get all the waiting list ', async function () {
         await WaitingListDao.insertInWaitingList("s42", 42);
         await WaitingListDao.insertInWaitingList("s421", 42);
-        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 5)).then(() => completed++);
+        return await WaitingListDao.getAllWaitingList().then((a) => assert.strictEqual(a.length, 5));
       });
     });
   });
@@ -1605,7 +1619,7 @@ describe('Server side unit test', function () {
       it('Get the list of bookings of a student ', async function () {
         let booking = new Booking("s43", 43, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
-        return await BookingDao.getBookings("s43").then((b) => assert.strictEqual(b[0].lectureId, 43)).then(() => completed++);
+        return await BookingDao.getBookings("s43").then((b) => assert.strictEqual(b[0].lectureId, 43));
       });
     });
     //#44
@@ -1629,7 +1643,7 @@ describe('Server side unit test', function () {
         await LectureDao.addLecture(arrayLecture);
         let booking = new Booking("s44", 44, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
-        return await BookingDao.findEmailByLecture(44).then((email) => assert.strictEqual(email[0].Email, "email44@test.it")).then(() => completed++);
+        return await BookingDao.findEmailByLecture(44).then((email) => assert.strictEqual(email[0].Email, "email44@test.it"));
       });
     });
     //#45
@@ -1645,7 +1659,7 @@ describe('Server side unit test', function () {
         await LectureDao.addLecture(arrayLecture);
         let booking = new Booking("s45", 45, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
-        return await BookingDao.getBookedStudentsByLectureId(45).then((s) => assert.strictEqual(s[0].studentId, "s45")).then(() => completed++);
+        return await BookingDao.getBookedStudentsByLectureId(45).then((s) => assert.strictEqual(s[0].studentId, "s45"));
       });
     });
     //#46
@@ -1665,13 +1679,13 @@ describe('Server side unit test', function () {
         await LectureDao.addLecture(arrayLecture);
         let booking = new Booking("s46", 46, "15/12/2020", "8:30");
         await BookingDao.addBoocking(booking);
-        return await BookingDao.getTeacherCoursesStatistics("teacher46@test.it").then((c) => assert.strictEqual(c[0].name, "courseName46")).then(() => completed++);
+        return await BookingDao.getTeacherCoursesStatistics("teacher46@test.it").then((c) => assert.strictEqual(c[0].name, "courseName46"));
       });
     });
     //#46.1
     describe('#Get Teacher Courses Statistics ', function () {
       it('Get Teacher Courses Statistics ', async function () {
-        return await BookingDao.getAllCoursesStatistics().then((c) => assert.strictEqual(c[0].courseName, "courseName46")).then(() => completed++);
+        return await BookingDao.getAllCoursesStatistics().then((c) => assert.strictEqual(c[0].courseName, "courseName46"));
       });
     });
 
@@ -1695,7 +1709,7 @@ describe('Server side unit test', function () {
         await LectureDao.addLecture(arrayLecture);
         return await BookingDao.getAllCoursesStatistics().then((s) => {
           assert.strictEqual(s, undefined);
-        }).then(() => completed++)
+        })
       })
     })
   });
@@ -1720,7 +1734,7 @@ describe('Server side unit test', function () {
         await LectureDao.addLecture(arrayLecture);
         await BookingDao.addBoocking(booking1);
         await BookingDao.addBoocking(booking2);
-        return await ContactTracingDao.getContactTracingByPersonId("s47").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
+        return await ContactTracingDao.getContactTracingByPersonId("s47").then((s) => assert.strictEqual(s[0], contact));
       });
     });
 
@@ -1743,7 +1757,7 @@ describe('Server side unit test', function () {
         await PersonDao.createPerson(arrayPerson);
         await LectureDao.addLecture(arrayLecture);
         await BookingDao.addBoocking(booking1);
-        return await ContactTracingDao.getContactTracingByPersonId("d50").then((s) => assert.strictEqual(s[0], contact)).then(() => completed++);
+        return await ContactTracingDao.getContactTracingByPersonId("d50").then((s) => assert.strictEqual(s[0], contact));
       });
     });
 
@@ -1764,13 +1778,13 @@ describe('Server side unit test', function () {
         arrayLecture.push(lecture1);
         await EnrollmentDao.addEnrollment(arrayEnrollment);
         await LectureDao.addLecture(arrayLecture);
-        return await LectureDao.getWeekLecturesList("s52").then((l) => assert.strictEqual(l[0].lectureId, 43)).then(() => completed++);
+        return await LectureDao.getWeekLecturesList("s52").then((l) => assert.strictEqual(l[0].lectureId, 43));
       });
     });
     //#52
     describe('#Get Week Teacher Lecture List ', function () {
       it('Get the list of the week lectures of a teacher ', async function () {
-        return await LectureDao.getWeekTeacherLectureList("d52").then((l) => assert.strictEqual(l[0].lectureId, 43)).then(() => completed++);
+        return await LectureDao.getWeekTeacherLectureList("d52").then((l) => assert.strictEqual(l[0].lectureId, 43));
       });
     });
     //#53
@@ -1790,7 +1804,7 @@ describe('Server side unit test', function () {
         arrayCourse.push(course);
         await CourseDao.createCourse(arrayCourse);
         return await LectureDao.getPastLectures(course.name, teacher.email, "Teacher", teacher.name, teacher.surname)
-          .then((l) => assert.strictEqual(l[0].date, lecture.date)).then(() => completed++);
+          .then((l) => assert.strictEqual(l[0].date, lecture.date));
       });
     });
     //#54
@@ -1800,7 +1814,7 @@ describe('Server side unit test', function () {
         let teacher = await PersonDao.getPersonByID("d53")
         let course = await CourseDao.getCourseByID("c53");
         return await LectureDao.getPastLectures(course.name, teacher.email, "Manager", teacher.name, teacher.surname)
-          .then((l) => assert.strictEqual(l[0].date, lecture.date)).then(() => completed++);
+          .then((l) => assert.strictEqual(l[0].date, lecture.date));
       });
     });
 
@@ -1815,13 +1829,13 @@ describe('Server side unit test', function () {
         arraySchedule.push(testSchedule1);
         arraySchedule.push(testSchedule2);
         await ScheduleDao.addSchedule(arraySchedule);
-        return await ScheduleDao.getSchedule().then((s) => { assert.strictEqual(s.length > 1, true) }).then(() => completed++);
+        return await ScheduleDao.getSchedule().then((s) => { assert.strictEqual(s.length > 1, true) });
       });
     });
 
     describe('#Get the schedule of a course ', function () {
       it('Get the scheduel of a course', async function () {
-        return await ScheduleDao.getScheduleByCourseId("c1").then((s) => assert.strictEqual(s[0].dayOfWeek, "mon")).then(() => completed++);
+        return await ScheduleDao.getScheduleByCourseId("c1").then((s) => assert.strictEqual(s[0].dayOfWeek, "mon"));
       });
     });
 
@@ -1829,13 +1843,13 @@ describe('Server side unit test', function () {
       it('Get the list of lectures by courseId', async function () {
         await CourseDao.createCourse([new Course('XYPPP', 'dPPP', 'coursePPP', 1, 1)]);
         await LectureDao.addLecture([new Lecture(56, 'XYPPP', 'dPPP', '18/01/2021', '9:30', '11:00', 1, '12', 12)]);
-        return await LectureDao.getLectureByCourseId('XYPPP', 'mon').then((l) => assert.strictEqual(l[0].lectureId, 56)).then(() => completed++);
+        return await LectureDao.getLectureByCourseId('XYPPP', 'mon').then((l) => assert.strictEqual(l[0].lectureId, 56));
       });
     });
 
     describe('#Test getAllLectureList', function () {
       it('Get the list of lectures by courseId', async function () {
-        return await LectureDao.getAllLecturesList().then((l) => assert.strictEqual(l[7].courseId, 'XYPPP')).then(() => completed++);
+        return await LectureDao.getAllLecturesList().then((l) => assert.strictEqual(l[7].courseId, 'XYPPP'));
       });
     });
 
@@ -1844,7 +1858,7 @@ describe('Server side unit test', function () {
         let lecture = new Lecture(60, 'XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00', '1', '26', 24);
         let arrayLecture = [lecture];
         await LectureDao.addLecture(arrayLecture);
-        return await LectureDao.getSpecificLecture('XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00').then((l) => assert.strictEqual(l.lectureId, 60)).then(() => completed++);
+        return await LectureDao.getSpecificLecture('XYOOO', 'dOOO', '25/12/2012', '8:30', '11:00').then((l) => assert.strictEqual(l.lectureId, 60));
       });
     });
 
@@ -1853,11 +1867,26 @@ describe('Server side unit test', function () {
         let lecture = new Lecture(62, 'XYOML', 'dOOO', '25/12/2020', '8:30', '11:00', '1', '26', 24);
         await LectureDao.addLecture([lecture]);
         await LectureDao.modifyLectures([lecture]);
-        return await LectureDao.getLectureById(62).then((l) => assert.strictEqual(l.inPresence, '0')).then(() => completed++);
+        return await LectureDao.getLectureById(62).then((l) => assert.strictEqual(l.inPresence, '0'));
       });
     });
 
+    describe('#Test getLecturesToModify', function () {
+      it('Get lectures to modify', async function () {
+        let lecture = new Lecture(63, 'XYAOML', 'dOOO', '25/12/2020', '8:30', '11:00', '1', '26', 24);
+        await LectureDao.addLecture([lecture]);
+        return await LectureDao.getLecturesToModify('25/12/2020', '25/12/2020').then((l) => assert.strictEqual(l[0].lectureId, 63));
+      });
+    });
 
+    describe('#Test modifyLecturesByDate', function () {
+      it('Modify lectures by date', async function () {
+        let lecture = new Lecture(80, 'XYBOML', 'dOOO', '10/12/2020', '8:30', '11:00', '1', '26', 24);
+        await LectureDao.addLecture([lecture]);
+        await LectureDao.modifyLecturesByDate('10/12/2020', '10/12/2020')
+        return await LectureDao.getLectureById(80).then((l) => assert.strictEqual(l.inPresence, '0'));
+      });
+    });
   });
 
 
@@ -1875,7 +1904,7 @@ describe('Server side unit test', function () {
       const student = studentHeader + "s8000,Francesco,Bianchi,Turin,francescobianchi@studenti.politu.it,1994-02-02,ABCDEF";
       dataLoader.readStudentsCSV(student);
       it('Load a student', async function () {
-        return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it")).then(() => completed++);
+        return await PersonDao.getPersonByID("s8000").then((s) => assert.strictEqual(s.email, "francescobianchi@studenti.politu.it"));
       });
     });
 
@@ -1883,7 +1912,7 @@ describe('Server side unit test', function () {
       const teacher = teacherHeader + "d8000,Antonio,Belli,antoniobelli@politu.it,FEDCBA";
       dataLoader.readTeachersCSV(teacher);
       it('Load a teacher', async function () {
-        return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it")).then(() => completed++);
+        return await PersonDao.getPersonByID("d8000").then((t) => assert.strictEqual(t.email, "antoniobelli@politu.it"));
       });
     });
 
@@ -1891,7 +1920,7 @@ describe('Server side unit test', function () {
       const course = coursesHeader + "c8000,1,1,Algoritmi,d8000";
       dataLoader.readCoursesCSV(course);
       it('Load a course', async function () {
-        return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi")).then(() => completed++);
+        return await CourseDao.getCourseByID("c8000").then((c) => assert.strictEqual(c.name, "Algoritmi"));
       });
     });
 
@@ -1900,7 +1929,7 @@ describe('Server side unit test', function () {
       dataLoader.readEnrollmentsCSV(enrollment);
       it('Load an enrollment', async function () {
         return await EnrollmentDao.getEnrollmentById("c8000", "s8000")
-          .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi")).then(() => completed++);
+          .then(async (e) => assert.strictEqual((await CourseDao.getCourseByID(e.courseId)).name, "Algoritmi"));
       });
     });
 
@@ -1911,10 +1940,11 @@ describe('Server side unit test', function () {
           '\nXYNNO,114,Wed,1,8:30-11:00' +
           '\nXYNNP,115,Thu,1,8:30-11:00' +
           '\nXYNNQ,116,Fri,1,8:30-11:00';
-
-
+        await CourseDao.createCourse([new Course('XYNNN', 'dFFFF', 'Software Engineering X', 5, 2)]);
+        await PersonDao.createPerson([new Person('dFFFF', 'FFFF', 'FFF', 'teacher', 'f@d', '12', null, null, 'abcsesf')])
+        this.timeout(10000);
         await dataLoader.readScheduleCSV(schedule);
-        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'mon')).then(() => completed++);
+        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'mon'));
       });
     });
 
@@ -1931,7 +1961,6 @@ describe('Server side unit test', function () {
 
         let years = [3, 5];
         let courses = await CourseDao.getCoursesByYear(years);
-        completed++;
         let pass = false;
         let courseIds = courses.map(c => c.courseId);
 
@@ -1949,7 +1978,6 @@ describe('Server side unit test', function () {
         let years = [3, 5];
         let semester = 2;
         let courses = await CourseDao.getCoursesByYearAndSemester(years, semester);
-        completed++;
         let pass = false;
         let courseIds = courses.map(c => c.courseId);
 
@@ -1965,7 +1993,7 @@ describe('Server side unit test', function () {
 
       await dataLoader.modifySchedule(schedule, 'XYNNN', 'Fri', '8:30');
       it('Modify a schedule', async function () {
-        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'fri')).then(() => completed++);
+        return await ScheduleDao.getScheduleByCourseId('XYNNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'fri'));
       });
     });
 
@@ -1974,14 +2002,14 @@ describe('Server side unit test', function () {
       let newSchedule = new Schedule('XYMNN', '114', 'tue', 12, '8:30', '11:00');
       await ScheduleDao.modifySchedule(newSchedule, 'XYMNN', 'mon', '8:30');
       it('Modify schedule', async function () {
-        return await ScheduleDao.getScheduleByCourseId('XYMNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'tue')).then(() => completed++);
+        return await ScheduleDao.getScheduleByCourseId('XYMNN').then((s) => assert.strictEqual(s[0].dayOfWeek, 'tue'));
       });
     });
 
     describe('#Test getBookingsOfLecture', function () {
       it('Get bookings of a lecture', async function () {
         await BookingDao.addBoocking(new Booking('sOOO', 63, '25/11/2020', '8:30', 1));
-        return await BookingDao.getBookingsOfLecture(63).then((b) => assert.strictEqual(b[0].studentId, 'sOOO')).then(() => completed++);
+        return await BookingDao.getBookingsOfLecture(63).then((b) => assert.strictEqual(b[0].studentId, 'sOOO'));
       });
     });
 
@@ -1993,13 +2021,13 @@ describe('Server side unit test', function () {
         await CourseDao.createCourse([new Course('XYCXX', 'dCXX', 'courseCXX', 2, 1)]);
         await LectureDao.addLecture([new Lecture(64, 'XYCXX', 'dCXX', '23/12/2020', '11:00', '11:30', 1, '25', 12)]);
         await BookingDao.recordAttendance(booking);
-        return await BookingDao.getTotalAttendance().then((b) => assert.strictEqual(b.length, 1)).then(() => completed++);
+        return await BookingDao.getTotalAttendance().then((b) => assert.strictEqual(b.length, 1));
       });
     });
 
     describe('#Test getTeacherTotalAttendance', function () {
       it('Get total attendances for a teacher', async function () {
-        return await BookingDao.getTeacherTotalAttendance('sf@d').then((b) => assert.strictEqual(b.length, 1)).then(() => completed++);
+        return await BookingDao.getTeacherTotalAttendance('sf@d').then((b) => assert.strictEqual(b.length, 1));
       });
     });
 
@@ -2099,270 +2127,319 @@ describe('Server side unit test', function () {
 
 
 
-          //Test that http://localhost:3001/api/getTeachers returns 500
-          describe("#Test /api/getTeachers", function () {
-            var url = "http://localhost:3001/api/getTeachers";
-            it("returns status 500", function (done) {
-              setTimeout(() => {
-                db.close(); // THE FIRST TEST CLOSE THE DATABASE
-                request(url, function (error, response, body) {
+        //Test that http://localhost:3001/api/getTeachers returns 500
+        describe("#Test /api/getTeachers", function () {
+          var url = "http://localhost:3001/api/getTeachers";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
+              db.close(); // THE FIRST TEST CLOSE THE DATABASE
+              request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               });
-              }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/getClassrooms returns 500
-          describe("#Test /api/getClassrooms", function () {
-            var url = "http://localhost:3001/api/getClassrooms";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getClassrooms returns 500
+        describe("#Test /api/getClassrooms", function () {
+          var url = "http://localhost:3001/api/getClassrooms";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/getAllBookings returns 500
-          describe("#Test /api/getAllBookings", function () {
-            var url = "http://localhost:3001/api/getAllBookings";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getAllBookings returns 500
+        describe("#Test /api/getAllBookings", function () {
+          var url = "http://localhost:3001/api/getAllBookings";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
 
-          //Test that http://localhost:3001/api/getBookings/:studentId returns 500
-          describe("#Test /api/getBookings/:studentId", function () {
-            var url = "http://localhost:3001/api/getBookings/12";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getBookings/:studentId returns 500
+        describe("#Test /api/getBookings/:studentId", function () {
+          var url = "http://localhost:3001/api/getBookings/12";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/getTeacherLectures/:id returns 500
-          describe("#Test /api/getTeacherLectures/:id", function () {
-            var url = "http://localhost:3001/api/getTeacherLectures/12";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getTeacherLectures/:id returns 500
+        describe("#Test /api/getTeacherLectures/:id", function () {
+          var url = "http://localhost:3001/api/getTeacherLectures/12";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/student-home/:id/bookable-lectures returns 500
-          describe("#Test /api/student-home/:id/bookable-lectures", function () {
-            var url = "http://localhost:3001/api/student-home/12/bookable-lectures";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/student-home/:id/bookable-lectures returns 500
+        describe("#Test /api/student-home/:id/bookable-lectures", function () {
+          var url = "http://localhost:3001/api/student-home/12/bookable-lectures";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/student-home/:id/week-lectures returns 500
-          describe("#Test /api/student-home/:id/week-lectures", function () {
-            var url = "http://localhost:3001/api/student-home/12/week-lectures";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
-              request(url, function (error, response, body) { 
-                expect(response.statusCode).to.equal(500);
-                done();
-              })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
-          })
-
-          //Test that http://localhost:3001/api/teacher-home/:id/week-teacher-lectures returns 500
-          describe("#Test /api/teacher-home/:id/week-teacher-lectures", function () {
-            var url = "http://localhost:3001/api/teacher-home/12/week-teacher-lectures";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/student-home/:id/week-lectures returns 500
+        describe("#Test /api/student-home/:id/week-lectures", function () {
+          var url = "http://localhost:3001/api/student-home/12/week-lectures";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/courses returns 500
-          describe("#Test /api/courses", function () {
-            var url = "http://localhost:3001/api/courses";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/teacher-home/:id/week-teacher-lectures returns 500
+        describe("#Test /api/teacher-home/:id/week-teacher-lectures", function () {
+          var url = "http://localhost:3001/api/teacher-home/12/week-teacher-lectures";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/bookedStudents returns 500
-          describe("#Test /api/bookedStudents", function () {
-            var url = "http://localhost:3001/api/bookedStudents";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/courses returns 500
+        describe("#Test /api/courses", function () {
+          var url = "http://localhost:3001/api/courses";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/getCourses returns 500
-          describe("#Test /api/getCourses", function () {
-            var url = "http://localhost:3001/api/getCourses";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/bookedStudents returns 500
+        describe("#Test /api/bookedStudents", function () {
+          var url = "http://localhost:3001/api/bookedStudents";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/name returns 500
-          describe("#Test /api/name", function () {
-            var url = "http://localhost:3001/api/name";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getCourses returns 500
+        describe("#Test /api/getCourses", function () {
+          var url = "http://localhost:3001/api/getCourses";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/contact-tracing returns 500
-          describe("#Test /api/contact-tracing", function () {
-            var url = "http://localhost:3001/api/contact-tracing";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/name returns 500
+        describe("#Test /api/name", function () {
+          var url = "http://localhost:3001/api/name";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/allAttendance returns 500
-          describe("#Test /api/allAttendance", function () {
-            var url = "http://localhost:3001/api/allAttendance";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/contact-tracing returns 500
+        describe("#Test /api/contact-tracing", function () {
+          var url = "http://localhost:3001/api/contact-tracing";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/totalAttendance returns 500
-          describe("#Test /api/totalAttendance", function () {
-            var url = "http://localhost:3001/api/totalAttendance";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/allAttendance returns 500
+        describe("#Test /api/allAttendance", function () {
+          var url = "http://localhost:3001/api/allAttendance";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/bookingsOfLecture returns 500
-          describe("#Test /api/bookingsOfLecture", function () {
-            var url = "http://localhost:3001/api/bookingsOfLecture";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/totalAttendance returns 500
+        describe("#Test /api/totalAttendance", function () {
+          var url = "http://localhost:3001/api/totalAttendance";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/currentLecture returns 500
-          describe("#Test /api/currentLecture", function () {
-            var url = "http://localhost:3001/api/currentLecture";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getAllLectures returns 500
+        describe("#Test /api/getAllLectures", function () {
+          var url = "http://localhost:3001/api/getAllLectures";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/cancelledLecturesStats returns 500
-          describe("#Test /api/cancelledLecturesStats", function () {
-            var url = "http://localhost:3001/api/cancelledLecturesStats";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getAllCourses returns 500
+        describe("#Test /api/getAllCourses", function () {
+          var url = "http://localhost:3001/api/getAllCourses";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/getCoursesAndTeachers returns 500
-          describe("#Test /api/getCoursesAndTeachers", function () {
-            var url = "http://localhost:3001/api/getCoursesAndTeachers";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/allCoursesStatistics returns 500
+        describe("#Test /api/allCoursesStatistics", function () {
+          var url = "http://localhost:3001/api/allCoursesStatistics";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
+        })
 
-          //Test that http://localhost:3001/api/allCoursesStats returns 500
-          describe("#Test /api/allCoursesStats", function () {
-            var url = "http://localhost:3001/api/allCoursesStats";
-            it("returns status 500", function (done) {
-              setTimeout( () => {
+        //Test that http://localhost:3001/api/getAllWaitingList returns 500
+        describe("#Test /api/getAllWaitingList", function () {
+          var url = "http://localhost:3001/api/getAllWaitingList";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
               request(url, function (error, response, body) {
                 expect(response.statusCode).to.equal(500);
                 done();
               })
-            }, 1000 * wait); // need to wait few seconds in order to have all previus test finished
-            })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
           })
-          //return assert.strictEqual(finito, true);
-          //}
-          //}
+        })
+
+        //Test that http://localhost:3001/api/bookingsOfLecture returns 500
+        describe("#Test /api/bookingsOfLecture", function () {
+          var url = "http://localhost:3001/api/bookingsOfLecture";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
+              })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
+          })
+        })
+
+        //Test that http://localhost:3001/api/currentLecture returns 500
+        describe("#Test /api/currentLecture", function () {
+          var url = "http://localhost:3001/api/currentLecture";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
+              })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
+          })
+        })
+
+        //Test that http://localhost:3001/api/cancelledLecturesStats returns 500
+        describe("#Test /api/cancelledLecturesStats", function () {
+          var url = "http://localhost:3001/api/cancelledLecturesStats";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
+              })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
+          })
+        })
+
+        //Test that http://localhost:3001/api/getCoursesAndTeachers returns 500
+        describe("#Test /api/getCoursesAndTeachers", function () {
+          var url = "http://localhost:3001/api/getCoursesAndTeachers";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
+              })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
+          })
+        })
+
+        //Test that http://localhost:3001/api/allCoursesStats returns 500
+        describe("#Test /api/allCoursesStats", function () {
+          var url = "http://localhost:3001/api/allCoursesStats";
+          it("returns status 500", function (done) {
+            setTimeout(() => {
+              request(url, function (error, response, body) {
+                expect(response.statusCode).to.equal(500);
+                done();
+              })
+            }, 1000 * wait); // need to wait few seconds in order to have all previous test finished
+          })
+        })
       });
     });
   });

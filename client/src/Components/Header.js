@@ -48,7 +48,7 @@ const Header = (props) => {
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/statistics`} >Statistics</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "Teacher") && <Nav.Link as={NavLink} to={`/teacher-home/${context.authUser.email}/tutorial`} >Tutorial</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Nav.Link as={NavLink} to={`/support-officer-home/${context.authUser.email}/loader`} >Load Data</Nav.Link>}
-            {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Nav.Link as={NavLink} to={`/support-officer-home/${context.authUser.email}/updateLectures`} >Update Lectures</Nav.Link>}
+            {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Nav.Link as={NavLink} to={`/support-officer-home/${context.authUser.email}/updateLectures`} >Update Lectures bookability</Nav.Link>}
             {(context.authUser != null && context.authUser.role === "SupportOfficer") && <Nav.Link as={NavLink} to={`/support-officer-home/${context.authUser.email}/modify`} >Modify Data</Nav.Link>}
           </Nav>
           <Nav className="ml-md-auto">

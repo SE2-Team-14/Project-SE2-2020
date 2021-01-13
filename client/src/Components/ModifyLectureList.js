@@ -139,9 +139,9 @@ class ModifyLectureList extends React.Component {
                         };
                         let schedules = this.state.tempSchedules;
                         schedules.push(newSchedule);
-                        // API.modifySchedule(newSchedule.courseId, this.state.oldSchedule.dayOfWeek, newSchedule, this.state.oldSchedule.startingTime).then(() => {
-                        //   this.setState({ schedules: schedules, showModal: false })
-                        //})
+                        API.modifySchedule(newSchedule.courseId, this.state.oldSchedule.dayOfWeek, newSchedule, this.state.oldSchedule.startingTime).then(() => {
+                            this.setState({ schedules: schedules, showModal: false })
+                        })
                     } else {
                         this.setState({ wrongClass: true })
                     }
