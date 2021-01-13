@@ -23,6 +23,7 @@ import UpdateBookableLecture from './Components/UpdateBookableLecture';
 import ModifyLectureList from './Components/ModifyLectureList';
 
 import { AuthContext } from './auth/AuthContext'
+import Tutorial from './Components/Tutorial';
 //import DynamicBackground from './Components/DynamicBackground';
 
 class App extends React.Component {
@@ -120,6 +121,16 @@ class App extends React.Component {
                   <StatsViewer email={email} role="Manager"></StatsViewer>
                 </>}
               </>
+            }}>
+            </Route>
+
+            <Route exact path="/student-home/:email/tutorial" render={(props) => {
+              return <Tutorial role="Student"/>
+            }}>
+            </Route>
+
+            <Route exact path="/teacher-home/:email/tutorial" render={(props) => {
+              return <Tutorial role="Teacher"/>
             }}>
             </Route>
 
