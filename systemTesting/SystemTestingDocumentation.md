@@ -1098,10 +1098,27 @@ In this document you can find the documentation about our system testing. For ea
 
 #### Test 22.1
 
+- After login i click on 'tutorial' on the header, i'll able to see a media player showing the video-tutorial.
+
+![Tutorial](./testImage/StudentScreen/tutorial.png)
+
+- I can download a pdf version of the tutorial by clicking on the 'Click to download the tutorial in pdf' button in the top-right corner of the page.
+
+![TutorialDownload](./testImage/StudentScreen/tutorial_download.png)
+
+
 ### Story 23
 ###### As a teacher I want to access a tutorial for using the system so that I can use it correctly
 
 #### Test 23.1
+
+- After login i click on 'tutorial' on the header, i'll able to see a media player showing the video-tutorial.
+
+![Tutorial](./testImage/TeacherScreen/tutorial.png)
+
+- I can download a pdf version of the tutorial by clicking on the 'Click to download the tutorial in pdf' button in the top-right corner of the page.
+
+![TutorialDownload](./testImage/TeacherScreen/tutorial_download.png)
 
 ### Story 24
 ###### As a booking manager I want to generate a contact tracing report starting with a positive teacher so that we comply with safety regulations
