@@ -7,22 +7,26 @@ Authors:
 In this document you can find the documentation about our system testing. For each test we will describe each step necessary to complete the tested functionality, also attaching various summary screenshots. 
 
 - [List of stories](#list-of-stories)
+  - [Sprint 1](#sprint-1)
 	- [Story 1](#story-1)
 	- [Story 2](#story-2)
 	- [Story 3](#story-3)
 	- [Story 4](#story-4)
 	- [Story 5](#story-5)
+  - [Sprint 2](#sprint-2)
 	- [Story 6](#story-6)
 	- [Story 7](#story-7)
 	- [Story 8](#story-8)
 	- [Story 9](#story-9)
 	- [Story 10](#story-10)
+  - [Sprint 3](#sprint-3)
 	- [Story 11](#story-11)
 	- [Story 12](#story-12)
 	- [Story 13](#story-13)
 	- [Story 14](#story-14)
 	- [Story 15](#story-15)
 	- [Story 16](#story-16)
+  - [Sprint 4](#sprint-4)
 	- [Story 17](#story-17)
 	- [Story 18](#story-18)
 	- [Story 19](#story-19)
@@ -35,9 +39,11 @@ In this document you can find the documentation about our system testing. For ea
 
 # List of stories
 
-## Story 1 
+## Sprint 1
+
+### Story 1 
 ##### As a student I want to book a seat for one of my lectures so that I can attend it.
-### Test 1.1 (A student books an available lecture)
+#### Test 1.1 (A student books an available lecture)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -62,16 +68,16 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
 
-## Story 2 
+### Story 2 
 ##### As a teacher I want to get notified of the number of students attending my next lecture so that I am informed.
-### Test 2.1 (A teacher receives a mail )
+#### Test 2.1 (A teacher receives a mail )
 - As a teacher I receive a mail at 23:00 with the number of students booked for my next lecture.
 
 ![MailNumberStudents](./testImage/TeacherScreen/MailNumberStudents.jpg)
 
-## Story 3 
+### Story 3 
 ##### As a teacher I want to access the list of students booked for my lectures so that I am informed.
-### Test 3.1 (A teacher accesses the list of student booked but no students are available)
+#### Test 3.1 (A teacher accesses the list of student booked but no students are available)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -84,7 +90,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![BookedLectureNoStudents](./testImage/TeacherScreen/BookedLectureWithoutBookings.JPG)
 
-### Test 3.2 (A teacher accesses to list of student booked)
+#### Test 3.2 (A teacher accesses to list of student booked)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -97,9 +103,9 @@ In this document you can find the documentation about our system testing. For ea
 
 ![BookedLecture](./testImage/TeacherScreen/BookedLecture.JPG)
 
-## Story 4 
+### Story 4 
 ###### As a student I want to get an email confirmation of my booking so that I am informed.
-### Test 4.1 (A student books an available lecture and receives a mail confirmation)
+#### Test 4.1 (A student books an available lecture and receives a mail confirmation)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -126,9 +132,9 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLectureAfterBooking.JPG)
 
-## Story 5 
+### Story 5 
 ###### As a student I want to cancel my booking so that I am free.
-### Test 5.1 (A student deletes a booked lecture)
+#### Test 5.1 (A student deletes a booked lecture)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -153,10 +159,11 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NewBookableLectures](./testImage/StudentScreen/BookableLecture.JPG)
 
+## Sprint 2
 
-## Story 6 
+### Story 6 
 ###### As a student I want to access a calendar with all my bookings for the upcoming weeks.
-### Test 6.1 (A student accesses a calendar without booked lessons)
+#### Test 6.1 (A student accesses a calendar without booked lessons)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -169,7 +176,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![EmptyCalendar](./testImage/StudentScreen/EmptyCalendar.JPG)
 
-### Test 6.2 (A student accesses a calendar in week view)
+#### Test 6.2 (A student accesses a calendar in week view)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -182,7 +189,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![WeekCalendar](./testImage/StudentScreen/CalendarWeekView.JPG)
 
-### Test 6.3 (A student accesses a calendar in day view)
+#### Test 6.3 (A student accesses a calendar in day view)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -200,7 +207,7 @@ In this document you can find the documentation about our system testing. For ea
 ![DayCalendar](./testImage/StudentScreen/CalendarDayView.JPG)
 
 
-### Test 6.4 (A student accesses a calendar in month view)
+#### Test 6.4 (A student accesses a calendar in month view)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -217,7 +224,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![MonthCalendar](./testImage/StudentScreen/CalendarMonthView.JPG)
 
-### Test 6.5 (A student accesses a calendar in week view and click on the lesson)
+#### Test 6.5 (A student accesses a calendar in week view and click on the lesson)
 - Like a student I need to put my credentials in the login form and then press the button `Login`. 
 
 ![LoginForm](./testImage/StudentScreen/StudentLogin.JPG)
@@ -238,9 +245,9 @@ In this document you can find the documentation about our system testing. For ea
 
 ![PopUp](./testImage/StudentScreen/CalendarPopUp.JPG)
 
-## Story 7 
+### Story 7 
 ###### As a teacher I want to cancel a lecture up to 1h before its scheduled time.
-### Test 7.1 (A teacher tries to cancel a lecture but the time is expired)
+#### Test 7.1 (A teacher tries to cancel a lecture but the time is expired)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -261,7 +268,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ModaleDeleteError](./testImage/TeacherScreen/ErrorDelete.JPG)
 
-### Test 7.2 (A teacher tries to cancel a lecture and the time is not expired)
+#### Test 7.2 (A teacher tries to cancel a lecture and the time is not expired)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -282,16 +289,16 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ModaleDeleteSuccess](./testImage/TeacherScreen/ModalDeleteSuccess.JPG)
 
-## Story 8 
+### Story 8 
 ###### As a student I want to get notified when a lecture is cancelled.
-### Test 8.1 (A student receives an email when the teacher cancel a lecture when he is booked )
+#### Test 8.1 (A student receives an email when the teacher cancels a lecture when he is booked )
 - As a student I receive an email when the teacher cancels one of my booked lectures 
 
 ![MailCancelLecture](./testImage/StudentScreen/DeleteLectureMail.JPG)
 
-## Story 9
+### Story 9
 ###### As a teacher I want to turn a presence lecture into a distance one up to 30 mins before its scheduled time.
-### Test 9.1 (A teacher tries to turn a presence lecture into a distance one but the time is expired)
+#### Test 9.1 (A teacher tries to turn a presence lecture into a distance one but the time is expired)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -312,7 +319,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ModaleChangeError](./testImage/TeacherScreen/ErrorChangeModal.JPG)
 
-### Test 9.2 (A teacher tries to turn a presence lecture into a distance one and the time is not expired)
+#### Test 9.2 (A teacher tries to turn a presence lecture into a distance one and the time is not expired)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -337,9 +344,9 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ManageLectureWithVirtual](./testImage/TeacherScreen/ManageLectureWithOneVirtual.JPG)
 
-## Story 10
+### Story 10
 ###### As a teacher I want to access the historical data about bookings so that I can plan better.
-### Test 10.1 (A teacher accesses to the statistics page but no data is present in the system)
+#### Test 10.1 (A teacher accesses to the statistics page but no data is present in the system)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -364,7 +371,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![EmptyStats](./testImage/TeacherScreen/StatisticsWithNoData.JPG)
 
-### Test 10.2 (A teacher accesses to the statistics page and selects the single lecture view)
+#### Test 10.2 (A teacher accesses to the statistics page and selects the single lecture view)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -389,7 +396,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![LectureStats](./testImage/TeacherScreen/LectureStats.JPG)
 
-### Test 10.3 (A teacher accesses to the statistics page and selects the week view)
+#### Test 10.3 (A teacher accesses to the statistics page and selects the week view)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -410,7 +417,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![WeekStats](./testImage/TeacherScreen/WeekStats.JPG)
 
-### Test 10.4 (A teacher access to the statistics page and select the month view)
+#### Test 10.4 (A teacher access to the statistics page and select the month view)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -431,7 +438,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![MonthStats](./testImage/TeacherScreen/MonthStats.JPG)
 
-### Test 10.5 (A teacher accesses to the statistics page and selects the total bookings view)
+#### Test 10.5 (A teacher accesses to the statistics page and selects the total bookings view)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -452,7 +459,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TotalStats](./testImage/TeacherScreen/TotalBookingStats.JPG)
 
-### Test 10.6 (A teacher accesses to the statistics page and selects the cancelled bookings view)
+#### Test 10.6 (A teacher accesses to the statistics page and selects the cancelled bookings view)
 - Like a teacher I need to put my credentials in the login form and then press the button `Login`.
 
 ![LoginForm](./testImage/TeacherScreen/TeacherLogin.JPG)
@@ -473,10 +480,12 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CancelledStats](./testImage/TeacherScreen/CancelledBookingsStats.JPG)
 
-## Story 11
+## Sprint 3
+
+### Story 11
 ###### As a booking manager I want to monitor usage (booking, cancellations, attendance) of the system.
 
-### Test 11.1 (A booking manages accesses the system and views the statistics page for all courses, where he can see the total amount of bookings for all courses present)
+#### Test 11.1 (A booking manages accesses the system and views the statistics page for all courses, where he can see the total amount of bookings for all courses present)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -490,7 +499,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TotalStats](./testImage/ManagerScreen/TotalBookingsGraph.PNG)
 
-### Test 11.2 (A booking manager accesses the system and selects a course for which there are no bookings)
+#### Test 11.2 (A booking manager accesses the system and selects a course for which there are no bookings)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -508,7 +517,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![EmptyMessage](./testImage/ManagerScreen/NoBookings.PNG)
 
-### Test 11.3 (A booking manager accesses the system and views statistics about bookings of a lecture for a given course, looking for both a lecture with statistics available and one without statistics available)
+#### Test 11.3 (A booking manager accesses the system and views statistics about bookings of a lecture for a given course, looking for both a lecture with statistics available and one without statistics available)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -534,7 +543,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![LessonModeNoStats](./testImage/ManagerScreen/LessonModeEeFINoStats.PNG)
 
-### Test 11.4 (A booking manager accesses the system and views statistics about a course related to bookings made in separate weeks, separate months and for separate lectures)
+#### Test 11.4 (A booking manager accesses the system and views statistics about a course related to bookings made in separate weeks, separate months and for separate lectures)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -560,7 +569,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TotalModeStats](./testImage/ManagerScreen/TotalModeEeFI.PNG)
 
-### Test 11.5 (A booking manager accesses the system and selects a course for which there are no statistics about cancelled bookings)
+#### Test 11.5 (A booking manager accesses the system and selects a course for which there are no statistics about cancelled bookings)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -578,7 +587,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CancelledModeNoStats](./testImage/ManagerScreen/CancelledModeEeFINoStats.PNG)
 
-### Test 11.6 (A booking manager accesses the system and selects a course for which he wants to see statistics about cancelled bookings)
+#### Test 11.6 (A booking manager accesses the system and selects a course for which he wants to see statistics about cancelled bookings)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -596,7 +605,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CancelledModeStats](./testImage/ManagerScreen/CancelledModeEeFI.PNG)
 
-### Test 11.7 (A booking manager accesses the system and chooses to see statistics about cancelled lectures, when there are no cancelled lectures)
+#### Test 11.7 (A booking manager accesses the system and chooses to see statistics about cancelled lectures, when there are no cancelled lectures)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -606,7 +615,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NoCancelledLectures](./testImage/ManagerScreen/NoCancelledLectures.PNG)
 
-### Test 11.8 (A booking manager accesses the system and chooses to see statistics about cancelled lectures)
+#### Test 11.8 (A booking manager accesses the system and chooses to see statistics about cancelled lectures)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -616,7 +625,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CancelledLecturesStats](./testImage/ManagerScreen/CancelledLecturesStats.PNG)
 
-### Test 11.9 (A booking manager accesses the system to see statistics about in presence attendance for a course that has no attendance registered yet)
+#### Test 11.9 (A booking manager accesses the system to see statistics about in presence attendance for a course that has no attendance registered yet)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -634,7 +643,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NoAttendance](./testImage/ManagerScreen/NoAttendance.PNG)
 
-### Test 11.10 (A booking manager accesses the system to see statistics about in presence attendance)
+#### Test 11.10 (A booking manager accesses the system to see statistics about in presence attendance)
 
 - Like a booking manager I need to put my credentials in the login form and then press the `Login` button.
 
@@ -652,10 +661,10 @@ In this document you can find the documentation about our system testing. For ea
 
 ![AttendanceStats](./testImage/ManagerScreen/AttendanceStats.PNG)
 
-## Story 12
+### Story 12
 ###### As a support officer I want to upload the list of students, courses, teachers, lectures, and classes to setup the system.
 
-### Test 12.1 (A support officer accesses the system to upload a file)
+#### Test 12.1 (A support officer accesses the system to upload a file)
 - As a support officer I put my credentials in the login form to access the system.
 
 ![OfficerLogin](./testImage/OfficerScreen/OfficerLoging.PNG)
@@ -680,7 +689,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ModalSuccess](./testImage/OfficerScreen/ModalSuccess.PNG)
 
-### Test 12.2 (A support officer accesses the system to upload a file, but the file has some error)
+#### Test 12.2 (A support officer accesses the system to upload a file, but the file has some error)
 - As a support officer I put my credentials in the login form to access the system.
 
 ![OfficerLogin](./testImage/OfficerScreen/OfficerLoging.PNG)
@@ -701,10 +710,10 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ErrorModal](./testImage/OfficerScreen/ErrorModal.PNG)
 
-## Story 13
+### Story 13
 ###### As a student I want to be put in a waiting list when no seats are available in the required lecture.
 
-### Test 13.1 (A student accesses the system to book a seat in a lecture, and gets put in a waiting list since all seats are booked)
+#### Test 13.1 (A student accesses the system to book a seat in a lecture, and gets put in a waiting list since all seats are booked)
 - As a student I put my credentials in the login form to access the system.
 
 ![StudentAccess](./testImage/StudentScreen/StudentAccess.PNG)
@@ -726,10 +735,10 @@ In this document you can find the documentation about our system testing. For ea
 ![AddWaitingListPopup2](./testImage/StudentScreen/AddWaitingListPopup2.PNG)
 
 
-## Story 14 
+### Story 14 
 ###### As a student in the waiting list I want to be added to the list of students booked when someone cancels their booking so that I can attend the lecture.
 
-### Test 14.1 (shared with [Story 15](#story-15))
+#### Test 14.1 (shared with [Story 15](#story-15))
 
 - As a student that is already booked for a lecture that wants to delete his booking I insert my credentials to access the system.
 
@@ -771,18 +780,16 @@ In this document you can find the documentation about our system testing. For ea
 
 ![WaitingListAfter](./testImage/StudentScreen/WaitingListAfter.PNG)
 
-
-
-## Story 15
+### Story 15
 ###### As a student I want to get notified when I am taken from the waiting list so that I can attend the lecture.
 
-### Test 15.1 (shared with [Story 14](#story-14))
+#### Test 15.1 (shared with [Story 14](#story-14))
 
 
-## Story 16 
+### Story 16 
 ###### As a booking manager I want to generate a contact tracing report starting with a positive student so that we comply with safety regulations.
 
-### Test 16.1 (A booking manager accesses the system and generates a contact report starting with a reported positive student)
+#### Test 16.1 (A booking manager accesses the system and generates a contact report starting with a reported positive student)
 
 - As a booking manager I insert my credentials so I can access the system.
 
@@ -808,15 +815,75 @@ In this document you can find the documentation about our system testing. For ea
 
 ![CTPDF](./testImage/ManagerScreen/CTPDF.PNG)
 
-## Story 17
+## Sprint 4
+
+### Story 17
 ###### As a support officer I want to update the list of bookable lectures
 
-### Test 17.1
+#### Test 17.1 (A support officer accesses the system and sets lectures of all courses of the first year to be only virtual)
 
-## Story 18
+- As a support officer I need to put my credentials in the login form and then press the button `Login`.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLogin.PNG)
+
+- Once in the homepage I click on the `Update Lectures Bookability` link in the header.
+
+![OfficerHome](./testImage/OfficerScreen/OfficerHome.PNG)
+
+- In the new page I click on the `Year` button, then I select the checkbox corresponding to the option `Year 1` and click on the `Confirm Selection` button.
+
+![ModifyYear](./testImage/OfficerScreen/ModifyYear.PNG)
+
+- In the pop-up that appears I confirm that 8 courses will be changed to virtual by clicking on the `Yes` button. A message then appears informing me that the changes have been made correctly.
+
+![YearModal](./testImage/OfficerScreen/YearModal.PNG)
+
+![ConfirmModal](./testImage/OfficerScreen/ConfirmModal.PNG)
+
+#### Test 17.2 (A support officer accesses the system and sets lectures of all courses of the second year in the second semester to be only virtual)
+
+- As a support officer I need to put my credentials in the login form and then press the button `Login`.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLogin.PNG)
+
+- Once in the homepage I click on the `Update Lectures Bookability` link in the header.
+
+![OfficerHome](./testImage/OfficerScreen/OfficerHome.PNG)
+
+- In the new page I click on the `Semester` button, I deselect the button corresponding to the option `Year 1` and select the one corresponding to `Year 2`. I then select the checkbox corresponding to the option `Semester 2` and click on the `Confirm Selection` button.
+
+![ModifySemester](./testImage/OfficerScreen/ModifySemester.PNG)
+
+- In the pop-up that appears I confirm that 10 courses will be changed to virtual by clicking on the `Yes` button. A message then appears informing me that the changes have been made correctly.
+
+![SemesterModal](./testImage/OfficerScreen/SemesterModal.PNG)
+
+![ConfirmModal](./testImage/OfficerScreen/ConfirmModal.PNG)
+
+#### Test 17.3 (A support officer accesses the system and sets lectures in an interval of dates to be only virtual)
+
+- As a support officer I need to put my credentials in the login form and then press the button `Login`.
+
+![OfficerLogin](./testImage/OfficerScreen/OfficerLogin.PNG)
+
+- Once in the homepage I click on the `Update Lectures Bookability` link in the header.
+
+![OfficerHome](./testImage/OfficerScreen/OfficerHome.PNG)
+
+- In the new page I click on the `Custom Date` button, I select `08/03/2021` as starting date and `31/03/2021` as ending date and click on the `Confirm Selection` button.
+
+![ModifyCustom](./testImage/OfficerScreen/ModifyCustom.PNG)
+
+- In the pop-up that appears I confirm that lectures in the interval will be changed to virtual by clicking on the `Yes` button. A message then appears informing me that the changes have been made correctly.
+
+![CustomModal](./testImage/OfficerScreen/CustomModal.PNG)
+
+![ConfirmModal](./testImage/OfficerScreen/ConfirmModal.PNG)
+
+### Story 18
 ###### As a teacher I want to record the students present at my lecture among those booked so that I can keep track of actual attendance
 
-### Test 18.1 (A teacher accesses the system to register attendance in a day when there are no lectures)
+#### Test 18.1 (A teacher accesses the system to register attendance in a day when there are no lectures)
 
 - As a teacher I need to put my credentials in the login form and then press the button `Login`.
 
@@ -830,7 +897,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NoLectures](./testImage/TeacherScreen/NoLectures.PNG)
 
-### Test 18.2 (A teacher accesses the system to register attendance for a lecture that happened in the past hours)
+#### Test 18.2 (A teacher accesses the system to register attendance for a lecture that happened in the past hours)
 
 - As a teacher I need to put my credentials in the login form and then press the button `Login`.
 
@@ -848,10 +915,10 @@ In this document you can find the documentation about our system testing. For ea
 
 ![StudentPresent](./testImage/TeacherScreen/StudentPresent.PNG)
 
-## Story 19
+### Story 19
 ###### As a teacher I want to access the historical data about presence so that I can assess the course
 
-### Test 19.1 (A teacher accesses the system to view statistics about presence for a course which has no such statistics)
+#### Test 19.1 (A teacher accesses the system to view statistics about presence for a course which has no such statistics)
 
 - As a teacher I need to put my credentials in the login form and then press the button `Login`.
 
@@ -873,7 +940,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![NoAttendance](./testImage/TeacherScreen/NoAttendance.PNG)
 
-### Test 19.2 (A teacher accesses the system and view statistics about attendance of a course)
+#### Test 19.2 (A teacher accesses the system and views statistics about attendance of a course)
 
 - As a teacher I need to put my credentials in the login form and then press the button `Login`.
 
@@ -895,7 +962,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![AttendanceGraph](./testImage/TeacherScreen/AttendanceGraph.PNG)
 
-### Test 19.3 (A teacher accesses the system to view statistics about total attendance of all his courses)
+#### Test 19.3 (A teacher accesses the system to view statistics about total attendance of all his courses)
 
 - As a teacher I need to put my credentials in the login form and then press the button `Login`.
 
@@ -913,10 +980,10 @@ In this document you can find the documentation about our system testing. For ea
 
 ![TotalAttendance](./testImage/TeacherScreen/TotalAttendance.PNG)
 
-## Story 20
+### Story 20
 ###### As a support officer I want to modify the schedule of courses so that data is up-to-date
 
-### Test 20.1 (A support officer accesses the system and changes the schedule of a course)
+#### Test 20.1 (A support officer accesses the system and changes the schedule of a course)
 
 - As a support officer I need to put my credentials in the login form and then press the button `Login`.
 
@@ -942,7 +1009,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ScheduleUpdated](./testImage/OfficerScreen/ScheduleUpdated.PNG)
 
-### Test 20.2 (A support officer accesses the system to change the schedule of a course, choosing a time when the teacher already has another lecture scheduled)
+#### Test 20.2 (A support officer accesses the system to change the schedule of a course, choosing a time when the teacher already has another lecture scheduled)
 
 - As a support officer I need to put my credentials in the login form and then press the button `Login`.
 
@@ -964,7 +1031,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![InvalidError](./testImage/OfficerScreen/InvalidError.PNG)
 
-### Test 20.3 (A support officer accesses the system to change the schedule of a course, choosing as new classroom one that is already occupied)
+#### Test 20.3 (A support officer accesses the system to change the schedule of a course, choosing as new classroom one that is already occupied)
 
 - As a support officer I need to put my credentials in the login form and then press the button `Login`.
 
@@ -986,19 +1053,19 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ClassroomError](./testImage/OfficerScreen/ClassroomError.PNG)
 
-## Story 21
+### Story 21
 ###### As a student I want to get a notification when the schedule for a lecture I booked for is changed so that I am informed 
 
-### Test 21.1 (A student receives an email after the schedule related to a lesson he is booked for is changed) (following from [test 20.1](#test-201-a-support-officer-accesses-the-system-and-changes-the-schedule-of-a-course))
+#### Test 21.1 (A student receives an email after the schedule related to a lesson he is booked for is changed) (following from [test 20.1](#test-201-a-support-officer-accesses-the-system-and-changes-the-schedule-of-a-course))
 
 - As a student I access to my mail account and see an e-mail telling me that the schedule has changed
 
 ![ScheduleChanged](./testImage/StudentScreen/ScheduleChanged.PNG)
 
-## Story 21-BIS
+### Story 21-BIS
 ###### As a student I want to get a notification when the schedule for a lecture I booked for is turned from presence into a remote
 
-### Test 21.2 (A teacher changes a lecture to virtual and a student booked at that lecture receives an email for information)
+#### Test 21.2 (A teacher changes a lecture to virtual and a student booked at that lecture receives an email for information)
 
 - As a teacher I need to put my credentials in the login form and then press the button `Login`.
 
@@ -1026,17 +1093,17 @@ In this document you can find the documentation about our system testing. For ea
 
 ![VirtualLectureEmail](./testImage/StudentScreen/VirtualLectureEmail.PNG)
 
-## Story 22
+### Story 22
 ###### As a student I want to access a tutorial for using the system so that I can use it properly
 
-### Test 22.1
+#### Test 22.1
 
-## Story 23
+### Story 23
 ###### As a teacher I want to access a tutorial for using the system so that I can use it correctly
 
-### Test 23.1
+#### Test 23.1
 
-## Story 24
+### Story 24
 ###### As a booking manager I want to generate a contact tracing report starting with a positive teacher so that we comply with safety regulations
 
-### Test 24.1
+#### Test 24.1
