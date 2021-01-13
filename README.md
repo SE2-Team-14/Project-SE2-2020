@@ -15,16 +15,16 @@
   $bash docker-push.sh
 
 * To pull the server image: 
-  sudo docker pull team14se2/pulsebs:serverRelease1
+  sudo docker pull team14se2/pulsebs:serverRelease2
  
 * To pull the client image: 
-  sudo docker pull team14se2/pulsebs:clientRelease1
+  sudo docker pull team14se2/pulsebs:clientRelease2
 
 * To run the server image:
-  sudo docker run -p 3001:3001 team14se2/pulsebs:serverRelease1
+  sudo docker run -p 3001:3001 team14se2/pulsebs:serverRelease2
  
  * To run the client image:
-  sudo docker run -it --rm -v ${PWD}:/client -v /src/node_modules -p 3000:3000 -e CHOKIDAR_USEPOLLING=true team14se2/pulsebs:clientRelease1
+  sudo docker run -it --rm -v ${PWD}:/client -v /src/node_modules -p 3000:3000 -e CHOKIDAR_USEPOLLING=true team14se2/pulsebs:clientRelease2
 
 
 ## Example Users:
