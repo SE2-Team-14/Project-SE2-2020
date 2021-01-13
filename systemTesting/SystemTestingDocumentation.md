@@ -799,7 +799,7 @@ In this document you can find the documentation about our system testing. For ea
 
 ![ManagerHomepage](./testImage/ManagerScreen/ManagerHomepage.PNG)
 
-- In this page I can insert the identifier of a student that has been reported as positive. Clicking on the `Download Report` button will generate a contact report based on that student.
+- In this page I can insert the identifier of a student (or a teacher) that has been reported as positive. Clicking on the `Download Report` button will generate a contact report based on that student.
 
 ![ContactTracing](./testImage/ManagerScreen/ContactTracing.PNG)
 
@@ -1106,4 +1106,32 @@ In this document you can find the documentation about our system testing. For ea
 ### Story 24
 ###### As a booking manager I want to generate a contact tracing report starting with a positive teacher so that we comply with safety regulations
 
-#### Test 24.1
+#### Test 24.1 (A booking manager accesses the system and generates a contact report starting with a reported positive teacher)
+
+- As a booking manager I insert my credentials so I can access the system.
+
+![ManagerAccess](./testImage/ManagerScreen/ManagerAccess.PNG)
+
+- Once in the homepage I click on the link `Contact Tracing` in the header.
+
+![ManagerHomepage](./testImage/ManagerScreen/ManagerHomepage.PNG)
+
+- In this page I can insert the identifier of a teacher (or a student) that has been reported as positive. Clicking on the `Download Report` button will generate a contact report based on that student.
+
+![ContactTracing](./testImage/ManagerScreen/ct_teacher_form.PNG)
+
+- After clicking on the button I have downloaded two files containing the contact report (a PDF and a CSF)
+
+![CTDownload](./testImage/ManagerScreen/ct_teacher_download.PNG)
+
+- If I open the CSF file I can see the list of students that took part in a lesson together with the reported positive student.
+
+![CTCSF](./testImage/ManagerScreen/ct_teacher_csv.PNG)
+
+- In the same way, if I open the PDF file I can also see the list of contacts.
+
+![CTPDF](./testImage/ManagerScreen/ct_teacher_pdf.PNG)
+
+- If no information about the person is found, a message will be displayed
+
+![CTPDF](./testImage/ManagerScreen/ct_no_info.PNG)

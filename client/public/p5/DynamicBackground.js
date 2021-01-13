@@ -32,7 +32,7 @@ function draw() {
   background(230, 250, 255);
   system.origin.x = 15 + mouseX - width / 2;
   system.origin.y = 15 + mouseY - height / 2;
-  if (frameCount % 100 == 0) // ogni 4 frame
+  if (frameCount % 5 == 0) // ogni 4 frame
     system.addParticle();
   system.run();
 }
