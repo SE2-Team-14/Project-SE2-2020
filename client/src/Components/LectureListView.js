@@ -236,6 +236,7 @@ class LectureListView extends React.Component {
                 <Row className='col-12 m-0 p-0'>
                     <Col>
                         <LectureList handleClickBook={this.handleClickBook} handleClickDelete={this.handleClickDelete} handleClickBookWaitingList={this.handleClickBookWaitingList} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} findwl={this.findBookingInWaitingList} />
+                        <WaitingList handleClickBookWaitingList={this.handleClickBookWaitingList} id={this.state.id} lecture={this.state.lectures} findCourseName={this.findCourseName} findTeacherName={this.findTeacherName} findMaxSeats={this.findMaxSeats} find={this.findBooking} findwl={this.findBookingInWaitingList}/>
                     </Col>
                 </Row>
                 <Modal controlid='Book' show={this.state.showBook} onHide={this.handleClose} animation={false} >
@@ -345,7 +346,7 @@ function LectureList(props) {
             {
                 props.lecture.map((l) =>
 
-                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} handleClickBookWaitingList={props.handleClickBookWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} findBookingInWaitingList={props.findwl} />
+                    <LectureItem handleClickBook={props.handleClickBook} handleClickDelete={props.handleClickDelete} handleClickBookWaitingList={props.handleClickBookWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} />
                 )
             }
         </ListGroup>
@@ -368,8 +369,8 @@ function LectureItem(props) {
     let courseName = props.findCourseName(props.lecture.courseId);
     let teacher = props.findTeacherName(props.lecture.teacherId);
     let maxSeats = props.findMaxSeats(props.lecture.classroomId);
-    let findwl = props.findBookingInWaitingList(props.lecture.lectureId, props.id);
     return (
+        (props.lecture.numberOfSeats < maxSeats || find === true) &&
         <ListGroup.Item className='border mt-1'>
             <Row className='justify-content-around'>
                 <Col xs={1} className='text-center'>
@@ -394,23 +395,121 @@ function LectureItem(props) {
                     {props.lecture.numberOfSeats}/{maxSeats}
                 </Col>
                 <Col xs={1} className='text-center'>
-                    {(find == true) &&
+                    {(find === true) &&
                         <>
                             <Button variant='danger' onClick={() => props.handleClickDelete(props.id, props.lecture)}>Delete</Button>
                         </>
                     }
-                    {((find == false) && (props.lecture.numberOfSeats < maxSeats)) &&
+                    {(find === false) &&
                         <>
                             <Button onClick={() => props.handleClickBook(props.id, props.lecture)}>Book</Button>
                         </>
 
                     }
-                    {((find == false) && (findwl == false) && (props.lecture.numberOfSeats >= maxSeats)) &&
+                </Col>
+            </Row>
+        </ListGroup.Item>
+    );
+
+}
+
+/**
+ * Renders the list of future lectures of the student.
+ * @param props functions to handle closing of modals, functions to find course name, teacher name, maximum number of seats, booking, identifier of a student, array of Lecture items
+ */
+function WaitingList(props) {
+
+    return (
+        <ListGroup>
+            <Row className='justify-content-around'>
+                <h1>Waiting List</h1>
+            </Row>
+            <ListGroup.Item className='border'>
+                <Row className='justify-content-around'>
+                    <Col xs={1} className='text-center'>
+                        <strong>Course Name</strong>
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        <strong>Teacher Name</strong>
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        <strong>Date</strong>
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        <strong>Starting Time</strong>
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        <strong>Ending Time</strong>
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        <strong>Classroom</strong>
+                    </Col>
+                    <Col xs={1} className='text-center'>
+                        <strong>Booked Seats</strong>
+                    </Col>
+                    <Col xs={1}></Col>
+                </Row>
+
+            </ListGroup.Item>
+            {
+                props.lecture.map((l) =>
+
+                    <WaitingListItem handleClickBookWaitingList={props.handleClickBookWaitingList} id={props.id} key={l.lectureId} lecture={l} findCourseName={props.findCourseName} findTeacherName={props.findTeacherName} findMaxSeats={props.findMaxSeats} findBooking={props.find} findBookingInWaitingList={props.findwl} />
+                )
+            }
+        </ListGroup>
+
+    );
+
+}
+
+/**
+ * Renders a single row of the list of lectures, containing one lecture.
+ * Other than lecture information (course name, teacher name and surname, date, starting and ending time, classroom) it also shows the amount of already booked seats in relation to the total amount.
+ * A button is also present, with different behaviors:
+ *  - if the student isn't already booked for the lesson and there are still seats available the Book button is unlocked and the Deletebutton isn't available
+ *  - if the student isn't already booked for the lesson and there are no more seats available the Book button is locked and the Delete button isn't available
+ *  - if the student is already booked for the lesson the Delete button is unlocked and the Book button isn't available
+ * @param props functions to handle closing of modals, functions to find course name, teacher name, maximum number of seats, booking, identifier of a student, a single Lecture object with its identifier
+ */
+function WaitingListItem(props) {
+    let find = props.findBooking(props.id, props.lecture.lectureId);
+    let courseName = props.findCourseName(props.lecture.courseId);
+    let teacher = props.findTeacherName(props.lecture.teacherId);
+    let maxSeats = props.findMaxSeats(props.lecture.classroomId);
+    let findwl = props.findBookingInWaitingList(props.lecture.lectureId, props.id);
+    return (
+        (props.lecture.numberOfSeats >= maxSeats && find === false) &&
+        <ListGroup.Item className='border mt-1'>
+            <Row className='justify-content-around'>
+                <Col xs={1} className='text-center'>
+                    {courseName}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {teacher.surname} {teacher.name}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {props.lecture.date}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {props.lecture.startingTime}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {props.lecture.endingTime}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {props.lecture.classroomId}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {props.lecture.numberOfSeats}/{maxSeats}
+                </Col>
+                <Col xs={1} className='text-center'>
+                    {(findwl === false) &&
                         <>
                             <Button onClick={() => props.handleClickBookWaitingList(props.id, props.lecture)}> Add in Waiting List</Button>
                         </>
                     }
-                    {((find == false) && (findwl == true) && (props.lecture.numberOfSeats >= maxSeats)) &&
+                    {(findwl === true) &&
                         <>
                             <Button disabled> Add in Waiting List</Button>
                         </>
