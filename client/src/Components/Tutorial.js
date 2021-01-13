@@ -24,10 +24,10 @@ class Tutorial extends React.Component {
       <Jumbotron className='d-flex justify-content-center col-12 m-0 p-3' style={{background: "none"}}>
         <Col>
           {this.props.role === "Student" && <Row className='justify-content-end col-12 m-0 p-0'>  
-            <Link to = {pdf_s} target = "_blank" download><Button variant = "outline-info"> Click to download the tutorial in pdf <span></span></Button></Link>
+            <Link to = {pdf_s} target = "_blank" download><Button variant = "outline-info"> Click to download the pdf documentation <span></span></Button></Link>
           </Row>}
           {this.props.role === "Teacher" && <Row className='justify-content-end col-12 m-0 p-0'>  
-            <Link to = {pdf_t} target = "_blank" download><Button variant = "outline-info"> Click to download the tutorial in pdf <span></span></Button></Link>
+            <Link to = {pdf_t} target = "_blank" download><Button variant = "outline-info"> Click to download the pdf documentation <span></span></Button></Link>
           </Row>}
           <Row className='justify-content-center col-12 m-0 p-0'>
             <h3>{this.props.role}s Tutorial</h3>
