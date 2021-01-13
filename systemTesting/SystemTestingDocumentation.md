@@ -1118,20 +1118,20 @@ In this document you can find the documentation about our system testing. For ea
 
 - In this page I can insert the identifier of a teacher (or a student) that has been reported as positive. Clicking on the `Download Report` button will generate a contact report based on that student.
 
-![ContactTracing](./testImage/ManagerScreen/ct_teacher_form.PNG)
+![ct_teacher_form](./testImage/ManagerScreen/ct_teacher_form.PNG)
 
 - After clicking on the button I have downloaded two files containing the contact report (a PDF and a CSF)
 
-![CTDownload](./testImage/ManagerScreen/ct_teacher_download.PNG)
+![ct_teacher_download](./testImage/ManagerScreen/ct_teacher_download.PNG)
 
 - If I open the CSF file I can see the list of students that took part in a lesson together with the reported positive student.
 
-![CTCSF](./testImage/ManagerScreen/ct_teacher_csv.PNG)
+![ct_teacher_csv](./testImage/ManagerScreen/ct_teacher_csv.PNG)
 
 - In the same way, if I open the PDF file I can also see the list of contacts.
 
-![CTPDF](./testImage/ManagerScreen/ct_teacher_pdf.PNG)
+![ct_teacher_pdf](./testImage/ManagerScreen/ct_teacher_pdf.PNG)
 
 - If no information about the person is found, a message will be displayed
 
-![CTPDF](./testImage/ManagerScreen/ct_no_info.PNG)
+![ct_no_info](./testImage/ManagerScreen/ct_no_info.PNG)
