@@ -2,7 +2,6 @@ import React from 'react';
 import YouTube from 'react-youtube';
 import {Col, Row, Jumbotron, Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import API from "../api/API"
 const pdf_s = '/tutorial/Students_tutorial.pdf'
 const pdf_t = '/tutorial/Teachers_tutorial.pdf'
 class Tutorial extends React.Component {
