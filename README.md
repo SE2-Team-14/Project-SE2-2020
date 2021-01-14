@@ -33,7 +33,7 @@
 
 * s900000@students.politu.it team14 (Student)
 
-* danieleaurigemmapolitu.it team14 (Manager)
+* daniele@aurigemmapolitu.it team14 (Manager)
 
 * gaetanoepiro@outlook.it team14 (SupportOfficer)
 
