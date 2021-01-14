@@ -1,4 +1,4 @@
-RETROSPECTIVE SPRINT 3 (Team 14)
+RETROSPECTIVE SPRINT 4 (Team 14)
 =====================================
 
 - [process measures](#process-measures)
@@ -10,14 +10,14 @@ RETROSPECTIVE SPRINT 3 (Team 14)
 ### Macro statistics
 
 - Number of stories committed vs done: 
-    - Stories committed: 6
-    - Stories done: 6
+    - Stories committed: 8
+    - Stories done: 8
 - Total points committed vs done:
-    - Total points committed: 61 
-    - Total points done: 61
+    - Total points committed: 45 
+    - Total points done: 45
 - Nr of hours planned vs spent (as a team)
-    - Total hours planned: 74h 30m 
-    - Total hours spent: 72h  
+    - Total hours planned: 
+    - Total hours spent: 74h 1m  
  
 - Unit Tests passing: 114
 - Code review completed
