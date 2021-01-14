@@ -5,7 +5,7 @@
 
 
 
-## Use Docker:
+# Use Docker:
 
 
 * To build and run, simply run "build-run.sh" in the root directory:
