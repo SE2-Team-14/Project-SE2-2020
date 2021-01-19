@@ -61,7 +61,7 @@ RETROSPECTIVE SPRINT 4 (Team 14)
   - Total hours estimated: 6h
   - Total hours spent: 6h
 - Technical Debt management:
-  - Total hours estimated: 1h 
+  - Total hours estimated: 1h
   - Total hours spent: 1h
   - Hours estimated for remediation by SonarQube: 1h 52m
   - Hours spent on remediation: 1h
@@ -76,17 +76,14 @@ RETROSPECTIVE SPRINT 4 (Team 14)
 ## ASSESSMENT
 
 - What caused your errors in estimation?
-
-
+    We underestimated one story that was more complicated then we expected.
 - What lessons did you learn (both positive and negative) in this sprint?
-
-
+    Free time is very useful because at the end you come back stronger than before.
 - Which improvement goals set in the previous retrospective were you able to achieve?
-
-  
+    We achieved all of them.
 - Which ones you were not able to achieve? Why?
-
+   
 - Improvement goals for the next sprint and how to achieve them: (technical tasks, team coordination, etc.)
-
-- One thing you are proud of as a Team:
+    Manage all the issues received from the stakeholder and learn something about the telegram bot.
+- One thing you are proud of as a Team: We learned the scrum metodology and we think we applied it in the best way we could.
 
