@@ -3,7 +3,9 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=bugs)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=sqale_index)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=ncloc)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=coverage)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=SE2-Team-14_Project-SE2-2020&metric=code_smells)](https://sonarcloud.io/dashboard?id=SE2-Team-14_Project-SE2-2020)
 
+# Retrospectives:
 
+* All retrospectives can be found in the 'docs' folder of the repository;
 
 # Use Docker:
 
